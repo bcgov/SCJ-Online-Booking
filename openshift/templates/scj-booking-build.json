@@ -223,7 +223,7 @@
             "displayName": "Git Repository URL",
             "required": true,
             "description": "The URL of the repository with your application source code.",
-            "value": "https://github.com/molund/s2i-dotnetcore-ex.git"
+            "value": "https://github.com/bcgov/SCJ-Online-Booking.git"
         },
         {
             "name": "SOURCE_REPOSITORY_REF",
