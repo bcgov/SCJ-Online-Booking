@@ -1,0 +1,45 @@
+{
+    "name": "scj-online-booking",
+    "version": "1.0.0",
+    "description": "Online Booking System for British Columbia Superior Courts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bcgov/SCJ-Online-Booking.git"
+    },
+    "author": "OpenRoad Communications Ltd.",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/bcgov/SCJ-Online-Booking/issues"
+    },
+    "homepage": "https://github.com/bcgov/SCJ-Online-Booking#readme",
+    "scripts": {
+        "install": "webpack --config webpack.config.vendor.js"
+    },
+    "dependencies": {
+        "es6-promise": "^4.2.4",
+        "vue": "^2.5.21",
+        "vue-template-compiler": "^2.5.21"
+    },
+    "devDependencies": {
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.4",
+        "babel-preset-es2015": "^6.24.1",
+        "bootstrap": "^4.1.3",
+        "copy-webpack-plugin": "^4.5.1",
+        "css-loader": "^0.26.4",
+        "csso-webpack-plugin": "^1.0.0-beta.12",
+        "extract-text-webpack-plugin": "^3.0.2",
+        "file-loader": "^0.9.0",
+        "jquery": "^3.3.1",
+        "node-sass": "^4.9.0",
+        "optimize-css-assets-webpack-plugin": "^1.3.2",
+        "popper.js": "^1.14.6",
+        "sass-loader": "^7.0.3",
+        "select2": "^4.0.6-rc.1",
+        "select2-bootstrap-theme": "0.1.0-beta.10",
+        "style-loader": "^0.13.2",
+        "url-loader": "^1.0.1",
+        "vue-loader": "^14.2.1",
+        "webpack": "^3.12.0"
+    }
+}

@@ -1,0 +1,16 @@
+/*
+* Global styles
+*/
+
+// Import partial stylesheets
+@import 'variables';
+@import 'bootstrapOverrides';
+
+html {
+    -webkit-font-smoothing: antialiased;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}

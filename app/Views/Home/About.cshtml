@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>Use this area to provide additional information.</p>
+
+<div id="VueExample">
+    <sample prop-one="text passed from prop" :prop-two="5555"></sample>
+</div>
+
+@section Scripts {
+    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <script src="~/dist/vue/home-about.js" asp-append-version="true"></script>
+}
