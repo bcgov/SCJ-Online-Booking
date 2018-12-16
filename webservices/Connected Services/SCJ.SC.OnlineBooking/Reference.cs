@@ -376,9 +376,6 @@ namespace SCJ.SC.OnlineBooking
                 base(binding, remoteAddress)
         {
         }
-
-
-
         
         public System.Threading.Tasks.Task<int> caseNumberValidAsync(string caseNum)
         {

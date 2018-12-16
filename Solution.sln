@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "app\app.csproj", "{9C011224-85D0-4A6D-934A-E0F6B10F967A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webservices", "webservices\webservices.csproj", "{B4C026E6-60B7-4FA6-B7F1-D48D908612EA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF289934-6146-4C6D-AC51-EFFA2BA674A4}"
 	ProjectSection(SolutionItems) = preProject
 		openshift\templates\scj-booking-build.json = openshift\templates\scj-booking-build.json
@@ -15,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "test\test.csproj", "{658A7C9D-0D4B-44D7-8011-DFC1B039EAA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webservices", "webservices\webservices.csproj", "{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +26,14 @@ Global
 		{9C011224-85D0-4A6D-934A-E0F6B10F967A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C011224-85D0-4A6D-934A-E0F6B10F967A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C011224-85D0-4A6D-934A-E0F6B10F967A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4C026E6-60B7-4FA6-B7F1-D48D908612EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4C026E6-60B7-4FA6-B7F1-D48D908612EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4C026E6-60B7-4FA6-B7F1-D48D908612EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4C026E6-60B7-4FA6-B7F1-D48D908612EA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{658A7C9D-0D4B-44D7-8011-DFC1B039EAA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{658A7C9D-0D4B-44D7-8011-DFC1B039EAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{658A7C9D-0D4B-44D7-8011-DFC1B039EAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{658A7C9D-0D4B-44D7-8011-DFC1B039EAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
