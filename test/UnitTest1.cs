@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace test
@@ -8,7 +7,8 @@ namespace test
         [Fact]
         public void Test1()
         {
-
+            // Sample passing test
+            Assert.Equal(1, 1);
         }
     }
 }

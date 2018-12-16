@@ -21,7 +21,7 @@
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}",
+                "name": "${NAME}-runtime",
                 "annotations": {
                     "description": "Keeps track of changes in the application runtime image"
                 }
@@ -166,7 +166,7 @@
                 "output": {
                     "to": {
                         "kind": "ImageStreamTag",
-                        "name": "${NAME}:latest"
+                        "name": "${NAME}-runtime:latest"
                     }
                 },
                 "triggers": [
@@ -266,7 +266,8 @@
         {
             "name": "DOTNET_TEST_PROJECTS",
             "displayName": "Test projects",
-            "description": "Set this to a space separated list of test projects to run before publishing."
+            "description": "Set this to a space separated list of test projects to run before publishing.",
+            "value": "test"
         },
         {
             "name": "DOTNET_CONFIGURATION",

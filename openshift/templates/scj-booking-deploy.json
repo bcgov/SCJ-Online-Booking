@@ -33,7 +33,7 @@
             "kind": "Service",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}",
+                "name": "${NAME}-dotnet",
                 "annotations": {
                     "description": "Exposes and load balances the application pods",
                     "service.alpha.openshift.io/dependencies": "[{\"name\": \"${DATABASE_SERVICE_NAME}\", \"kind\": \"Service\"}]"
@@ -62,7 +62,7 @@
                 "host": "${APPLICATION_DOMAIN}",
                 "to": {
                     "kind": "Service",
-                    "name": "${NAME}"
+                    "name": "${NAME}-dotnet"
                 }
             }
         },
@@ -98,7 +98,7 @@
                             "from": {
                                 "kind": "ImageStreamTag",
 								"namespace": "${IMAGE_NAMESPACE}",
-                                "name": "${NAME}:${TAG_NAME}"
+                                "name": "${NAME}-runtime:${TAG_NAME}"
                             }
                         }
                     },
@@ -120,7 +120,7 @@
                     "spec": {
                         "containers": [
                             {
-                                "name": "dotnet-pgsql-persistent",
+                                "name": "scj-booking",
                                 "image": " ",
                                 "ports": [
                                     {
@@ -149,7 +149,7 @@
                                         "port": 8080,
                                         "scheme": "HTTP"
                                     },
-                                    "initialDelaySeconds": 40,
+                                    "initialDelaySeconds": 120,
                                     "timeoutSeconds": 10
                                 },
                                 "readinessProbe": {
@@ -158,8 +158,8 @@
                                         "port": 8080,
                                         "scheme": "HTTP"
                                     },
-                                    "initialDelaySeconds": 10,
-                                    "timeoutSeconds": 30
+                                    "initialDelaySeconds": 30,
+                                    "timeoutSeconds": 120
                                 }
                             }
                         ]
@@ -344,7 +344,7 @@
             "displayName": "Image Namespace",
             "description": "Namespace containing application images.",
             "required": true,
-            "value": "tools"
+            "value": "9xrnfn-tools"
         },		
         {
             "name": "TAG_NAME",
