@@ -111,12 +111,6 @@
                 },
                 "triggers": [
                     {
-                        "type": "ImageChange"
-                    },
-                    {
-                        "type": "ConfigChange"
-                    },
-                    {
                         "type": "GitHub",
                         "github": {
                             "secret": "${GITHUB_WEBHOOK_SECRET}"
@@ -168,6 +162,73 @@
                         "kind": "ImageStreamTag",
                         "name": "${NAME}-runtime:latest"
                     }
+                }
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "core-build-pipeline",
+                "labels": {
+                    "name": "core-build-pipeline"
+                },
+                "annotations": {
+                    "pipeline.alpha.openshift.io/uses":
+                        "[{\"name\": \"\", \"namespace\": \"\", \"kind\": \"DeploymentConfig\"}]"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "JenkinsPipeline",
+                    "jenkinsPipelineStrategy": {
+                        "jenkinsfilePath": "core-build-pipeline-Jenkinsfile"
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    }
+                ],
+                "runPolicy": "Serial",
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/bcgov/SCJ-Online-Booking",
+                        "ref": "master"
+                    },
+                    "contextDir": "openshift/jenkins"
+                }
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "create-runtime-and-deploy-to-dev",
+                "labels": {
+                    "name": "create-runtime-and-deploy-to-dev"
+                },
+                "annotations": {
+                    "pipeline.alpha.openshift.io/uses":
+                        "[{\"name\": \"\", \"namespace\": \"\", \"kind\": \"DeploymentConfig\"}]"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "JenkinsPipeline",
+                    "jenkinsPipelineStrategy": {
+                        "jenkinsfilePath": "create-runtime-and-deploy-to-dev-Jenkinsfile"
+                    }
                 },
                 "triggers": [
                     {
@@ -184,8 +245,119 @@
                                 "name": "${NAME}-build:latest"
                             }
                         }
+                    },
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
                     }
-                ]
+                ],
+                "runPolicy": "Serial",
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/bcgov/SCJ-Online-Booking",
+                        "ref": "master"
+                    },
+                    "contextDir": "openshift/jenkins"
+                }
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "deploy-to-prod",
+                "labels": {
+                    "name": "deploy-to-prod"
+                },
+                "annotations": {
+                    "pipeline.alpha.openshift.io/uses":
+                        "[{\"name\": \"\", \"namespace\": \"\", \"kind\": \"DeploymentConfig\"}]"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "JenkinsPipeline",
+                    "jenkinsPipelineStrategy": {
+                        "jenkinsfilePath": "deploy-to-prod-Jenkinsfile"
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    }
+                ],
+                "runPolicy": "Serial",
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/bcgov/SCJ-Online-Booking",
+                        "ref": "master"
+                    },
+                    "contextDir": "openshift/jenkins"
+                }
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "deploy-to-test",
+                "labels": {
+                    "name": "deploy-to-test"
+                },
+                "annotations": {
+                    "pipeline.alpha.openshift.io/uses":
+                        "[{\"name\": \"\", \"namespace\": \"\", \"kind\": \"DeploymentConfig\"}]"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "JenkinsPipeline",
+                    "jenkinsPipelineStrategy": {
+                        "jenkinsfilePath": "deploy-to-test-Jenkinsfile"
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    }
+                ],
+                "runPolicy": "Serial",
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/bcgov/SCJ-Online-Booking",
+                        "ref": "master"
+                    },
+                    "contextDir": "openshift/jenkins"
+                }
             }
         }
     ],

@@ -1,0 +1,16 @@
+//
+// core-build-pipeline 
+// 
+// This Jenkins pipeline runs the main build to execute unit tests, publish the web project,
+// and run webpack.  The final output is gzipped and left on a folder inside the image where
+// it is used later by the next pipeline in the chain, "create-runtime-and-deploy-to-dev"
+//
+
+node {
+  properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']]])  
+
+  stage('build') {
+    echo "Building: scj-booking-build"
+    openshiftBuild bldCfg: 'scj-booking-build', showBuildLogs: 'true'
+  }
+}
