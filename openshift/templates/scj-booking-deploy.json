@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "scj-booking-deploy",
+        "name": "scj-booking",
         "annotations": {
             "openshift.io/display-name": "SCJ Online Booking DeploymentConfig",
             "description": "Online Booking System for British Columbia Superior Courts",
@@ -15,7 +15,7 @@
     },
     "message": "The following service(s) have been created in your project: ${NAME}, ${DATABASE_SERVICE_NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/redhat-developer/s2i-dotnetcore.",
     "labels": {
-        "template": "scj-booking-deploy"
+        "template": "scj-booking"
     },
     "objects": [
         {
