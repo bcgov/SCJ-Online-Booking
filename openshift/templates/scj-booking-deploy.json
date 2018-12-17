@@ -33,7 +33,7 @@
             "kind": "Service",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}-dotnet",
+                "name": "${NAME}",
                 "annotations": {
                     "description": "Exposes and load balances the application pods",
                     "service.alpha.openshift.io/dependencies": "[{\"name\": \"${DATABASE_SERVICE_NAME}\", \"kind\": \"Service\"}]"
@@ -62,7 +62,7 @@
                 "host": "${APPLICATION_DOMAIN}",
                 "to": {
                     "kind": "Service",
-                    "name": "${NAME}-dotnet"
+                    "name": "${NAME}"
                 }
             }
         },
