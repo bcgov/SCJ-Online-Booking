@@ -6,8 +6,6 @@ The website in this folder is configured to act as a fake implementation of BCeI
 
 1. Install IIS on Windows by turning on the "Internet Information Services" feature on Windows Features. 
 
-	* Make sure you enable any features required to run ASP.NET
-
 2. Install IIS extension url-rewrite. [LINK](https://www.iis.net/downloads/microsoft/url-rewrite)
 
 3. Install IIS extension application-request-routing. [LINK](https://www.iis.net/downloads/microsoft/application-request-routing)
