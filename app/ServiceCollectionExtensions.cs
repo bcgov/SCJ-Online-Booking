@@ -1,10 +1,10 @@
 using System;
-using app.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SCJ.Booking.MVC.Data;
 
-namespace app
+namespace SCJ.Booking.MVC
 {
     internal static class ServiceCollectionExtension
     {

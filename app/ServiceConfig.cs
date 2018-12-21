@@ -1,4 +1,4 @@
-namespace app
+namespace SCJ.Booking.MVC
 {
     public class ServiceConfig
     {

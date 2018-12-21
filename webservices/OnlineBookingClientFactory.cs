@@ -1,6 +1,6 @@
 using SCJ.SC.OnlineBooking;
 
-namespace webservices
+namespace SCJ.Booking.RemoteAPIs
 {
     public static class OnlineBookingClientFactory
     {

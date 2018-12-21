@@ -1,6 +1,4 @@
-using System;
-
-namespace app.Models
+namespace SCJ.Booking.MVC.Models
 {
     public class ErrorViewModel
     {

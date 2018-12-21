@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace app.Data.Migrations
+namespace SCJ.Booking.MVC.Data.Migrations
 {
   public partial class CreateIdentitySchema : Migration
   {

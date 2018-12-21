@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace app
+namespace SCJ.Booking.MVC
 {
     internal class Platform
     {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using app.Models;
+using SCJ.Booking.MVC.Models;
 
-namespace app.Controllers
+namespace SCJ.Booking.MVC.Controllers
 {
     public class HomeController : Controller
     {

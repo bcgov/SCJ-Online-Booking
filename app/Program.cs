@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace app
+namespace SCJ.Booking.MVC
 {
     public class Program
     {

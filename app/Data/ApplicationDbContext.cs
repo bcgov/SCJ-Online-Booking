@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace app.Data
+namespace SCJ.Booking.MVC.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

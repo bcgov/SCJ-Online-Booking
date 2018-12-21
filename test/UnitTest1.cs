@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace test
+namespace SCJ.Booking.UnitTest
 {
     public class UnitTest1
     {
