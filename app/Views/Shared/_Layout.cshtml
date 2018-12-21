@@ -24,15 +24,13 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav mr-auto">
                 <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new {@class = "nav-link"})</li>
-                <li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new {@class = "nav-link"})</li>
-                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new {@class = "nav-link"})</li>
+                <li class="nav-item">@Html.ActionLink("About", "About", "Booking", null, new {@class = "nav-link"})</li>
+                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Booking", null, new {@class = "nav-link"})</li>
             </ul>
             <partial name="_LoginPartial"/>
         </div>
     </div>
 </nav>
-
-<partial name="_CookieConsentPartial"/>
 
 <div class="container body-content">
     @RenderBody()
