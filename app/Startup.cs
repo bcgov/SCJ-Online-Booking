@@ -80,13 +80,18 @@ namespace SCJ.Booking.MVC
         // automatically run migrations at startup
         private static void UpdateDatabase(IApplicationBuilder app)
         {
+            var platform = new Platform();
+
             using (var serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope())
             {
                 using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
-                    context.Database.Migrate();
+                    if (!platform.UseInMemoryStore)
+                    {
+                        context.Database.Migrate();
+                    }
                 }
             }
         }
