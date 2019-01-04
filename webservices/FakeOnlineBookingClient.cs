@@ -1,5 +1,5 @@
-using System;
 using System.Threading.Tasks;
+using SCJ.Booking.RemoteAPIs.Fixtures;
 
 // ReSharper disable once CheckNamespace
 namespace SCJ.SC.OnlineBooking
@@ -9,25 +9,38 @@ namespace SCJ.SC.OnlineBooking
     /// </summary>
     public class FakeOnlineBookingClient : IOnlineBooking
     {
-        public Task<int> caseNumberValidAsync(string caseNum)
+        public async Task<int> caseNumberValidAsync(string caseNum)
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            if (caseNum == "VAM147619")
+            {
+                return 234076; // returns the CaseID
+            }
+
+            return 0;
         }
 
-        public Task<Location[]> getLocationsAsync()
+        public async Task<Location[]> getLocationsAsync()
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            return Locations.All;
         }
 
-        public Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID,
+        public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID,
             int hearingTypeID)
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            return AvailableDates.VancouverTmc;
         }
 
-        public Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
+        public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            return BookingResults.Success;
         }
     }
 }

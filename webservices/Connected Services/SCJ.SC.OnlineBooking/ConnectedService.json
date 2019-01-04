@@ -5,7 +5,7 @@
     "Uri": "https://go.microsoft.com/fwlink/?linkid=858517"
   },
   "ExtendedData": {
-    "Uri": "",
+    "Uri": "https://localhost:8092/OnlineBooking.svc",
     "Namespace": "SCJ.SC.OnlineBooking",
     "SelectedAccessLevelForGeneratedClass": "Public",
     "GenerateMessageContract": false,
