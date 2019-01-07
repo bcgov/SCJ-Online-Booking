@@ -15,30 +15,34 @@
     </environment>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark header-nav">
     <div class="container">
-        @Html.ActionLink("Application name", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+        @Html.ActionLink("Application name", "Index", "Home", new {area = ""}, new {@class = "header-nav-brand"})
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav mr-auto">
-                <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new {@class = "nav-link"})</li>
-                <li class="nav-item">@Html.ActionLink("About", "About", "Booking", null, new {@class = "nav-link"})</li>
-                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Booking", null, new {@class = "nav-link"})</li>
-            </ul>
             <partial name="_LoginPartial"/>
         </div>
     </div>
 </nav>
-
+    
 <div class="container body-content">
     @RenderBody()
-    <hr/>
-    <footer>
-        <p>&copy; 2018 - SCJ</p>
-    </footer>
 </div>
+    
+<footer>
+    <nav class="footer-nav">
+        <div class="container">
+            <ul class="footer-nav-items">
+                <li class="nav-item"><a href="">Home</a></li>
+                <li class="nav-item"><a href="">Disclaimer, Copyright and Privacy</a></li>
+                <li class="nav-item"><a href="">Contact Us</a></li>
+            </ul>
+            <span class="copyright">&copy; 2018 - SCJ</span>
+        </div>
+    </nav>
+</footer>
 
 <environment include="Development">
     <script src="~/dist/lib/jquery.js" asp-append-version="true"></script>
