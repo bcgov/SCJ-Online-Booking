@@ -30,7 +30,21 @@
 </template>
 
 <script>
+    import Vue from "vue";
+    import VueAwesomeSwiper from 'vue-awesome-swiper';
+    import { swiper, swiperSlide } from 'vue-awesome-swiper';
+    import { MdCard, MdButton, MdIcon } from 'vue-material/dist/components'
+
+    Vue.use(MdCard);
+    Vue.use(MdButton);
+    Vue.use(MdIcon);
+    Vue.use(VueAwesomeSwiper);
+
     export default {
+        components: {
+            swiper,
+            swiperSlide
+        },
         data() {
             return {
                 swiperOption: {
@@ -67,4 +81,5 @@
 
 <style lang="scss">
     @import "~swiper/dist/css/swiper.css";
+    @import '~vue-material/dist/vue-material.min.css';
 </style>

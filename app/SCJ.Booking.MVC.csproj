@@ -26,12 +26,6 @@
         <Content Remove="ClientSrc\**" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Update="Views\Booking\BookYourHearing.cshtml">
-        <Pack>$(IncludeRazorContentInPack)</Pack>
-      </Content>
-    </ItemGroup>
-
     <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
         <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
         <Exec Command="npm install" />
