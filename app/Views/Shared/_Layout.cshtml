@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - app</title>
+    <title>@ViewData["Title"] - BC Superior Courts Online Booking</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/dist/css/bootstrap.css" asp-append-version="true"/>
@@ -17,7 +17,8 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark header-nav">
     <div class="container">
-        @Html.ActionLink("Application name", "Index", "Home", new {area = ""}, new {@class = "header-nav-brand"})
+        <a href="/"><img src="/images/bc-logo.svg" width="148" /></a>
+        <p>Superior Courts Online Booking</p>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -35,11 +36,11 @@
     <nav class="footer-nav">
         <div class="container">
             <ul class="footer-nav-items">
-                <li class="nav-item"><a href="">Home</a></li>
-                <li class="nav-item"><a href="">Disclaimer, Copyright and Privacy</a></li>
-                <li class="nav-item"><a href="">Contact Us</a></li>
+                <li class="nav-item"><a href="/">Home</a></li>
+                <li class="nav-item"><a href="#">Disclaimer, Copyright and Privacy</a></li>
+                <li class="nav-item"><a href="#">Contact Us</a></li>
             </ul>
-            <span class="copyright">&copy; 2018 - SCJ</span>
+            <span class="copyright">&copy; 2019 - British Columbia Superior Courts</span>
         </div>
     </nav>
 </footer>
