@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "Book Your Hearing";
+}
+<h2>@ViewData["Title"]</h2>
+
+<p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
+
+<!-- Search filter -->
+<div class="row search-container">
+    <div class="col col-md-12">
+
+        <!-- Header row-->
+        <div class="row">
+            <div class="col col-md-4">
+                <label>What is the Case Action Number for the case?</label>
+            </div>
+            <div class="col col-md-8">
+                <label>What type of conference hearing are you booking?</label>
+            </div>
+        </div>
+
+        <!-- Fields row-->
+        <div class="row">
+            <div class="col col-md-4">
+                <input type="text" class="form-control caseNumber" />
+            </div>
+            <div class="col col-md-8">
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="rbCasePlanning" name="conferenceHearing">
+                    <label class="form-check-label" for="rbCasePlanning">Case Planning Conference</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="rbJudicialCase" name="conferenceHearing">
+                    <label class="form-check-label" for="rbJudicialCase">Judicial Case Conference</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="rbTrialManagement" name="conferenceHearing">
+                    <label class="form-check-label" for="rbTrialManagement">Trial Management Conference</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>&nbsp;</div>
+<div class="row">
+    <div class="col col-md-3">
+        <button type="button" class="btn btn-secondary btn-lg">Show Available Times</button>
+    </div>
+</div>
+<div>&nbsp;</div>
+<!-- Search filter -->
+
+<!-- Booking times-->
+<div id="VueAvailableTimes">
+    <availabletimes></availabletimes>
+</div>
+<!-- Booking times-->
+
+
+@section Scripts {
+    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <script src="~/dist/vue/booking-bookyourhearing.js" asp-append-version="true"></script>
+}

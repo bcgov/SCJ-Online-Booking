@@ -20,6 +20,11 @@ namespace SCJ.Booking.MVC.Controllers
             return View();
         }
 
+        public IActionResult BookYourHearing()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
