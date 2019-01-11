@@ -25,6 +25,18 @@ namespace SCJ.Booking.MVC.Controllers
             return View();
         }
 
+        public IActionResult Search(SearchViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
+            else
+            {
+                return View("BookYourHearing", new SearchViewModel());
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

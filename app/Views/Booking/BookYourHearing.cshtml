@@ -1,3 +1,5 @@
+@model SCJ.Booking.MVC.Models.SearchViewModel
+
 @{
     ViewData["Title"] = "Book Your Hearing";
 }
@@ -5,53 +7,60 @@
 
 <p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
 
-<!-- Search filter -->
-<div class="row search-container">
-    <div class="col col-md-12">
+@using (Html.BeginForm("Search", "Booking", FormMethod.Post, new { @class = "needs-validation", id = "form-search-case", autocomplete = "off", novalidate = "novalidate" }))
+{
+    <!-- Search filter -->
+    <div class="row search-container">
+        <div class="col col-md-12">
 
-        <!-- Header row-->
-        <div class="row">
-            <div class="col col-md-4">
-                <label>What is the Case Action Number for the case?</label>
-            </div>
-            <div class="col col-md-8">
-                <label>What type of conference hearing are you booking?</label>
-            </div>
-        </div>
-
-        <!-- Fields row-->
-        <div class="row">
-            <div class="col col-md-4">
-                <input type="text" class="form-control caseNumber" />
-            </div>
-            <div class="col col-md-8">
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="rbCasePlanning" name="conferenceHearing">
-                    <label class="form-check-label" for="rbCasePlanning">Case Planning Conference</label>
+            <!-- Header row-->
+            <div class="row">
+                <div class="col col-md-4">
+                    <label>What is the Case Action Number for the case?</label>
                 </div>
-
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="rbJudicialCase" name="conferenceHearing">
-                    <label class="form-check-label" for="rbJudicialCase">Judicial Case Conference</label>
+                <div class="col col-md-8">
+                    <label name="conferenceHearing">What type of conference hearing are you booking?</label>
                 </div>
+            </div>
 
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="rbTrialManagement" name="conferenceHearing">
-                    <label class="form-check-label" for="rbTrialManagement">Trial Management Conference</label>
+            <!-- Fields row-->
+            <div class="row">
+                <div class="col col-md-4">
+                    @Html.TextBoxFor( m => m.CaseNumber, new { @class = "form-control caseNumber", required = "required" })
+                    <div class="invalid-feedback">
+                        Please provide a Case Action Number.
+                    </div>
+                </div>
+                <div class="col col-md-8">
+
+                    @Html.RadioButtonFor(m => m.ConferenceType, "1", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbCasePlanning", required = "required" })
+                    <label class="form-check-label ml-5" for="rbCasePlanning">Case Planning Conference</label>
+
+
+                    @Html.RadioButtonFor(m => m.ConferenceType, "2", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbJudicialCase" })
+                    <label class="form-check-label ml-5" for="rbJudicialCase">Judicial Case Conference</label>
+
+
+                    @Html.RadioButtonFor(m => m.ConferenceType, "3", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbTrialManagement" })
+                    <label class="form-check-label ml-5" for="rbTrialManagement">Trial Management Conference</label>
+
+                    <div class="invalid-feedback">
+                        Please choose the type of conference hearing.
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div>&nbsp;</div>
-<div class="row">
-    <div class="col col-md-3">
-        <button type="button" class="btn btn-secondary btn-lg">Show Available Times</button>
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col col-md-3">
+            <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Show Available Times</button>
+        </div>
     </div>
-</div>
-<div>&nbsp;</div>
+    <div>&nbsp;</div>
+}
 <!-- Search filter -->
-
 <!-- No search results for case number-->
 <div class="no-search-results">
     <div class="row">
@@ -102,7 +111,6 @@
     </div>
 </div>
 <!-- No search results for case number-->
-
 <!-- No available times for this hearing - next steps-->
 <div class="no-available-times">
     <h2>There are currently no available times for this hearing in [Location].</h2>
@@ -140,7 +148,6 @@
     </div>
 </div>
 <!-- No available times for this hearing - next steps-->
-
 <!-- Booking times-->
 <div class="row">
     <div class="col col-md-12">
@@ -170,6 +177,7 @@
 @section Scripts {
     <script src="~/dist/vendor.js" asp-append-version="true"></script>
     <script src="~/dist/vue/booking-bookyourhearing.js" asp-append-version="true"></script>
+    <script src="~/js/bookyourhearing.js" asp-append-version="true"></script>
 }
 
 @section Styles {
