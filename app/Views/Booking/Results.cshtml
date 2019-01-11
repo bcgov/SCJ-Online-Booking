@@ -1,0 +1,202 @@
+@model SCJ.Booking.MVC.Models.SearchResultsViewModel
+
+@{
+    ViewData["Title"] = "Book Your Hearing";
+}
+<h2>@ViewData["Title"]</h2>
+
+<p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
+
+@using (Html.BeginForm("Search", "Booking", FormMethod.Post, new { @class = "needs-validation", id = "form-search-case", autocomplete = "off", novalidate = "novalidate" }))
+{
+    <!-- Search filter -->
+    <div class="row search-container">
+        <div class="col col-md-12">
+
+            <!-- Header row-->
+            <div class="row">
+                <div class="col col-md-4">
+                    <label>What is the Case Action Number for the case?</label>
+                </div>
+                <div class="col col-md-8">
+                    <label name="conferenceHearing">What type of conference hearing are you booking?</label>
+                </div>
+            </div>
+
+            <!-- Fields row-->
+            <div class="row">
+                <div class="col col-md-4">
+                    @Html.TextBoxFor(m => m.CaseNumber, new { @class = "form-control caseNumber", required = "required" })
+                    <div class="invalid-feedback">
+                        Please provide a Case Action Number.
+                    </div>
+                </div>
+                <div class="col col-md-8">
+
+                    @Html.RadioButtonFor(m => m.ConferenceType, "1", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbCasePlanning", required = "required" })
+                    <label class="form-check-label ml-5" for="rbCasePlanning">Case Planning Conference</label>
+
+
+                    @Html.RadioButtonFor(m => m.ConferenceType, "2", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbJudicialCase" })
+                    <label class="form-check-label ml-5" for="rbJudicialCase">Judicial Case Conference</label>
+
+
+                    @Html.RadioButtonFor(m => m.ConferenceType, "3", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbTrialManagement" })
+                    <label class="form-check-label ml-5" for="rbTrialManagement">Trial Management Conference</label>
+
+                    <div class="invalid-feedback">
+                        Please choose the type of conference hearing.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col col-md-3">
+            <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Show Available Times</button>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+}
+<!-- Search filter-->
+
+@if (Model.Results.Count == 0)
+{
+    <!-- No search results for case number-->
+    <div class="no-search-results">
+        <div class="row">
+            <div class="col col-md-12">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                    We could not find the case for [Case Action Number].
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-4 col-sm-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">Is it the right Case Action Number?</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            If this is not the correct Case Action
+                            Number, you can change it and try again
+                            for available times.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-4 col-sm-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">Is this a Supreme Family or Civil case?</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            This online tool only covers Family and
+                            Civil cases. If your case is not a Family or
+                            Civil case, please go to [TBD]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-4 col-sm-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">Need to contact your registry?</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            You can contact the registry for which
+                            your hearing is associated (indicated in
+                            your court filing documents)… [TBD]
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- No search results for case number-->
+}
+else if (Model.Results.Count > 0 && !Model.NoAvailableTimes)
+{
+    <!-- Booking times-->
+    <div class="row">
+        <div class="col col-md-12">
+            <h2>Available Times in [Location]</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+            <p>Choose the time slot that works best for you. Each hearing is 30 minutes long.</p>
+            <p>If you need to change the length of time required, please call our Scheduling Staff at [TBD].</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                Someone just booked a hearing on January 7 from 2:45pm to 3:15pm and it is no longer available. Please choose another time for your hearing.
+            </div>
+        </div>
+    </div>
+    <div id="VueAvailableTimes" class="availableTimesContainer">
+        <availabletimes></availabletimes>
+    </div>
+    <!-- Booking times-->
+}
+else if (Model.NoAvailableTimes)
+{
+    <!-- No available times for this hearing - next steps-->
+    <div class="no-available-times">
+        <h2>There are currently no available times for this hearing in [Location].</h2>
+        <div class="row">
+            <div class="col col-md-4 col-sm-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">[Next Step 1]</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            [TBD]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-4 col-sm-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">[Next Step 2]</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            [TBD]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-4 col-sm-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">[Next Step 3]</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            [TBD]
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- No available times for this hearing - next steps-->
+}
+
+@section Scripts {
+    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <script src="~/dist/vue/booking-bookyourhearing.js" asp-append-version="true"></script>
+    <script src="~/js/bookyourhearing.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link href="~/swiper.min.css" rel="stylesheet" />
+
+    <style>
+        .swiper-slide {
+            height: 250px;
+            padding: 15px;
+            width: 165px !important;
+        }
+    </style>
+}

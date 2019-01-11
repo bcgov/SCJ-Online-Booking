@@ -29,7 +29,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                return View();
+                return View("Results", new SearchResultsViewModel());
             }
             else
             {
