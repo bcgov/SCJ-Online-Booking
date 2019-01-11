@@ -51,9 +51,8 @@
 </div>
 <div>&nbsp;</div>
 <!-- Search filter -->
-
 <!-- Booking times-->
-<div id="VueAvailableTimes">
+<div id="VueAvailableTimes" class="availableTimesContainer">
     <availabletimes></availabletimes>
 </div>
 <!-- Booking times-->
@@ -62,4 +61,16 @@
 @section Scripts {
     <script src="~/dist/vendor.js" asp-append-version="true"></script>
     <script src="~/dist/vue/booking-bookyourhearing.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link href="~/swiper.min.css" rel="stylesheet" />
+
+    <style>
+        .swiper-slide{
+            height: 200px;
+            border: solid 1px #535353;
+            padding: 15px;
+        }
+    </style>
 }

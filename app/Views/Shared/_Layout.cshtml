@@ -1,18 +1,19 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BC Superior Courts Online Booking</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/dist/css/bootstrap.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/dist/css/site.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/dist/css/bootstrap.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/dist/css/site.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/dist/css/vendor.min.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/dist/css/site.min.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/dist/css/vendor.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/dist/css/site.min.css" asp-append-version="true" />
     </environment>
+    @RenderSection("Styles", false)
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark header-nav">

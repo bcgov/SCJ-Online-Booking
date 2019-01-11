@@ -1,43 +1,25 @@
 <template>
-    <md-card>
-        <md-card-actions>
-            <div class="md-subhead">
-                <span>Virtual Slides</span>
-                <span>（</span>
-                <span>虚拟 Slides</span>
-                <span>）</span>
-            </div>
+    <div class="row">
+        <div class="col-md-12" style="height:100px;">
             <div>
-                <md-button @click.native="toSlide(0)">To Slide 1</md-button>
-                <md-button @click.native="toSlide(249)">To Slide 250</md-button>
-                <md-button @click.native="toSlide(499)">To Slide 500</md-button>
+                <a @click="toSlide(0)">To Slide 1</a>
+                <a @click="toSlide(249)">To Slide 250</a>
+                <a @click="toSlide(499)">To Slide 500</a>
             </div>
-            <md-button class="md-icon-button"
-                       target="_blank"
-                       href="https://github.com/surmon-china/vue-awesome-swiper/blob/master/examples/41-virtual-slides.vue">
-                <md-icon>code</md-icon>
-            </md-button>
-        </md-card-actions>
-        <md-card-media>
-            <!-- swiper -->
             <swiper :options="swiperOption" ref="mySwiper">
                 <div class="swiper-pagination" slot="pagination"></div>
                 <div class="swiper-button-prev" slot="button-prev"></div>
                 <div class="swiper-button-next" slot="button-next"></div>
             </swiper>
-        </md-card-media>
-    </md-card>
+        </div>
+    </div>
 </template>
 
 <script>
     import Vue from "vue";
     import VueAwesomeSwiper from 'vue-awesome-swiper';
     import { swiper, swiperSlide } from 'vue-awesome-swiper';
-    import { MdCard, MdButton, MdIcon } from 'vue-material/dist/components'
 
-    Vue.use(MdCard);
-    Vue.use(MdButton);
-    Vue.use(MdIcon);
     Vue.use(VueAwesomeSwiper);
 
     export default {
@@ -48,7 +30,7 @@
         data() {
             return {
                 swiperOption: {
-                    slidesPerView: 3,
+                    slidesPerView: 5,
                     centeredSlides: true,
                     spaceBetween: 30,
                     pagination: {
@@ -59,9 +41,28 @@
                         nextEl: '.swiper-button-next',
                         prevEl: '.swiper-button-prev'
                     },
+                    breakpoints: {
+                        1024: {
+                            slidesPerView: 4,
+                            spaceBetween: 40
+                        },
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 30
+                        },
+                        640: {
+                            slidesPerView: 2,
+                            spaceBetween: 20
+                        },
+                        320: {
+                            slidesPerView: 1,
+                            spaceBetween: 10
+                        }
+                    },
                     virtual: {
                         slides: (function () {
                             const slides = [];
+
                             for (let i = 0; i < 600; i += 1) {
                                 slides.push('Slide ' + (i + 1))
                             }
@@ -77,9 +78,12 @@
             }
         }
     }
-</script>
 
-<style lang="scss">
-    @import "~swiper/dist/css/swiper.css";
-    @import '~vue-material/dist/vue-material.min.css';
-</style>
+    function addDate(dateObj) {
+
+    }
+
+    function addTime(time) {
+
+    }
+</script>
