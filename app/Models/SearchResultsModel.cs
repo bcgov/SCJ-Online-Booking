@@ -23,5 +23,8 @@ namespace SCJ.Booking.MVC.Models
 
         //Indicator to show if there are results but no times available
         public bool NoAvailableTimes { get; set; }
+
+        //Indicates if the case number is valid or not
+        public bool IsValidCaseNumber { get; set; }
     }
 }

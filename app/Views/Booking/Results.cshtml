@@ -1,4 +1,4 @@
-@model SCJ.Booking.MVC.Models.SearchResultsViewModel
+@model Task<SCJ.Booking.MVC.Models.SearchResultsViewModel>
 
 @{
     ViewData["Title"] = "Book Your Hearing";
@@ -7,7 +7,7 @@
 
 <p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
 
-@using (Html.BeginForm("Search", "Booking", FormMethod.Post, new { @class = "needs-validation", id = "form-search-case", autocomplete = "off", novalidate = "novalidate" }))
+@using (Html.BeginForm("SearchResults", "Booking", FormMethod.Post, new { @class = "needs-validation", id = "form-search-case", autocomplete = "off", novalidate = "novalidate" }))
 {
     <!-- Search filter -->
     <div class="row search-container">
@@ -26,22 +26,22 @@
             <!-- Fields row-->
             <div class="row">
                 <div class="col col-md-4">
-                    @Html.TextBoxFor(m => m.CaseNumber, new { @class = "form-control caseNumber", required = "required" })
+                    @Html.TextBoxFor(m => m.Result.CaseNumber, new { @class = "form-control caseNumber", required = "required" })
                     <div class="invalid-feedback">
                         Please provide a Case Action Number.
                     </div>
                 </div>
                 <div class="col col-md-8">
 
-                    @Html.RadioButtonFor(m => m.ConferenceType, "1", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbCasePlanning", required = "required" })
+                    @Html.RadioButtonFor(m => m.Result.ConferenceType, "1", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbCasePlanning", required = "required" })
                     <label class="form-check-label ml-5" for="rbCasePlanning">Case Planning Conference</label>
 
 
-                    @Html.RadioButtonFor(m => m.ConferenceType, "2", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbJudicialCase" })
+                    @Html.RadioButtonFor(m => m.Result.ConferenceType, "2", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbJudicialCase" })
                     <label class="form-check-label ml-5" for="rbJudicialCase">Judicial Case Conference</label>
 
 
-                    @Html.RadioButtonFor(m => m.ConferenceType, "3", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbTrialManagement" })
+                    @Html.RadioButtonFor(m => m.Result.ConferenceType, "3", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbTrialManagement" })
                     <label class="form-check-label ml-5" for="rbTrialManagement">Trial Management Conference</label>
 
                     <div class="invalid-feedback">
@@ -62,7 +62,7 @@
 }
 <!-- Search filter-->
 
-@if (Model.Results.Count == 0)
+@if (!Model.Result.IsValidCaseNumber)
 {
     <!-- No search results for case number-->
     <div class="no-search-results">
@@ -70,7 +70,7 @@
             <div class="col col-md-12">
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                    We could not find the case for [Case Action Number].
+                    We could not find the case for @Model.Result.CaseNumber.
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@
     </div>
     <!-- No search results for case number-->
 }
-else if (Model.Results.Count > 0 && !Model.NoAvailableTimes)
+else if (Model.Result.Results.Count > 0 && !Model.Result.NoAvailableTimes)
 {
     <!-- Booking times-->
     <div class="row">
@@ -142,7 +142,7 @@ else if (Model.Results.Count > 0 && !Model.NoAvailableTimes)
     </div>
     <!-- Booking times-->
 }
-else if (Model.NoAvailableTimes)
+else if (Model.Result.NoAvailableTimes)
 {
     <!-- No available times for this hearing - next steps-->
     <div class="no-available-times">
