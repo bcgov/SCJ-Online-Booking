@@ -19,6 +19,7 @@
     .custom-slide-header{
         margin-bottom: 10px;
         font-weight: bold;
+        text-align: center;
     }
 
     .custom-slide-times {
@@ -32,6 +33,7 @@
         padding: 5px;
         margin: 5px;
         cursor: pointer;
+        text-align: center;
     }
 </style>
 <script>
