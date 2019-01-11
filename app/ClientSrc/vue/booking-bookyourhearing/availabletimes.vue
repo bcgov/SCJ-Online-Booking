@@ -18,6 +18,7 @@
 <style>
     .custom-slide-header{
         margin-bottom: 10px;
+        font-weight: bold;
     }
 
     .custom-slide-times{

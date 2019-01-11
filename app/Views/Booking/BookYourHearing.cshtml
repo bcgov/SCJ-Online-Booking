@@ -51,7 +51,113 @@
 </div>
 <div>&nbsp;</div>
 <!-- Search filter -->
+<!-- No search results for case number-->
+<div class="no-search-results">
+    <div class="row">
+        <div class="col col-md-12">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                We could not find the case for [Case Action Number].
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Is it the right Case Action Number?</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        If this is not the correct Case Action
+                        Number, you can change it and try again
+                        for available times.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Is this a Supreme Family or Civil case?</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        This online tool only covers Family and
+                        Civil cases. If your case is not a Family or
+                        Civil case, please go to [TBD]
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Need to contact your registry?</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        You can contact the registry for which
+                        your hearing is associated (indicated in
+                        your court filing documents)… [TBD]
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- No search results for case number-->
+<!-- No available times for this hearing - next steps-->
+<div class="no-available-times">
+    <h2>There are currently no available times for this hearing in [Location].</h2>
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">[Next Step 1]</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        [TBD]
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">[Next Step 2]</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        [TBD]
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="card bg-light mb-3">
+                <div class="card-header">[Next Step 3]</div>
+                <div class="card-body">
+                    <p class="card-text">
+                        [TBD]
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- No available times for this hearing - next steps-->
 <!-- Booking times-->
+<div class="row">
+    <div class="col col-md-12">
+        <h2>Available Times in [Location]</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col col-md-12">
+        <p>Choose the time slot that works best for you. Each hearing is 30 minutes long.</p>
+        <p>If you need to change the length of time required, please call our Scheduling Staff at [TBD].</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col col-md-12">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            Someone just booked a hearing on January 7 from 2:45pm to 3:15pm and it is no longer available. Please choose another time for your hearing.
+        </div>
+    </div>
+</div>
 <div id="VueAvailableTimes" class="availableTimesContainer">
     <availabletimes></availabletimes>
 </div>
@@ -67,7 +173,7 @@
     <link href="~/swiper.min.css" rel="stylesheet" />
 
     <style>
-        .swiper-slide{
+        .swiper-slide {
             height: 250px;
             padding: 15px;
             width: 165px !important;
