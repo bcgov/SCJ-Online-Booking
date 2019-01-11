@@ -21,16 +21,16 @@
         font-weight: bold;
     }
 
-    .custom-slide-times{
-        border:solid 1px #535353;
+    .custom-slide-times {
+        border: 1px solid rgba(0, 0, 0, 0.125);
         height: 150px;
         padding: 5px;
     }
 
     .custom-slide-time {
-        background-color: aliceblue;
+        background-color: rgba(0, 0, 0, 0.10);
         padding: 5px;
-        margin:5px;
+        margin: 5px;
         cursor: pointer;
     }
 </style>
