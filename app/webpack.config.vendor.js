@@ -34,7 +34,8 @@ module.exports = (env) => {
                     "bootstrap/dist/css/bootstrap.css",
                     "select2/dist/css/select2.css",
                     "select2-bootstrap-theme/dist/select2-bootstrap.css",
-                    "vue"
+                    "vue",
+                    "@fortawesome/fontawesome-free/css/all.css",
                 ]
             },
             output: {
@@ -73,6 +74,11 @@ module.exports = (env) => {
                         toType: "template"
                     },
                     {
+                        from: "node_modules/@fortawesome/fontawesome-free/js/all.js",
+                        to: "lib/fontawesome.js",
+                        toType: "template"
+                    },
+                    {
                         // the min version is packaged above (vendor.min.css)
                         // Just copy the regular version for Development
                         from: "node_modules/bootstrap/dist/css/bootstrap.css",
@@ -97,6 +103,13 @@ module.exports = (env) => {
                         from:
                             "node_modules/select2-bootstrap-theme/dist/select2-bootstrap.css",
                         to: "css/select2-bootstrap.css",
+                        toType: "file"
+                    },
+                    {
+                        // the min version is packaged above (vendor.min.css) 
+                        // Just copy the regular version for Development
+                        from: "node_modules/@fortawesome/fontawesome-free/css/all.css",
+                        to: "css/fontawesome.css",
                         toType: "file"
                     },
                 ]),
