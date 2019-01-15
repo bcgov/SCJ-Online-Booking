@@ -9,7 +9,7 @@
         <div class="col col-md-12">
             <div class="form-group">
                 <label>Select the registry where the file was created?</label>
-                <select asp-for="SelectedRegistryId" asp-items="@Model.Registry" required></select>
+                <select asp-for="SelectedRegistryId" asp-items="@Model.Registry" class="form-control" required></select>
                 <div class="invalid-feedback">
                     Please provide the registry the file was created at.
                 </div>
