@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SCJ.SC.OnlineBooking;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SCJ.Booking.MVC.Models
 {
@@ -16,6 +15,6 @@ namespace SCJ.Booking.MVC.Models
         public string SelectedRegistryId { get; set; }
 
         [Required(ErrorMessage = "Please select the registry where the file was created.")]
-        public IEnumerable<SelectListItem> Registry { get; set; }
+        public SelectList Registry { get; set; }
     }
 }

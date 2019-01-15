@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.SC.OnlineBooking;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,5 +27,10 @@ namespace SCJ.Booking.MVC.Models
 
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber { get; set; }
+
+        public string SelectedRegistryId { get; set; }
+
+        [Required(ErrorMessage = "Please select the registry where the file was created.")]
+        public SelectList Registry { get; set; }
     }
 }
