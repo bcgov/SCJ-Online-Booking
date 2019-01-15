@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.Booking.MVC.Models;
+using SCJ.Booking.RemoteAPIs.Fixtures;
 using SCJ.SC.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Controllers
@@ -11,23 +14,9 @@ namespace SCJ.Booking.MVC.Controllers
     {
         FakeOnlineBookingClient _client = new FakeOnlineBookingClient();
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
         public IActionResult BookYourHearing()
         {
-            return View();
+            return View(LoadForm());
         }
 
         //search on initial search page
@@ -75,6 +64,36 @@ namespace SCJ.Booking.MVC.Controllers
                 //TODO:
                 //Handle exception
             }
+
+            return retval;
+        }
+
+        private SearchViewModel LoadForm()
+        {
+            var lstRegistryItem1 = new SelectListItem() { Text = "Vancouver", Value = "10" };
+            var lstRegistryItem2 = new SelectListItem() { Text = "West Vancouver", Value = "9" };
+            var lstRegistryItem3 = new SelectListItem() { Text = "East Vancouver", Value = "8" };
+
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(lstRegistryItem1);
+            items.Add(lstRegistryItem2);
+            items.Add(lstRegistryItem3);
+
+            SearchViewModel retval = new SearchViewModel()
+            {
+                Registry = items,
+            };
+
+            //var locations = _client.getLocationsAsync().Result;
+
+            //locations.Select(x =>
+            //            new SelectListItem
+            //            {
+            //                Value = x.UserRoleId.ToString(),
+            //                Text = x.UserRole
+            //            });
+
+
 
             return retval;
         }

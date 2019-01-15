@@ -1,64 +1,74 @@
 @model SCJ.Booking.MVC.Models.SearchViewModel
+@using System.Linq;
 
-@{
-    ViewData["Title"] = "Book Your Hearing";
-}
-<h2>@ViewData["Title"]</h2>
+    @{
+        ViewData["Title"] = "Book Your Hearing";
+    }
+    <h2>@ViewData["Title"]</h2>
 
-<p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
+    <p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
 
-@using (Html.BeginForm("Search", "Booking", FormMethod.Post, new { @class = "needs-validation", id = "form-search-case", autocomplete = "off", novalidate = "novalidate" }))
-{
-    <div class="row search-container">
-        <div class="col col-md-12">
+    @using (Html.BeginForm("Search", "Booking", FormMethod.Post, new { @class = "needs-validation", id = "form-search-case", autocomplete = "off", novalidate = "novalidate" }))
+    {
+        <div class="row search-container">
+            <div class="col col-md-12">
 
-            <!-- Header row-->
-            <div class="row">
-                <div class="col col-md-4">
-                    <label>What is the Case Action Number for the case?</label>
-                </div>
-                <div class="col col-md-8">
-                    <label name="conferenceHearing">What type of conference hearing are you booking?</label>
-                </div>
-            </div>
-
-            <!-- Fields row-->
-            <div class="row">
-                <div class="col col-md-4">
-                    @Html.TextBoxFor(m => m.CaseNumber, new { @class = "form-control caseNumber", required = "required" })
-                    <div class="invalid-feedback">
-                        Please provide a Case Action Number.
+                <!-- Header row-->
+                <div class="row">
+                    <div class="col col-md-4">
+                        <label>What is the Case Action Number for the case?</label>
+                    </div>
+                    <div class="col col-md-8">
+                        <label name="conferenceHearing">What type of conference hearing are you booking?</label>
                     </div>
                 </div>
-                <div class="col col-md-8">
 
-                    @Html.RadioButtonFor(m => m.ConferenceType, "1", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbCasePlanning", required = "required" })
-                    <label class="form-check-label ml-5" for="rbCasePlanning">Case Planning Conference</label>
-
-
-                    @Html.RadioButtonFor(m => m.ConferenceType, "2", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbJudicialCase" })
-                    <label class="form-check-label ml-5" for="rbJudicialCase">Judicial Case Conference</label>
-
-
-                    @Html.RadioButtonFor(m => m.ConferenceType, "3", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbTrialManagement" })
-                    <label class="form-check-label ml-5" for="rbTrialManagement">Trial Management Conference</label>
-
-                    <div class="invalid-feedback">
-                        Please choose the type of conference hearing.
+                <!-- Fields rows-->
+                <div class="row">
+                    <div class="col col-md-4">
+                        <label>Select the registry where the file was created?</label>
+                        @Html.DropDownListFor(model => model.SelectedRegistryId, Model.Registry)
+                        <div class="invalid-feedback">
+                            Please provide the registry the file was created at.
+                        </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-4">
+                        @Html.TextBoxFor(m => m.CaseNumber, new { @class = "form-control caseNumber", required = "required" })
+                        <div class="invalid-feedback">
+                            Please provide a Case Action Number.
+                        </div>
+                    </div>
+                    <div class="col col-md-8">
 
+                        @Html.RadioButtonFor(m => m.ConferenceType, "1", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbCasePlanning", required = "required" })
+                        <label class="form-check-label ml-5" for="rbCasePlanning">Case Planning Conference</label>
+
+
+                        @Html.RadioButtonFor(m => m.ConferenceType, "2", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbJudicialCase" })
+                        <label class="form-check-label ml-5" for="rbJudicialCase">Judicial Case Conference</label>
+
+
+                        @Html.RadioButtonFor(m => m.ConferenceType, "3", new { @class = "form-check-input ml-3", name = "conferenceHearing", id = "rbTrialManagement" })
+                        <label class="form-check-label ml-5" for="rbTrialManagement">Trial Management Conference</label>
+
+                        <div class="invalid-feedback">
+                            Please choose the type of conference hearing.
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div>&nbsp;</div>
-    <div class="row">
-        <div class="col col-md-3">
-            <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Show Available Times</button>
+        <div>&nbsp;</div>
+        <div class="row">
+            <div class="col col-md-3">
+                <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Show Available Times</button>
+            </div>
         </div>
-    </div>
-}
+    }
 
-@section Scripts {
-    <script src="~/js/bookyourhearing.js" asp-append-version="true"></script>
-}
+    @section Scripts {
+        <script src="~/js/bookyourhearing.js" asp-append-version="true"></script>
+    }

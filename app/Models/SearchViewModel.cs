@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SCJ.SC.OnlineBooking;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SCJ.Booking.MVC.Models
@@ -9,5 +12,10 @@ namespace SCJ.Booking.MVC.Models
 
         [Required(ErrorMessage = "Please choose the type of conference hearing.")]
         public Utils.Enums.ConferenceHearingType ConferenceType { get; set; }
+
+        public string SelectedRegistryId { get; set; }
+
+        [Required(ErrorMessage = "Please select the registry where the file was created.")]
+        public IEnumerable<SelectListItem> Registry { get; set; }
     }
 }
