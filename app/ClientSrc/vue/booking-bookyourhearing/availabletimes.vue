@@ -92,6 +92,19 @@
                             //TMP
                             //This is where the rest API will be called to fetch the data
                             var serverData = new Array();
+
+                            //GET for data
+                            $.ajax({
+                                url: 'https://jsonplaceholder.typicode.com/posts',
+                                type: 'GET',
+                                success: function (result) {
+                                    console.log(result);
+                                },
+                                error: function (error) {
+                                    console.log('Error');
+                                }
+                            });
+
                             serverData.push({ 'Day': 'Wednesday', 'Date': 'January 2, 2019', 'Times': [ '12:00 - 12:45', '13:00 - 14:00', '15:00 - 15:30' ] });
                             serverData.push({ 'Day': 'Thursday', 'Date': 'January 3, 2019', 'Times': [ '10:00 - 11:00'] });
                             serverData.push({ 'Day': 'Friday', 'Date': 'January 4, 2019', 'Times': [ '8:00 - 8:30', '13:00 - 13:30' ] });
