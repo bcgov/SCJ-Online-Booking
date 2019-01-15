@@ -85,7 +85,7 @@
     </div>
     <!-- No search results for case number-->
 }
-else if (Model.Results.Count > 0 && !Model.NoAvailableTimes)
+else if (Model.Results.AvailableDates.Length > 0 && !Model.NoAvailableTimes)
 {
     <!-- Booking times-->
     <div class="row">

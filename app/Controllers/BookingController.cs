@@ -27,18 +27,6 @@ namespace SCJ.Booking.MVC.Controllers
             return View("Results", await GetResults(model)); //fetch resutls for case number and type
         }
 
-        //search on results page
-        public IActionResult SearchResults(SearchResultsViewModel model)
-        {
-            SearchViewModel svm = new SearchViewModel()
-            {
-                CaseNumber = model.CaseNumber,
-                ConferenceType = model.ConferenceType
-            };
-
-            return View("Results", GetResults(svm));
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -94,30 +82,41 @@ namespace SCJ.Booking.MVC.Controllers
                 //search the current case number
                 if (await _client.caseNumberValidAsync(model.CaseNumber) == 0)
                 {
-                    // Load locations from API
-                    var locationsAsync = await _client.getLocationsAsync();
-
-                    //Add "please select" item in the list
-                    var allLocations = locationsAsync.Prepend(new Location() { locationCode = "", locationID = -1, locationName = "Please select an option" }).ToList();
-
                     //case could not be found
                     retval.IsValidCaseNumber = false;
 
                     //empty result set
-                    retval.Results = new List<AvailableDatesByLocation>();
+                    retval.Results = new AvailableDatesByLocation();
 
                     //keep reference to current searched case number
                     retval.CaseNumber = model.CaseNumber;
-
-                    //keep reference to current conference type
-                    retval.ConferenceType = model.ConferenceType;
-
-                    //keep reference to current selected registry
-                    retval.SelectedRegistryId = model.SelectedRegistryId;
-
-                    //populate select
-                    retval.Registry = new SelectList(allLocations.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
                 }
+                else
+                {
+                    //valid case number
+                    retval.IsValidCaseNumber = true;
+
+                    //TODO:
+                    //What is the hearingTypeID?
+                    //Default to 1 for now
+                    retval.Results = await _client.AvailableDatesByLocationAsync(Convert.ToInt32(model.SelectedRegistryId), 1);
+                    
+                }
+
+                // Load locations from API
+                var locationsAsync = await _client.getLocationsAsync();
+
+                //Add "please select" item in the list
+                var allLocations = locationsAsync.Prepend(new Location() { locationCode = "", locationID = -1, locationName = "Please select an option" }).ToList();
+
+                //populate select
+                retval.Registry = new SelectList(allLocations.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
+
+                //keep reference to current conference type
+                retval.ConferenceType = model.ConferenceType;
+
+                //keep reference to current selected registry
+                retval.SelectedRegistryId = model.SelectedRegistryId;
             }
             catch (Exception ex)
             {

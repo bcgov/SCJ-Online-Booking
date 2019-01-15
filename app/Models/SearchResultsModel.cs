@@ -9,7 +9,7 @@ namespace SCJ.Booking.MVC.Models
     {
         public SearchResultsViewModel()
         {
-            Results = new List<AvailableDatesByLocation>();
+            Results = new AvailableDatesByLocation();
         }
 
         //Search fields
@@ -20,7 +20,7 @@ namespace SCJ.Booking.MVC.Models
         public Utils.Enums.ConferenceHearingType ConferenceType { get; set; }
 
         //Available dates
-        public List<AvailableDatesByLocation> Results { get; set; }
+        public AvailableDatesByLocation Results { get; set; }
 
         //Indicator to show if there are results but no times available
         public bool NoAvailableTimes { get; set; }
