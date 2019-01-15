@@ -35,6 +35,11 @@
         cursor: pointer;
         text-align: center;
     }
+
+    .swiper-container
+    {
+        margin-top: -15px !important;
+    }
 </style>
 <script>
     import Vue from "vue";
