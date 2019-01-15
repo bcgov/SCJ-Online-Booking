@@ -2,7 +2,7 @@ using System;
 
 namespace SCJ.Booking.MVC.Models
 {
-    public class TimeSlotViewModel
+    public class AvailableTimeViewModel
     {
         public int ContainerId { get; set; }
         public DateTime Start { get; set; }

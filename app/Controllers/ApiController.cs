@@ -15,7 +15,7 @@ namespace SCJ.Booking.MVC.Controllers
         private readonly FakeOnlineBookingClient _client = new FakeOnlineBookingClient();
 
         [Route("/booking/api/available-dates-by-location/{locationId}/{hearingType}")]
-        public async Task<List<DayViewModel>> AvailableDatesByLocation(int locationId,
+        public async Task<List<AvailableDayViewModel>> AvailableDatesByLocation(int locationId,
             int hearingType)
         {
             // call the remote API
@@ -28,9 +28,9 @@ namespace SCJ.Booking.MVC.Controllers
                 .OrderBy(d => d.Date_Time);
 
             // create the return object
-            var result = new List<DayViewModel>();
+            var result = new List<AvailableDayViewModel>();
 
-            DayViewModel day = null;
+            AvailableDayViewModel day = null;
             DateTime? lastDate = null;
 
             foreach (ContainerInfo d in dates)
@@ -44,14 +44,14 @@ namespace SCJ.Booking.MVC.Controllers
                         result.Add(day);
                     }
 
-                    day = new DayViewModel
+                    day = new AvailableDayViewModel
                     {
                         Date = date,
-                        Times = new List<TimeSlotViewModel>()
+                        Times = new List<AvailableTimeViewModel>()
                     };
                 }
 
-                day.Times.Add(new TimeSlotViewModel
+                day.Times.Add(new AvailableTimeViewModel
                 {
                     ContainerId = d.ContainerID,
                     Start = d.Date_Time,
