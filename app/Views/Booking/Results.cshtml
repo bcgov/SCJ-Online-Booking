@@ -90,7 +90,10 @@ else if (Model.Results.AvailableDates.Length > 0 && !Model.NoAvailableTimes)
     <!-- Booking times-->
     <div class="row">
         <div class="col col-md-12">
-            <h2>Available Times in [Location]</h2><i class="fas fa-question-circle"></i>
+            <div class="float-left">
+                <h2>Available Times in @Model.SelectedRegistryName</h2>
+            </div>
+            <span class="ml-3" data-toggle="tooltip" data-html="true" title="<em>HEARING LOCATION</em>"><i class="fas fa-question-circle"></i></span>
         </div>
     </div>
     <div class="row">

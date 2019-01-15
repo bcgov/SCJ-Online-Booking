@@ -28,7 +28,9 @@ namespace SCJ.Booking.MVC.Models
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber { get; set; }
 
+        //Location ID and Name
         public string SelectedRegistryId { get; set; }
+        public string SelectedRegistryName { get; set; }
 
         [Required(ErrorMessage = "Please select the registry where the file was created.")]
         public SelectList Registry { get; set; }

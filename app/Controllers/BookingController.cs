@@ -79,6 +79,25 @@ namespace SCJ.Booking.MVC.Controllers
             SearchResultsViewModel retval = new SearchResultsViewModel();
             try
             {
+                #region Always set the dropdown values
+
+                // Load locations from API
+                var locationsAsync = await _client.getLocationsAsync();
+
+                //Add "please select" item in the list
+                var allLocations = locationsAsync.Prepend(new Location() { locationCode = "", locationID = -1, locationName = "Please select an option" }).ToList();
+
+                //populate select
+                retval.Registry = new SelectList(allLocations.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
+
+                //keep reference to current conference type
+                retval.ConferenceType = model.ConferenceType;
+
+                //keep reference to current selected registry
+                retval.SelectedRegistryId = model.SelectedRegistryId;
+
+                #endregion
+
                 //search the current case number
                 if (await _client.caseNumberValidAsync(model.CaseNumber) == 0)
                 {
@@ -100,23 +119,10 @@ namespace SCJ.Booking.MVC.Controllers
                     //What is the hearingTypeID?
                     //Default to 1 for now
                     retval.Results = await _client.AvailableDatesByLocationAsync(Convert.ToInt32(model.SelectedRegistryId), 1);
-                    
+
+                    //set location name
+                    retval.SelectedRegistryName = retval.Registry.FirstOrDefault(x => x.Value == retval.SelectedRegistryId).Text;
                 }
-
-                // Load locations from API
-                var locationsAsync = await _client.getLocationsAsync();
-
-                //Add "please select" item in the list
-                var allLocations = locationsAsync.Prepend(new Location() { locationCode = "", locationID = -1, locationName = "Please select an option" }).ToList();
-
-                //populate select
-                retval.Registry = new SelectList(allLocations.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
-
-                //keep reference to current conference type
-                retval.ConferenceType = model.ConferenceType;
-
-                //keep reference to current selected registry
-                retval.SelectedRegistryId = model.SelectedRegistryId;
             }
             catch (Exception ex)
             {
