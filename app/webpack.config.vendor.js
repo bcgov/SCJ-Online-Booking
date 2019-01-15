@@ -60,7 +60,8 @@ module.exports = (env) => {
                     $: "jquery",
                     "window.$": "jquery",
                     jQuery: "jquery",
-                    "window.jQuery": "jquery"
+                    "window.jQuery": "jquery",
+                    "Popper": "popper.js"
                 }),
                 new CopyWebpackPlugin([
                     {
@@ -76,6 +77,12 @@ module.exports = (env) => {
                     {
                         from: "node_modules/@fortawesome/fontawesome-free/js/all.js",
                         to: "lib/fontawesome.js",
+                        toType: "template"
+                    },
+                    {
+                        //Used for tooltips with bootstrap
+                        from: "node_modules/popper.js/dist/umd/popper.js",
+                        to: "lib/popper.js",
                         toType: "template"
                     },
                     {
