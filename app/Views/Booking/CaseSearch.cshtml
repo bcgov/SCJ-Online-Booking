@@ -35,6 +35,18 @@
 
 @if (Context.Request.Method == "POST")
 {
+    if (Model.TimeslotExpired)
+    {
+        <div class="row">
+            <div class="col col-md-12">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                    Someone just booked a hearing on @Model.TimeslotFriendlyName and it is no longer available. Please choose another time for your hearing.
+                </div>
+            </div>
+        </div>
+    }
+
     if (!Model.IsValidCaseNumber)
     {
         <!-- No search results for case number-->
@@ -103,14 +115,6 @@
             <div class="col col-md-12">
                 <p>Choose the time slot that works best for you. Each hearing is 30 minutes long.</p>
                 <p>If you need to change the length of time required, please call our Scheduling Staff at [TBD].</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-md-12">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                    Someone just booked a hearing on January 7 from 2:45pm to 3:15pm and it is no longer available. Please choose another time for your hearing.
-                </div>
             </div>
         </div>
         <div id="VueAvailableTimes" class="availableTimesContainer">

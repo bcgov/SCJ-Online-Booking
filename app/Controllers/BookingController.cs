@@ -41,12 +41,12 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> CaseConfirm(int caseId, int locationId, int containerId, string bookingTime)
         {
-            //Check if timeslot is still available
-            if(await IsTimeStillAvailable(containerId, locationId, hearingId))
-            {
-                //convert JS ticks to .Net date
-                DateTime dt = new DateTime(Convert.ToInt64(bookingTime));
+            //convert JS ticks to .Net date
+            DateTime dt = new DateTime(Convert.ToInt64(bookingTime));
 
+            //Check if timeslot is still available
+            if (await IsTimeStillAvailable(containerId, locationId, hearingId))
+            {
                 //Timeslot is still available
                 CaseConfirmViewModel ccm = new CaseConfirmViewModel()
                 {
@@ -61,7 +61,6 @@ namespace SCJ.Booking.MVC.Controllers
                 };
 
                 return View(ccm);
-
             }
             else
             {
@@ -80,6 +79,7 @@ namespace SCJ.Booking.MVC.Controllers
                     NoAvailableTimes = false,
                     TimeslotExpired = true, 
                     SelectedRegistryId = locationId,
+                    TimeslotFriendlyName = dt.ToString("MMMM dd") + " from " + dt.ToString("hh:mm tt") + " to " + dt.AddMinutes(hearingLength).ToString("hh:mm tt")
                 };
 
                 return RedirectToAction("casesearch", csm);

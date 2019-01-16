@@ -37,5 +37,8 @@ namespace SCJ.Booking.MVC.Models
 
         [Required(ErrorMessage = "Please select the registry where the file was created.")]
         public SelectList Registry { get; set; }
+
+        //Used when the timeslot expired eg. January 7 from 2:45pm to 3:15pm
+        public string TimeslotFriendlyName { get; set; }
     }
 }
