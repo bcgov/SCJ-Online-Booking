@@ -37,6 +37,9 @@
       <Content Update="Views\Booking\CaseConfirm.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
+      <Content Update="Views\User\Logout.cshtml">
+        <Pack>$(IncludeRazorContentInPack)</Pack>
+      </Content>
     </ItemGroup>
 
     <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
