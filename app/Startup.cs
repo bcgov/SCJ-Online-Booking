@@ -80,6 +80,10 @@ namespace SCJ.Booking.MVC
                 routes.MapRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    "confirmbooking",
+                    "{controller}/{action}/{caseId}/{locationId}/{containerId}/{bookingTime}");
             });
         }
 

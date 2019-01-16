@@ -34,6 +34,51 @@ namespace SCJ.Booking.MVC.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CaseConfirm(int caseId, int locationId, int containerId, string bookingTime)
+        {
+            //Check if timeslot is still available
+            if(await IsTimeStillAvailable(containerId, locationId, 9010))
+            {
+                //convert JS ticks to .Net date
+                DateTime dt = new DateTime(Convert.ToInt64(bookingTime));
+
+                //Timeslot is still available
+                CaseConfirmViewModel ccm = new CaseConfirmViewModel()
+                {
+                    CaseNumber = await BuildCaseNumber( caseId, locationId),
+                    Date = dt.ToString("dddd, MMMM dd, yyyy"),
+                    Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(30).ToString("hh:mm tt"),
+                    LocationName = await GetLocationName(locationId),
+                    TypeOfConferenceHearing = "Trial Management Conference"
+                };
+
+                return View(ccm);
+
+            }
+            else
+            {
+
+                //TODO:
+                //This is not right, will fix this.
+
+                //Timeslot is not available anymore
+                //Go back to case-search page
+
+                CaseSearchViewModel csm = new CaseSearchViewModel()
+                {
+                    CaseNumber = await BuildCaseNumber(caseId, locationId),
+                    ConferenceType = Utils.Enums.ConferenceHearingType.TRIAL_MANAGEMENT_CONFERENCE,
+                    IsValidCaseNumber = true,
+                    NoAvailableTimes = false,
+                    TimeslotExpired = true, 
+                    SelectedRegistryId = locationId,
+                };
+
+                return RedirectToAction("casesearch", csm);
+            }
+        }
+
 
 
 
@@ -62,10 +107,6 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
 
-
-
-
-
         /// <summary>
         /// Search for available times
         /// </summary>
@@ -76,7 +117,7 @@ namespace SCJ.Booking.MVC.Controllers
             CaseSearchViewModel retval = new CaseSearchViewModel();
             try
             {
-                #region Always set the dropdown values
+                #region Always set the dropdown values and case number
 
                 // Load locations from API
                 var locationsAsync = await _client.getLocationsAsync();
@@ -93,6 +134,12 @@ namespace SCJ.Booking.MVC.Controllers
                 //keep reference to current selected registry
                 retval.SelectedRegistryId = model.SelectedRegistryId;
 
+                //keep reference to current searched case number
+                retval.CaseNumber = model.CaseNumber;
+
+                //keep timeslot expired value
+                retval.TimeslotExpired = model.TimeslotExpired;
+
                 #endregion
 
                 //search the current case number
@@ -103,9 +150,6 @@ namespace SCJ.Booking.MVC.Controllers
 
                     //empty result set
                     retval.Results = new AvailableDatesByLocation();
-
-                    //keep reference to current searched case number
-                    retval.CaseNumber = model.CaseNumber;
                 }
                 else
                 {
@@ -133,6 +177,63 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             return retval;
+        }
+
+
+        /// <summary>
+        /// Check if a timeslot is still available for a court booking
+        /// </summary>
+        /// <param name="containerId">This will be linked to the time</param>
+        /// <param name="locationId">Location for the booking</param>
+        /// <param name="hearingId"></param>
+        /// <returns></returns>
+        private async Task<bool> IsTimeStillAvailable(int containerId, int locationId, int hearingId)
+        {
+            //get all locations
+            var locationsAvailable = await _client.AvailableDatesByLocationAsync(locationId, hearingId);
+
+            //try and get location for specific container
+            var timeslot = locationsAvailable.AvailableDates.Select(x => x.ContainerID == containerId);
+
+            //if we could load container, slot is still available
+            return timeslot != null ? true : false;
+        }
+
+
+        /// <summary>
+        /// Fetch location-code for specific case ID
+        /// </summary>
+        /// <param name="caseId">Case ID number</param>
+        /// <param name="locationId">Location ID number</param>
+        /// <returns></returns>
+        private async Task<string> BuildCaseNumber(int caseId, int locationId)
+        {
+            //set default
+            string caseNumber = caseId.ToString();
+
+            //load all locations
+            var locations = await _client.getLocationsAsync();
+
+            //fetch location prefix
+            var locationPrefix = locations.Where(x => x.locationID == locationId).FirstOrDefault().locationCode;
+
+            //return location prefix + case number
+            return locationPrefix + caseNumber;
+        }
+
+
+        /// <summary>
+        /// Fetch the location name based on the location ID
+        /// </summary>
+        /// <param name="locationId">The ID for the location</param>
+        /// <returns>Location Name</returns>
+        private async Task<string> GetLocationName(int locationId)
+        {
+            //load all locations
+            var locations = await _client.getLocationsAsync();
+
+            //fetch location name
+            return locations.Where(x => x.locationID == locationId).FirstOrDefault().locationName;
         }
 
         #endregion

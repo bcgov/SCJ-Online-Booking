@@ -1,0 +1,61 @@
+@model SCJ.Booking.MVC.Models.CaseConfirmViewModel
+
+<h2>Confirm Your Booking</h2>
+<p>The following time is reserved for your conference hearing.</p>
+<p>Check that the following information is accurate before confirming your booking.</p>
+
+<!-- Search filter-->
+<form asp-controller="Booking" asp-action="CaseConfirm" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+    <div class="row search-container">
+        <div class="col col-md-12">
+            <div class="form-group">
+                <label>Case Action Number</label>
+                <div>
+                    <label>@Model.CaseNumber</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Type of Conference Hearing</label>
+                <div>
+                    <label>@Model.TypeOfConferenceHearing</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Location for Conference Hearing</label>
+                <div>
+                    <label>@Model.LocationName</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Date and Time of Conference Hearing</label>
+                <div>
+                    <label>@Model.Date</label>
+                </div>
+                <div>
+                    <label>@Model.Time</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col col-md-3">
+            <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Confirm Booking</button>
+            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new {  @class = "btn btn-secondary btn-lg" })
+        </div>
+    </div>
+</form>
+<!-- Search filter-->
+
+
+
+
+@section Scripts {
+    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <script src="~/dist/vue/booking-casesearch.js" asp-append-version="true"></script>
+    <script src="~/js/casesearch.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link href="~/swiper.min.css" rel="stylesheet" />
+}

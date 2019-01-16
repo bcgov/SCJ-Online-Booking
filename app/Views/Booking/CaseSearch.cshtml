@@ -1,4 +1,5 @@
 @model SCJ.Booking.MVC.Models.CaseSearchViewModel
+@using System.Text.RegularExpressions;
 
 <h2>Book Your Hearing</h2>
 <p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
@@ -113,15 +114,11 @@
             </div>
         </div>
         <div id="VueAvailableTimes" class="availableTimesContainer">
-            <availabletimes
-                :location-id="@Model.SelectedRegistryId"
-                :hearing-type="9010">
+            <availabletimes :location-id="@Model.SelectedRegistryId"
+                            :hearing-type="9010"
+                            :case-number="@Regex.Replace(Model.CaseNumber, "[A-Za-z ]", "").Trim()">
             </availabletimes>
         </div>
-
-        <br/><br />
-        <input type="text" name="ContainerId" id="ContainerId" />
-        <input type="text" name="BookingTime" id="BookingTime" />
         <!-- Booking times-->
     }
     else if (Model.NoAvailableTimes)

@@ -27,6 +27,9 @@ namespace SCJ.Booking.MVC.Models
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber { get; set; }
 
+        //Indicates if the timeslot expired
+        public bool TimeslotExpired { get; set; }
+
         //Location ID and Name
         public int SelectedRegistryId { get; set; }
 
