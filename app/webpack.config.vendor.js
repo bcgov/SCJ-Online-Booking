@@ -21,7 +21,7 @@ module.exports = (env) => {
                     },
                     {
                         test: /\.(woff|woff2|eot|ttf|svg)$/,
-                        loader: "file-loader?name=fonts/[name].[ext]"
+                        loader: "file-loader?name=webfonts/[name].[ext]"
                     },
                     {
                         test: /\.css(\?|$)/,
@@ -35,7 +35,9 @@ module.exports = (env) => {
                     "select2/dist/css/select2.css",
                     "select2-bootstrap-theme/dist/select2-bootstrap.css",
                     "vue",
-                    "@fortawesome/fontawesome-free/css/all.css",
+                    "@fortawesome/fontawesome-free/css/fontawesome.css",
+                    "@fortawesome/fontawesome-free/css/regular.css",
+                    "@fortawesome/fontawesome-free/css/solid.css",
                 ]
             },
             output: {
@@ -75,11 +77,6 @@ module.exports = (env) => {
                         toType: "template"
                     },
                     {
-                        from: "node_modules/@fortawesome/fontawesome-free/js/all.js",
-                        to: "lib/fontawesome.js",
-                        toType: "template"
-                    },
-                    {
                         //Used for tooltips with bootstrap
                         from: "node_modules/popper.js/dist/umd/popper.js",
                         to: "lib/popper.js",
@@ -115,7 +112,7 @@ module.exports = (env) => {
                     {
                         // the min version is packaged above (vendor.min.css) 
                         // Just copy the regular version for Development
-                        from: "node_modules/@fortawesome/fontawesome-free/css/all.css",
+                        from: "node_modules/@fortawesome/fontawesome-free/css/fontawesome.css",
                         to: "css/fontawesome.css",
                         toType: "file"
                     },

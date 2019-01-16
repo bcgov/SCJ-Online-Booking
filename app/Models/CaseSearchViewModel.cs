@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.SC.OnlineBooking;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SCJ.Booking.MVC.Models
 {
-    public class SearchResultsViewModel
+    public class CaseSearchViewModel
     {
-        public SearchResultsViewModel()
+        public CaseSearchViewModel()
         {
             Results = new AvailableDatesByLocation();
         }
@@ -29,7 +28,8 @@ namespace SCJ.Booking.MVC.Models
         public bool IsValidCaseNumber { get; set; }
 
         //Location ID and Name
-        public string SelectedRegistryId { get; set; }
+        public int SelectedRegistryId { get; set; }
+
         public string SelectedRegistryName { get; set; }
 
         [Required(ErrorMessage = "Please select the registry where the file was created.")]

@@ -47,6 +47,8 @@ namespace SCJ.Booking.MVC.Controllers
                     day = new AvailableDayViewModel
                     {
                         Date = date,
+                        Weekday = date.DayOfWeek.ToString(),
+                        FormattedDate = date.ToLongDateString(),
                         Times = new List<AvailableTimeViewModel>()
                     };
                 }
@@ -54,8 +56,9 @@ namespace SCJ.Booking.MVC.Controllers
                 day.Times.Add(new AvailableTimeViewModel
                 {
                     ContainerId = d.ContainerID,
-                    Start = d.Date_Time,
-                    End = d.Date_Time.AddMinutes(soapResult.BookingDetails.detailBookingLength)
+                    StartDateTime = d.Date_Time,
+                    Start = d.Date_Time.ToString("hh:mmtt").ToLower(),
+                    End = d.Date_Time.AddMinutes(soapResult.BookingDetails.detailBookingLength).ToString("hh:mmtt").ToLower(),
                 });
 
                 lastDate = date;

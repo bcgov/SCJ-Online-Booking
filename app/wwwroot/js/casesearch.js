@@ -20,8 +20,8 @@ $(document).ready(function () {
 
     $('#btnSearch').click(function () {
 
-        if ($('.caseNumber').val().trim().lenght > 0) {
-            
+        if ($('.caseNumber').val().trim().length > 0) {
+            //
         }
 
     });

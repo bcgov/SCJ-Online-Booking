@@ -15,16 +15,17 @@ namespace SCJ.Booking.MVC.Controllers
         //API Client
         FakeOnlineBookingClient _client = new FakeOnlineBookingClient();
 
-        public async Task<IActionResult> BookYourHearing()
+        [HttpGet]
+        public async Task<IActionResult> CaseSearch()
         {
             //Populate dropdown list values
             return View(await LoadForm());
         }
 
-        //search on initial search page
-        public async Task<IActionResult> Search(SearchViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> CaseSearch(CaseSearchViewModel model)
         {
-            return View("Results", await GetResults(model)); //fetch resutls for case number and type
+            return View(await GetResults(model)); //fetch resutls for case number and type
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -36,20 +37,16 @@ namespace SCJ.Booking.MVC.Controllers
 
 
 
-
-
-
-
         #region Helpers
 
         /// <summary>
         /// Populate the dropdown list for locations for the search
         /// </summary>
         /// <returns></returns>
-        private async Task<SearchViewModel> LoadForm()
+        private async Task<CaseSearchViewModel> LoadForm()
         {
             //Model instance
-            SearchViewModel retval = new SearchViewModel();
+            CaseSearchViewModel retval = new CaseSearchViewModel();
 
             //Load locations from API
             var locationsAsync = await _client.getLocationsAsync();
@@ -74,9 +71,9 @@ namespace SCJ.Booking.MVC.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private async Task<SearchResultsViewModel> GetResults(SearchViewModel model)
+        private async Task<CaseSearchViewModel> GetResults(CaseSearchViewModel model)
         {
-            SearchResultsViewModel retval = new SearchResultsViewModel();
+            CaseSearchViewModel retval = new CaseSearchViewModel();
             try
             {
                 #region Always set the dropdown values
@@ -118,10 +115,15 @@ namespace SCJ.Booking.MVC.Controllers
                     //TODO:
                     //What is the hearingTypeID?
                     //Default to 1 for now
-                    retval.Results = await _client.AvailableDatesByLocationAsync(Convert.ToInt32(model.SelectedRegistryId), 1);
+                    retval.Results = await _client.AvailableDatesByLocationAsync(Convert.ToInt32(model.SelectedRegistryId), 9010);
 
                     //set location name
-                    retval.SelectedRegistryName = retval.Registry.FirstOrDefault(x => x.Value == retval.SelectedRegistryId).Text;
+                    SelectListItem selectedRegistry = retval.Registry.FirstOrDefault(x => x.Value == retval.SelectedRegistryId.ToString());
+
+                    if (selectedRegistry != null)
+                    {
+                        retval.SelectedRegistryName = selectedRegistry.Text;
+                    }
                 }
             }
             catch (Exception ex)
