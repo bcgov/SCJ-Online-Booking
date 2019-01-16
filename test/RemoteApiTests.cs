@@ -1,5 +1,4 @@
 using System;
-using System.ServiceModel;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.SC.OnlineBooking;
 using Xunit;

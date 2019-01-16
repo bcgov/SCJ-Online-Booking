@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -79,10 +78,16 @@ namespace SCJ.Booking.MVC.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
+        {
+            return View(await BookCourtCase(model));
+        }
 
 
 
-        #region Helpers
+
+        #region Helpers - Needs to move to a services layer
 
         /// <summary>
         /// Populate the dropdown list for locations for the search
@@ -234,6 +239,23 @@ namespace SCJ.Booking.MVC.Controllers
 
             //fetch location name
             return locations.Where(x => x.locationID == locationId).FirstOrDefault().locationName;
+        }
+
+
+        private async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model)
+        {
+            //ensure timeslot is still available
+            if (await IsTimeStillAvailable(0, 0, 0))
+            {
+                return model;
+            }
+            else
+            {
+                model.IsTimeslotAvailable = false;
+                model.IsBooked = false;
+
+                return model;
+            }
         }
 
         #endregion

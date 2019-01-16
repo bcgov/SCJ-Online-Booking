@@ -5,7 +5,12 @@
 <p>Check that the following information is accurate before confirming your booking.</p>
 
 <!-- Search filter-->
-<form asp-controller="Booking" asp-action="CaseConfirm" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+<form asp-controller="Booking" asp-action="CaseBooked" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+    <input type="hidden" asp-for="CaseNumber" />
+    <input type="hidden" asp-for="TypeOfConferenceHearing" />
+    <input type="hidden" asp-for="LocationName" />
+    <input type="hidden" asp-for="Date" />
+    <input type="hidden" asp-for="Time" />
     <div class="row search-container">
         <div class="col col-md-12">
             <div class="form-group">
@@ -41,21 +46,9 @@
     <div class="row">
         <div class="col col-md-3">
             <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Confirm Booking</button>
-            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new {  @class = "btn btn-secondary btn-lg" })
+            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
         </div>
     </div>
 </form>
 <!-- Search filter-->
 
-
-
-
-@section Scripts {
-    <script src="~/dist/vendor.js" asp-append-version="true"></script>
-    <script src="~/dist/vue/booking-casesearch.js" asp-append-version="true"></script>
-    <script src="~/js/casesearch.js" asp-append-version="true"></script>
-}
-
-@section Styles {
-    <link href="~/swiper.min.css" rel="stylesheet" />
-}
