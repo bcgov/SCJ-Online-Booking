@@ -1,8 +1,9 @@
 <template>
     <div class="row">
-        <div class="col-md-12" style="height:100px;">
+        <div class="col-md-12">
+            <div class="swiper-button-prev" slot="button-prev"></div>
             <swiper ref="mySwiper" :options="swiperOption" id="swipe-container">
-                <swiper-slide v-for="entry in availabletimes">
+                <swiper-slide v-for="entry in availabletimes" :key="entry.date">
                     <div class="custom-slide-container">
                         <div class="custom-slide-header">
                             {{ entry.weekday }}
@@ -17,9 +18,8 @@
                         </div>
                     </div>
                 </swiper-slide>
-                <div class="swiper-button-prev" slot="button-prev"></div>
-                <div class="swiper-button-next" slot="button-next"></div>
             </swiper>
+            <div class="swiper-button-next" slot="button-next"></div>
         </div>
     </div>
 </template>
@@ -33,7 +33,7 @@
 
     .custom-slide-times {
         border: 1px solid rgba(0, 0, 0, 0.125);
-        height: 150px;
+        height: 250px;
         padding: 5px;
     }
 
@@ -53,6 +53,8 @@
     .swiper-container
     {
         margin-top: -15px !important;
+        margin-left: 30px;
+        width: calc(100% - 60px);
     }
 </style>
 
@@ -82,6 +84,7 @@
                     slidesPerView: 5,
                     centeredSlides: false,
                     spaceBetween: 20,
+                    grabCursor: true,
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true
