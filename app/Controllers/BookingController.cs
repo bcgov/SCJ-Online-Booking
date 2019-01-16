@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.Booking.MVC.Models;
 using SCJ.SC.OnlineBooking;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -13,6 +14,10 @@ namespace SCJ.Booking.MVC.Controllers
     {
         //API Client
         FakeOnlineBookingClient _client = new FakeOnlineBookingClient();
+
+        //CONST
+        const int hearingLength = 30; //30min per session
+        const int hearingId = 9010; //Hardcoded for now
 
         [HttpGet]
         public async Task<IActionResult> CaseSearch()
@@ -37,7 +42,7 @@ namespace SCJ.Booking.MVC.Controllers
         public async Task<IActionResult> CaseConfirm(int caseId, int locationId, int containerId, string bookingTime)
         {
             //Check if timeslot is still available
-            if(await IsTimeStillAvailable(containerId, locationId, 9010))
+            if(await IsTimeStillAvailable(containerId, locationId, hearingId))
             {
                 //convert JS ticks to .Net date
                 DateTime dt = new DateTime(Convert.ToInt64(bookingTime));
@@ -47,9 +52,12 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     CaseNumber = await BuildCaseNumber( caseId, locationId),
                     Date = dt.ToString("dddd, MMMM dd, yyyy"),
-                    Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(30).ToString("hh:mm tt"),
+                    Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(hearingLength).ToString("hh:mm tt"),
                     LocationName = await GetLocationName(locationId),
-                    TypeOfConferenceHearing = "Trial Management Conference"
+                    TypeOfConferenceHearing = "Trial Management Conference",
+                    ContainerId = containerId,
+                    LocationId = locationId,
+                    FullDate = dt
                 };
 
                 return View(ccm);
@@ -242,11 +250,35 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
 
+        /// <summary>
+        /// Book court case
+        /// </summary>
         private async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model)
         {
             //ensure timeslot is still available
-            if (await IsTimeStillAvailable(0, 0, 0))
+            if (await IsTimeStillAvailable(model.ContainerId, model.LocationId, hearingId))
             {
+                //build object to send to the API
+                BookHearingInfo bhi = new BookHearingInfo()
+                {
+                    caseID = Convert.ToInt32(Regex.Replace(model.CaseNumber, "[A-Za-z ]", "")),
+                    containerID = model.ContainerId,
+                    dateTime = model.FullDate,
+                    hearingLength = hearingLength,
+                    locationID = model.LocationId,
+                    requestedBy = "USER",
+                    hearingTypeId = (int)Utils.Enums.ConferenceHearingType.TRIAL_MANAGEMENT_CONFERENCE
+                };
+
+                //submit booking
+                var result = await _client.BookingHearingAsync(bhi);
+
+                //test to see if the booking was successful
+                if (result.bookingResult.ToLower().StartsWith("success"))
+                    model.IsBooked = true;
+                else
+                    model.IsBooked = false;
+
                 return model;
             }
             else

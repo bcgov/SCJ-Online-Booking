@@ -1,3 +1,5 @@
+using System;
+
 namespace SCJ.Booking.MVC.Models
 {
     public class CaseConfirmViewModel
@@ -21,6 +23,15 @@ namespace SCJ.Booking.MVC.Models
         public bool IsTimeslotAvailable { get; set; }
 
         //indicate if the case was booked sucessfully
-        public bool IsBooked { get; set; }        
+        public bool IsBooked { get; set; }
+
+        //ContainerId for locations
+        public int ContainerId { get; set; }
+
+        //Location id
+        public int LocationId { get; set; }
+
+        //Full date for the booking
+        public DateTime FullDate { get; set; }
     }
 }
