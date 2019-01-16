@@ -100,7 +100,6 @@ namespace SCJ.Booking.MVC.Controllers
         /// <summary>
         /// Populate the dropdown list for locations for the search
         /// </summary>
-        /// <returns></returns>
         private async Task<CaseSearchViewModel> LoadForm()
         {
             //Model instance
@@ -123,8 +122,6 @@ namespace SCJ.Booking.MVC.Controllers
         /// <summary>
         /// Search for available times
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         private async Task<CaseSearchViewModel> GetResults(CaseSearchViewModel model)
         {
             CaseSearchViewModel retval = new CaseSearchViewModel();
@@ -196,10 +193,6 @@ namespace SCJ.Booking.MVC.Controllers
         /// <summary>
         /// Check if a timeslot is still available for a court booking
         /// </summary>
-        /// <param name="containerId">This will be linked to the time</param>
-        /// <param name="locationId">Location for the booking</param>
-        /// <param name="hearingId"></param>
-        /// <returns></returns>
         private async Task<bool> IsTimeStillAvailable(int containerId, int locationId, int hearingId)
         {
             //get all locations
@@ -216,9 +209,6 @@ namespace SCJ.Booking.MVC.Controllers
         /// <summary>
         /// Fetch location-code for specific case ID
         /// </summary>
-        /// <param name="caseId">Case ID number</param>
-        /// <param name="locationId">Location ID number</param>
-        /// <returns></returns>
         private async Task<string> BuildCaseNumber(int caseId, int locationId)
         {
             //set default
@@ -238,8 +228,6 @@ namespace SCJ.Booking.MVC.Controllers
         /// <summary>
         /// Fetch the location name based on the location ID
         /// </summary>
-        /// <param name="locationId">The ID for the location</param>
-        /// <returns>Location Name</returns>
         private async Task<string> GetLocationName(int locationId)
         {
             //load all locations
@@ -283,6 +271,8 @@ namespace SCJ.Booking.MVC.Controllers
             }
             else
             {
+                //The booking is not available anymore
+                //user needs to choose a new timeslot
                 model.IsTimeslotAvailable = false;
                 model.IsBooked = false;
 
