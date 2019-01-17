@@ -6,16 +6,29 @@
 @import 'variables';
 @import 'bootstrapOverrides';
 
+html, body {
+    height: 100%;
+}
+
 html {
     -webkit-font-smoothing: antialiased;
     font-size: 62.5%;
 }
 
-body{
+body {
+    display: flex;
+    flex-direction: column;
     font-family: $font-stack;
     font-size: 1.6rem;
     font-weight: 400;
+}
 
+.main {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
 }
 
 .body-content {
