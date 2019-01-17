@@ -18,6 +18,11 @@ body{
 
 }
 
+.body-content {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
 //header navbar
 .header-nav, .footer-nav {
     background-color: $blue-bg;
@@ -25,21 +30,40 @@ body{
 
     a {
         color: $white;
+        font-weight: 700;
+        text-decoration: none;
     }
 
     .navbar-collapse .nav {
         margin-left: auto;
+        font-size: 1.4rem;
     }
 }
 
 .header-nav {
     border-bottom: 2px solid rgb(252, 186, 25);
+    padding: 10px;
+    font-size: 1.6rem;
+
+    @include breakpoint(md) {
+        padding: 10px 0;
+    }
 
     .container {
-        p {
-            margin: 14px 0 0 24px;
-            font-size: 16px;
-        }
+        padding: 0;
+    }
+
+    .header-logo {
+        margin-right: 20px;
+        padding: 4px 0;
+    }
+
+    .appName {
+        margin-bottom: 0;
+    }
+
+    .navbar-toggler {
+        margin-left: auto;
     }
 }
 .footer-nav {
@@ -54,9 +78,14 @@ body{
         @include breakpoint(md) {
             flex-direction: row;
             align-items: center;
+            padding: 0;
         }
 
         .footer-nav-items {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -64,37 +93,36 @@ body{
             @include breakpoint(md) {
                 flex-direction: row;
             }
-        }
-    }
 
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
+            li {
+                float: left;
 
-    li {
-        float: left;
+                a {
+                    display: block;
+                    text-align: center;
+                    font-size: 1.4rem;
+                    text-decoration: none;
 
-        a {
-            display: block;
-            text-align: center;
+                    &:hover {
+                        text-decoration: underline;
+                    }
 
-            @include breakpoint(md) {
-                padding: 16px;
-            }
-        }
+                    @include breakpoint(md) {
+                        padding: 16px;
+                    }
+                }
 
-        & + li {
-            @include breakpoint(md) {
-                border-left: 1px solid $blue-border;
+                & + li {
+                    @include breakpoint(md) {
+                        border-left: 1px solid $blue-washed;
+                    }
+                }
             }
         }
     }
 
     .copyright {
-        font-size: 1.0rem;
+        font-size: 1.4rem;
         padding: 5px 0;
 
         @include breakpoint(md) {
@@ -102,6 +130,77 @@ body{
         }
     }
 }
+
+/*Homepage*/
+.div-intro {
+    text-align: center;
+}
+
+.div-cases {
+    padding: 60px 0;
+
+    &__row {
+        display: flex;
+        flex-direction: column;
+
+        @include breakpoint(md) {
+            flex-direction: row;
+            padding-right: 20px;
+        }
+    }
+
+    &__instructions {
+        p {
+            font-size: 1.8rem;
+            line-height: 1.8;
+        }
+
+        @include breakpoint(md) {
+            padding-right: 20px;
+        }
+    }
+
+    &__numbered {
+        width: auto;
+        min-width: 276px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+
+        @include breakpoint(md) {
+            width: 100%;
+            margin-top: 0;
+            padding-left: 20px;
+        }
+
+        .numbered-text {
+            line-height: 28px;
+            font-size: 1.6rem;
+        }
+
+        .number-circle {
+            border: solid 2px $blue-light;
+            padding: 0;
+            border-radius: 30px;
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            text-align: center;
+            color: $blue;
+            margin-right: 10px;
+        }
+    }
+}
+
+.div-login {
+    text-align: center;
+
+    .login-question{
+        font-weight: 700;
+        margin-top: 20px;
+    }
+}
+/*Homepage*/
 
 /*Book Your Hearing*/
 .search-container{
