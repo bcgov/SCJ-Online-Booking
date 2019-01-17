@@ -1,7 +1,15 @@
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
 // Write your JavaScript code.
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    //Init Tooltips
+    $('[data-toggle="tooltip"]').tooltip();
 })
+
+
+function validateCaseDate(containerId, bookingDate) {
+    //set hidden fields based on the swiper selected dates
+    $('#hidContainerId').val(containerId);
+    $('#hidDate').val(bookingDate);
+
+    //simulate form submit
+    $('#btnSearch').trigger('click');
+}

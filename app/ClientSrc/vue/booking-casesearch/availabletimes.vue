@@ -119,7 +119,9 @@
             selectTime(containerId, bookingTime) {
                 this.selectedContainerId = containerId;
                 this.selectedBookingTime = bookingTime;
-                window.location.href = `/booking/caseconfirm/${this.caseNumber}/${this.locationId}/${containerId}/${this.convertToTicks(bookingTime)}`;
+
+                //check if date is still available
+                validateCaseDate(containerId, this.convertToTicks(bookingTime));
             },
             convertToTicks(dt) {
                 var date = new Date(dt);

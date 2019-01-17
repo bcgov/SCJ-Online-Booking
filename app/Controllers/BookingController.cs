@@ -29,7 +29,14 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseSearch(CaseSearchViewModel model)
         {
-            return View(await GetResults(model)); //fetch resutls for case number and type
+            //get results
+            CaseSearchViewModel csvm = await GetResults(model);
+
+            //test if the user selected a timeslot that is available
+            if( csvm.ContainerId > 0 && !csvm.TimeslotExpired)
+                return RedirectToAction("CaseConfirm", new { caseId = csvm.CaseNumber, locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); //go to confirmation screen
+            else
+                return View(csvm); //return results
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -44,46 +51,20 @@ namespace SCJ.Booking.MVC.Controllers
             //convert JS ticks to .Net date
             DateTime dt = new DateTime(Convert.ToInt64(bookingTime));
 
-            //Check if timeslot is still available
-            if (await IsTimeStillAvailable(containerId, locationId, hearingId))
+            //Timeslot is still available
+            CaseConfirmViewModel ccm = new CaseConfirmViewModel()
             {
-                //Timeslot is still available
-                CaseConfirmViewModel ccm = new CaseConfirmViewModel()
-                {
-                    CaseNumber = await BuildCaseNumber( caseId, locationId),
-                    Date = dt.ToString("dddd, MMMM dd, yyyy"),
-                    Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(hearingLength).ToString("hh:mm tt"),
-                    LocationName = await GetLocationName(locationId),
-                    TypeOfConferenceHearing = "Trial Management Conference",
-                    ContainerId = containerId,
-                    LocationId = locationId,
-                    FullDate = dt
-                };
+                CaseNumber = await BuildCaseNumber(caseId, locationId),
+                Date = dt.ToString("dddd, MMMM dd, yyyy"),
+                Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(hearingLength).ToString("hh:mm tt"),
+                LocationName = await GetLocationName(locationId),
+                TypeOfConferenceHearing = "Trial Management Conference",
+                ContainerId = containerId,
+                LocationId = locationId,
+                FullDate = dt
+            };
 
-                return View(ccm);
-            }
-            else
-            {
-
-                //TODO:
-                //This is not right, will fix this.
-
-                //Timeslot is not available anymore
-                //Go back to case-search page
-
-                CaseSearchViewModel csm = new CaseSearchViewModel()
-                {
-                    CaseNumber = await BuildCaseNumber(caseId, locationId),
-                    ConferenceType = Utils.Enums.ConferenceHearingType.TRIAL_MANAGEMENT_CONFERENCE,
-                    IsValidCaseNumber = true,
-                    NoAvailableTimes = false,
-                    TimeslotExpired = true, 
-                    SelectedRegistryId = locationId,
-                    TimeslotFriendlyName = dt.ToString("MMMM dd") + " from " + dt.ToString("hh:mm tt") + " to " + dt.AddMinutes(hearingLength).ToString("hh:mm tt")
-                };
-
-                return RedirectToAction("casesearch", csm);
-            }
+            return View(ccm);
         }
 
         [HttpPost]
@@ -166,17 +147,28 @@ namespace SCJ.Booking.MVC.Controllers
                     //valid case number
                     retval.IsValidCaseNumber = true;
 
-                    //TODO:
-                    //What is the hearingTypeID?
-                    //Default to 1 for now
-                    retval.Results = await _client.AvailableDatesByLocationAsync(Convert.ToInt32(model.SelectedRegistryId), 9010);
+
+                    retval.Results = await _client.AvailableDatesByLocationAsync(Convert.ToInt32(model.SelectedRegistryId), hearingId);
 
                     //set location name
                     SelectListItem selectedRegistry = retval.Registry.FirstOrDefault(x => x.Value == retval.SelectedRegistryId.ToString());
 
                     if (selectedRegistry != null)
-                    {
                         retval.SelectedRegistryName = selectedRegistry.Text;
+
+                    //check for valid date
+                    if (model.ContainerId > 0)
+                    {
+                        if (!await IsTimeStillAvailable(model.ContainerId, model.SelectedRegistryId, hearingId))
+                            retval.TimeslotExpired = true;
+
+                        //convert JS ticks to .Net date
+                        DateTime dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
+
+                        //set date properties
+                        retval.ContainerId = model.ContainerId;
+                        retval.SelectedCaseDate = model.SelectedCaseDate;
+                        retval.TimeslotFriendlyName = dt.ToString("MMMM dd") + " from " + dt.ToString("hh:mm tt") + " to " + dt.AddMinutes(hearingLength).ToString("hh:mm tt");
                     }
                 }
             }

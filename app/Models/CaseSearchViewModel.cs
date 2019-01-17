@@ -40,5 +40,11 @@ namespace SCJ.Booking.MVC.Models
 
         //Used when the timeslot expired eg. January 7 from 2:45pm to 3:15pm
         public string TimeslotFriendlyName { get; set; }
+
+        //Date properties
+        public int ContainerId { get; set; }
+
+        //Date selected in the swiper
+        public string SelectedCaseDate { get; set; }
     }
 }

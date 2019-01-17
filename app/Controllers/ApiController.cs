@@ -48,7 +48,7 @@ namespace SCJ.Booking.MVC.Controllers
                     {
                         Date = date,
                         Weekday = date.DayOfWeek.ToString(),
-                        FormattedDate = date.ToLongDateString(),
+                        FormattedDate = date.ToString("MMMM dd, yyyy"),
                         Times = new List<AvailableTimeViewModel>()
                     };
                 }
