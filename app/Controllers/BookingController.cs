@@ -34,7 +34,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //test if the user selected a timeslot that is available
             if( csvm.ContainerId > 0 && !csvm.TimeslotExpired)
-                return RedirectToAction("CaseConfirm", new { caseId = csvm.CaseNumber, locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); //go to confirmation screen
+                return RedirectToAction("CaseConfirm", new { caseId = Regex.Replace(csvm.CaseNumber, "[A-Za-z ]", ""), locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); //go to confirmation screen
             else
                 return View(csvm); //return results
         }
@@ -89,11 +89,8 @@ namespace SCJ.Booking.MVC.Controllers
             //Load locations from API
             var locationsAsync = await _client.getLocationsAsync();
 
-            //Add "please select" item in the list
-            var allLocations = locationsAsync.Prepend(new Location() { locationCode = "", locationID = -1, locationName = "Please select an option" }).ToList();
-
             //set model property
-            retval.Registry = new SelectList(allLocations.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
+            retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
 
             //return model to view
             return retval;
@@ -113,11 +110,8 @@ namespace SCJ.Booking.MVC.Controllers
                 // Load locations from API
                 var locationsAsync = await _client.getLocationsAsync();
 
-                //Add "please select" item in the list
-                var allLocations = locationsAsync.Prepend(new Location() { locationCode = "", locationID = -1, locationName = "Please select an option" }).ToList();
-
                 //populate select
-                retval.Registry = new SelectList(allLocations.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
+                retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
 
                 //keep reference to current conference type
                 retval.ConferenceType = model.ConferenceType;
