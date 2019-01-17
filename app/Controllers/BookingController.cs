@@ -35,18 +35,12 @@ namespace SCJ.Booking.MVC.Controllers
             CaseSearchViewModel csvm = await _bookingService.GetResults(model, _client, hearingId, hearingLength);
 
             //test if the user selected a timeslot that is available
-            if (csvm.ContainerId > 0 && !csvm.TimeslotExpired)
+            if (csvm != null && csvm.ContainerId > 0 && !csvm.TimeslotExpired)
                 //go to confirmation screen
                 return RedirectToAction("CaseConfirm", new { caseId = Regex.Replace(csvm.CaseNumber, "[A-Za-z ]", ""), locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); 
             else
                 //return results (User have not selected a date, or the date is not available anymore)
                 return View(csvm); 
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [HttpGet]

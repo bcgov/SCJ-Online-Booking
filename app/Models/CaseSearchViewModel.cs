@@ -8,7 +8,17 @@ namespace SCJ.Booking.MVC.Models
     {
         public CaseSearchViewModel()
         {
+            //Default values
             Results = new AvailableDatesByLocation();
+            NoAvailableTimes = false;
+            IsValidCaseNumber = false;
+            TimeslotExpired = false;
+            SelectedRegistryName = string.Empty;
+            SelectedRegistryId = -1;
+            ContainerId = -1;
+            SelectedCaseDate = string.Empty;
+            CaseNumber = string.Empty;
+            ConferenceType = Utils.Enums.ConferenceHearingType.TRIAL_MANAGEMENT_CONFERENCE;
         }
 
         //Search fields
