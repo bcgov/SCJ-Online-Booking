@@ -31,7 +31,7 @@ namespace SCJ.Booking.MVC.Services
         {
             //Model instance
             CaseSearchViewModel retval = new CaseSearchViewModel();
-            _logger.Error("Error in service. Metod: LoadForm().");
+            
             try
             {
                 //Load locations from API
