@@ -31,14 +31,16 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseSearch(CaseSearchViewModel model)
         {
-            //get results
+            //get results from services layer. 
             CaseSearchViewModel csvm = await _bookingService.GetResults(model, _client, hearingId, hearingLength);
 
             //test if the user selected a timeslot that is available
             if (csvm.ContainerId > 0 && !csvm.TimeslotExpired)
-                return RedirectToAction("CaseConfirm", new { caseId = Regex.Replace(csvm.CaseNumber, "[A-Za-z ]", ""), locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); //go to confirmation screen
+                //go to confirmation screen
+                return RedirectToAction("CaseConfirm", new { caseId = Regex.Replace(csvm.CaseNumber, "[A-Za-z ]", ""), locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); 
             else
-                return View(csvm); //return results
+                //return results (User have not selected a date, or the date is not available anymore)
+                return View(csvm); 
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
