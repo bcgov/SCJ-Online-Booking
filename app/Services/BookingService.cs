@@ -19,7 +19,7 @@ namespace SCJ.Booking.MVC.Services
         {
             //setup error logger settings
             _logger = new LoggerConfiguration()
-            .WriteTo.File("logs\\scj-logs.txt", rollingInterval:RollingInterval.Day, retainedFileCountLimit: null)
+            .WriteTo.Console(Serilog.Events.LogEventLevel.Error)
             .CreateLogger();
         }
 
