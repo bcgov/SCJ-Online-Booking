@@ -91,7 +91,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CaseNumberValid()
         {
-            int result = _soapClient.caseNumberValidAsync("VA147619").Result;
+            int result = _soapClient.caseNumberValidAsync("VAM147619").Result;
 
             Assert.True(result == 234076);
         }
