@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Models;
 using SCJ.SC.OnlineBooking;
-using System.Text.RegularExpressions;
 using SCJ.Booking.MVC.Services;
 
 namespace SCJ.Booking.MVC.Controllers
