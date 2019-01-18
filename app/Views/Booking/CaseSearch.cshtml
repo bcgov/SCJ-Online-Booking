@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                     <label>What is the Case Action Number for the case?</label>
-                    <input asp-for="CaseNumber" class="form-control form-control caseNumber" required id="txtCaseNumber" type="number" />
+                    <input asp-for="CaseNumber" class="form-control form-control caseNumber" required id="txtCaseNumber" />
                     <div class="invalid-feedback">
                         Please provide a Case Action Number.
                     </div>
@@ -131,7 +131,7 @@
         <div id="VueAvailableTimes" class="availableTimesContainer">
             <availabletimes :location-id="@Model.SelectedRegistryId"
                             :hearing-type="9010"
-                            :case-number="@Regex.Replace(Model.CaseNumber, "[A-Za-z ]", "").Trim()">
+                            :case-number="@Model.CaseNumber.Trim()">
             </availabletimes>
         </div>
         <!-- Booking times-->

@@ -82,7 +82,7 @@ namespace SCJ.Booking.MVC.Services
                 #endregion
 
                 //search the current case number
-                if (await client.caseNumberValidAsync(await BuildCaseNumber(Convert.ToInt32(model.CaseNumber), model.SelectedRegistryId, client)) == 0)
+                if (await client.caseNumberValidAsync(await BuildCaseNumber(model.CaseNumber, model.SelectedRegistryId, client)) == 0)
                 {
                     //case could not be found
                     retval.IsValidCaseNumber = false;
@@ -159,7 +159,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Fetch location-code for specific case ID
         /// </summary>
-        public async Task<string> BuildCaseNumber(int caseId, int locationId, FakeOnlineBookingClient client)
+        public async Task<string> BuildCaseNumber(string caseId, int locationId, FakeOnlineBookingClient client)
         {
             //default value
             string locationPrefix = string.Empty;

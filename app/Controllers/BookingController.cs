@@ -1,9 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.SC.OnlineBooking;
-using System.Text.RegularExpressions;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.ViewModels;
 
@@ -37,14 +35,14 @@ namespace SCJ.Booking.MVC.Controllers
             //test if the user selected a timeslot that is available
             if (csvm != null && csvm.ContainerId > 0 && !csvm.TimeslotExpired)
                 //go to confirmation screen
-                return RedirectToAction("CaseConfirm", new { caseId = Regex.Replace(csvm.CaseNumber, "[A-Za-z ]", ""), locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); 
+                return RedirectToAction("CaseConfirm", new { caseId = csvm.CaseNumber, locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); 
             else
                 //return results (User have not selected a date, or the date is not available anymore)
                 return View(csvm); 
         }
 
         [HttpGet]
-        public async Task<IActionResult> CaseConfirm(int caseId, int locationId, int containerId, string bookingTime)
+        public async Task<IActionResult> CaseConfirm(string caseId, int locationId, int containerId, string bookingTime)
         {
             //convert JS ticks to .Net date
             DateTime dt = new DateTime(Convert.ToInt64(bookingTime));

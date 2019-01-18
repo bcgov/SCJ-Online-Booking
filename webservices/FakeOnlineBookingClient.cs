@@ -13,7 +13,7 @@ namespace SCJ.SC.OnlineBooking
         {
             await Task.Delay(100);
 
-            if (caseNum == "VA147619")
+            if (caseNum == "VAM147619")
             {
                 return 234076; // returns the CaseID
             }

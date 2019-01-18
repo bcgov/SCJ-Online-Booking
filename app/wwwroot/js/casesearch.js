@@ -14,8 +14,4 @@
             }, false);
         });
     }, false);
-
-    $("#txtCaseNumber").keypress(function (event) {
-        return isNumberKey(event);
-    });
 })();
