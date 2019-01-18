@@ -2,12 +2,21 @@
 * Styles to override bootstrap elements' styles
 */
 h1 {
-    font-size: 2.8rem;
-    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.875rem;
+    line-height: 1.4;
+    color: $blue-header;
 }
 
 h2 {
-    line-height: 1.4;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+}
+
+h3 {
+    font-size: 1.125rem;
 }
 
 a {
@@ -21,6 +30,8 @@ a {
 
 .btn {
     margin-bottom: 20px;
+    font-size: 1rem;
+    font-weight: 700;
 
     &-lg {
         padding: 0.75em 2em;
@@ -30,11 +41,15 @@ a {
 .btn-primary {
     background-color: $blue;
     border-color: $blue;
-    font-size: 1.6rem;
-    font-weight: 700;
 
     &:hover, &:focus {
         background-color: $blue-darker;
         border-color: $blue-darker;
     }
+}
+
+.card-header {
+    font-weight: 700;
+    color: white;
+    background: #4b5e73;
 }

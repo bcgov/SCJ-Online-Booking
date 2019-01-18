@@ -1,45 +1,51 @@
 @model SCJ.Booking.MVC.Models.CaseSearchViewModel
 @using System.Text.RegularExpressions;
 
-<h2>Book Your Hearing</h2>
-<p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
+<div class="row screen-intro">
+    <div class="col-md-12">
+        <h1>Book Your Hearing</h1>
+        <p class="intro">Before we can bring back available times for the hearing, we’ll need to know the following.</p>
+    </div>
+</div>
 
 <!-- Search filter-->
-<form asp-controller="Booking" asp-action="CaseSearch" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
-    <input type="hidden" asp-for="SelectedCaseDate" id="hidDate" />
-    <input type="hidden" asp-for="ContainerId" id="hidContainerId" />
-    <input type="hidden" asp-for="TimeslotExpired" id="hidTimeslotExpired" />
-    <div class="row search-container">
-        <div class="col col-md-12">
-            <div class="form-group">
-                <label>Select the registry where the file was created?</label>
-                <select asp-for="SelectedRegistryId" class="form-control" id="ddlLocation" asp-items="@Model.Registry" required>
-                    <option value="">--Please select an option--</option>
-                </select>
-                <div class="invalid-feedback">
-                    Please provide the registry the file was created at.
+<div class="row search-container">
+    <div class="col col-md-12">
+        <form asp-controller="Booking" asp-action="CaseSearch" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+            <input type="hidden" asp-for="SelectedCaseDate" id="hidDate" />
+            <input type="hidden" asp-for="ContainerId" id="hidContainerId" />
+            <input type="hidden" asp-for="TimeslotExpired" id="hidTimeslotExpired" />
+            <div class="row search-info">
+                <div class="col-md-6 form-group">
+                    <label>Pick the registry where the file was created.</label>
+                    <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.Registry" required>
+                        <option value="">-- Pick a registry --</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide the registry the file was created at.
+                    </div>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>What is the Case Action Number for the case?</label>
+                    <input asp-for="CaseNumber" class="form-control form-control caseNumber" required id="txtCaseNumber" />
+                    <div class="invalid-feedback">
+                        Please provide a Case Action Number.
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label>What is the Case Action Number for the case?</label>
-                <input asp-for="CaseNumber" class="form-control form-control caseNumber col-md-2" required id="txtCaseNumber"/>
-                <div class="invalid-feedback">
-                    Please provide a Case Action Number.
+            <div class="row">
+                <div class="col col-md-12">
+                    <button type="submit" class="btn btn-primary btn-lg" id="btnSearch">Show Available Times</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-    <div>&nbsp;</div>
-    <div class="row">
-        <div class="col col-md-3">
-            <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Show Available Times</button>
-        </div>
-    </div>
-</form>
+</div>
 <!-- Search filter-->
 
 @if (Context.Request.Method == "POST")
 {
+    <hr class="results-linebreak"/>
     if (Model.TimeslotExpired)
     {
         <div class="row">
@@ -59,12 +65,12 @@
             <div class="row">
                 <div class="col col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
                         We could not find the case for @Model.CaseNumber<span>.</span>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row options-nextStep">
                 <div class="col col-md-4 col-sm-12 col-12">
                     <div class="card bg-light mb-3">
                         <div class="card-header">Is it the right Case Action Number?</div>

@@ -12,14 +12,13 @@ html, body {
 
 html {
     -webkit-font-smoothing: antialiased;
-    font-size: 62.5%;
 }
 
 body {
     display: flex;
     flex-direction: column;
     font-family: $font-stack;
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: 400;
 }
 
@@ -36,6 +35,10 @@ body {
     padding-bottom: 60px;
 }
 
+.icon {
+    margin-right: 8px;
+}
+
 //header navbar
 .header-nav, .footer-nav {
     background-color: $blue-bg;
@@ -49,21 +52,17 @@ body {
 
     .navbar-collapse .nav {
         margin-left: auto;
-        font-size: 1.4rem;
+        font-size: 0.875rem;
     }
 }
 
 .header-nav {
-    border-bottom: 2px solid rgb(252, 186, 25);
+    border-bottom: 2px solid $yellow;
     padding: 10px;
-    font-size: 1.6rem;
+    font-size: 1rem;
 
     @include breakpoint(md) {
         padding: 10px 0;
-    }
-
-    .container {
-        padding: 0;
     }
 
     .header-logo {
@@ -80,7 +79,7 @@ body {
     }
 }
 .footer-nav {
-    border-top: 2px solid rgb(252, 186, 25);
+    border-top: 2px solid $yellow;
     padding: 5px 0;
 
     .container {
@@ -91,7 +90,6 @@ body {
         @include breakpoint(md) {
             flex-direction: row;
             align-items: center;
-            padding: 0;
         }
 
         .footer-nav-items {
@@ -113,7 +111,7 @@ body {
                 a {
                     display: block;
                     text-align: center;
-                    font-size: 1.4rem;
+                    font-size: 0.875rem;
                     text-decoration: none;
 
                     &:hover {
@@ -135,7 +133,7 @@ body {
     }
 
     .copyright {
-        font-size: 1.4rem;
+        font-size: 0.875rem;
         padding: 5px 0;
 
         @include breakpoint(md) {
@@ -144,68 +142,28 @@ body {
     }
 }
 
+p.intro {
+    font-size: 1.125rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+}
+
 /*Homepage*/
-.div-intro {
+.home-intro, .home-description {
     text-align: center;
 }
 
-.div-cases {
-    padding: 60px 0;
-
-    &__row {
-        display: flex;
-        flex-direction: column;
-
-        @include breakpoint(md) {
-            flex-direction: row;
-            padding-right: 20px;
-        }
-    }
-
-    &__instructions {
-        p {
-            font-size: 1.8rem;
-            line-height: 1.8;
-        }
-
-        @include breakpoint(md) {
-            padding-right: 20px;
-        }
-    }
-
-    &__numbered {
-        width: auto;
-        min-width: 276px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-
-        @include breakpoint(md) {
-            width: 100%;
-            margin-top: 0;
-            padding-left: 20px;
-        }
-
-        .numbered-text {
-            line-height: 28px;
-            font-size: 1.6rem;
-        }
-
-        .number-circle {
-            border: solid 2px $blue-light;
-            padding: 0;
-            border-radius: 30px;
-            width: 30px;
-            height: 30px;
-            display: inline-block;
-            text-align: center;
-            color: $blue;
-            margin-right: 10px;
-        }
+.home-intro {
+    p.intro {
+        font-size: 1.25rem;
     }
 }
 
-.div-login {
+.home-description {
+    padding-bottom: 40px;
+}
+
+.home-login {
     text-align: center;
 
     .login-question{
@@ -216,13 +174,26 @@ body {
 /*Homepage*/
 
 /*Book Your Hearing*/
-.search-container{
-    background-color: aliceblue;
-    padding: 15px;
+
+.search-info{
+    background-color: $blue-light;
+    padding: 15px 0;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 20px;
 }
 
-.caseNumber{
-    width:50%;
+.results-linebreak {
+    margin-bottom: 2rem;
+}
+
+.registryOptions {
+    width: auto;
+    min-width: 50%;
+}
+
+.caseNumber {
+    width: calc(10ch + 3.75rem);
 }
 
 .availableTimesContainer{
@@ -232,4 +203,13 @@ body {
 select#SelectedRegistryId {
     max-width: 250px;
 }
+
+.options-nextStep {
+    margin-top: 20px;
+}
+
 /*Book Your Hearing*/
+
+.fas {
+    margin-right: 10px;
+}
