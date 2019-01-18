@@ -1,0 +1,21 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Logout {
+    <ul class="nav navbar-nav">
+        <li class="nav-item">
+            <a asp-controller="User" asp-action="Logout">Logout</a>
+        </li>
+    </ul>
+}
+
+@RenderBody()
+
+@section Scripts {
+    @RenderSection("Scripts", false)
+}
+
+@section Styles {
+    @RenderSection("Styles", false)
+}

@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SCJ.Booking.MVC.Models;
+using SCJ.Booking.MVC.ViewModels;
 
 namespace SCJ.Booking.MVC.Controllers
 {

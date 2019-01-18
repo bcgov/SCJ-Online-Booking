@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -38,9 +38,19 @@
       <Content Update="Views\Booking\CaseConfirm.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
+      <Content Update="Views\Booking\_Layout.cshtml">
+        <Pack>$(IncludeRazorContentInPack)</Pack>
+      </Content>
+      <Content Update="Views\Booking\_ViewStart.cshtml">
+        <Pack>$(IncludeRazorContentInPack)</Pack>
+      </Content>
       <Content Update="Views\User\Logout.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Migrations\" />
     </ItemGroup>
 
     <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">

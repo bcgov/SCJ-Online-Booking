@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
-using SCJ.Booking.MVC.Models;
 using SCJ.SC.OnlineBooking;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SCJ.Booking.MVC.ViewModels;
 using Serilog;
 
 namespace SCJ.Booking.MVC.Services

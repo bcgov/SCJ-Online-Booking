@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SCJ.Booking.MVC.Models
+namespace SCJ.Booking.MVC.ViewModels
 {
     public class AvailableDayViewModel
     {

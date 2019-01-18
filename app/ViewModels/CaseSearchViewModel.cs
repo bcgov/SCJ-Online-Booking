@@ -1,8 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.SC.OnlineBooking;
-using System.ComponentModel.DataAnnotations;
 
-namespace SCJ.Booking.MVC.Models
+namespace SCJ.Booking.MVC.ViewModels
 {
     public class CaseSearchViewModel
     {

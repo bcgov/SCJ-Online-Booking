@@ -2,20 +2,20 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SCJ.Booking.MVC.Models;
 using SCJ.SC.OnlineBooking;
 using System.Text.RegularExpressions;
 using SCJ.Booking.MVC.Services;
+using SCJ.Booking.MVC.ViewModels;
 
 namespace SCJ.Booking.MVC.Controllers
 {
     public class BookingController : Controller
     {
         //API Client
-        FakeOnlineBookingClient _client = new FakeOnlineBookingClient();
+        readonly FakeOnlineBookingClient _client = new FakeOnlineBookingClient();
 
         //Services
-        BookingService _bookingService = new BookingService();
+        readonly BookingService _bookingService = new BookingService();
 
         //CONST
         const int hearingLength = 30; //30min per session
