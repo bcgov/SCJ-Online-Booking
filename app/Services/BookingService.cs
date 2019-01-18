@@ -82,7 +82,7 @@ namespace SCJ.Booking.MVC.Services
                 #endregion
 
                 //search the current case number
-                if (await client.caseNumberValidAsync(model.CaseNumber) == 0)
+                if (await client.caseNumberValidAsync(await BuildCaseNumber(Convert.ToInt32(model.CaseNumber), model.SelectedRegistryId, client)) == 0)
                 {
                     //case could not be found
                     retval.IsValidCaseNumber = false;

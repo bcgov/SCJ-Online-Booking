@@ -14,16 +14,8 @@
             }, false);
         });
     }, false);
-})();
 
-$(document).ready(function () {
-
-    $('#btnSearch').click(function () {
-
-        if ($('.caseNumber').val().trim().length > 0) {
-            //
-        }
-
+    $("#txtCaseNumber").keypress(function (event) {
+        return isNumberKey(event);
     });
-
-});
+})();
