@@ -1,5 +1,14 @@
+@using SCJ.Booking.MVC.Services;
+@inject HearingsLeft HearingsLeft
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section BookingsLeft {
+    <div style="margin-left: auto">
+        <span>You can book @HearingsLeft.GetHearingsLeft() hearings today.</span>
+    </div>
 }
 
 @section Logout {
