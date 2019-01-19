@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SCJ.Booking.MVC.Data;
+using SCJ.Booking.MVC.Services;
 
 namespace SCJ.Booking.MVC
 {
@@ -46,6 +47,8 @@ namespace SCJ.Booking.MVC
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddTransient<HearingsLeft>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
