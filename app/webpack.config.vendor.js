@@ -112,7 +112,7 @@ module.exports = (env) => {
                     {
                         // the min version is packaged above (vendor.min.css) 
                         // Just copy the regular version for Development
-                        from: "node_modules/@fortawesome/fontawesome-free/css/fontawesome.css",
+                        from: "node_modules/@fortawesome/fontawesome-free/css/all.css",
                         to: "css/fontawesome.css",
                         toType: "file"
                     },
