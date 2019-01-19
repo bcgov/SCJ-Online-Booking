@@ -1,5 +1,4 @@
-@model SCJ.Booking.MVC.ViewModels.CaseSearchViewModel
-@using System.Text.RegularExpressions;
+@model CaseSearchViewModel
 
 <div class="row screen-intro">
     <div class="col-md-12">
@@ -65,7 +64,9 @@
             <div class="row">
                 <div class="col col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                        <span class="icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
                         We could not find the case for @Model.CaseNumber<span>.</span>
                     </div>
                 </div>
@@ -119,7 +120,9 @@
                 <div class="float-left">
                     <h2>Available Times in @Model.SelectedRegistryName</h2>
                 </div>
-                <span class="ml-3" data-toggle="tooltip" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Case Action Number you provided.</p>"><i class="fas fa-question-circle"></i></span>
+                <span class="ml-3" data-toggle="tooltip" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Case Action Number you provided.</p>">
+                    <i class="fas fa-question-circle"></i>
+                </span>
             </div>
         </div>
         <div class="row">
@@ -176,7 +179,6 @@
         </div>
         <!-- No available times for this hearing - next steps-->
     }
-
 }
 
 
@@ -187,5 +189,5 @@
 }
 
 @section Styles {
-    <link href="~/swiper.min.css" rel="stylesheet" />
+    <link href="~/swiper.min.css" rel="stylesheet"/>
 }

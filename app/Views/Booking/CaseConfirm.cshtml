@@ -1,4 +1,4 @@
-@model SCJ.Booking.MVC.ViewModels.CaseConfirmViewModel
+@model CaseConfirmViewModel
 
 <h2>Confirm Your Booking</h2>
 <p>The following time is reserved for your conference hearing.</p>
@@ -48,7 +48,7 @@
     <div class="row">
         <div class="col col-md-3">
             <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Confirm Booking</button>
-            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
+            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new {@class = "btn btn-secondary btn-lg"})
         </div>
     </div>
 </form>
