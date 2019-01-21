@@ -14,7 +14,7 @@
     <input type="hidden" asp-for="LocationId" />
     <input type="hidden" asp-for="FullDate" />
     <div class="row">
-        <div class="col col-md-12">
+        <div class="col col-md-6">
             <div class="form-group">
                 <label class="font-weight-bold">Case Action Number</label>
                 <div>
@@ -42,13 +42,24 @@
                     <label>@Model.Time</label>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="font-weight-bold">E-mail address:</label>
+                <input type="email" asp-for="EmailAddress" required class="form-control" />
+                <div class="invalid-feedback">
+                    Please provide a valid email address.
+                </div>
+            </div>
         </div>
     </div>
     <div>&nbsp;</div>
     <div class="row">
         <div class="col col-md-3">
             <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Confirm Booking</button>
-            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new {@class = "btn btn-secondary btn-lg"})
+            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <script src="~/js/casesearch.js" asp-append-version="true"></script>
+}

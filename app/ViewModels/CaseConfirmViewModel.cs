@@ -33,5 +33,8 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Full date for the booking
         public DateTime FullDate { get; set; }
+
+        //User email address
+        public string EmailAddress { get; set; }
     }
 }
