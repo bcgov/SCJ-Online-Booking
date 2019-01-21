@@ -48,6 +48,10 @@ namespace SCJ.Booking.MVC
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            //http context
+            services.AddSingleton<HttpContextAccessor>();
+
+            //service to get hearings left for logged-in user
             services.AddTransient<HearingsLeft>();
         }
 

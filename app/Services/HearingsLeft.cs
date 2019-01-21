@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using SCJ.Booking.MVC.Data;
 using System;
 using System.Linq;
@@ -8,11 +9,13 @@ namespace SCJ.Booking.MVC.Services
     public class HearingsLeft
     {
         private readonly ApplicationDbContext _dbContext;
+        private HttpContextAccessor _httpContextAccessor;
         private const int _maxHearingsPerDay = 3;
 
-        public HearingsLeft(ApplicationDbContext dbContext )
+        public HearingsLeft(ApplicationDbContext dbContext, HttpContextAccessor httpAccessor )
         {
             _dbContext = dbContext;
+            _httpContextAccessor = httpAccessor;
         }
 
         public HtmlString GetHearingsLeft()
@@ -22,12 +25,11 @@ namespace SCJ.Booking.MVC.Services
 
         private int GetUserHearingsTotalLeft()
         {
-            //TODO: Read custom header for currently logged-in user ID
-            //string uGuid = Request.Headers["HTTP_SMGOV_USERGUID"];
-
             //get user GUID
-
-            string uGuid = "b17a483a00124bd18a5544c8c20bf8e8";
+            var uGuid = "b17a483a00124bd18a5544c8c20bf8e8";
+            //Microsoft.Extensions.Primitives.StringValues headerValues;
+            //_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("SMGOV_USERGUID", out headerValues);
+            //var uid = _httpContextAccessor.HttpContext.Request.Headers.Where(x => x.Key == "SMGOV_USERGUID").FirstOrDefault();
 
             //today's date
             var todaysDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
