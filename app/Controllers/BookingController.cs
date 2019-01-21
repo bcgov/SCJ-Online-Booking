@@ -5,6 +5,7 @@ using SCJ.SC.OnlineBooking;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
+using SCJ.Booking.MVC.Data;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -14,11 +15,21 @@ namespace SCJ.Booking.MVC.Controllers
         private readonly IOnlineBooking _client = OnlineBookingClientFactory.GetClient(true);
 
         //Services
-        readonly BookingService _bookingService = new BookingService();
+        readonly BookingService _bookingService;
+
+        //DB contect
+        private ApplicationDbContext _dbContext;
 
         //CONST
         const int hearingLength = 30; //30min per session
         const int hearingId = 9010; //Hardcoded for now
+
+        //Constructor
+        public BookingController (ApplicationDbContext context)
+        {
+            _dbContext = context;
+            _bookingService = new BookingService(_dbContext);
+        }
 
         [HttpGet]
         public async Task<IActionResult> CaseSearch()
