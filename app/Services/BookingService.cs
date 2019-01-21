@@ -33,7 +33,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Populate the dropdown list for locations for the search
         /// </summary>
-        public async Task<CaseSearchViewModel> LoadForm(FakeOnlineBookingClient client)
+        public async Task<CaseSearchViewModel> LoadForm(IOnlineBooking client)
         {
             //Model instance
             CaseSearchViewModel retval = new CaseSearchViewModel();
@@ -59,7 +59,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Search for available times
         /// </summary>
-        public async Task<CaseSearchViewModel> GetResults(CaseSearchViewModel model, FakeOnlineBookingClient client, int hearingId, int hearingLength)
+        public async Task<CaseSearchViewModel> GetResults(CaseSearchViewModel model, IOnlineBooking client, int hearingId, int hearingLength)
         {
             CaseSearchViewModel retval = new CaseSearchViewModel();
 
@@ -137,7 +137,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Check if a timeslot is still available for a court booking
         /// </summary>
-        public async Task<bool> IsTimeStillAvailable(int containerId, int locationId, int hearingId, FakeOnlineBookingClient client)
+        public async Task<bool> IsTimeStillAvailable(int containerId, int locationId, int hearingId, IOnlineBooking client)
         {
             //default value
             bool isTimeAvailable = false;
@@ -165,7 +165,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Fetch location-code for specific case ID
         /// </summary>
-        public async Task<string> BuildCaseNumber(string caseId, int locationId, FakeOnlineBookingClient client)
+        public async Task<string> BuildCaseNumber(string caseId, int locationId, IOnlineBooking client)
         {
             //default value
             string locationPrefix = string.Empty;
@@ -191,7 +191,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Fetch the location name based on the location ID
         /// </summary>
-        public async Task<string> GetLocationName(int locationId, FakeOnlineBookingClient client)
+        public async Task<string> GetLocationName(int locationId, IOnlineBooking client)
         {
             //default value
             string locationName = string.Empty;
@@ -217,7 +217,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Book court case
         /// </summary>
-        public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model, FakeOnlineBookingClient client, int hearingId, int hearingLength)
+        public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model, IOnlineBooking client, int hearingId, int hearingLength)
         {
             try
             {
