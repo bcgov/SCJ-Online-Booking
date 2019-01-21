@@ -21,11 +21,10 @@ namespace SCJ.Booking.MVC.Controllers
         private ApplicationDbContext _dbContext;
 
         //CONST
-        const int hearingLength = 30; //30min per session
         const int hearingId = 9010; //Hardcoded for now
 
         //Constructor
-        public BookingController (ApplicationDbContext context)
+        public BookingController(ApplicationDbContext context)
         {
             _dbContext = context;
             _bookingService = new BookingService(_dbContext);
@@ -42,15 +41,15 @@ namespace SCJ.Booking.MVC.Controllers
         public async Task<IActionResult> CaseSearch(CaseSearchViewModel model)
         {
             //get results from services layer. 
-            CaseSearchViewModel csvm = await _bookingService.GetResults(model, _client, hearingId, hearingLength);
+            CaseSearchViewModel csvm = await _bookingService.GetResults(model, _client, hearingId, await _bookingService.GetLocationHearingLength(model.SelectedRegistryId, hearingId, _client));
 
             //test if the user selected a timeslot that is available
             if (csvm != null && csvm.ContainerId > 0 && !csvm.TimeslotExpired)
                 //go to confirmation screen
-                return RedirectToAction("CaseConfirm", new { caseId = csvm.CaseNumber, locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate }); 
+                return RedirectToAction("CaseConfirm", new { caseId = csvm.CaseNumber, locationId = csvm.SelectedRegistryId, containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate });
             else
                 //return results (User have not selected a date, or the date is not available anymore)
-                return View(csvm); 
+                return View(csvm);
         }
 
         [HttpGet]
@@ -64,7 +63,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 CaseNumber = await _bookingService.BuildCaseNumber(caseId, locationId, _client),
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
-                Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(hearingLength).ToString("hh:mm tt"),
+                Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(await _bookingService.GetLocationHearingLength(locationId, hearingId, _client)).ToString("hh:mm tt"),
                 LocationName = await _bookingService.GetLocationName(locationId, _client),
                 TypeOfConferenceHearing = "Trial Management Conference",
                 ContainerId = containerId,
@@ -78,7 +77,7 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            return View(await _bookingService.BookCourtCase(model, _client, hearingId, hearingLength));
+            return View(await _bookingService.BookCourtCase(model, _client, hearingId, await _bookingService.GetLocationHearingLength(model.LocationId, hearingId, _client)));
         }
 
     }

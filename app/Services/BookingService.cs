@@ -215,6 +215,32 @@ namespace SCJ.Booking.MVC.Services
 
 
         /// <summary>
+        /// Fetch the location name based on the location ID
+        /// </summary>
+        public async Task<int> GetLocationHearingLength(int locationId, int hearingTypeId, IOnlineBooking client)
+        {
+            //default value
+            int locationLength = 0;
+
+            try
+            {
+                //load all locations
+                var availableDatesByLocation = await client.AvailableDatesByLocationAsync(locationId, hearingTypeId);
+
+                //set location length
+                locationLength = availableDatesByLocation.BookingDetails.detailBookingLength;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Error in service. Metod: GetLocationHearingLength().");
+            }
+
+            //fetch location length
+            return locationLength;
+        }
+
+
+        /// <summary>
         /// Book court case
         /// </summary>
         public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model, IOnlineBooking client, int hearingId, int hearingLength)
