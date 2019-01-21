@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SCJ.Booking.MVC.ViewModels;
 using Serilog;
+using SCJ.Booking.MVC.Data;
+using SCJ.Booking.MVC.Models;
 
 namespace SCJ.Booking.MVC.Services
 {
@@ -13,14 +15,18 @@ namespace SCJ.Booking.MVC.Services
     {
         //Init error logger
         Serilog.Core.Logger _logger = null;
+        private readonly ApplicationDbContext _dbContext;
 
         //Constructor
-        public BookingService()
+        public BookingService(ApplicationDbContext dbContext)
         {
             //setup error logger settings
             _logger = new LoggerConfiguration()
             .WriteTo.Console(Serilog.Events.LogEventLevel.Error)
             .CreateLogger();
+
+            //DB Contect setup
+            _dbContext = dbContext;
         }
 
 
@@ -31,7 +37,7 @@ namespace SCJ.Booking.MVC.Services
         {
             //Model instance
             CaseSearchViewModel retval = new CaseSearchViewModel();
-            
+
             try
             {
                 //Load locations from API
@@ -40,7 +46,7 @@ namespace SCJ.Booking.MVC.Services
                 //set model property
                 retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Error in service. Metod: LoadForm().");
             }
@@ -147,7 +153,7 @@ namespace SCJ.Booking.MVC.Services
                 //set return value
                 isTimeAvailable = timeslot != null ? true : false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Error in service. Metod: IsTimeStillAvailable().");
             }
@@ -172,7 +178,7 @@ namespace SCJ.Booking.MVC.Services
                 //fetch location prefix
                 locationPrefix = locations.Where(x => x.locationID == locationId).FirstOrDefault().locationCode;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Error in service. Metod: BuildCaseNumber().");
             }
@@ -198,7 +204,7 @@ namespace SCJ.Booking.MVC.Services
                 //set location name
                 locationName = locations.Where(x => x.locationID == locationId).FirstOrDefault().locationName;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Error in service. Metod: GetLocationName().");
             }
@@ -235,7 +241,24 @@ namespace SCJ.Booking.MVC.Services
 
                     //test to see if the booking was successful
                     if (result.bookingResult.ToLower().StartsWith("success"))
+                    {
+                        //create database entry
+
+                        //TODO: Read custom header for currently logged-in user ID
+                        //string uGuid = Request.Headers["HTTP_SMGOV_USERGUID"];
+
+                        //get user GUID
+                        string uGuid = "b17a483a00124bd18a5544c8c20bf8e8";
+
+                        var bookingInfo = _dbContext.Set<BookingHistory>();
+
+                        bookingInfo.Add(new BookingHistory { ContainerId = model.ContainerId, SmGovUserGuid = uGuid, Timestamp = DateTime.Now });
+
+                        _dbContext.SaveChanges();
+
+
                         model.IsBooked = true;
+                    }
                     else
                         model.IsBooked = false;
                 }
@@ -247,7 +270,7 @@ namespace SCJ.Booking.MVC.Services
                     model.IsBooked = false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Error in service. Metod: BookCourtCase().");
             }
