@@ -92,7 +92,7 @@ namespace SCJ.Booking.MVC
         }
 
         // automatically run migrations at startup
-        private static void UpdateDatabase(IApplicationBuilder app)
+        private void UpdateDatabase(IApplicationBuilder app)
         {
             var platform = new Platform();
 
@@ -102,7 +102,7 @@ namespace SCJ.Booking.MVC
             {
                 using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
-                    if (!platform.UseInMemoryStore)
+                    if (Configuration["ConnectionString"] != null || !platform.UseInMemoryStore)
                     {
                         context.Database.Migrate();
                     }
