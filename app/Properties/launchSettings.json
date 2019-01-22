@@ -25,6 +25,10 @@
       "launchBrowser": true,
       "launchUrl": "http://scj-booking.local",
       "environmentVariables": {
+        "TAG_NAME": "localdev",
+        "API_USERNAME": "fake_username",
+        "API_ENDPOINT": "https://localhost",
+        "API_PASSWORD": "password",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://127.0.0.1:5000"
