@@ -25,6 +25,9 @@ namespace SCJ.Booking.MVC.Services
         //Const
         private const int _maxHearingsPerDay = 3;
 
+        //Environment
+        private bool _isDevEnvironment = false;
+
         //Constructor
         public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor)
         {
@@ -38,6 +41,10 @@ namespace SCJ.Booking.MVC.Services
 
             //HttpContext
             _httpContextAccessor = httpAccessor;
+
+            //test the environment
+            if (Environment.GetEnvironmentVariable("TAG_NAME").ToLower().Equals("localdev"))
+                _isDevEnvironment = true;
         }
 
 
@@ -341,10 +348,18 @@ namespace SCJ.Booking.MVC.Services
             //get user GUID
             var uGuid = string.Empty;
 
-            //try and read the header
-            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
-                uGuid = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
-            else return 0;
+            if (!_isDevEnvironment)
+            {
+                //try and read the header
+                if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
+                    uGuid = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+                else return 0;
+            }
+            else
+            {
+                //Dummy user guid
+                uGuid = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0"; 
+            }
 
             //today's date
             var todaysDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);

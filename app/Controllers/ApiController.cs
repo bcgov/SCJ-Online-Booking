@@ -16,7 +16,7 @@ namespace SCJ.Booking.MVC.Controllers
     public class ApiController : Controller
     {
         //API Client
-        private readonly IOnlineBooking _client = OnlineBookingClientFactory.GetClient(true);
+        private readonly IOnlineBooking _client = OnlineBookingClientFactory.GetClient();
 
         /// <summary>
         ///     API for getting list of available dates.  Used by the vue.js date slider control

@@ -1,29 +1,33 @@
 {
-    "iisSettings": {
-        "windowsAuthentication": false,
-        "anonymousAuthentication": true,
-        "iisExpress": {
-            "applicationUrl": "http://127.0.0.1:5000",
-            "sslPort": 0
-        }
-    },
-    "profiles": {
-        "IIS Express": {
-            "commandName": "IISExpress",
-            "launchUrl": "http://scj-booking.local",
-            "launchBrowser": true,
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
-        },
-        "SCJ.Booking.MVC": {
-            "commandName": "Project",
-            "launchUrl": "http://scj-booking.local",
-            "launchBrowser": true,
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "applicationUrl": "http://127.0.0.1:5000"
-        }
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://127.0.0.1:5000",
+      "sslPort": 0
     }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "http://scj-booking.local",
+      "environmentVariables": {
+        "TAG_NAME": "localdev",
+        "API_ENDPOINT": "https://localhost",
+        "FACTORY_PASSWORD": "password",
+        "FACTORY_USERNAME": "fake_username",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "SCJ.Booking.MVC": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://scj-booking.local",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://127.0.0.1:5000"
+    }
+  }
 }

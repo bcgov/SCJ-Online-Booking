@@ -8,26 +8,26 @@ namespace SCJ.Booking.RemoteAPIs
         /// <summary>
         ///     Factory method for creating online booking clients
         /// </summary>
-        public static IOnlineBooking GetClient(bool fake)
+        public static IOnlineBooking GetClient()
         {
-            if (fake)
-            {
+            string env = System.Environment.GetEnvironmentVariable("TAG_NAME") ?? string.Empty;
+
+            if (env.ToLower().Equals("localdev"))
                 return new FakeOnlineBookingClient();
-            }
 
             var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
 
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
 
             // todo: this should be stored in an OpenShift environment variable
-            var endpointAddress = new EndpointAddress("https://localhost:8092/OnlineBooking.svc");
+            var endpointAddress = new EndpointAddress(System.Environment.GetEnvironmentVariable("API_ENDPOINT"));
 
             // use basic authentication to connect
             var factory = new ChannelFactory<IOnlineBooking>(binding, endpointAddress);
 
             // todo: these should be stored as OpenShift secrets
-            factory.Credentials.UserName.UserName = "username";
-            factory.Credentials.UserName.Password = "password";
+            factory.Credentials.UserName.UserName = System.Environment.GetEnvironmentVariable("FACTORY_USERNAME");
+            factory.Credentials.UserName.Password = System.Environment.GetEnvironmentVariable("FACTORY_PASSWORD");
 
             return factory.CreateChannel();
         }

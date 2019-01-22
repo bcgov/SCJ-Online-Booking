@@ -13,7 +13,7 @@ namespace SCJ.Booking.MVC.Controllers
     public class BookingController : Controller
     {
         //API Client
-        private readonly IOnlineBooking _client = OnlineBookingClientFactory.GetClient(true);
+        private readonly IOnlineBooking _client = OnlineBookingClientFactory.GetClient();
 
         //Services
         readonly BookingService _bookingService;
@@ -27,12 +27,19 @@ namespace SCJ.Booking.MVC.Controllers
         //CONST
         const int hearingId = 9010; //Hardcoded for now
 
+        //Environment
+        private bool _isDevEnvironment = false;
+
         //Constructor
         public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor)
         {
             _dbContext = context;
             _httpContextAccessor = httpAccessor;
             _bookingService = new BookingService(_dbContext, _httpContextAccessor);
+
+            //test the environment
+            if (Environment.GetEnvironmentVariable("TAG_NAME").ToLower().Equals("localdev"))
+                _isDevEnvironment = true;
         }
 
         [HttpGet]
@@ -83,10 +90,19 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            //read user-guid in headers
             string userId = string.Empty;
-            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
-                userId = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+
+            if (!_isDevEnvironment)
+            {
+                //read user-guid in headers
+                if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
+                    userId = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+            }
+            else
+            {
+                //Dummy user guid
+                userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
+            }
 
             //make booking
             return View(await _bookingService.BookCourtCase(model, _client, hearingId, await _bookingService.GetLocationHearingLength(model.LocationId, hearingId, _client), userId));
