@@ -31,8 +31,8 @@ namespace SCJ.Booking.MVC.Controllers
         public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor)
         {
             _dbContext = context;
-            _bookingService = new BookingService(_dbContext);
             _httpContextAccessor = httpAccessor;
+            _bookingService = new BookingService(_dbContext, _httpContextAccessor);
         }
 
         [HttpGet]

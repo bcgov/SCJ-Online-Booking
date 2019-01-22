@@ -53,7 +53,7 @@ namespace SCJ.Booking.MVC
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //service to get hearings left for logged-in user
-            services.AddTransient<HearingsLeft>();
+            services.AddTransient<BookingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -56,5 +56,8 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Date selected in the swiper
         public string SelectedCaseDate { get; set; }
+
+        //Inicator if user can book a date
+        public bool IsUserAllowedToBook { get; set; }
     }
 }

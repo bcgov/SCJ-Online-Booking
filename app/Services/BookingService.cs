@@ -8,6 +8,8 @@ using SCJ.Booking.MVC.ViewModels;
 using Serilog;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Models;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 
 namespace SCJ.Booking.MVC.Services
 {
@@ -17,8 +19,14 @@ namespace SCJ.Booking.MVC.Services
         Serilog.Core.Logger _logger = null;
         private readonly ApplicationDbContext _dbContext;
 
+        //HttpContext
+        private IHttpContextAccessor _httpContextAccessor;
+
+        //Const
+        private const int _maxHearingsPerDay = 3;
+
         //Constructor
-        public BookingService(ApplicationDbContext dbContext)
+        public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor)
         {
             //setup error logger settings
             _logger = new LoggerConfiguration()
@@ -27,6 +35,9 @@ namespace SCJ.Booking.MVC.Services
 
             //DB Contect setup
             _dbContext = dbContext;
+
+            //HttpContext
+            _httpContextAccessor = httpAccessor;
         }
 
 
@@ -45,6 +56,8 @@ namespace SCJ.Booking.MVC.Services
 
                 //set model property
                 retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
+
+
             }
             catch (Exception ex)
             {
@@ -306,6 +319,46 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return model;
+        }
+
+
+        /// <summary>
+        /// Get the number of hearings left for the day
+        /// </summary>
+        /// <returns></returns>
+        public HtmlString GetHearingsRemaining()
+        {
+            return new HtmlString(GetUserHearingsTotalRemaining().ToString());
+        }
+
+
+        /// <summary>
+        /// Read the database and get the total number of hearings left for the day
+        /// </summary>
+        /// <returns></returns>
+        private int GetUserHearingsTotalRemaining()
+        {
+            //get user GUID
+            var uGuid = string.Empty;
+
+            //try and read the header
+            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
+                uGuid = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+            else return 0;
+
+            //today's date
+            var todaysDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+
+            //get all entries for logged-in user
+            //booked on today
+            var hearingsBookedForToday = _dbContext.BookingHistory.Where(b => b.SmGovUserGuid == uGuid && b.Timestamp.Day == todaysDate.Day && b.Timestamp.Month == todaysDate.Month && b.Timestamp.Year == b.Timestamp.Year).ToList();
+
+            if (hearingsBookedForToday != null && hearingsBookedForToday.Count() > 0)
+                //return number of hearings booked for today minus the max bookings allowed
+                return (_maxHearingsPerDay - hearingsBookedForToday.Count());
+            else
+                //User have not made any bookings for the day
+                return _maxHearingsPerDay;
         }
     }
 }
