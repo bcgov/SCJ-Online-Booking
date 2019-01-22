@@ -26,7 +26,7 @@ namespace SCJ.Booking.MVC.Services
         private const int _maxHearingsPerDay = 3;
 
         //Environment
-        private bool _isDevEnvironment = false;
+        private bool _isLocallDevEnvironment = false;
 
         //Constructor
         public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor)
@@ -44,7 +44,7 @@ namespace SCJ.Booking.MVC.Services
 
             //test the environment
             if (Environment.GetEnvironmentVariable("TAG_NAME").ToLower().Equals("localdev"))
-                _isDevEnvironment = true;
+                _isLocallDevEnvironment = true;
         }
 
 
@@ -348,7 +348,7 @@ namespace SCJ.Booking.MVC.Services
             //get user GUID
             var uGuid = string.Empty;
 
-            if (!_isDevEnvironment)
+            if (!_isLocallDevEnvironment)
             {
                 //try and read the header
                 if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))

@@ -9,7 +9,7 @@ namespace SCJ.Booking.UnitTest
     {
         public RemoteApiTests()
         {
-            _soapClient = OnlineBookingClientFactory.GetClient();
+            _soapClient = OnlineBookingClientFactory.GetClient(true);
         }
 
         private readonly IOnlineBooking _soapClient;
