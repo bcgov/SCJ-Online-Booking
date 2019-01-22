@@ -36,5 +36,8 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //User email address
         public string EmailAddress { get; set; }
+
+        //Is user known?
+        public bool IsUserKnown { get; set; }
     }
 }

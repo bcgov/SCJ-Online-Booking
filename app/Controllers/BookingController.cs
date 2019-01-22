@@ -6,6 +6,7 @@ using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.Booking.MVC.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -17,6 +18,9 @@ namespace SCJ.Booking.MVC.Controllers
         //Services
         readonly BookingService _bookingService;
 
+        //HttpContext
+        private IHttpContextAccessor _httpContextAccessor;
+
         //DB contect
         private ApplicationDbContext _dbContext;
 
@@ -24,10 +28,11 @@ namespace SCJ.Booking.MVC.Controllers
         const int hearingId = 9010; //Hardcoded for now
 
         //Constructor
-        public BookingController(ApplicationDbContext context)
+        public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor)
         {
             _dbContext = context;
             _bookingService = new BookingService(_dbContext);
+            _httpContextAccessor = httpAccessor;
         }
 
         [HttpGet]
@@ -68,7 +73,8 @@ namespace SCJ.Booking.MVC.Controllers
                 TypeOfConferenceHearing = "Trial Management Conference",
                 ContainerId = containerId,
                 LocationId = locationId,
-                FullDate = dt
+                FullDate = dt,
+                IsUserKnown = true
             };
 
             return View(ccm);
@@ -77,7 +83,13 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            return View(await _bookingService.BookCourtCase(model, _client, hearingId, await _bookingService.GetLocationHearingLength(model.LocationId, hearingId, _client)));
+            //read user-guid in headers
+            string userId = string.Empty;
+            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
+                userId = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+
+            //make booking
+            return View(await _bookingService.BookCourtCase(model, _client, hearingId, await _bookingService.GetLocationHearingLength(model.LocationId, hearingId, _client), userId));
         }
 
     }

@@ -9,10 +9,10 @@ namespace SCJ.Booking.MVC.Services
     public class HearingsLeft
     {
         private readonly ApplicationDbContext _dbContext;
-        private HttpContextAccessor _httpContextAccessor;
+        private IHttpContextAccessor _httpContextAccessor;
         private const int _maxHearingsPerDay = 3;
 
-        public HearingsLeft(ApplicationDbContext dbContext, HttpContextAccessor httpAccessor )
+        public HearingsLeft(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor )
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpAccessor;
@@ -26,10 +26,12 @@ namespace SCJ.Booking.MVC.Services
         private int GetUserHearingsTotalLeft()
         {
             //get user GUID
-            var uGuid = "b17a483a00124bd18a5544c8c20bf8e8";
-            //Microsoft.Extensions.Primitives.StringValues headerValues;
-            //_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("SMGOV_USERGUID", out headerValues);
-            //var uid = _httpContextAccessor.HttpContext.Request.Headers.Where(x => x.Key == "SMGOV_USERGUID").FirstOrDefault();
+            var uGuid = string.Empty;
+
+            //try and read the header
+            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
+                uGuid = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+            else return 0;
 
             //today's date
             var todaysDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);

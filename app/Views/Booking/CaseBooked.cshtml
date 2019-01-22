@@ -6,6 +6,19 @@
 
 <div class="row">
     <div class="col col-md-6">
+        @if (!Model.IsUserKnown)
+        {
+            <!-- TODO: Mike/Min??-->
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        Please logout and login again, your session was lost. [MIN/MIKE - Not sure the text for this? This is when we could not read the custom header for user-guid]
+                    </div>
+                </div>
+            </div>
+        }
+
         <div class="row">
             <div class="col col-md-12">
                 <div class="form-group">

@@ -243,10 +243,20 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         /// Book court case
         /// </summary>
-        public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model, IOnlineBooking client, int hearingId, int hearingLength)
+        public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model, IOnlineBooking client, int hearingId, int hearingLength, string userId)
         {
             try
             {
+                //if the user could not be detected return 
+                if (String.IsNullOrWhiteSpace(userId))
+                {
+                    model.IsUserKnown = false;
+                    return model;
+                }
+
+                //we know who the user is.
+                model.IsUserKnown = true;
+
                 //ensure timeslot is still available
                 if (await IsTimeStillAvailable(model.ContainerId, model.LocationId, hearingId, client))
                 {
@@ -269,20 +279,14 @@ namespace SCJ.Booking.MVC.Services
                     if (result.bookingResult.ToLower().StartsWith("success"))
                     {
                         //create database entry
-
-                        //TODO: Read custom header for currently logged-in user ID
-                        //string uGuid = Request.Headers["HTTP_SMGOV_USERGUID"];
-
-                        //get user GUID
-                        string uGuid = "b17a483a00124bd18a5544c8c20bf8e8";
-
                         var bookingInfo = _dbContext.Set<BookingHistory>();
 
-                        bookingInfo.Add(new BookingHistory { ContainerId = model.ContainerId, SmGovUserGuid = uGuid, Timestamp = DateTime.Now });
+                        bookingInfo.Add(new BookingHistory { ContainerId = model.ContainerId, SmGovUserGuid = userId, Timestamp = DateTime.Now });
 
+                        //save to DB
                         _dbContext.SaveChanges();
 
-
+                        //update model
                         model.IsBooked = true;
                     }
                     else

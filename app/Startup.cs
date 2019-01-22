@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
@@ -49,7 +50,7 @@ namespace SCJ.Booking.MVC
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //http context
-            services.AddSingleton<HttpContextAccessor>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //service to get hearings left for logged-in user
             services.AddTransient<HearingsLeft>();
