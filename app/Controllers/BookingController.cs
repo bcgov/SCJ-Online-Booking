@@ -7,13 +7,14 @@ using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.Booking.MVC.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace SCJ.Booking.MVC.Controllers
 {
     public class BookingController : Controller
     {
         //API Client
-        private readonly IOnlineBooking _client = OnlineBookingClientFactory.GetClient();
+        private readonly IOnlineBooking _client;
 
         //Services
         readonly BookingService _bookingService;
@@ -22,23 +23,25 @@ namespace SCJ.Booking.MVC.Controllers
         private IHttpContextAccessor _httpContextAccessor;
 
         //DB contect
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         //CONST
         const int hearingId = 9010; //Hardcoded for now
 
         //Environment
-        private bool _isLocalDevEnvironment = false;
+        private readonly bool _isLocalDevEnvironment = false;
 
         //Constructor
-        public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor)
+        public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor,
+            IConfiguration configuration)
         {
             _dbContext = context;
             _httpContextAccessor = httpAccessor;
+            _client = OnlineBookingClientFactory.GetClient(configuration);
             _bookingService = new BookingService(_dbContext, _httpContextAccessor);
 
             //test the environment
-            if (Environment.GetEnvironmentVariable("TAG_NAME").ToLower().Equals("localdev"))
+            if (configuration["TAG_NAME"].ToLower().Equals("localdev"))
                 _isLocalDevEnvironment = true;
         }
 

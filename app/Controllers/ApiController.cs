@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.SC.OnlineBooking;
@@ -16,7 +17,12 @@ namespace SCJ.Booking.MVC.Controllers
     public class ApiController : Controller
     {
         //API Client
-        private readonly IOnlineBooking _client = OnlineBookingClientFactory.GetClient();
+        private readonly IOnlineBooking _client;
+
+        public ApiController(IConfiguration configuration)
+        {
+            _client = OnlineBookingClientFactory.GetClient(configuration);
+        }
 
         /// <summary>
         ///     API for getting list of available dates.  Used by the vue.js date slider control
