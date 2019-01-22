@@ -26,6 +26,7 @@
             },
             "stringData": {
                 "database-password": "${DATABASE_PASSWORD}",
+                "api-password": "${API_PASSWORD}",
                 "connect-string": "Host=${DATABASE_SERVICE_NAME};Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}"
             }
         },
@@ -317,6 +318,27 @@
                                     {
                                         "name": "POSTGRESQL_SHARED_BUFFERS",
                                         "value": "${POSTGRESQL_SHARED_BUFFERS}"
+                                    },
+                                    {
+                                        "name": "TAG_NAME",
+                                        "value": "${TAG_NAME}"
+                                    },
+                                    {
+                                        "name": "API_ENDPOINT",
+                                        "value": "${API_ENDPOINT}"
+                                    },
+                                    {
+                                        "name": "API_USERNAME",
+                                        "value": "${API_USERNAME}"
+                                    },
+                                    {
+                                        "name": "API_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "name": "${NAME}",
+                                                "key": "api-password"
+                                            }
+                                        }
                                     }
                                 ],
                                 "resources": {
@@ -413,6 +435,24 @@
             "name": "POSTGRESQL_SHARED_BUFFERS",
             "displayName": "Shared Buffer Amount",
             "value": "12MB"
+        },
+        {
+            "name": "API_ENDPOINT",
+            "displayName": "SOAP Endpoint URL",
+            "description": "URL of the SCSS endpoint",
+            "required": true
+        },
+        {
+            "name": "API_USERNAME",
+            "displayName": "API Username",
+            "description": "Basic auth username for the SCSS SOAP API",
+            "required": true
+        },
+        {
+            "name": "API_PASSWORD",
+            "displayName": "API Password",
+            "description": "Basic auth password for the SCSS SOAP API",
+            "required": true
         }
     ]
 }
