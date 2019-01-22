@@ -28,7 +28,7 @@ namespace SCJ.Booking.MVC.Controllers
         const int hearingId = 9010; //Hardcoded for now
 
         //Environment
-        private bool _isLocallDevEnvironment = false;
+        private bool _isLocalDevEnvironment = false;
 
         //Constructor
         public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor)
@@ -39,7 +39,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //test the environment
             if (Environment.GetEnvironmentVariable("TAG_NAME").ToLower().Equals("localdev"))
-                _isLocallDevEnvironment = true;
+                _isLocalDevEnvironment = true;
         }
 
         [HttpGet]
@@ -92,7 +92,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             string userId = string.Empty;
 
-            if (!_isLocallDevEnvironment)
+            if (!_isLocalDevEnvironment)
             {
                 //read user-guid in headers
                 if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
