@@ -1,3 +1,4 @@
+@inject BookingService service
 @model CaseSearchViewModel
 
 <div class="row screen-intro">
@@ -42,144 +43,158 @@
 </div>
 <!-- Search filter-->
 
-@if (Context.Request.Method == "POST")
+@if (Convert.ToInt32(service.GetHearingsRemaining().ToString()) <= 0)
 {
-    <hr class="results-linebreak"/>
-    if (Model.TimeslotExpired)
-    {
-        <div class="row">
-            <div class="col col-md-12">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                    Someone just booked a hearing on @Model.TimeslotFriendlyName and it is no longer available. Please choose another time for your hearing.
-                </div>
+    <!-- No more bookings remaining for today-->
+    <div class="row">
+        <div class="col col-md-12">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                You've used all your bookings for today. Please login tomorrow if you would like to make more bookings. [MIKE/MIN - Not sure the text here??]
             </div>
         </div>
-    }
-
-    if (!Model.IsValidCaseNumber)
+    </div>
+}
+else
+{
+    if (Context.Request.Method == "POST")
     {
-        <!-- No search results for case number-->
-        <div class="no-search-results">
+        <hr class="results-linebreak" />
+        if (Model.TimeslotExpired)
+        {
             <div class="row">
                 <div class="col col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <span class="icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                        We could not find the case for @Model.CaseNumber<span>.</span>
+                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        Someone just booked a hearing on @Model.TimeslotFriendlyName and it is no longer available. Please choose another time for your hearing.
                     </div>
                 </div>
             </div>
-            <div class="row options-nextStep">
-                <div class="col col-md-4 col-sm-12 col-12">
-                    <div class="card bg-light mb-3">
-                        <div class="card-header">Is it the right Case Action Number?</div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                If this is not the correct Case Action
-                                Number, you can change it and try again
-                                for available times.
-                            </p>
+        }
+
+        if (!Model.IsValidCaseNumber)
+        {
+            <!-- No search results for case number-->
+            <div class="no-search-results">
+                <div class="row">
+                    <div class="col col-md-12">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <span class="icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </span>
+                            We could not find the case for @Model.CaseNumber<span>.</span>
                         </div>
                     </div>
                 </div>
-                <div class="col col-md-4 col-sm-12 col-12">
-                    <div class="card bg-light mb-3">
-                        <div class="card-header">Is this a Supreme Family or Civil case?</div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                This online tool only covers Family and
-                                Civil cases. If your case is not a Family or
-                                Civil case, please go to [TBD]
-                            </p>
+                <div class="row options-nextStep">
+                    <div class="col col-md-4 col-sm-12 col-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">Is it the right Case Action Number?</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    If this is not the correct Case Action
+                                    Number, you can change it and try again
+                                    for available times.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 col-sm-12 col-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">Is this a Supreme Family or Civil case?</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    This online tool only covers Family and
+                                    Civil cases. If your case is not a Family or
+                                    Civil case, please go to [TBD]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-4 col-sm-12 col-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">Need to contact your registry?</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    You can contact the registry for which
+                                    your hearing is associated (indicated in
+                                    your court filing documents)… [TBD]
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col col-md-4 col-sm-12 col-12">
-                    <div class="card bg-light mb-3">
-                        <div class="card-header">Need to contact your registry?</div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                You can contact the registry for which
-                                your hearing is associated (indicated in
-                                your court filing documents)… [TBD]
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-        <!-- No search results for case number-->
-    }
-    else if (Model.Results.AvailableDates.Length > 0 && !Model.NoAvailableTimes)
-    {
-        <!-- Booking times-->
-        <div class="row">
-            <div class="col col-md-12">
-                <div class="float-left">
-                    <h2>Available Times in @Model.SelectedRegistryName</h2>
-                </div>
-                <span class="ml-3" data-toggle="tooltip" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Case Action Number you provided.</p>">
-                    <i class="fas fa-question-circle"></i>
-                </span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-md-12">
-                <p>@Model.Results.BookingDetails.bookingNotes</p>
-            </div>
-        </div>
-        <div id="VueAvailableTimes" class="availableTimesContainer">
-            <availabletimes :location-id="@Model.SelectedRegistryId"
-                            :hearing-type="9010"
-                            :case-number="@Model.CaseNumber.Trim()">
-            </availabletimes>
-        </div>
-        <!-- Booking times-->
-    }
-    else if (Model.NoAvailableTimes)
-    {
-        <!-- No available times for this hearing - next steps-->
-        <div class="no-available-times">
-            <h2>There are currently no available times for this hearing in [Location].</h2>
+            <!-- No search results for case number-->
+        }
+        else if (Model.Results.AvailableDates.Length > 0 && !Model.NoAvailableTimes)
+        {
+            <!-- Booking times-->
             <div class="row">
-                <div class="col col-md-4 col-sm-12 col-12">
-                    <div class="card bg-light mb-3">
-                        <div class="card-header">[Next Step 1]</div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                [TBD]
-                            </p>
+                <div class="col col-md-12">
+                    <div class="float-left">
+                        <h2>Available Times in @Model.SelectedRegistryName</h2>
+                    </div>
+                    <span class="ml-3" data-toggle="tooltip" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Case Action Number you provided.</p>">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <p>@Model.Results.BookingDetails.bookingNotes</p>
+                </div>
+            </div>
+            <div id="VueAvailableTimes" class="availableTimesContainer">
+                <availabletimes :location-id="@Model.SelectedRegistryId"
+                                :hearing-type="9010"
+                                :case-number="@Model.CaseNumber.Trim()">
+                </availabletimes>
+            </div>
+            <!-- Booking times-->
+        }
+        else if (Model.NoAvailableTimes)
+        {
+            <!-- No available times for this hearing - next steps-->
+            <div class="no-available-times">
+                <h2>There are currently no available times for this hearing in [Location].</h2>
+                <div class="row">
+                    <div class="col col-md-4 col-sm-12 col-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">[Next Step 1]</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    [TBD]
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col col-md-4 col-sm-12 col-12">
-                    <div class="card bg-light mb-3">
-                        <div class="card-header">[Next Step 2]</div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                [TBD]
-                            </p>
+                    <div class="col col-md-4 col-sm-12 col-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">[Next Step 2]</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    [TBD]
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col col-md-4 col-sm-12 col-12">
-                    <div class="card bg-light mb-3">
-                        <div class="card-header">[Next Step 3]</div>
-                        <div class="card-body">
-                            <p class="card-text">
-                                [TBD]
-                            </p>
+                    <div class="col col-md-4 col-sm-12 col-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">[Next Step 3]</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    [TBD]
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- No available times for this hearing - next steps-->
+            <!-- No available times for this hearing - next steps-->
+        }
     }
 }
-
 
 @section Scripts {
     <script src="~/dist/vendor.js" asp-append-version="true"></script>
@@ -188,5 +203,5 @@
 }
 
 @section Styles {
-    <link href="~/swiper.min.css" rel="stylesheet"/>
+    <link href="~/swiper.min.css" rel="stylesheet" />
 }
