@@ -49,6 +49,10 @@ a {
     }
 }
 
+.card {
+    margin-bottom: 30px;
+}
+
 .card-header {
     font-weight: 700;
     color: white;
@@ -78,4 +82,8 @@ a {
 
 .bs-tooltip-right .arrow:before {
     border-right-color: $blue;
+}
+
+.bs-tooltip-left .arrow:before {
+    border-left-color: $blue;
 }

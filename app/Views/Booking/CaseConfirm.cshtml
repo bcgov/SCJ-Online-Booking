@@ -10,7 +10,7 @@
 </div>
 
 <div class="row booking-confirmation">
-    <div class="content col-md-6">
+    <div class="content col-lg-6">
         <form asp-controller="Booking" asp-action="CaseBooked" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
             <input type="hidden" asp-for="CaseNumber" />
             <input type="hidden" asp-for="TypeOfConferenceHearing" />
@@ -57,7 +57,7 @@
     </div>
 </div>
 <div class="row booking-submit">
-    <div class="content col-md-6">
+    <div class="content col-lg-6">
         <button type="submit" class="btn btn-primary btn-lg" id="btnSearch">Confirm Booking</button>
         @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
     </div>

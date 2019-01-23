@@ -102,22 +102,23 @@ body {
         flex-direction: column;
         align-items: flex-start;
 
-        @include breakpoint(md) {
+        @include breakpoint(lg) {
             flex-direction: row;
             align-items: center;
         }
 
         .footer-nav-items {
             list-style-type: none;
-            margin: 0;
             padding: 0;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            margin: 5px 0 0 0;
 
-            @include breakpoint(md) {
+            @include breakpoint(lg) {
                 flex-direction: row;
+                margin-top: 0;
             }
 
             li {
@@ -133,13 +134,13 @@ body {
                         text-decoration: underline;
                     }
 
-                    @include breakpoint(md) {
+                    @include breakpoint(lg) {
                         padding: 16px;
                     }
                 }
 
                 & + li {
-                    @include breakpoint(md) {
+                    @include breakpoint(lg) {
                         border-left: 1px solid $blue-washed;
                     }
                 }
@@ -151,7 +152,7 @@ body {
         font-size: 0.875rem;
         padding: 5px 0;
 
-        @include breakpoint(md) {
+        @include breakpoint(lg) {
             margin-left: auto;
         }
     }
@@ -267,16 +268,11 @@ select#SelectedRegistryId {
     margin-top: 30px;
 }
 
-.booking-submit, .booking-new {
-    & > .content {
-        margin-top: 30px;
-    }
-}
-
 .booking-submit {
     & > .content {
         display: flex;
         justify-content: flex-end;
+        margin-top: 14px;
 
         .btn-secondary {
             margin-left: 20px;
@@ -284,6 +280,10 @@ select#SelectedRegistryId {
     }
 }
 
-.booking-logout > .content {
+.booking-new > .content {
     margin-top: 30px;
+}
+
+.booking-logout > .content {
+    margin-top: 10px;
 }
