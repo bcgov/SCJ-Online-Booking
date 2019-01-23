@@ -1,5 +1,4 @@
-using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SCJ.Booking.MVC.Migrations
@@ -12,22 +11,14 @@ namespace SCJ.Booking.MVC.Migrations
                 name: "BookingHistory",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    SmGovUserGuid = table.Column<string>(maxLength: 32, nullable: false),
+                    SmGovUserGuid = table.Column<string>(maxLength: 36, nullable: false),
                     ContainerId = table.Column<long>(nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookingHistory", x => x.Id);
+                    table.PrimaryKey("PK_BookingHistory", x => new { x.SmGovUserGuid, x.ContainerId, x.Timestamp });
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingHistory_SmGovUserGuid_Timestamp",
-                table: "BookingHistory",
-                columns: new[] { "SmGovUserGuid", "Timestamp" },
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

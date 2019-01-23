@@ -10,8 +10,8 @@ using SCJ.Booking.MVC.Data;
 namespace SCJ.Booking.MVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190121235115_IncresedUserField")]
-    partial class IncresedUserField
+    [Migration("20190123021321_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,22 +23,14 @@ namespace SCJ.Booking.MVC.Migrations
 
             modelBuilder.Entity("SCJ.Booking.MVC.Models.BookingHistory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("SmGovUserGuid")
+                        .HasMaxLength(36);
 
                     b.Property<long>("ContainerId");
 
-                    b.Property<string>("SmGovUserGuid")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
                     b.Property<DateTime>("Timestamp");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("SmGovUserGuid", "Timestamp")
-                        .IsUnique();
+                    b.HasKey("SmGovUserGuid", "ContainerId", "Timestamp");
 
                     b.ToTable("BookingHistory");
                 });

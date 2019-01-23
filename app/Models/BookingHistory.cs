@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCJ.Booking.MVC.Models
 {
+
     public class BookingHistory
     {
-        [Key]
-        public int Id { get; set; }
-
-        [StringLength(32)]
+        [StringLength(36)]
         [Required]
         public string SmGovUserGuid { get; set; }
 

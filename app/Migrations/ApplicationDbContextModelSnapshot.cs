@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SCJ.Booking.MVC.Data;
 
 namespace SCJ.Booking.MVC.Migrations
@@ -16,29 +15,20 @@ namespace SCJ.Booking.MVC.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SCJ.Booking.MVC.Models.BookingHistory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("SmGovUserGuid")
+                        .HasMaxLength(36);
 
                     b.Property<long>("ContainerId");
 
-                    b.Property<string>("SmGovUserGuid")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
                     b.Property<DateTime>("Timestamp");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("SmGovUserGuid", "Timestamp")
-                        .IsUnique();
+                    b.HasKey("SmGovUserGuid", "ContainerId", "Timestamp");
 
                     b.ToTable("BookingHistory");
                 });
