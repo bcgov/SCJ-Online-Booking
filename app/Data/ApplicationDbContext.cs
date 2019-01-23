@@ -13,9 +13,14 @@ namespace SCJ.Booking.MVC.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ForNpgsqlUseIdentityColumns();
+
             modelBuilder.Entity<BookingHistory>()
                 .HasIndex(b => new {b.SmGovUserGuid, b.Timestamp })
                 .IsUnique();
+
+            modelBuilder.Entity<BookingHistory>().Property(b => b.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

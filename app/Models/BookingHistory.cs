@@ -7,7 +7,6 @@ namespace SCJ.Booking.MVC.Models
     public class BookingHistory
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [StringLength(32)]

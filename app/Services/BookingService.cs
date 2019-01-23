@@ -335,9 +335,19 @@ namespace SCJ.Booking.MVC.Services
         /// <returns></returns>
         public HtmlString GetHearingsRemaining()
         {
-            return new HtmlString(GetUserHearingsTotalRemaining().ToString());
-        }
+            int hearingsRemaining = GetUserHearingsTotalRemaining();
 
+            switch (hearingsRemaining)
+            {
+                case 2:
+                case 1:
+                    return new HtmlString($"can book {hearingsRemaining} more");
+                case 0:
+                    return new HtmlString("cannot book anymore");
+                default:
+                    return new HtmlString($"can book {hearingsRemaining}");
+            }
+        }
 
         /// <summary>
         /// Read the database and get the total number of hearings left for the day
