@@ -353,7 +353,7 @@ namespace SCJ.Booking.MVC.Services
         /// Read the database and get the total number of hearings left for the day
         /// </summary>
         /// <returns></returns>
-        private int GetUserHearingsTotalRemaining()
+        public int GetUserHearingsTotalRemaining()
         {
             //get user GUID
             var uGuid = string.Empty;

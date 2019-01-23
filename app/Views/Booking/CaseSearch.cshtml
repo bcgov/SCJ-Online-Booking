@@ -43,7 +43,7 @@
 </div>
 <!-- Search filter-->
 
-@if (Convert.ToInt32(service.GetHearingsRemaining().ToString()) <= 0)
+@if (service.GetUserHearingsTotalRemaining() <= 0)
 {
     <!-- No more bookings remaining for today-->
     <div class="row">
