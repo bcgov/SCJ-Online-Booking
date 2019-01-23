@@ -1,18 +1,22 @@
 @model CaseConfirmViewModel
 
-<h2>Your Booking is Confirmed</h2>
-<p>The booking for your conference hearing is confirmed.</p>
-<p>The following details will be sent to you by email.</p>
+<div class="row screen-intro">
+    <div class="col-md-12">
+        <h1>Your Booking is Confirmed</h1>
+        <p>The booking for your conference hearing is confirmed.</p>
+        <p>The following details will be sent to you by email.</p>
+    </div>
+</div>
 
-<div class="row">
-    <div class="col col-md-6">
+<div class="row booking-confirmation">
+    <div class="content col-md-6">
         @if (!Model.IsUserKnown)
         {
             <!-- TODO: Mike/Min??-->
             <div class="row">
-                <div class="col col-md-12">
+                <div class="col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        <i class="fas fa-exclamation-triangle"></i>
                         Please logout and login again, your session was lost. [MIN/MIKE - Not sure the text for this? This is when we could not read the custom header for user-guid]
                     </div>
                 </div>
@@ -20,7 +24,7 @@
         }
 
         <div class="row">
-            <div class="col col-md-12">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label class="font-weight-bold">Case Action Number</label>
                     <div>
@@ -57,9 +61,9 @@
             </div>
         </div>
     </div>
-    <div class="col col-md-6">
+    <div class="content col-md-6">
         <div class="row">
-            <div class="col col-md-12">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         Next Steps Before Your Hearing
@@ -72,22 +76,19 @@
         </div>
     </div>
 </div>
-<div>&nbsp;</div>
-<div class="row">
-    <div class="col col-md-3">
-        @Html.ActionLink("Book Another Hearing", "CaseSearch", "Booking", null, new {@class = "btn btn-secondary btn-lg"})
+<div class="row booking-new">
+    <div class="content col-md-6">
+        @Html.ActionLink("Book Another Hearing", "CaseSearch", "Booking", null, new {@class = "btn btn-primary btn-lg"})
     </div>
 </div>
-<div class="row">
-    <div class="col col-md-12">&nbsp;</div>
-</div>
-<div class="row">
-    <div class="col col-md-12">
+<div class="row booking-logout">
+    <div class="content col-md-12">
         <label class="font-weight-bold">Finished booking?</label>
     </div>
 </div>
 <div class="row">
     <div class="col col-md-12">
+    <div class="col-md-12">
         @Html.ActionLink("Log out of the Superior Courts Booking System", "Logout", "User", null, null)
     </div>
 </div>

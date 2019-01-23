@@ -6,7 +6,7 @@ h1 {
     font-weight: 700;
     margin-bottom: 1.875rem;
     line-height: 1.4;
-    color: $blue-header;
+    color: $blue-text;
 }
 
 h2 {
@@ -24,7 +24,7 @@ a {
     text-decoration: underline;
 
     &:hover, &:focus {
-        color: $blue-washed;
+        color: $blue-darker;
     }
 }
 
@@ -32,6 +32,7 @@ a {
     margin-bottom: 20px;
     font-size: 1rem;
     font-weight: 700;
+    text-decoration: none;
 
     &-lg {
         padding: 0.75em 2em;
@@ -52,4 +53,29 @@ a {
     font-weight: 700;
     color: white;
     background: #4b5e73;
+}
+
+.tooltip.show {
+    opacity: 1;
+}
+
+.tooltip-inner {
+    background-color: $blue;
+    padding: 1rem;
+    text-align: left;
+
+    @include breakpoint(lg) {
+        max-width: 400px;
+    }
+
+    p {
+        margin-bottom: 0.625rem;
+    }
+}
+.bs-tooltip-top .arrow {
+    border-top-color: $blue;
+}
+
+.bs-tooltip-right .arrow:before {
+    border-right-color: $blue;
 }

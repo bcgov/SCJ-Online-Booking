@@ -4,7 +4,7 @@
 <div class="row screen-intro">
     <div class="col-md-12">
         <h1>Book Your Hearing</h1>
-        <p class="intro">Before we can bring back available times for the hearing, we’ll need to know the following.</p>
+        <p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
     </div>
 </div>
 
@@ -49,8 +49,8 @@
     <div class="row">
         <div class="col col-md-12">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                You've used all your bookings for today. Please login tomorrow if you would like to make more bookings. [MIKE/MIN - Not sure the text here??]
+                <i class="fas fa-exclamation-triangle"></i>
+                You've used all your bookings for today. You can book up to 3 hearings each day. You can book 3 more hearings tomorrow.
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@ else
             <div class="row">
                 <div class="col col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        <i class="fas fa-exclamation-triangle"></i>
                         Someone just booked a hearing on @Model.TimeslotFriendlyName and it is no longer available. Please choose another time for your hearing.
                     </div>
                 </div>
@@ -79,9 +79,7 @@ else
                 <div class="row">
                     <div class="col col-md-12">
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <span class="icon">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </span>
+                            <i class="fas fa-exclamation-triangle"></i>
                             We could not find the case for @Model.CaseNumber<span>.</span>
                         </div>
                     </div>
@@ -135,7 +133,7 @@ else
                     <div class="float-left">
                         <h2>Available Times in @Model.SelectedRegistryName</h2>
                     </div>
-                    <span class="ml-3" data-toggle="tooltip" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Case Action Number you provided.</p>">
+                    <span class="ml-3 information-tooltip" data-toggle="tooltip" data-placement="right" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Case Action Number you provided.</p>">
                         <i class="fas fa-question-circle"></i>
                     </span>
                 </div>

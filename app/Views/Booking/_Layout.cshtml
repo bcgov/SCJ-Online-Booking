@@ -10,11 +10,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse collapse">
-        @RenderSection("BookingsLeft", false)
-        <div style="margin-left: auto">
-            <span>@service.GetHearingsRemaining()</span>
-        </div>
         <ul class="nav navbar-nav">
+            @RenderSection("BookingsLeft", false)
+            <div class="bookingsLeft">
+                <span>@service.GetHearingsRemaining()</span>
+            </div>
             <li class="nav-item">
                 <a asp-controller="User" asp-action="Logout">Logout</a>
             </li>

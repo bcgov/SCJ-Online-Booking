@@ -35,11 +35,11 @@ body {
     padding-bottom: 60px;
 }
 
-.icon {
-    margin-right: 8px;
+.fas {
+    margin-right: 10px;
 }
 
-//header navbar
+/*Header*/
 .header-nav, .footer-nav {
     background-color: $blue-bg;
     color: $white;
@@ -48,6 +48,10 @@ body {
         color: $white;
         font-weight: 700;
         text-decoration: none;
+
+        &:hover, &:focus {
+            text-decoration: underline;
+        }
     }
 
     .navbar-collapse .nav {
@@ -78,6 +82,17 @@ body {
         margin-left: auto;
     }
 }
+
+.bookingsLeft {
+    margin-top: 10px;
+
+    @include breakpoint(md) {
+        margin-right: 30px;
+        margin-top: 0;
+    }
+}
+
+/*Footer*/
 .footer-nav {
     border-top: 2px solid $yellow;
     padding: 5px 0;
@@ -171,16 +186,15 @@ p.intro {
         margin-top: 20px;
     }
 }
-/*Homepage*/
 
 /*Book Your Hearing*/
-
-.search-info{
+.search-info {
     background-color: $blue-light;
     padding: 15px 0;
     margin-right: 0;
     margin-left: 0;
     margin-bottom: 20px;
+    border-radius: 0.3rem;
 }
 
 .results-linebreak {
@@ -197,7 +211,8 @@ p.intro {
 }
 
 .availableTimesContainer{
-    height: 250px;
+    height: 308px;
+    margin-top: 30px;
 }
 
 select#SelectedRegistryId {
@@ -208,8 +223,67 @@ select#SelectedRegistryId {
     margin-top: 20px;
 }
 
-/*Book Your Hearing*/
+.information-tooltip {
+    .fa-question-circle {
+        margin-right: 0;
+        color: $blue;
+    }
+}
 
-.fas {
-    margin-right: 10px;
+/*Available Times slider*/
+.custom-slide-header {
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.custom-slide-times {
+    border-radius: 0.3rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    height: 250px;
+    padding: 5px;
+}
+
+.custom-slide-time {
+    background-color: $grey-light;
+    border-radius: 0.3rem;
+    padding: 10px 5px;
+    margin: 5px 5px 10px 5px;
+    cursor: pointer;
+    text-align: center;
+
+    &.selected {
+        background-color: $blue-active;
+        color: $white;
+    }
+}
+
+.swiper-container {
+    width: calc(100% - 60px);
+}
+
+/*Booking Confirmation*/
+.booking-confirmation > .content {
+    margin-top: 30px;
+}
+
+.booking-submit, .booking-new {
+    & > .content {
+        margin-top: 30px;
+    }
+}
+
+.booking-submit {
+    & > .content {
+        display: flex;
+        justify-content: flex-end;
+
+        .btn-secondary {
+            margin-left: 20px;
+        }
+    }
+}
+
+.booking-logout > .content {
+    margin-top: 30px;
 }
