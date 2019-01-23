@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -100,7 +101,10 @@ namespace SCJ.Booking.MVC
             {
                 using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
-                    if (Configuration["ConnectionString"] != null || !platform.UseInMemoryStore)
+                    string cs = Environment.GetEnvironmentVariable("ConnectionString") ?? string.Empty;
+
+                    // the migrations should run on pretty much any platform except Mac localdev environments
+                    if (cs != string.Empty || !platform.UseInMemoryStore)
                     {
                         context.Database.Migrate();
                     }
