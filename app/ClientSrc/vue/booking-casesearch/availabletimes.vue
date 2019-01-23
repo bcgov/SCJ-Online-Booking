@@ -24,40 +24,6 @@
     </div>
 </template>
 
-<style lang="scss">
-    .custom-slide-header{
-        margin-bottom: 10px;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .custom-slide-times {
-        border: 1px solid rgba(0, 0, 0, 0.125);
-        height: 250px;
-        padding: 5px;
-    }
-
-    .custom-slide-time {
-        background-color: rgba(0, 0, 0, 0.10);
-        padding: 5px;
-        margin: 5px;
-        cursor: pointer;
-        text-align: center;
-
-        &.selected {
-            background-color: blue;
-            color: white;
-        }    
-    }
-
-    .swiper-container
-    {
-        margin-top: -15px !important;
-        margin-left: 30px;
-        width: calc(100% - 60px);
-    }
-</style>
-
 <script>
     import Vue from "vue";
     import VueAwesomeSwiper from 'vue-awesome-swiper';

@@ -1,20 +1,25 @@
 @model CaseConfirmViewModel
 
-<h2>Confirm Your Booking</h2>
-<p>The following time is reserved for your conference hearing.</p>
-<p>Check that the following information is accurate before confirming your booking.</p>
 
-<form asp-controller="Booking" asp-action="CaseBooked" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
-    <input type="hidden" asp-for="CaseNumber" />
-    <input type="hidden" asp-for="TypeOfConferenceHearing" />
-    <input type="hidden" asp-for="LocationName" />
-    <input type="hidden" asp-for="Date" />
-    <input type="hidden" asp-for="Time" />
-    <input type="hidden" asp-for="ContainerId" />
-    <input type="hidden" asp-for="LocationId" />
-    <input type="hidden" asp-for="FullDate" />
-    <div class="row">
-        <div class="col col-md-6">
+<div class="row screen-intro">
+    <div class="col-md-12">
+        <h1>Confirm Your Booking</h1>
+        <p>The following time is reserved for your conference hearing.</p>
+        <p>Check that the following information is accurate before confirming your booking.</p>
+    </div>
+</div>
+
+<div class="row booking-confirmation">
+    <div class="content col-md-6">
+        <form asp-controller="Booking" asp-action="CaseBooked" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+            <input type="hidden" asp-for="CaseNumber" />
+            <input type="hidden" asp-for="TypeOfConferenceHearing" />
+            <input type="hidden" asp-for="LocationName" />
+            <input type="hidden" asp-for="Date" />
+            <input type="hidden" asp-for="Time" />
+            <input type="hidden" asp-for="ContainerId" />
+            <input type="hidden" asp-for="LocationId" />
+            <input type="hidden" asp-for="FullDate" />
             <div class="form-group">
                 <label class="font-weight-bold">Case Action Number</label>
                 <div>
@@ -49,15 +54,14 @@
                     Please provide a valid email address.
                 </div>
             </div>
-        </div>
     </div>
-    <div>&nbsp;</div>
-    <div class="row">
-        <div class="col col-md-3">
-            <button type="submit" class="btn btn-secondary btn-lg" id="btnSearch">Confirm Booking</button>
-            @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
-        </div>
+</div>
+<div class="row booking-submit">
+    <div class="content col-md-6">
+        <button type="submit" class="btn btn-primary btn-lg" id="btnSearch">Confirm Booking</button>
+        @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
     </div>
+</div>
 </form>
 
 @section Scripts {
