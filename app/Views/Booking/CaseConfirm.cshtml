@@ -1,9 +1,12 @@
 @model CaseConfirmViewModel
 
+@{
+    ViewData["Title"] = "Confirm Your Booking";
+}
 
 <div class="row screen-intro">
     <div class="col-md-12">
-        <h1>Confirm Your Booking</h1>
+        <h1>@ViewData["Title"]</h1>
         <p>The following time is reserved for your conference hearing.</p>
         <p>Check that the following information is accurate before confirming your booking.</p>
     </div>

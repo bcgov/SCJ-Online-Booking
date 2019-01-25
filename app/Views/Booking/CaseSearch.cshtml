@@ -1,9 +1,13 @@
 @inject BookingService service
 @model CaseSearchViewModel
 
+@{
+    ViewData["Title"] = "Book Your Hearing";
+}
+
 <div class="row screen-intro">
     <div class="col-md-12">
-        <h1>Book Your Hearing</h1>
+        <h1>@ViewData["Title"]</h1>
         <p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
     </div>
 </div>
