@@ -144,7 +144,7 @@ else
             </div>
             <div class="row">
                 <div class="col col-md-12">
-                    <p>@Model.Results.BookingDetails.bookingNotes</p>
+                    <p>[INTRO TEXT TO BE PROVIDED BY SCJ]</p>
                 </div>
             </div>
             <div id="VueAvailableTimes" class="availableTimesContainer">
@@ -152,6 +152,12 @@ else
                                 :hearing-type="9010"
                                 :case-number="@Model.CaseNumber.Trim()">
                 </availabletimes>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <p>@Model.Results.BookingDetails.bookingNotes</p>
+                </div>
             </div>
             <!-- Booking times-->
         }

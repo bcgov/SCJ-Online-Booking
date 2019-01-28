@@ -257,6 +257,11 @@ select#SelectedRegistryId {
         background-color: $blue-active;
         color: $white;
     }
+
+    &:hover {
+        background-color: $blue-active;
+        color: $white;
+    }
 }
 
 .swiper-container {
