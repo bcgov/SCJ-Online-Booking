@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - BC Superior Courts Online Booking</title>
+    <title>@ViewData["Title"] - BC Courts Booking System</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/dist/css/bootstrap.css" asp-append-version="true"/>
@@ -23,7 +23,7 @@
             <a class="header-logo" href="/">
                 <img src="/images/bc-logo.svg" width="148"/>
             </a>
-            <p class="appName">Superior Courts Online Booking</p>
+            <p class="appName">BC Courts Booking System</p>
             @RenderSection("NavBar", false)
         </div>
     </nav>
@@ -45,7 +45,7 @@
                     <a href="#">Contact Us</a>
                 </li>
             </ul>
-            <span class="copyright">&copy; 2019 - British Columbia Superior Courts</span>
+            <span class="copyright">&copy; @DateTime.Now.Year - BC Courts Booking System</span>
         </div>
     </nav>
 </footer>
