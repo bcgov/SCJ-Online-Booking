@@ -8,6 +8,7 @@ using SCJ.Booking.RemoteAPIs;
 using SCJ.Booking.MVC.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -84,7 +85,9 @@ namespace SCJ.Booking.MVC.Controllers
                 ContainerId = containerId,
                 LocationId = locationId,
                 FullDate = dt,
-                IsUserKnown = true
+                IsUserKnown = true,
+                EmailAddress = _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USEREMAIL") ? _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USEREMAIL"].ToString() : string.Empty,
+                Phone = _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERPHONE") ? _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERPHONE"].ToString() : string.Empty,
             };
 
             return View(ccm);
