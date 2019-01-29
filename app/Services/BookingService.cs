@@ -23,7 +23,7 @@ namespace SCJ.Booking.MVC.Services
         private IHttpContextAccessor _httpContextAccessor;
 
         //Const
-        private const int _maxHearingsPerDay = 3;
+        private const int _maxHearingsPerDay = 250;
 
         //Environment
         private bool _isLocallDevEnvironment = false;
@@ -339,10 +339,6 @@ namespace SCJ.Booking.MVC.Services
 
             switch (hearingsRemaining)
             {
-                case 2:
-                    return new HtmlString($"You can book 2 more hearings today.");
-                case 1:
-                    return new HtmlString($"You can book 1 more hearing today.");
                 case 0:
                     return new HtmlString("You cannot book anymore hearings today.");
                 default:
