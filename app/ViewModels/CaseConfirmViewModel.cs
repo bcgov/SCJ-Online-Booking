@@ -39,5 +39,8 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Is user known?
         public bool IsUserKnown { get; set; }
+
+        //Phone number
+        public string Phone { get; set; }
     }
 }

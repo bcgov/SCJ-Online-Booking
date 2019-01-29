@@ -30,10 +30,10 @@
                     </div>
                 </div>
                 <div class="col-md-6 form-group">
-                    <label>What is the Case Action Number for the case?</label>
+                    <label>What is the Court File Number for the case?</label>
                     <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber" />
                     <div class="invalid-feedback">
-                        Please provide a Case Action Number.
+                        Please provide a Court File Number.
                     </div>
                 </div>
             </div>
@@ -91,11 +91,10 @@ else
                 <div class="row options-nextStep">
                     <div class="col col-md-4 col-sm-12 col-12">
                         <div class="card bg-light">
-                            <div class="card-header">Is it the right Case Action Number?</div>
+                            <div class="card-header">Is it the right Court File Number?</div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    If this is not the correct Case Action
-                                    Number, you can change it and try again
+                                    If this is not the correct Court File Number, you can change it and try again
                                     for available times.
                                 </p>
                             </div>
@@ -137,7 +136,7 @@ else
                     <div class="float-left">
                         <h2>Available Times in @Model.SelectedRegistryName</h2>
                     </div>
-                    <span class="ml-3 information-tooltip" data-toggle="tooltip" data-placement="right" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Case Action Number you provided.</p>">
+                    <span class="ml-3 information-tooltip" data-toggle="tooltip" data-placement="right" data-html="true" title="<h3>HEARING LOCATION</h3><p>The hearing location is set based on the Court File Number you provided.</p>">
                         <i class="fas fa-question-circle"></i>
                     </span>
                 </div>

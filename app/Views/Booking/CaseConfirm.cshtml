@@ -24,7 +24,7 @@
             <input type="hidden" asp-for="LocationId" />
             <input type="hidden" asp-for="FullDate" />
             <div class="form-group">
-                <label class="font-weight-bold">Case Action Number</label>
+                <label class="font-weight-bold">Court File Number</label>
                 <div>
                     <label>@Model.CaseNumber</label>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="font-weight-bold">Location for Conference Hearing</label>
+                <label class="font-weight-bold">Registry Name</label>
                 <div>
                     <label>@Model.LocationName</label>
                 </div>
@@ -57,15 +57,24 @@
                     Please provide a valid email address.
                 </div>
             </div>
+            <div class="form-group">
+                <label class="font-weight-bold">Phone (format: xxx-xxx-xxxx):</label>
+                <input type="tel" asp-for="Phone" required class="form-control" pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
+                <div class="invalid-feedback">
+                    Please provide a valid phone number.
+                </div>
+            </div>
+
+            <div class="row booking-submit">
+                <div class="content col-lg-6">
+                    <button type="submit" class="btn btn-primary btn-lg" id="btnSearch">Confirm Booking</button>
+                    @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
+                </div>
+            </div>
+
+        </form>
     </div>
 </div>
-<div class="row booking-submit">
-    <div class="content col-lg-6">
-        <button type="submit" class="btn btn-primary btn-lg" id="btnSearch">Confirm Booking</button>
-        @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
-    </div>
-</div>
-</form>
 
 @section Scripts {
     <script src="~/js/casesearch.js" asp-append-version="true"></script>

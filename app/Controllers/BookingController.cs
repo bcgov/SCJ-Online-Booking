@@ -76,7 +76,7 @@ namespace SCJ.Booking.MVC.Controllers
             //Timeslot is still available
             CaseConfirmViewModel ccm = new CaseConfirmViewModel()
             {
-                CaseNumber = await _bookingService.BuildCaseNumber(caseId, locationId, _client),
+                CaseNumber = caseId,
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
                 Time = dt.ToString("hh:mm tt") + " - " + dt.AddMinutes(await _bookingService.GetLocationHearingLength(locationId, hearingId, _client)).ToString("hh:mm tt"),
                 LocationName = await _bookingService.GetLocationName(locationId, _client),
