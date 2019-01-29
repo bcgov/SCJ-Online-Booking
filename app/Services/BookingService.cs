@@ -339,10 +339,14 @@ namespace SCJ.Booking.MVC.Services
 
             switch (hearingsRemaining)
             {
+                case _maxHearingsPerDay:
+                    return new HtmlString($"You can book {_maxHearingsPerDay} hearings today.");
+                case 1:
+                    return new HtmlString("You can book 1 more hearing today.");
                 case 0:
                     return new HtmlString("You cannot book anymore hearings today.");
                 default:
-                    return new HtmlString($"You can book {hearingsRemaining} hearings today.");
+                    return new HtmlString($"You can book {hearingsRemaining} more hearings today.");
             }
         }
 
