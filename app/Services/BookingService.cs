@@ -62,7 +62,7 @@ namespace SCJ.Booking.MVC.Services
                 var locationsAsync = await client.getLocationsAsync();
 
                 //set model property
-                retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName + " Law Courts"}), "Id", "Value");
+                retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
 
 
             }
@@ -91,7 +91,7 @@ namespace SCJ.Booking.MVC.Services
                 var locationsAsync = await client.getLocationsAsync();
 
                 //populate select
-                retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName + " Law Courts"}), "Id", "Value");
+                retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
 
                 //keep reference to current conference type
                 retval.ConferenceType = model.ConferenceType;
