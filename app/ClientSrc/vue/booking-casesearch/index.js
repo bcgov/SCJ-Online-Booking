@@ -8,7 +8,9 @@ Vue.config.productionTip = false;
 
 Vue.component("availabletimes", AvailableTimes);
 
-// ReSharper disable once ConstructorCallNotUsed
-new Vue({
-    el: "#VueAvailableTimes"
-});
+if ($('#VueAvailableTimes').length) {
+    let vue = new Vue({
+        el: "#VueAvailableTimes"
+    });
+}
+

@@ -19,7 +19,7 @@
             //   "data source=musicstore.db;"
             // mysql:
             //   "server=127.0.0.1;port=3306;database=musicstore;uid=root;pwd=root;"
-            "ConnectionString": "data source=DESKTOP-GRC6DLA\\SQLEXPRESS;Integrated Security=SSPI;initial catalog=SupremeCourtsBookingDB"
+            "ConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=SupremeCourtsBooking;Trusted_Connection=True;MultipleActiveResultSets=true;Connect Timeout=30;"
         }
     }
 }
