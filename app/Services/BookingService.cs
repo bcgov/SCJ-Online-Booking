@@ -94,7 +94,7 @@ namespace SCJ.Booking.MVC.Services
                 ConferenceType = model.ConferenceType,
                 SelectedRegistryId = model.SelectedRegistryId,
                 CaseNumber = model.CaseNumber,
-                TimeslotExpired = model.TimeslotExpired
+                TimeSlotExpired = model.TimeSlotExpired
             };
 
             //search the current case number
@@ -132,7 +132,7 @@ namespace SCJ.Booking.MVC.Services
                     if (!await IsTimeStillAvailable(model.ContainerId, model.SelectedRegistryId,
                         hearingId, client))
                     {
-                        retval.TimeslotExpired = true;
+                        retval.TimeSlotExpired = true;
                     }
 
                     //convert JS ticks to .Net date
@@ -141,7 +141,7 @@ namespace SCJ.Booking.MVC.Services
                     //set date properties
                     retval.ContainerId = model.ContainerId;
                     retval.SelectedCaseDate = model.SelectedCaseDate;
-                    retval.TimeslotFriendlyName =
+                    retval.TimeSlotFriendlyName =
                         dt.ToString("MMMM dd") + " from " + dt.ToString("hh:mm tt") + " to " +
                         dt.AddMinutes(hearingLength).ToString("hh:mm tt");
                 }

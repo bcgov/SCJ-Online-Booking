@@ -18,7 +18,7 @@
         <form asp-controller="Booking" asp-action="CaseSearch" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
             <input type="hidden" asp-for="SelectedCaseDate" id="hidDate" />
             <input type="hidden" asp-for="ContainerId" id="hidContainerId" />
-            <input type="hidden" asp-for="TimeslotExpired" id="hidTimeslotExpired" />
+            <input type="hidden" asp-for="TimeSlotExpired" id="hidTimeslotExpired" />
             <div class="row search-info">
                 <div class="col-md-6 form-group">
                     <label>Pick the registry where the file was created.</label>
@@ -64,13 +64,13 @@ else
     if (Context.Request.Method == "POST")
     {
         <hr class="results-linebreak" />
-        if (Model.TimeslotExpired)
+        if (Model.TimeSlotExpired)
         {
             <div class="row">
                 <div class="col col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <i class="fas fa-exclamation-triangle"></i>
-                        Someone just booked a hearing on @Model.TimeslotFriendlyName and it is no longer available. Please choose another time for your hearing.
+                        Someone just booked a hearing on @Model.TimeSlotFriendlyName and it is no longer available. Please choose another time for your hearing.
                     </div>
                 </div>
             </div>

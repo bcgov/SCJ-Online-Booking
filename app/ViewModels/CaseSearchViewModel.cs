@@ -12,7 +12,7 @@ namespace SCJ.Booking.MVC.ViewModels
             Results = new AvailableDatesByLocation();
             NoAvailableTimes = false;
             IsValidCaseNumber = false;
-            TimeslotExpired = false;
+            TimeSlotExpired = false;
             SelectedRegistryName = string.Empty;
             SelectedRegistryId = -1;
             ContainerId = -1;
@@ -37,19 +37,20 @@ namespace SCJ.Booking.MVC.ViewModels
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber { get; set; }
 
-        //Indicates if the timeslot expired
-        public bool TimeslotExpired { get; set; }
+        //Indicates if the time slot expired
+        public bool TimeSlotExpired { get; set; }
 
-        //Location ID and Name
+        // Selected Registry ID
+        [Required(ErrorMessage = "Please select the registry where the file was created.")]
         public int SelectedRegistryId { get; set; }
 
+        // Selected Registry Name
         public string SelectedRegistryName { get; set; }
 
-        [Required(ErrorMessage = "Please select the registry where the file was created.")]
         public SelectList Registry { get; set; }
 
-        //Used when the timeslot expired eg. January 7 from 2:45pm to 3:15pm
-        public string TimeslotFriendlyName { get; set; }
+        //Used when the time slot expired eg. January 7 from 2:45pm to 3:15pm
+        public string TimeSlotFriendlyName { get; set; }
 
         //Date properties
         public int ContainerId { get; set; }
@@ -57,7 +58,7 @@ namespace SCJ.Booking.MVC.ViewModels
         //Date selected in the swiper
         public string SelectedCaseDate { get; set; }
 
-        //Inicator if user can book a date
+        //Indicator if user can book a date
         public bool IsUserAllowedToBook { get; set; }
     }
 }

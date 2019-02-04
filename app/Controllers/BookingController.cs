@@ -59,7 +59,7 @@ namespace SCJ.Booking.MVC.Controllers
                     _client));
 
             //test if the user selected a timeslot that is available
-            if (csvm != null && csvm.ContainerId > 0 && !csvm.TimeslotExpired)
+            if (csvm != null && csvm.ContainerId > 0 && !csvm.TimeSlotExpired)
                 //go to confirmation screen
             {
                 return RedirectToAction("CaseConfirm",
