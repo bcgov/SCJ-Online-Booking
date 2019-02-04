@@ -10,7 +10,6 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             //Default values
             Results = new AvailableDatesByLocation();
-            NoAvailableTimes = false;
             IsValidCaseNumber = false;
             TimeSlotExpired = false;
             SelectedRegistryName = string.Empty;
@@ -30,9 +29,6 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Available dates
         public AvailableDatesByLocation Results { get; set; }
-
-        //Indicator to show if there are results but no times available
-        public bool NoAvailableTimes { get; set; }
 
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber { get; set; }

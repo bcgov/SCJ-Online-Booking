@@ -128,7 +128,7 @@ else
             </div>
             <!-- No search results for case number-->
         }
-        else if (Model.Results.AvailableDates.Length > 0 && !Model.NoAvailableTimes)
+        else if (Model.Results.AvailableDates.Any())
         {
             <!-- Booking times-->
             <div class="row">
@@ -157,7 +157,7 @@ else
             </div>
             <!-- Booking times-->
         }
-        else if (Model.NoAvailableTimes)
+        else
         {
             <!-- No available times for this hearing - next steps-->
             <div class="no-available-times">
