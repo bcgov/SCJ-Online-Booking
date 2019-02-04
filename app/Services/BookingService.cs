@@ -1,74 +1,86 @@
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SCJ.SC.OnlineBooking;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SCJ.Booking.MVC.ViewModels;
-using Serilog;
-using SCJ.Booking.MVC.Data;
-using SCJ.Booking.MVC.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using SCJ.Booking.MVC.Data;
+using SCJ.Booking.MVC.Models;
+using SCJ.Booking.MVC.Utils;
+using SCJ.Booking.MVC.ViewModels;
+using SCJ.SC.OnlineBooking;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 namespace SCJ.Booking.MVC.Services
 {
     public class BookingService
     {
-        //Init error logger
-        Serilog.Core.Logger _logger = null;
+        //Const
+        private const int MaxHearingsPerDay = 250;
+
+        // DB Context
         private readonly ApplicationDbContext _dbContext;
 
-        //HttpContext
-        private IHttpContextAccessor _httpContextAccessor;
-
-        //Const
-        private const int _maxHearingsPerDay = 250;
+        //Http Context
+        private readonly HttpContext _httpContext;
 
         //Environment
-        private bool _isLocallDevEnvironment = false;
+        private readonly bool _isLocalDevEnvironment;
+
+        //Init error logger
+        private readonly Logger _logger;
 
         //Constructor
         public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor)
         {
             //setup error logger settings
             _logger = new LoggerConfiguration()
-            .WriteTo.Console(Serilog.Events.LogEventLevel.Error)
-            .CreateLogger();
+                .WriteTo.Console(LogEventLevel.Error)
+                .CreateLogger();
 
-            //DB Contect setup
+            //DB Context setup
             _dbContext = dbContext;
 
             //HttpContext
-            _httpContextAccessor = httpAccessor;
+            _httpContext = httpAccessor.HttpContext;
 
             //test the environment
-            if (Environment.GetEnvironmentVariable("TAG_NAME").ToLower().Equals("localdev"))
-                _isLocallDevEnvironment = true;
+            string tagName = Environment.GetEnvironmentVariable("TAG_NAME") ?? "";
+
+            if (tagName.ToLower().Equals("localdev"))
+            {
+                _isLocalDevEnvironment = true;
+            }
         }
 
 
         /// <summary>
-        /// Populate the dropdown list for locations for the search
+        ///     Populate the dropdown list for locations for the search
         /// </summary>
         public async Task<CaseSearchViewModel> LoadForm(IOnlineBooking client)
         {
             //Model instance
-            CaseSearchViewModel retval = new CaseSearchViewModel();
+            var retval = new CaseSearchViewModel();
 
             try
             {
                 //Load locations from API
-                var locationsAsync = await client.getLocationsAsync();
+                Location[] locationsAsync = await client.getLocationsAsync();
 
                 //set model property
-                retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
-
-
+                retval.Registry =
+                    new SelectList(
+                        locationsAsync.Select(x => new {Id = x.locationID, Value = x.locationName}),
+                        "Id", "Value");
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Error in service. Metod: LoadForm().");
+                _logger.Error(ex, "Error in service. Method: LoadForm().");
             }
 
             //return model to view
@@ -77,21 +89,25 @@ namespace SCJ.Booking.MVC.Services
 
 
         /// <summary>
-        /// Search for available times
+        ///     Search for available times
         /// </summary>
-        public async Task<CaseSearchViewModel> GetResults(CaseSearchViewModel model, IOnlineBooking client, int hearingId, int hearingLength)
+        public async Task<CaseSearchViewModel> GetResults(CaseSearchViewModel model,
+            IOnlineBooking client, int hearingId, int hearingLength)
         {
-            CaseSearchViewModel retval = new CaseSearchViewModel();
+            var retval = new CaseSearchViewModel();
 
             try
             {
                 #region Always set the dropdown values and case number
 
                 // Load locations from API
-                var locationsAsync = await client.getLocationsAsync();
+                Location[] locationsAsync = await client.getLocationsAsync();
 
                 //populate select
-                retval.Registry = new SelectList(locationsAsync.Select(x => new { Id = x.locationID, Value = x.locationName }), "Id", "Value");
+                retval.Registry =
+                    new SelectList(
+                        locationsAsync.Select(x => new {Id = x.locationID, Value = x.locationName}),
+                        "Id", "Value");
 
                 //keep reference to current conference type
                 retval.ConferenceType = model.ConferenceType;
@@ -108,7 +124,8 @@ namespace SCJ.Booking.MVC.Services
                 #endregion
 
                 //search the current case number
-                if (await client.caseNumberValidAsync(await BuildCaseNumber(model.CaseNumber, model.SelectedRegistryId, client)) == 0)
+                if (await client.caseNumberValidAsync(await BuildCaseNumber(model.CaseNumber,
+                        model.SelectedRegistryId, client)) == 0)
                 {
                     //case could not be found
                     retval.IsValidCaseNumber = false;
@@ -121,33 +138,44 @@ namespace SCJ.Booking.MVC.Services
                     //valid case number
                     retval.IsValidCaseNumber = true;
 
-                    retval.Results = await client.AvailableDatesByLocationAsync(Convert.ToInt32(model.SelectedRegistryId), hearingId);
+                    retval.Results =
+                        await client.AvailableDatesByLocationAsync(
+                            Convert.ToInt32(model.SelectedRegistryId), hearingId);
 
                     //set location name
-                    SelectListItem selectedRegistry = retval.Registry.FirstOrDefault(x => x.Value == retval.SelectedRegistryId.ToString());
+                    SelectListItem selectedRegistry =
+                        retval.Registry.FirstOrDefault(x =>
+                            x.Value == retval.SelectedRegistryId.ToString());
 
                     if (selectedRegistry != null)
+                    {
                         retval.SelectedRegistryName = selectedRegistry.Text;
+                    }
 
                     //check for valid date
                     if (model.ContainerId > 0)
                     {
-                        if (!await IsTimeStillAvailable(model.ContainerId, model.SelectedRegistryId, hearingId, client))
+                        if (!await IsTimeStillAvailable(model.ContainerId, model.SelectedRegistryId,
+                            hearingId, client))
+                        {
                             retval.TimeslotExpired = true;
+                        }
 
                         //convert JS ticks to .Net date
-                        DateTime dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
+                        var dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
 
                         //set date properties
                         retval.ContainerId = model.ContainerId;
                         retval.SelectedCaseDate = model.SelectedCaseDate;
-                        retval.TimeslotFriendlyName = dt.ToString("MMMM dd") + " from " + dt.ToString("hh:mm tt") + " to " + dt.AddMinutes(hearingLength).ToString("hh:mm tt");
+                        retval.TimeslotFriendlyName =
+                            dt.ToString("MMMM dd") + " from " + dt.ToString("hh:mm tt") + " to " +
+                            dt.AddMinutes(hearingLength).ToString("hh:mm tt");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Error in service. Metod: GetResults().");
+                _logger.Error(ex, "Error in service. Method: GetResults().");
             }
 
             return retval;
@@ -155,27 +183,27 @@ namespace SCJ.Booking.MVC.Services
 
 
         /// <summary>
-        /// Check if a timeslot is still available for a court booking
+        ///     Check if a time slot is still available for a court booking
         /// </summary>
-        public async Task<bool> IsTimeStillAvailable(int containerId, int locationId, int hearingId, IOnlineBooking client)
+        public async Task<bool> IsTimeStillAvailable(int containerId, int locationId, int hearingId,
+            IOnlineBooking client)
         {
             //default value
-            bool isTimeAvailable = false;
+            var isTimeAvailable = false;
 
             try
             {
                 //get all locations
-                var locationsAvailable = await client.AvailableDatesByLocationAsync(locationId, hearingId);
+                AvailableDatesByLocation locationsAvailable =
+                    await client.AvailableDatesByLocationAsync(locationId, hearingId);
 
                 //try and get location for specific container
-                var timeslot = locationsAvailable.AvailableDates.Select(x => x.ContainerID == containerId);
-
-                //set return value
-                isTimeAvailable = timeslot != null ? true : false;
+                isTimeAvailable =
+                    locationsAvailable.AvailableDates.Any(x => x.ContainerID == containerId);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Error in service. Metod: IsTimeStillAvailable().");
+                _logger.Error(ex, "Error in service. Method: IsTimeStillAvailable().");
             }
 
             return isTimeAvailable;
@@ -183,9 +211,10 @@ namespace SCJ.Booking.MVC.Services
 
 
         /// <summary>
-        /// Fetch location-code for specific case ID
+        ///     Fetch location-code for specific case ID
         /// </summary>
-        public async Task<string> BuildCaseNumber(string caseId, int locationId, IOnlineBooking client)
+        public async Task<string> BuildCaseNumber(string caseId, int locationId,
+            IOnlineBooking client)
         {
             //default value
             string locationPrefix = string.Empty;
@@ -193,23 +222,23 @@ namespace SCJ.Booking.MVC.Services
             try
             {
                 //load all locations
-                var locations = await client.getLocationsAsync();
+                Location[] locations = await client.getLocationsAsync();
 
                 //fetch location prefix
-                locationPrefix = locations.Where(x => x.locationID == locationId).FirstOrDefault().locationCode;
+                locationPrefix = locations.FirstOrDefault(x => x.locationID == locationId)?.locationCode;
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Error in service. Metod: BuildCaseNumber().");
+                _logger.Error(ex, "Error in service. Method: BuildCaseNumber().");
             }
 
             //return location prefix + case number
-            return locationPrefix + caseId.ToString();
+            return locationPrefix + caseId;
         }
 
 
         /// <summary>
-        /// Fetch the location name based on the location ID
+        ///     Fetch the location name based on the location ID
         /// </summary>
         public async Task<string> GetLocationName(int locationId, IOnlineBooking client)
         {
@@ -219,14 +248,16 @@ namespace SCJ.Booking.MVC.Services
             try
             {
                 //load all locations
-                var locations = await client.getLocationsAsync();
+                Location[] locations = await client.getLocationsAsync();
 
-                //set location name
-                locationName = locations.Where(x => x.locationID == locationId).FirstOrDefault().locationName + " Law Courts";
+                //get location name
+                locationName = locations.FirstOrDefault(x => x.locationID == locationId)?.locationName;
+
+                locationName += " Law Courts";
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Error in service. Metod: GetLocationName().");
+                _logger.Error(ex, "Error in service. Method: GetLocationName().");
             }
 
             //fetch location name
@@ -235,24 +266,26 @@ namespace SCJ.Booking.MVC.Services
 
 
         /// <summary>
-        /// Fetch the location name based on the location ID
+        ///     Fetch the location name based on the location ID
         /// </summary>
-        public async Task<int> GetLocationHearingLength(int locationId, int hearingTypeId, IOnlineBooking client)
+        public async Task<int> GetLocationHearingLength(int locationId, int hearingTypeId,
+            IOnlineBooking client)
         {
             //default value
-            int locationLength = 0;
+            var locationLength = 0;
 
             try
             {
                 //load all locations
-                var availableDatesByLocation = await client.AvailableDatesByLocationAsync(locationId, hearingTypeId);
+                AvailableDatesByLocation availableDatesByLocation =
+                    await client.AvailableDatesByLocationAsync(locationId, hearingTypeId);
 
                 //set location length
                 locationLength = availableDatesByLocation.BookingDetails.detailBookingLength;
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Error in service. Metod: GetLocationHearingLength().");
+                _logger.Error(ex, "Error in service. Method: GetLocationHearingLength().");
             }
 
             //fetch location length
@@ -261,14 +294,15 @@ namespace SCJ.Booking.MVC.Services
 
 
         /// <summary>
-        /// Book court case
+        ///     Book court case
         /// </summary>
-        public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model, IOnlineBooking client, int hearingId, int hearingLength, string userId)
+        public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model,
+            IOnlineBooking client, int hearingId, int hearingLength, string userId)
         {
             try
             {
                 //if the user could not be detected return 
-                if (String.IsNullOrWhiteSpace(userId))
+                if (string.IsNullOrWhiteSpace(userId))
                 {
                     model.IsUserKnown = false;
                     return model;
@@ -277,11 +311,12 @@ namespace SCJ.Booking.MVC.Services
                 //we know who the user is.
                 model.IsUserKnown = true;
 
-                //ensure timeslot is still available
-                if (await IsTimeStillAvailable(model.ContainerId, model.LocationId, hearingId, client))
+                //ensure time slot is still available
+                if (await IsTimeStillAvailable(model.ContainerId, model.LocationId, hearingId,
+                    client))
                 {
                     //build object to send to the API
-                    BookHearingInfo bhi = new BookHearingInfo()
+                    var bhi = new BookHearingInfo
                     {
                         caseID = Convert.ToInt32(Regex.Replace(model.CaseNumber, "[A-Za-z ]", "")),
                         containerID = model.ContainerId,
@@ -289,19 +324,24 @@ namespace SCJ.Booking.MVC.Services
                         hearingLength = hearingLength,
                         locationID = model.LocationId,
                         requestedBy = "USER",
-                        hearingTypeId = (int)Utils.Enums.ConferenceHearingType.TRIAL_MANAGEMENT_CONFERENCE
+                        hearingTypeId =
+                            (int) Enums.ConferenceHearingType.TRIAL_MANAGEMENT_CONFERENCE
                     };
 
                     //submit booking
-                    var result = await client.BookingHearingAsync(bhi);
+                    BookingHearingResult result = await client.BookingHearingAsync(bhi);
 
                     //test to see if the booking was successful
                     if (result.bookingResult.ToLower().StartsWith("success"))
                     {
                         //create database entry
-                        var bookingInfo = _dbContext.Set<BookingHistory>();
+                        DbSet<BookingHistory> bookingInfo = _dbContext.Set<BookingHistory>();
 
-                        bookingInfo.Add(new BookingHistory { ContainerId = model.ContainerId, SmGovUserGuid = userId, Timestamp = DateTime.Now });
+                        bookingInfo.Add(new BookingHistory
+                        {
+                            ContainerId = model.ContainerId, SmGovUserGuid = userId,
+                            Timestamp = DateTime.Now
+                        });
 
                         //save to DB
                         _dbContext.SaveChanges();
@@ -310,19 +350,21 @@ namespace SCJ.Booking.MVC.Services
                         model.IsBooked = true;
                     }
                     else
+                    {
                         model.IsBooked = false;
+                    }
                 }
                 else
                 {
                     //The booking is not available anymore
-                    //user needs to choose a new timeslot
+                    //user needs to choose a new time slot
                     model.IsTimeslotAvailable = false;
                     model.IsBooked = false;
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Error in service. Metod: BookCourtCase().");
+                _logger.Error(ex, "Error in service. Method: BookCourtCase().");
             }
 
             return model;
@@ -330,7 +372,7 @@ namespace SCJ.Booking.MVC.Services
 
 
         /// <summary>
-        /// Get the number of hearings left for the day
+        ///     Get the number of hearings left for the day
         /// </summary>
         /// <returns></returns>
         public HtmlString GetHearingsRemaining()
@@ -339,8 +381,8 @@ namespace SCJ.Booking.MVC.Services
 
             switch (hearingsRemaining)
             {
-                case _maxHearingsPerDay:
-                    return new HtmlString($"You can book {_maxHearingsPerDay} hearings today.");
+                case MaxHearingsPerDay:
+                    return new HtmlString($"You can book {MaxHearingsPerDay} hearings today.");
                 case 1:
                     return new HtmlString("You can book 1 more hearing today.");
                 case 0:
@@ -351,40 +393,43 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        /// Read the database and get the total number of hearings left for the day
+        ///     Read the database and get the total number of hearings left for the day
         /// </summary>
-        /// <returns></returns>
         public int GetUserHearingsTotalRemaining()
         {
             //get user GUID
-            var uGuid = string.Empty;
+            string uGuid;
 
-            if (!_isLocallDevEnvironment)
+            if (!_isLocalDevEnvironment)
             {
                 //try and read the header
-                if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
-                    uGuid = _httpContextAccessor.HttpContext.Request.Headers["SMGOV-USERGUID"].ToString();
-                else return 0;
+                if (_httpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
+                {
+                    uGuid = _httpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+                }
+                else
+                {
+                    return MaxHearingsPerDay;
+                }
             }
             else
             {
                 //Dummy user guid
-                uGuid = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0"; 
+                uGuid = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
             }
 
             //today's date
-            var todaysDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+            var today = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
 
             //get all entries for logged-in user
             //booked on today
-            var hearingsBookedForToday = _dbContext.BookingHistory.Where(b => b.SmGovUserGuid == uGuid && b.Timestamp.Day == todaysDate.Day && b.Timestamp.Month == todaysDate.Month && b.Timestamp.Year == b.Timestamp.Year).ToList();
+            List<BookingHistory> hearingsBookedForToday = _dbContext.BookingHistory
+                .Where(b => b.SmGovUserGuid == uGuid &&
+                            b.Timestamp.Day == today.Day &&
+                            b.Timestamp.Month == today.Month &&
+                            b.Timestamp.Year == today.Year).ToList();
 
-            if (hearingsBookedForToday != null && hearingsBookedForToday.Count() > 0)
-                //return number of hearings booked for today minus the max bookings allowed
-                return (_maxHearingsPerDay - hearingsBookedForToday.Count());
-            else
-                //User have not made any bookings for the day
-                return _maxHearingsPerDay;
+            return MaxHearingsPerDay - hearingsBookedForToday.Count();
         }
     }
 }
