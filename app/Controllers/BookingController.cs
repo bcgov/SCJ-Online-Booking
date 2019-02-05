@@ -14,7 +14,7 @@ namespace SCJ.Booking.MVC.Controllers
     public class BookingController : Controller
     {
         //CONST
-        private const int HearingId = 9010; //Hardcoded for now
+        public const int HearingTypeId = 9090; //Hardcoded for now
 
         //Services
         private readonly BookingService _bookingService;
@@ -54,8 +54,8 @@ namespace SCJ.Booking.MVC.Controllers
         public async Task<IActionResult> CaseSearch(CaseSearchViewModel model)
         {
             //get results from services layer. 
-            CaseSearchViewModel csvm = await _bookingService.GetResults(model, _client, HearingId,
-                await _bookingService.GetLocationHearingLength(model.SelectedRegistryId, HearingId,
+            CaseSearchViewModel csvm = await _bookingService.GetResults(model, _client, HearingTypeId,
+                await _bookingService.GetLocationHearingLength(model.SelectedRegistryId, HearingTypeId,
                     _client));
 
             //test if the user selected a timeslot that is available
@@ -87,7 +87,7 @@ namespace SCJ.Booking.MVC.Controllers
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
                 Time = dt.ToString("hh:mm tt") + " - " + dt
                            .AddMinutes(
-                               await _bookingService.GetLocationHearingLength(locationId, HearingId,
+                               await _bookingService.GetLocationHearingLength(locationId, HearingTypeId,
                                    _client)).ToString("hh:mm tt"),
                 LocationName = await _bookingService.GetLocationName(locationId, _client),
                 TypeOfConferenceHearing = "Trial Management Conference",
@@ -126,11 +126,11 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             int hearingLength =
-                await _bookingService.GetLocationHearingLength(model.LocationId, HearingId,
+                await _bookingService.GetLocationHearingLength(model.LocationId, HearingTypeId,
                     _client);
 
             //make booking
-            return View(await _bookingService.BookCourtCase(model, _client, HearingId,
+            return View(await _bookingService.BookCourtCase(model, _client, HearingTypeId,
                 hearingLength, userId));
         }
     }

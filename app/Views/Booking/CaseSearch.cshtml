@@ -1,4 +1,5 @@
 @inject BookingService service
+@using SCJ.Booking.MVC.Controllers
 @model CaseSearchViewModel
 
 @{
@@ -145,7 +146,7 @@ else
             </div>
             <div id="VueAvailableTimes" class="availableTimesContainer">
                 <availabletimes :location-id="@Model.SelectedRegistryId"
-                                :hearing-type="9010"
+                                :hearing-type="@BookingController.HearingTypeId"
                                 case-number="@Model.CaseNumber.Trim()">
                 </availabletimes>
             </div>
