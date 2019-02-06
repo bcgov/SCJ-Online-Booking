@@ -36,8 +36,7 @@ namespace SCJ.Booking.MVC
 
                     try
                     {
-                        int productType;
-                        if (GetProductInfo(osVersion.Major, osVersion.Minor, 0, 0, out productType))
+                        if (GetProductInfo(osVersion.Major, osVersion.Minor, 0, 0, out int productType))
                         {
                             _isNano = productType == PRODUCT_NANO_SERVER ||
                                       productType == PRODUCT_DATACENTER_NANO_SERVER ||

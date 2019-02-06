@@ -18,7 +18,8 @@
         <form asp-controller="Booking" asp-action="CaseSearch" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
             <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
             <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
-            <input type="hidden" asp-for="TimeSlotExpired" id="hidTimeslotExpired"/>
+            <input type="hidden" asp-for="TimeSlotExpired" />
+            <input type="hidden" asp-for="HearingTypeId" />
             <div class="row search-info">
                 <div class="col-md-6 form-group">
                     <label>Pick the registry where the file was created.</label>
@@ -145,7 +146,7 @@ else
             </div>
             <div id="VueAvailableTimes" class="availableTimesContainer">
                 <availabletimes :location-id="@Model.SelectedRegistryId"
-                                :hearing-type="@Model.HearingType">
+                                :hearing-type="@Model.HearingTypeId">
                 </availabletimes>
             </div>
             <div class="row">&nbsp;</div>
@@ -202,7 +203,6 @@ else
 @section Scripts {
     <script src="~/dist/vendor.js" asp-append-version="true"></script>
     <script src="~/dist/vue/booking-casesearch.js" asp-append-version="true"></script>
-    <script src="~/js/casesearch.js" asp-append-version="true"></script>
 }
 
 @section Styles {

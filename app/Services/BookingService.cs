@@ -80,7 +80,8 @@ namespace SCJ.Booking.MVC.Services
             {
                 RegistryOptions = new SelectList(
                     locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
-                    "Id", "Value")
+                    "Id", "Value"),
+                HearingTypeId = HearingType.TMC
             };
         }
 
@@ -92,14 +93,14 @@ namespace SCJ.Booking.MVC.Services
             int hearingId, int hearingLength)
         {
             // Load locations from API
-            Location[] locationsAsync = await _client.getLocationsAsync();
+            Location[] locations = await _client.getLocationsAsync();
 
             var retval = new CaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locationsAsync.Select(x => new {Id = x.locationID, Value = x.locationName}),
+                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
                     "Id", "Value"),
-                HearingType = model.HearingType,
+                HearingTypeId = model.HearingTypeId,
                 SelectedRegistryId = model.SelectedRegistryId,
                 CaseNumber = model.CaseNumber,
                 TimeSlotExpired = model.TimeSlotExpired

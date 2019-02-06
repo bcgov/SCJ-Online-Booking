@@ -109,24 +109,13 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            string userId;
+            // fake user id for testing without BCeID
+            string userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
 
-            if (!_isLocalDevEnvironment)
+            //read user-guid in headers
+            if (_httpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
             {
-                //read user-guid in headers
-                if (_httpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
-                {
-                    userId = _httpContext.Request.Headers["SMGOV-USERGUID"].ToString();
-                }
-                else
-                {
-                    //Dummy user guid
-                    userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
-                }
-            }
-            else
-            {
-                userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
+                userId = _httpContext.Request.Headers["SMGOV-USERGUID"].ToString();
             }
 
             int hearingLength =

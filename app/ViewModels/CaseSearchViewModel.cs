@@ -17,7 +17,7 @@ namespace SCJ.Booking.MVC.ViewModels
             ContainerId = -1;
             SelectedCaseDate = string.Empty;
             CaseNumber = string.Empty;
-            HearingType = Utils.HearingType.TMC;
+            HearingTypeId = Utils.HearingType.TMC;
         }
 
         //Search fields
@@ -25,7 +25,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string CaseNumber { get; set; }
 
         [Required(ErrorMessage = "Please choose the type of conference hearing.")]
-        public int HearingType { get; set; }
+        public int HearingTypeId { get; set; }
 
         //Available dates
         public AvailableDatesByLocation Results { get; set; }
@@ -54,7 +54,5 @@ namespace SCJ.Booking.MVC.ViewModels
         //Date selected in the swiper
         public string SelectedCaseDate { get; set; }
 
-        //Indicator if user can book a date
-        public bool IsUserAllowedToBook { get; set; }
     }
 }
