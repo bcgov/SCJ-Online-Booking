@@ -39,8 +39,7 @@
         },
         props: {
             locationId: Number,
-            hearingType: Number,
-            caseNumber: String,
+            hearingType: Number
         },
         data() {
             return {

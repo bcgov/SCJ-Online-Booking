@@ -19,11 +19,14 @@ namespace SCJ.Booking.MVC.ViewModels
         //Time for booking 
         public string Time { get; set; }
 
-        //indicate if the timeslot was available on the time the user clicked on the confirm button
-        public bool IsTimeslotAvailable { get; set; }
+        //indicate if the time-slot was available on the time the user clicked on the confirm button
+        public bool IsTimeSlotAvailable { get; set; }
 
-        //indicate if the case was booked sucessfully
+        //indicate if the case was booked successfully
         public bool IsBooked { get; set; }
+
+        //The result string returned by the SOAP API when the hearing was booked
+        public string RawResult { get; set; }
 
         //ContainerId for locations
         public int ContainerId { get; set; }

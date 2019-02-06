@@ -1,5 +1,4 @@
 @inject BookingService service
-@using SCJ.Booking.MVC.Controllers
 @model CaseSearchViewModel
 
 @{
@@ -17,13 +16,13 @@
 <div class="row search-container">
     <div class="col col-md-12">
         <form asp-controller="Booking" asp-action="CaseSearch" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
-            <input type="hidden" asp-for="SelectedCaseDate" id="hidDate" />
-            <input type="hidden" asp-for="ContainerId" id="hidContainerId" />
-            <input type="hidden" asp-for="TimeSlotExpired" id="hidTimeslotExpired" />
+            <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
+            <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
+            <input type="hidden" asp-for="TimeSlotExpired" id="hidTimeslotExpired"/>
             <div class="row search-info">
                 <div class="col-md-6 form-group">
                     <label>Pick the registry where the file was created.</label>
-                    <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.Registry" required>
+                    <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.RegistryOptions" required>
                         <option value="">-- Pick a registry --</option>
                     </select>
                     <div class="invalid-feedback">
@@ -32,7 +31,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                     <label>What is the Court File Number for the case?</label>
-                    <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber" />
+                    <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber"/>
                     <div class="invalid-feedback">
                         Please provide a Court File Number.
                     </div>
@@ -64,7 +63,7 @@ else
 {
     if (Context.Request.Method == "POST")
     {
-        <hr class="results-linebreak" />
+        <hr class="results-linebreak"/>
         if (Model.TimeSlotExpired)
         {
             <div class="row">
@@ -146,8 +145,7 @@ else
             </div>
             <div id="VueAvailableTimes" class="availableTimesContainer">
                 <availabletimes :location-id="@Model.SelectedRegistryId"
-                                :hearing-type="@BookingController.HearingTypeId"
-                                case-number="@Model.CaseNumber.Trim()">
+                                :hearing-type="@Model.HearingType">
                 </availabletimes>
             </div>
             <div class="row">&nbsp;</div>
@@ -208,5 +206,5 @@ else
 }
 
 @section Styles {
-    <link href="~/swiper.min.css" rel="stylesheet" />
+    <link href="~/swiper.min.css" rel="stylesheet"/>
 }

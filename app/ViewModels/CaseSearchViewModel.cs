@@ -17,7 +17,7 @@ namespace SCJ.Booking.MVC.ViewModels
             ContainerId = -1;
             SelectedCaseDate = string.Empty;
             CaseNumber = string.Empty;
-            ConferenceType = Utils.Enums.ConferenceHearingType.TRIAL_MANAGEMENT_CONFERENCE;
+            HearingType = Utils.HearingType.TMC;
         }
 
         //Search fields
@@ -25,7 +25,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string CaseNumber { get; set; }
 
         [Required(ErrorMessage = "Please choose the type of conference hearing.")]
-        public Utils.Enums.ConferenceHearingType ConferenceType { get; set; }
+        public int HearingType { get; set; }
 
         //Available dates
         public AvailableDatesByLocation Results { get; set; }
@@ -43,7 +43,7 @@ namespace SCJ.Booking.MVC.ViewModels
         // Selected Registry Name
         public string SelectedRegistryName { get; set; }
 
-        public SelectList Registry { get; set; }
+        public SelectList RegistryOptions { get; set; }
 
         //Used when the time slot expired eg. January 7 from 2:45pm to 3:15pm
         public string TimeSlotFriendlyName { get; set; }

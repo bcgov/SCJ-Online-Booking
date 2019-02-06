@@ -5,22 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
+using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
-using SCJ.Booking.RemoteAPIs;
-using SCJ.SC.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Controllers
 {
     public class BookingController : Controller
     {
-        //CONST
-        public const int HearingTypeId = 9090; //Hardcoded for now
-
         //Services
         private readonly BookingService _bookingService;
-
-        //API Client
-        private readonly IOnlineBooking _client;
 
         //HttpContext
         private readonly HttpContext _httpContext;
@@ -33,8 +26,7 @@ namespace SCJ.Booking.MVC.Controllers
             IConfiguration configuration)
         {
             _httpContext = httpAccessor.HttpContext;
-            _client = OnlineBookingClientFactory.GetClient(configuration);
-            _bookingService = new BookingService(context, httpAccessor);
+            _bookingService = new BookingService(context, httpAccessor, configuration);
 
             //test the environment
             if (configuration["TAG_NAME"].ToLower().Equals("localdev"))
@@ -47,30 +39,37 @@ namespace SCJ.Booking.MVC.Controllers
         public async Task<IActionResult> CaseSearch()
         {
             //Populate dropdown list values
-            return View(await _bookingService.LoadForm(_client));
+            return View(await _bookingService.LoadSearchForm());
         }
 
         [HttpPost]
         public async Task<IActionResult> CaseSearch(CaseSearchViewModel model)
         {
-            //get results from services layer. 
-            CaseSearchViewModel csvm = await _bookingService.GetResults(model, _client, HearingTypeId,
-                await _bookingService.GetLocationHearingLength(model.SelectedRegistryId, HearingTypeId,
-                    _client));
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            //test if the user selected a timeslot that is available
-            if (csvm != null && csvm.ContainerId > 0 && !csvm.TimeSlotExpired)
+            //get results from services layer. 
+            int hearingLength = await _bookingService.GetLocationHearingLength(model.SelectedRegistryId, HearingType.TMC);
+
+            model = await _bookingService.GetSearchResults(model, HearingType.TMC, hearingLength);
+
+            //test if the user selected a time-slot that is available
+            if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
                 //go to confirmation screen
             {
                 return RedirectToAction("CaseConfirm",
                     new
                     {
-                        caseId = csvm.CaseNumber, locationId = csvm.SelectedRegistryId,
-                        containerId = csvm.ContainerId, bookingTime = csvm.SelectedCaseDate
+                        caseId = model.CaseNumber,
+                        locationId = model.SelectedRegistryId,
+                        containerId = model.ContainerId,
+                        bookingTime = model.SelectedCaseDate
                     });
             }
 
-            return View(csvm);
+            return View(model);
         }
 
         [HttpGet]
@@ -80,16 +79,17 @@ namespace SCJ.Booking.MVC.Controllers
             //convert JS ticks to .Net date
             var dt = new DateTime(Convert.ToInt64(bookingTime));
 
-            //Timeslot is still available
+            //Time-slot is still available
             var ccm = new CaseConfirmViewModel
             {
                 CaseNumber = caseId,
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
                 Time = dt.ToString("hh:mm tt") + " - " + dt
                            .AddMinutes(
-                               await _bookingService.GetLocationHearingLength(locationId, HearingTypeId,
-                                   _client)).ToString("hh:mm tt"),
-                LocationName = await _bookingService.GetLocationName(locationId, _client),
+                               await _bookingService.GetLocationHearingLength(locationId,
+                                   HearingType.TMC))
+                           .ToString("hh:mm tt"),
+                LocationName = await _bookingService.GetLocationName(locationId),
                 TypeOfConferenceHearing = "Trial Management Conference",
                 ContainerId = containerId,
                 LocationId = locationId,
@@ -109,7 +109,7 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            string userId = string.Empty;
+            string userId;
 
             if (!_isLocalDevEnvironment)
             {
@@ -124,14 +124,17 @@ namespace SCJ.Booking.MVC.Controllers
                     userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
                 }
             }
+            else
+            {
+                userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
+            }
 
             int hearingLength =
-                await _bookingService.GetLocationHearingLength(model.LocationId, HearingTypeId,
-                    _client);
+                await _bookingService.GetLocationHearingLength(model.LocationId, HearingType.TMC);
 
             //make booking
-            return View(await _bookingService.BookCourtCase(model, _client, HearingTypeId,
-                hearingLength, userId));
+            return View(
+                await _bookingService.BookCourtCase(model, HearingType.TMC, hearingLength, userId));
         }
     }
 }
