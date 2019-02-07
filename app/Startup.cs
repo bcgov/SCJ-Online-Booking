@@ -1,4 +1,5 @@
 using System;
+using Community.Microsoft.Extensions.Caching.PostgreSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +44,29 @@ namespace SCJ.Booking.MVC
 
             services.AddApplicationDbContext(Configuration);
 
+            services.AddSession(options => {
+                options.Cookie.Name = "ScjBooking.Session";
+                options.Cookie.HttpOnly = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+            });
+
+            if (Configuration["TAG_NAME"] == "localdev")
+            {
+                // Use memory cache for for sessions and caching on local development
+                services.AddMemoryCache();
+            }
+            else
+            {
+                // Use a PostgreSQL table for sessions and caching on OpenShift (to support load balancing)
+                services.AddDistributedPostgreSqlCache(options =>
+                {
+                    options.ConnectionString = Configuration["ConnectionString"];
+                    options.SchemaName = "public";
+                    options.TableName = "aspnet_cache";
+                    options.CreateInfrastructure = true;
+                });
+            }
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
@@ -76,7 +100,7 @@ namespace SCJ.Booking.MVC
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

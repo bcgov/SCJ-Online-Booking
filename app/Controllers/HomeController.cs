@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.ViewModels;
 
@@ -8,6 +9,8 @@ namespace SCJ.Booking.MVC.Controllers
     {
         public IActionResult Index()
         {
+            HttpContext.Session.SetString("name", "Session Test Worked!");
+
             return View();
         }
 
