@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
@@ -244,7 +243,7 @@ namespace SCJ.Booking.MVC.Services
                 //build object to send to the API
                 var bookInfo = new BookHearingInfo
                 {
-                    caseID = Convert.ToInt32(Regex.Replace(model.CaseNumber, "[A-Za-z ]", "")),
+                    caseID = await _client.caseNumberValidAsync(await BuildCaseNumber(model.CaseNumber, model.LocationId)),
                     containerID = model.ContainerId,
                     dateTime = model.FullDate,
                     hearingLength = hearingLength,
