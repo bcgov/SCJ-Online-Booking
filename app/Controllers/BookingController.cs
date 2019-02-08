@@ -21,12 +21,16 @@ namespace SCJ.Booking.MVC.Controllers
         //Environment
         private readonly bool _isLocalDevEnvironment;
 
+        // Strongly typed session
+        private readonly SessionService _session;
+
         //Constructor
         public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration)
+            IConfiguration configuration, SessionService sessionService)
         {
             _httpContext = httpAccessor.HttpContext;
-            _bookingService = new BookingService(context, httpAccessor, configuration);
+            _session = sessionService;
+            _bookingService = new BookingService(context, httpAccessor, configuration, sessionService);
 
             //test the environment
             if (configuration["TAG_NAME"].ToLower().Equals("localdev"))
@@ -59,40 +63,30 @@ namespace SCJ.Booking.MVC.Controllers
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
                 //go to confirmation screen
             {
-                return RedirectToAction("CaseConfirm",
-                    new
-                    {
-                        caseId = model.CaseNumber,
-                        locationId = model.SelectedRegistryId,
-                        containerId = model.ContainerId,
-                        bookingTime = model.SelectedCaseDate
-                    });
+                return RedirectToAction("CaseConfirm");
             }
 
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> CaseConfirm(string caseId, int locationId, int containerId,
-            string bookingTime)
+        public IActionResult CaseConfirm()
         {
+            SessionBookingInfo bookingInfo = _session.BookingInfo;
+
             //convert JS ticks to .Net date
-            var dt = new DateTime(Convert.ToInt64(bookingTime));
+            var dt = new DateTime(Convert.ToInt64(bookingInfo.SelectedCaseDate));
 
             //Time-slot is still available
             var ccm = new CaseConfirmViewModel
             {
-                CaseNumber = caseId,
+                CaseNumber = bookingInfo.CaseNumber,
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
-                Time = dt.ToString("hh:mm tt") + " - " + dt
-                           .AddMinutes(
-                               await _bookingService.GetLocationHearingLength(locationId,
-                                   HearingType.TMC))
-                           .ToString("hh:mm tt"),
-                LocationName = await _bookingService.GetLocationName(locationId),
-                TypeOfConferenceHearing = "Trial Management Conference",
-                ContainerId = containerId,
-                LocationId = locationId,
+                Time = bookingInfo.TimeSlotFriendlyName,
+                LocationName = bookingInfo.RegistryName,
+                HearingTypeName = bookingInfo.HearingTypeName,
+                ContainerId = bookingInfo.ContainerId,
+                LocationId = bookingInfo.LocationId,
                 FullDate = dt,
                 IsUserKnown = true,
                 EmailAddress = _httpContext.Request.Headers.ContainsKey("SMGOV-USEREMAIL")

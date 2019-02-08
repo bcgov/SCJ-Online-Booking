@@ -50,6 +50,9 @@ namespace SCJ.Booking.MVC
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
             });
 
+            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddScoped<SessionService>();
+
             if (Configuration["TAG_NAME"] == "localdev")
             {
                 // Use memory cache for for sessions and caching on local development
@@ -73,9 +76,6 @@ namespace SCJ.Booking.MVC
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            //http context
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //service to get hearings left for logged-in user
             services.AddTransient<BookingService>();

@@ -16,7 +16,7 @@
     <div class="content col-lg-6">
         <form asp-controller="Booking" asp-action="CaseBooked" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
             <input type="hidden" asp-for="CaseNumber" />
-            <input type="hidden" asp-for="TypeOfConferenceHearing" />
+            <input type="hidden" asp-for="HearingTypeName" />
             <input type="hidden" asp-for="LocationName" />
             <input type="hidden" asp-for="Date" />
             <input type="hidden" asp-for="Time" />
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label class="font-weight-bold">Type of Conference Hearing</label>
                 <div>
-                    <label>@Model.TypeOfConferenceHearing</label>
+                    <label>@Model.HearingTypeName</label>
                 </div>
             </div>
             <div class="form-group">

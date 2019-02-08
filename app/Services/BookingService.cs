@@ -21,27 +21,18 @@ namespace SCJ.Booking.MVC.Services
 {
     public class BookingService
     {
-        //Const
         private const int MaxHearingsPerDay = 250;
 
-        //API Client
         private readonly IOnlineBooking _client;
-
-        // DB Context
         private readonly ApplicationDbContext _dbContext;
-
-        //Http Context
         private readonly HttpContext _httpContext;
-
-        //Environment
         private readonly bool _isLocalDevEnvironment;
-
-        //Init error logger
         private readonly Logger _logger;
+        private readonly SessionService _session;
 
         //Constructor
         public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration)
+            IConfiguration configuration, SessionService sessionService)
         {
             //setup error logger settings
             _logger = new LoggerConfiguration()
@@ -49,16 +40,12 @@ namespace SCJ.Booking.MVC.Services
                 .CreateLogger();
 
             _client = OnlineBookingClientFactory.GetClient(configuration);
-
-            //DB Context setup
             _dbContext = dbContext;
-
-            //HttpContext
             _httpContext = httpAccessor.HttpContext;
+            _session = sessionService;
 
-            //test the environment
+            //check if this is running on a developer workstation (outside OpenShift)
             string tagName = Environment.GetEnvironmentVariable("TAG_NAME") ?? "";
-
             if (tagName.ToLower().Equals("localdev"))
             {
                 _isLocalDevEnvironment = true;
@@ -89,7 +76,7 @@ namespace SCJ.Booking.MVC.Services
         ///     Search for available times
         /// </summary>
         public async Task<CaseSearchViewModel> GetSearchResults(CaseSearchViewModel model,
-            int hearingId, int hearingLength)
+            int hearingTypeId, int hearingLength)
         {
             // Load locations from API
             Location[] locations = await _client.getLocationsAsync();
@@ -106,8 +93,9 @@ namespace SCJ.Booking.MVC.Services
             };
 
             //search the current case number
-            if (await _client.caseNumberValidAsync(await BuildCaseNumber(model.CaseNumber,
-                    model.SelectedRegistryId)) == 0)
+            int caseId = await _client.caseNumberValidAsync(await BuildCaseNumber(model.CaseNumber,model.SelectedRegistryId));
+
+            if (caseId == 0)
             {
                 //case could not be found
                 retval.IsValidCaseNumber = false;
@@ -122,7 +110,7 @@ namespace SCJ.Booking.MVC.Services
 
                 retval.Results =
                     await _client.AvailableDatesByLocationAsync(
-                        Convert.ToInt32(model.SelectedRegistryId), hearingId);
+                        Convert.ToInt32(model.SelectedRegistryId), hearingTypeId);
 
                 //set location name
                 SelectListItem selectedRegistry =
@@ -138,7 +126,7 @@ namespace SCJ.Booking.MVC.Services
                 if (model.ContainerId > 0)
                 {
                     if (!await IsTimeStillAvailable(model.ContainerId, model.SelectedRegistryId,
-                        hearingId))
+                        hearingTypeId))
                     {
                         retval.TimeSlotExpired = true;
                     }
@@ -149,9 +137,26 @@ namespace SCJ.Booking.MVC.Services
                     //set date properties
                     retval.ContainerId = model.ContainerId;
                     retval.SelectedCaseDate = model.SelectedCaseDate;
+
+                    string bookingTime = dt.ToString("hh:mm tt") + " to " +
+                                         dt.AddMinutes(hearingLength).ToString("hh:mm tt");
+
                     retval.TimeSlotFriendlyName =
-                        dt.ToString("MMMM dd") + " from " + dt.ToString("hh:mm tt") + " to " +
-                        dt.AddMinutes(hearingLength).ToString("hh:mm tt");
+                        dt.ToString("MMMM dd") + " from " + bookingTime;
+
+                    _session.BookingInfo = new SessionBookingInfo
+                    {
+                        ContainerId = model.ContainerId,
+                        CaseNumber = model.CaseNumber.ToUpper().Trim(),
+                        CaseId = caseId,
+                        HearingTypeId = hearingTypeId,
+                        HearingTypeName = "Trial Management Conference",
+                        HearingLengthMinutes = hearingLength,
+                        LocationId = model.SelectedRegistryId,
+                        RegistryName = retval.SelectedRegistryName,
+                        TimeSlotFriendlyName = bookingTime,
+                        SelectedCaseDate = model.SelectedCaseDate
+                    };
                 }
             }
 
