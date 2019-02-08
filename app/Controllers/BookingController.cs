@@ -7,6 +7,7 @@ using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
+using SCJ.SC.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -18,9 +19,6 @@ namespace SCJ.Booking.MVC.Controllers
         //HttpContext
         private readonly HttpContext _httpContext;
 
-        //Environment
-        private readonly bool _isLocalDevEnvironment;
-
         // Strongly typed session
         private readonly SessionService _session;
 
@@ -30,13 +28,8 @@ namespace SCJ.Booking.MVC.Controllers
         {
             _httpContext = httpAccessor.HttpContext;
             _session = sessionService;
-            _bookingService = new BookingService(context, httpAccessor, configuration, sessionService);
-
-            //test the environment
-            if (configuration["TAG_NAME"].ToLower().Equals("localdev"))
-            {
-                _isLocalDevEnvironment = true;
-            }
+            _bookingService =
+                new BookingService(context, httpAccessor, configuration, sessionService);
         }
 
         [HttpGet]
@@ -54,10 +47,14 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            //get results from services layer. 
-            int hearingLength = await _bookingService.GetLocationHearingLength(model.SelectedRegistryId, HearingType.TMC);
+            // check the schedule again to make sure the time slot wasn't taken by someone else
+            AvailableDatesByLocation schedule =
+                await _bookingService.GetSchedule(model.SelectedRegistryId, model.HearingTypeId);
 
-            model = await _bookingService.GetSearchResults(model, HearingType.TMC, hearingLength);
+            int hearingLength = schedule.BookingDetails.detailBookingLength;
+
+            model = await _bookingService.GetSearchResults(model, model.HearingTypeId,
+                hearingLength);
 
             //test if the user selected a time-slot that is available
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
@@ -83,7 +80,7 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseNumber = bookingInfo.CaseNumber,
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
                 Time = bookingInfo.TimeSlotFriendlyName,
-                LocationName = bookingInfo.RegistryName,
+                LocationName = $"{bookingInfo.RegistryName} Law Courts",
                 HearingTypeName = bookingInfo.HearingTypeName,
                 ContainerId = bookingInfo.ContainerId,
                 LocationId = bookingInfo.LocationId,
@@ -103,8 +100,10 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
+            SessionBookingInfo bookingInfo = _session.BookingInfo;
+
             // fake user id for testing without BCeID
-            string userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
+            var userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
 
             //read user-guid in headers
             if (_httpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
@@ -112,12 +111,10 @@ namespace SCJ.Booking.MVC.Controllers
                 userId = _httpContext.Request.Headers["SMGOV-USERGUID"].ToString();
             }
 
-            int hearingLength =
-                await _bookingService.GetLocationHearingLength(model.LocationId, HearingType.TMC);
-
             //make booking
             return View(
-                await _bookingService.BookCourtCase(model, HearingType.TMC, hearingLength, userId));
+                await _bookingService.BookCourtCase(model, bookingInfo.HearingTypeId,
+                    bookingInfo.HearingLengthMinutes, userId));
         }
     }
 }

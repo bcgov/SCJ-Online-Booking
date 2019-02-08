@@ -108,9 +108,7 @@ namespace SCJ.Booking.MVC.Services
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
-                retval.Results =
-                    await _client.AvailableDatesByLocationAsync(
-                        Convert.ToInt32(model.SelectedRegistryId), hearingTypeId);
+                retval.Results = await GetSchedule(Convert.ToInt32(model.SelectedRegistryId), hearingTypeId);
 
                 //set location name
                 SelectListItem selectedRegistry =
@@ -125,8 +123,7 @@ namespace SCJ.Booking.MVC.Services
                 //check for valid date
                 if (model.ContainerId > 0)
                 {
-                    if (!await IsTimeStillAvailable(model.ContainerId, model.SelectedRegistryId,
-                        hearingTypeId))
+                    if (!IsTimeStillAvailable(retval.Results, model.ContainerId))
                     {
                         retval.TimeSlotExpired = true;
                     }
@@ -167,16 +164,11 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Check if a time slot is still available for a court booking
         /// </summary>
-        public async Task<bool> IsTimeStillAvailable(int containerId, int locationId, int hearingId)
+        public bool IsTimeStillAvailable(AvailableDatesByLocation schedule, int containerId)
         {
-            //get available times for the location
-            AvailableDatesByLocation locationsAvailable =
-                await _client.AvailableDatesByLocationAsync(locationId, hearingId);
-
             //check if the container ID is still available
-            return locationsAvailable.AvailableDates.Any(x => x.ContainerID == containerId);
+            return schedule.AvailableDates.Any(x => x.ContainerID == containerId);
         }
-
 
         /// <summary>
         ///     Fetch location-code for specific case ID
@@ -194,38 +186,6 @@ namespace SCJ.Booking.MVC.Services
             return locationPrefix + caseId;
         }
 
-
-        /// <summary>
-        ///     Fetch the location name based on the location ID
-        /// </summary>
-        public async Task<string> GetLocationName(int locationId)
-        {
-            //load all locations
-            Location[] locations = await _client.getLocationsAsync();
-
-            //get location name
-            string locationName =
-                locations.FirstOrDefault(x => x.locationID == locationId)?.locationName;
-
-            // append "Law Courts" to location names
-            return locationName + " Law Courts";
-        }
-
-
-        /// <summary>
-        ///     Fetch the location name based on the location ID
-        /// </summary>
-        public async Task<int> GetLocationHearingLength(int locationId, int hearingTypeId)
-        {
-            //get the available dates object which contains the hearing length
-            AvailableDatesByLocation availableDatesByLocation =
-                await _client.AvailableDatesByLocationAsync(locationId, hearingTypeId);
-
-            //return the booking length
-            return availableDatesByLocation.BookingDetails.detailBookingLength;
-        }
-
-
         /// <summary>
         ///     Book court case
         /// </summary>
@@ -242,8 +202,12 @@ namespace SCJ.Booking.MVC.Services
             //we know who the user is.
             model.IsUserKnown = true;
 
+            // check the schedule again to make sure the time slot wasn't taken by someone else
+            AvailableDatesByLocation schedule =
+                await GetSchedule(model.LocationId, hearingTypeId);
+
             //ensure time slot is still available
-            if (await IsTimeStillAvailable(model.ContainerId, model.LocationId, hearingTypeId))
+            if (IsTimeStillAvailable(schedule, model.ContainerId))
             {
                 //build object to send to the API
                 var bookInfo = new BookHearingInfo
@@ -297,11 +261,18 @@ namespace SCJ.Booking.MVC.Services
             return model;
         }
 
+        /// <summary>
+        ///     Get the schedule for a location & hearing type
+        /// </summary>
+        public async Task<AvailableDatesByLocation> GetSchedule(int locationId, int hearingTypeId)
+        {
+            // check the schedule again to make sure the time slot wasn't taken by someone else
+            return await _client.AvailableDatesByLocationAsync(locationId, hearingTypeId);
+        }
 
         /// <summary>
         ///     Get the number of hearings left for the day
         /// </summary>
-        /// <returns></returns>
         public HtmlString GetHearingsRemaining()
         {
             int hearingsRemaining = GetUserHearingsTotalRemaining();
