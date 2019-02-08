@@ -7,7 +7,6 @@ using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
-using SCJ.SC.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -47,14 +46,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            // check the schedule again to make sure the time slot wasn't taken by someone else
-            AvailableDatesByLocation schedule =
-                await _bookingService.GetSchedule(model.SelectedRegistryId, model.HearingTypeId);
-
-            int hearingLength = schedule.BookingDetails.detailBookingLength;
-
-            model = await _bookingService.GetSearchResults(model, model.HearingTypeId,
-                hearingLength);
+            model = await _bookingService.GetSearchResults(model);
 
             //test if the user selected a time-slot that is available
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)

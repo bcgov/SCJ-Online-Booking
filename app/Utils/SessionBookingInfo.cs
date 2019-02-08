@@ -1,11 +1,10 @@
-using System;
-
 namespace SCJ.Booking.MVC.Utils
 {
     public class SessionBookingInfo
     {
-        public long CaseId { get; set; }
+        public int CaseId { get; set; }
         public string CaseNumber { get; set; }
+        public string FullCaseNumber { get; set; }
         public int LocationId { get; set; }
         public string RegistryName { get; set; }
         public int HearingLengthMinutes { get; set; }

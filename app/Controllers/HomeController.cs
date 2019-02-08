@@ -9,8 +9,6 @@ namespace SCJ.Booking.MVC.Controllers
     {
         public IActionResult Index()
         {
-            HttpContext.Session.SetString("name", "Session Test Worked!");
-
             return View();
         }
 
