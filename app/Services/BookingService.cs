@@ -153,7 +153,7 @@ namespace SCJ.Booking.MVC.Services
                         FullCaseNumber = caseNumber,
                         CaseId = caseId,
                         HearingTypeId = model.HearingTypeId,
-                        HearingTypeName = "Trial Management Conference",
+                        HearingTypeName = "Trial Management Conference (TMC)",
                         HearingLengthMinutes = hearingLength,
                         LocationId = model.SelectedRegistryId,
                         RegistryName = retval.SelectedRegistryName,
