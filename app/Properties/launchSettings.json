@@ -14,10 +14,15 @@
       "launchUrl": "http://scj-booking.local",
       "environmentVariables": {
         "TAG_NAME": "localdev",
+        "SMTP_SERVER": "mail.sever.ca",
         "API_USERNAME": "fake_username",
+        "SMTP_USERNAME": "username@domain.ca",
         "API_ENDPOINT": "https://localhost",
         "API_PASSWORD": "password",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "SMTP_DISPLAY_NAME": "Supreme courts booking",
+        "SMTP_FROM_ADDRESS": "no-reply@fromaddress.ca",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SMTP_PASSWORD": "fake_password"
       }
     },
     "SCJ.Booking.MVC": {

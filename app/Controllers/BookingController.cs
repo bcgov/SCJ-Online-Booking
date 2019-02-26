@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -21,14 +22,17 @@ namespace SCJ.Booking.MVC.Controllers
         // Strongly typed session
         private readonly SessionService _session;
 
+        //Give us access to the HostEnvironment properties
+        private readonly IViewRenderService _viewRenderService;
+
         //Constructor
         public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration, SessionService sessionService)
+            IConfiguration configuration, SessionService sessionService, IViewRenderService viewRenderService)
         {
             _httpContext = httpAccessor.HttpContext;
+            _viewRenderService = viewRenderService;
             _session = sessionService;
-            _bookingService =
-                new BookingService(context, httpAccessor, configuration, sessionService);
+            _bookingService = new BookingService(context, httpAccessor, configuration, sessionService);
         }
 
         [HttpGet]
@@ -106,7 +110,7 @@ namespace SCJ.Booking.MVC.Controllers
             //make booking
             return View(
                 await _bookingService.BookCourtCase(model, bookingInfo.HearingTypeId,
-                    bookingInfo.HearingLengthMinutes, userId));
+                    bookingInfo.HearingLengthMinutes, userId, _viewRenderService));
         }
     }
 }

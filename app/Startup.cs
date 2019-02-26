@@ -79,6 +79,8 @@ namespace SCJ.Booking.MVC
 
             //service to get hearings left for logged-in user
             services.AddTransient<BookingService>();
+
+            services.AddScoped<IViewRenderService, ViewRenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
