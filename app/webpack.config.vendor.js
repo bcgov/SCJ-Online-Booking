@@ -38,6 +38,7 @@ module.exports = (env) => {
                     "@fortawesome/fontawesome-free/css/fontawesome.css",
                     "@fortawesome/fontawesome-free/css/regular.css",
                     "@fortawesome/fontawesome-free/css/solid.css",
+                    "swiper/dist/css/swiper.css"
                 ]
             },
             output: {
@@ -114,6 +115,14 @@ module.exports = (env) => {
                         // Just copy the regular version for Development
                         from: "node_modules/@fortawesome/fontawesome-free/css/all.css",
                         to: "css/fontawesome.css",
+                        toType: "file"
+                    },
+                    {
+                        // the min version is packaged above (vendor.min.css) 
+                        // Just copy the regular version for Development
+                        from:
+                            "node_modules/swiper/dist/css/swiper.css",
+                        to: "css/swiper.css",
                         toType: "file"
                     },
                 ]),
