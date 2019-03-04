@@ -28,7 +28,7 @@
     "SCJ.Booking.MVC": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://scj-booking.local",
+      "launchUrl": "http://scj-booking.local/scjob",
       "environmentVariables": {
         "TAG_NAME": "localdev",
         "API_USERNAME": "fake_username",
