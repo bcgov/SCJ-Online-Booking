@@ -6,16 +6,16 @@
     <title>@ViewData["Title"] - BC Courts Booking System</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/dist/css/bootstrap.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/dist/css/site.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/dist/css/fontawesome.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/dist/css/swiper.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="/scjob/dist/css/bootstrap.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="/scjob/dist/css/site.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="/scjob/dist/css/fontawesome.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="/scjob/dist/css/swiper.css" asp-append-version="true"/>
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/dist/css/vendor.min.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/dist/css/site.min.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="/scjob/dist/css/vendor.min.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="/scjob/dist/css/site.min.css" asp-append-version="true"/>
     </environment>
-    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/scjob/favicon.ico" type="image/x-icon" />
     @RenderSection("Styles", false)
 </head>
 <body>
@@ -23,7 +23,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark header-nav">
         <div class="container">
             <a class="header-logo" href="/">
-                <img src="~/images/bc-logo.svg" width="148"/>
+                <img src="/scjob/images/bc-logo.svg" width="148"/>
             </a>
             <p class="appName">BC Courts Booking System</p>
             @RenderSection("NavBar", false)
@@ -38,7 +38,7 @@
         <div class="container">
             <ul class="footer-nav-items">
                 <li class="nav-item">
-                    <a href="/">Home</a>
+                    <a href="/scjob">Home</a>
                 </li>
                 <li class="nav-item">
                     <a href="https://www.courts.gov.bc.ca/Privacy%20Statement.html" target="_blank">Disclaimer, Copyright and Privacy</a>
@@ -53,15 +53,15 @@
 </footer>
 
 <environment include="Development">
-    <script src="~/dist/lib/jquery.js" asp-append-version="true"></script>
-    <script src="~/dist/lib/popper.js" asp-append-version="true"></script>
-    <script src="~/dist/lib/bootstrap.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/scjob/dist/lib/jquery.js" asp-append-version="true"></script>
+    <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
+    <script src="/scjob/dist/lib/bootstrap.js" asp-append-version="true"></script>
+    <script src="/scjob/js/site.js" asp-append-version="true"></script>
 </environment>
 <environment exclude="Development">
-    <script src="~/dist/lib/jquery.min.js" asp-append-version="true"></script>
-    <script src="~/dist/lib/bootstrap.min.js" asp-append-version="true"></script>
-    <script src="~/js/site.min.js" asp-append-version="true"></script>
+    <script src="/scjob/dist/lib/jquery.min.js" asp-append-version="true"></script>
+    <script src="/scjob/dist/lib/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="/scjob/js/site.min.js" asp-append-version="true"></script>
 </environment>
 
 @RenderSection("Scripts", false)
