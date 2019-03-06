@@ -94,8 +94,6 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            SessionBookingInfo bookingInfo = _session.BookingInfo;
-
             // fake user id for testing without BCeID
             var userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
 
@@ -107,8 +105,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //make booking
             return View(
-                await _bookingService.BookCourtCase(model, bookingInfo.HearingTypeId,
-                    bookingInfo.HearingLengthMinutes, userId, _viewRenderService));
+                await _bookingService.BookCourtCase(model, userId, _viewRenderService));
         }
     }
 }
