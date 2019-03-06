@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -258,6 +256,19 @@ namespace SCJ.Booking.MVC.Services
 
                     //send email
                     await SendEmail(model, bookInfo, viewRenderService);
+
+                    //clear booking info session
+                    _session.BookingInfo = null;
+
+                    //store user info in session for next booking
+                    var sui = new SessionUserInfo()
+                    {
+                        Phone = model.Phone,
+                        Email = model.EmailAddress,
+                        ContactName = $"FULL_NAME {model.Phone} {model.EmailAddress}"
+                    };
+
+                    _session.UserInfo = sui;
                 }
                 else
                 {
@@ -394,6 +405,40 @@ namespace SCJ.Booking.MVC.Services
                     smtp.Send(msg);
                 }
             }
+        }
+
+        /// <summary>
+        /// Get user information based on the session variables and custom headers. Session variables would get preference.
+        /// </summary>
+        public SessionUserInfo GetUserInformation()
+        {
+            SessionUserInfo sui = new SessionUserInfo();
+
+            //Phone number
+            if (!string.IsNullOrEmpty(_session.UserInfo.Phone))
+            {
+                sui.Phone = _session.UserInfo.Phone;
+            }
+            else
+            {
+                sui.Phone = _httpContext.Request.Headers.ContainsKey("SMGOV-USERPHONE")
+                    ? _httpContext.Request.Headers["SMGOV-USERPHONE"].ToString()
+                    : string.Empty;
+            }
+
+            //Email
+            if (!string.IsNullOrEmpty(_session.UserInfo.Email))
+            {
+                sui.Email = _session.UserInfo.Email;
+            }
+            else
+            {
+                sui.Email = _httpContext.Request.Headers.ContainsKey("SMGOV-USEREMAIL")
+                    ? _httpContext.Request.Headers["SMGOV-USEREMAIL"].ToString()
+                    : string.Empty;
+            }
+
+            return sui;
         }
 
     }

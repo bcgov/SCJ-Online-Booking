@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -70,6 +69,9 @@ namespace SCJ.Booking.MVC.Controllers
             //convert JS ticks to .Net date
             var dt = new DateTime(Convert.ToInt64(bookingInfo.SelectedCaseDate));
 
+            //user information
+            var sui = _bookingService.GetUserInformation();
+
             //Time-slot is still available
             var ccm = new CaseConfirmViewModel
             {
@@ -82,12 +84,8 @@ namespace SCJ.Booking.MVC.Controllers
                 LocationId = bookingInfo.LocationId,
                 FullDate = dt,
                 IsUserKnown = true,
-                EmailAddress = _httpContext.Request.Headers.ContainsKey("SMGOV-USEREMAIL")
-                    ? _httpContext.Request.Headers["SMGOV-USEREMAIL"].ToString()
-                    : string.Empty,
-                Phone = _httpContext.Request.Headers.ContainsKey("SMGOV-USERPHONE")
-                    ? _httpContext.Request.Headers["SMGOV-USERPHONE"].ToString()
-                    : string.Empty
+                EmailAddress =  sui.Email,
+                Phone = sui.Phone
             };
 
             return View(ccm);
