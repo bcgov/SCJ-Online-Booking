@@ -62,7 +62,11 @@ body {
 
 .header-logo-div {
     .container {
-        background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top no-repeat;
+        @include breakpoint(sm) {
+            background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top no-repeat;
+            background-color: $grey-dark;
+        }
+
         background-color: $grey-dark;
         margin-right: auto;
         padding-left: 0;
@@ -317,4 +321,17 @@ select#SelectedRegistryId {
 
 .booking-logout > .content {
     margin-top: 10px;
+}
+
+@include breakpoint(mobile) {
+    .affixed {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 100%;
+        z-index: 9999;
+        -webkit-box-shadow: 0px 4px 40px 0px rgba(34, 34, 34, 0.3);
+        box-shadow: 0px 4px 40px 0px rgba(34, 34, 34, 0.3);
+    }
 }
