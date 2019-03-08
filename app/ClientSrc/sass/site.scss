@@ -20,6 +20,7 @@ body {
     font-family: $font-stack;
     font-size: 1rem;
     font-weight: 400;
+    background: #ccc url("https://www.courts.gov.bc.ca/images/body-bkg.png") repeat-x;
 }
 
 .main {
@@ -33,6 +34,8 @@ body {
 .body-content {
     padding-top: 60px;
     padding-bottom: 60px;
+    background-color: $white;
+    height: calc(100% - 120px);
 }
 
 .fas {
@@ -41,11 +44,9 @@ body {
 
 /*Header*/
 .header-nav, .footer-nav {
-    background-color: $blue-bg;
-    color: $white;
-
+    
     a {
-        color: $white;
+        color: $black;
         font-weight: 700;
         text-decoration: none;
 
@@ -55,31 +56,61 @@ body {
     }
 
     .navbar-collapse .nav {
-        margin-left: auto;
-        font-size: 0.875rem;
+        font-size: 1rem;
+    }
+}
+
+.header-logo-div {
+    .container {
+        @include breakpoint(sm) {
+            background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top no-repeat;
+            background-color: $grey-dark;
+        }
+
+        background-color: $grey-dark;
+        margin-right: auto;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .header-logo {
+        display: block;
     }
 }
 
 .header-nav {
-    border-bottom: 2px solid $yellow;
-    padding: 10px;
+    padding: 0;
     font-size: 1rem;
 
-    @include breakpoint(md) {
-        padding: 10px 0;
+    .container {
+        background-color: $black;
+        padding: 10px 15px;
+        display: flex;
+        color: $white;
+
+        a {
+            color: $white;
+        }
+
+        .app-name {
+            font-weight: 700;
+            margin-right: auto;
+        }
     }
 
-    .header-logo {
-        margin-right: 20px;
-        padding: 4px 0;
-    }
-
-    .appName {
-        margin-bottom: 0;
-    }
 
     .navbar-toggler {
         margin-left: auto;
+    }
+
+    .navbar-collapse {
+        justify-content: flex-end;
+
+        .navbar-nav {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 }
 
@@ -94,13 +125,14 @@ body {
 
 /*Footer*/
 .footer-nav {
-    border-top: 2px solid $yellow;
-    padding: 5px 0;
-
     .container {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        padding: 5px 15px;
+        background-color: $white;
+        border-top: 1px solid $grey-light;
+        border-bottom: 7px solid $black;
 
         @include breakpoint(lg) {
             flex-direction: row;
@@ -136,12 +168,6 @@ body {
 
                     @include breakpoint(lg) {
                         padding: 16px;
-                    }
-                }
-
-                & + li {
-                    @include breakpoint(lg) {
-                        border-left: 1px solid $blue-washed;
                     }
                 }
             }
@@ -196,6 +222,10 @@ p.intro {
     margin-left: 0;
     margin-bottom: 20px;
     border-radius: 0.3rem;
+}
+
+#btnSearch {
+    width: 275px;
 }
 
 .results-linebreak {
@@ -291,4 +321,17 @@ select#SelectedRegistryId {
 
 .booking-logout > .content {
     margin-top: 10px;
+}
+
+@include breakpoint(mobile) {
+    .affixed {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 100%;
+        z-index: 9999;
+        -webkit-box-shadow: 0px 4px 40px 0px rgba(34, 34, 34, 0.3);
+        box-shadow: 0px 4px 40px 0px rgba(34, 34, 34, 0.3);
+    }
 }

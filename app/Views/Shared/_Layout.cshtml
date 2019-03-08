@@ -20,12 +20,16 @@
 </head>
 <body>
 <div class="main">
-    <nav class="navbar navbar-expand-lg navbar-dark header-nav">
+    <div class="header-logo-div">
         <div class="container">
             <a class="header-logo" href="/scjob">
-                <img src="/scjob/images/bc-logo.svg" width="148"/>
+                <img src="https://www.courts.gov.bc.ca/images/logo-wordmark.gif" width="275">
             </a>
-            <p class="appName">BC Courts Booking System</p>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark header-nav">
+        <div class="container" id="scj-header-nav">
+            <span class="app-name">BC Courts Booking System</span>
             @RenderSection("NavBar", false)
         </div>
     </nav>

@@ -31,3 +31,16 @@ function validateCaseDate(containerId, bookingDate) {
     //simulate form submit
     $('#btnSearch').trigger('click');
 }
+
+jQuery( document ).ready( function( $ ) {
+    //caches a jQuery object containing the header element
+    var header = $("#scj-header-nav");
+    $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+        if (scroll >= 85) {
+            header.addClass("affixed");
+        } else {
+            header.removeClass("affixed");
+        }
+    });
+});
