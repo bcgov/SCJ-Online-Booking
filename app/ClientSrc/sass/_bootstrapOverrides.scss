@@ -87,3 +87,7 @@ a {
 .bs-tooltip-left .arrow:before {
     border-left-color: $blue;
 }
+
+.navbar-dark .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.6);
+}
