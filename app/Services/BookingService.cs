@@ -30,6 +30,7 @@ namespace SCJ.Booking.MVC.Services
         private readonly bool _isLocalDevEnvironment;
         private readonly Logger _logger;
         private readonly SessionService _session;
+        private readonly IConfiguration _configuration;
 
         //Constructor
         public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
@@ -41,12 +42,13 @@ namespace SCJ.Booking.MVC.Services
                 .CreateLogger();
 
             _client = OnlineBookingClientFactory.GetClient(configuration);
+            _configuration = configuration;
             _dbContext = dbContext;
             _httpContext = httpAccessor.HttpContext;
             _session = sessionService;
 
             //check if this is running on a developer workstation (outside OpenShift)
-            string tagName = Environment.GetEnvironmentVariable("TAG_NAME") ?? "";
+            string tagName = configuration["TAG_NAME"] ?? "";
             if (tagName.ToLower().Equals("localdev"))
             {
                 _isLocalDevEnvironment = true;
@@ -352,11 +354,11 @@ namespace SCJ.Booking.MVC.Services
             using (var msg = new MailMessage())
             {
                 //read settings for SMTP
-                var smtpFromAddress = Environment.GetEnvironmentVariable("SMTP_FROM_ADDRESS");
-                var smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER");
-                var smtpUsername = Environment.GetEnvironmentVariable("SMTP_USERNAME");
-                var smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
-                var smtpFromName = Environment.GetEnvironmentVariable("SMTP_DISPLAY_NAME");
+                var smtpFromAddress = _configuration["SMTP_FROM_ADDRESS"] ?? "";
+                var smtpServer = _configuration["SMTP_SERVER"] ?? "";
+                var smtpUsername = _configuration["SMTP_USERNAME"] ?? "";
+                var smtpPassword = _configuration["SMTP_PASSWORD"] ?? "";
+                var smtpFromName = _configuration["AppSettings:SmtpDisplayName"];
 
                 //Do NULL checks to ensure we received all the settings
                 if (!string.IsNullOrEmpty(smtpFromAddress) &&
