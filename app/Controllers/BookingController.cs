@@ -21,14 +21,17 @@ namespace SCJ.Booking.MVC.Controllers
         // Strongly typed session
         private readonly SessionService _session;
 
+        //Give us access to the HostEnvironment properties
+        private readonly IViewRenderService _viewRenderService;
+
         //Constructor
         public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration, SessionService sessionService)
+            IConfiguration configuration, SessionService sessionService, IViewRenderService viewRenderService)
         {
             _httpContext = httpAccessor.HttpContext;
+            _viewRenderService = viewRenderService;
             _session = sessionService;
-            _bookingService =
-                new BookingService(context, httpAccessor, configuration, sessionService);
+            _bookingService = new BookingService(context, httpAccessor, configuration, sessionService);
         }
 
         [HttpGet]
@@ -66,6 +69,9 @@ namespace SCJ.Booking.MVC.Controllers
             //convert JS ticks to .Net date
             var dt = new DateTime(Convert.ToInt64(bookingInfo.SelectedCaseDate));
 
+            //user information
+            var sui = _bookingService.GetUserInformation();
+
             //Time-slot is still available
             var ccm = new CaseConfirmViewModel
             {
@@ -78,12 +84,8 @@ namespace SCJ.Booking.MVC.Controllers
                 LocationId = bookingInfo.LocationId,
                 FullDate = dt,
                 IsUserKnown = true,
-                EmailAddress = _httpContext.Request.Headers.ContainsKey("SMGOV-USEREMAIL")
-                    ? _httpContext.Request.Headers["SMGOV-USEREMAIL"].ToString()
-                    : string.Empty,
-                Phone = _httpContext.Request.Headers.ContainsKey("SMGOV-USERPHONE")
-                    ? _httpContext.Request.Headers["SMGOV-USERPHONE"].ToString()
-                    : string.Empty
+                EmailAddress =  sui.Email,
+                Phone = sui.Phone
             };
 
             return View(ccm);
@@ -92,8 +94,6 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            SessionBookingInfo bookingInfo = _session.BookingInfo;
-
             // fake user id for testing without BCeID
             var userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
 
@@ -105,8 +105,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //make booking
             return View(
-                await _bookingService.BookCourtCase(model, bookingInfo.HearingTypeId,
-                    bookingInfo.HearingLengthMinutes, userId));
+                await _bookingService.BookCourtCase(model, userId, _viewRenderService));
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
@@ -196,7 +197,7 @@ namespace SCJ.Booking.MVC.Services
         ///     Book court case
         /// </summary>
         public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model,
-            int hearingTypeId, int hearingLength, string userId)
+            string userId, IViewRenderService viewRenderService)
         {
             //if the user could not be detected return 
             if (string.IsNullOrWhiteSpace(userId))
@@ -205,26 +206,26 @@ namespace SCJ.Booking.MVC.Services
                 return model;
             }
 
+            SessionBookingInfo bookingInfo = _session.BookingInfo;
+
             //we know who the user is.
             model.IsUserKnown = true;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
             AvailableDatesByLocation schedule =
-                await _client.AvailableDatesByLocationAsync(model.LocationId, hearingTypeId);
+                await _client.AvailableDatesByLocationAsync(bookingInfo.LocationId, bookingInfo.HearingTypeId);
 
             //ensure time slot is still available
-            if (IsTimeStillAvailable(schedule, model.ContainerId))
+            if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
-                SessionBookingInfo bookingInfo = _session.BookingInfo;
-
                 //build object to send to the API
                 var bookInfo = new BookHearingInfo
                 {
                     caseID = bookingInfo.CaseId,
-                    containerID = model.ContainerId,
+                    containerID = bookingInfo.ContainerId,
                     dateTime = model.FullDate,
-                    hearingLength = hearingLength,
-                    locationID = model.LocationId,
+                    hearingLength = bookingInfo.HearingLengthMinutes,
+                    locationID = bookingInfo.LocationId,
                     requestedBy = $"FULL_NAME {model.Phone} {model.EmailAddress}",
                     hearingTypeId = bookingInfo.HearingTypeId
                 };
@@ -243,7 +244,7 @@ namespace SCJ.Booking.MVC.Services
 
                     bookingHistory.Add(new BookingHistory
                     {
-                        ContainerId = model.ContainerId, SmGovUserGuid = userId,
+                        ContainerId = bookingInfo.ContainerId, SmGovUserGuid = userId,
                         Timestamp = DateTime.Now
                     });
 
@@ -252,6 +253,23 @@ namespace SCJ.Booking.MVC.Services
 
                     //update model
                     model.IsBooked = true;
+
+                    //store user info in session for next booking
+                    var userInfo = new SessionUserInfo()
+                    {
+                        Phone = model.Phone,
+                        Email = model.EmailAddress,
+                        ContactName = $"FULL_NAME {model.Phone} {model.EmailAddress}"
+                    };
+
+                    _session.UserInfo = userInfo;
+
+                    //send email
+                    await SendEmail(model, bookInfo, viewRenderService);
+
+                    //clear booking info session
+                    _session.BookingInfo = null;
+   
                 }
                 else
                 {
@@ -328,5 +346,103 @@ namespace SCJ.Booking.MVC.Services
 
             return MaxHearingsPerDay - hearingsBookedForToday.Count();
         }
+
+        private async Task SendEmail(CaseConfirmViewModel data, BookHearingInfo bookingInfo, IViewRenderService viewRenderService)
+        {
+            using (var msg = new MailMessage())
+            {
+                //read settings for SMTP
+                var smtpFromAddress = Environment.GetEnvironmentVariable("SMTP_FROM_ADDRESS");
+                var smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER");
+                var smtpUsername = Environment.GetEnvironmentVariable("SMTP_USERNAME");
+                var smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+                var smtpFromName = Environment.GetEnvironmentVariable("SMTP_DISPLAY_NAME");
+
+                //Do NULL checks to ensure we received all the settings
+                if (!string.IsNullOrEmpty(smtpFromAddress) &&
+                    !string.IsNullOrEmpty(smtpServer) &&
+                    !string.IsNullOrEmpty(smtpUsername) &&
+                    !string.IsNullOrEmpty(smtpPassword) &&
+                    !string.IsNullOrEmpty(smtpFromName))
+                {
+                    //set SMTP from address and from name
+                    msg.From = new MailAddress(smtpFromAddress, smtpFromName);
+
+                    //set recipient email and name
+                    msg.To.Add(new MailAddress(data.EmailAddress, bookingInfo.requestedBy));
+
+                    //Email subject
+                    msg.Subject = "Thank You for booking a court date";
+
+                    //Indicator that we are sending an HTML email
+                    msg.IsBodyHtml = true;
+
+                    //user information
+                    var user = GetUserInformation();
+
+                    //set ViewModel for the email
+                    var viewModel = new EmailViewModel()
+                    {
+                        EmailAddress = user.Email,
+                        Phone = user.Phone,
+                        CourtFileNumber = _session.BookingInfo.CaseNumber,
+                        Fullname = bookingInfo.requestedBy,
+                        RegistryName = data.LocationName,
+                        TypeOfConference = data.HearingTypeName,
+                        Date = data.Date,
+                        Time = _session.BookingInfo.TimeSlotFriendlyName
+                    };
+
+                    //Read the email template 
+                    msg.Body = await viewRenderService.RenderToStringAsync("Booking/Email", viewModel);
+
+                    //Create SMTP client
+                    var smtp = new SmtpClient(smtpServer)
+                    {
+                        Credentials = new System.Net.NetworkCredential(smtpUsername, smtpPassword),
+                        Port = 587,
+                        EnableSsl = true
+                    };
+
+                    //Send email
+                    smtp.Send(msg);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get user information based on the session variables and custom headers. Session variables would get preference.
+        /// </summary>
+        public SessionUserInfo GetUserInformation()
+        {
+            SessionUserInfo userInfo = new SessionUserInfo();
+
+            //Phone number
+            if (!string.IsNullOrEmpty(_session.UserInfo.Phone))
+            {
+                userInfo.Phone = _session.UserInfo.Phone;
+            }
+            else
+            {
+                userInfo.Phone = _httpContext.Request.Headers.ContainsKey("SMGOV-USERPHONE")
+                    ? _httpContext.Request.Headers["SMGOV-USERPHONE"].ToString()
+                    : string.Empty;
+            }
+
+            //Email
+            if (!string.IsNullOrEmpty(_session.UserInfo.Email))
+            {
+                userInfo.Email = _session.UserInfo.Email;
+            }
+            else
+            {
+                userInfo.Email = _httpContext.Request.Headers.ContainsKey("SMGOV-USEREMAIL")
+                    ? _httpContext.Request.Headers["SMGOV-USEREMAIL"].ToString()
+                    : string.Empty;
+            }
+
+            return userInfo;
+        }
+
     }
 }

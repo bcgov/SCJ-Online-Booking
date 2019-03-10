@@ -15,9 +15,14 @@
       "environmentVariables": {
         "TAG_NAME": "localdev",
         "API_USERNAME": "fake_username",
+        "SMTP_USERNAME": "username@domain.ca",
         "API_ENDPOINT": "https://localhost",
         "API_PASSWORD": "password",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "SMTP_SERVER": "fake.mailserver.ca",
+        "SMTP_DISPLAY_NAME": "Supreme courts booking",
+        "SMTP_FROM_ADDRESS": "no-reply@fromaddress.ca",
+        "SMTP_PASSWORD": "fake_password",
+		"ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "SCJ.Booking.MVC": {
@@ -27,9 +32,14 @@
       "environmentVariables": {
         "TAG_NAME": "localdev",
         "API_USERNAME": "fake_username",
+        "SMTP_USERNAME": "username@domain.ca",
         "API_ENDPOINT": "https://localhost",
         "API_PASSWORD": "password",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "SMTP_SERVER": "fake.mailserver.ca",
+        "SMTP_DISPLAY_NAME": "Supreme courts booking",
+        "SMTP_FROM_ADDRESS": "no-reply@fromaddress.ca",
+        "SMTP_PASSWORD": "fake_password",
+		"ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://127.0.0.1:5000"
     }
