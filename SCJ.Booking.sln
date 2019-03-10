@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.UnitTest", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.RemoteAPIs", "webservices\SCJ.Booking.RemoteAPIs.csproj", "{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "openshift", "openshift", "{AEF1ACED-53A1-4918-94A3-763BC248419A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{1AC25311-40B4-4AC6-A8FB-5793D5A11C6F}"
+	ProjectSection(SolutionItems) = preProject
+		openshift\templates\scj-booking-build.json = openshift\templates\scj-booking-build.json
+		openshift\templates\scj-booking-deploy.json = openshift\templates\scj-booking-deploy.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +38,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1AC25311-40B4-4AC6-A8FB-5793D5A11C6F} = {AEF1ACED-53A1-4918-94A3-763BC248419A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {50F1E2EC-5F23-4CF7-95BF-CD102A2A23FF}

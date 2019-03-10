@@ -27,7 +27,8 @@
             "stringData": {
                 "database-password": "${DATABASE_PASSWORD}",
                 "api-password": "${API_PASSWORD}",
-                "connect-string": "Host=${DATABASE_SERVICE_NAME};Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}"
+                "connect-string": "Host=${DATABASE_SERVICE_NAME};Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}",
+                "smtp-password":  "${SMTP_PASSWORD}"
             }
         },
         {
@@ -156,6 +157,23 @@
                                             "secretKeyRef": {
                                                 "name": "${NAME}",
                                                 "key": "api-password"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SMTP_SERVER",
+                                        "value": "${SMTP_SERVER}"
+                                    },
+                                    {
+                                        "name": "SMTP_FROM_ADDRESS",
+                                        "value": "${SMTP_FROM_ADDRESS}"
+                                    },
+                                    {
+                                        "name": "SMTP_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "name": "${NAME}",
+                                                "key": "smtp-password"
                                             }
                                         }
                                     }
@@ -452,6 +470,26 @@
             "name": "API_PASSWORD",
             "displayName": "API Password",
             "description": "Basic auth password for the SCSS SOAP API",
+            "required": true
+        },
+        {
+            "name": "SMTP_SERVER",
+            "displayName": "SMTP Server",
+            "description": "Address of the SMTP server",
+            "required": true,
+            "value": "mail.courts.gov.bc.ca"
+        },
+        {
+            "name": "SMTP_FROM_ADDRESS",
+            "displayName": "SMTP Email Address",
+            "description": "Email address to send confirmations",
+            "required": true,
+            "value": "no-reply_SC_Booking@courts.gov.bc.ca"
+        },
+        {
+            "name": "SMTP_PASSWORD",
+            "displayName": "SMTP Password",
+            "description": "Password for the SMTP Server",
             "required": true
         }
     ]
