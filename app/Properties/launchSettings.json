@@ -15,7 +15,6 @@
             "environmentVariables": {
                 "TAG_NAME": "localdev",
                 "API_USERNAME": "fake_username",
-                "SMTP_USERNAME": "username@domain.ca",
                 "API_ENDPOINT": "https://localhost",
                 "API_PASSWORD": "password",
                 "SMTP_SERVER": "fake.mailserver.ca",
@@ -31,7 +30,6 @@
             "environmentVariables": {
                 "TAG_NAME": "localdev",
                 "API_USERNAME": "fake_username",
-                "SMTP_USERNAME": "username@domain.ca",
                 "API_ENDPOINT": "https://localhost",
                 "API_PASSWORD": "password",
                 "SMTP_SERVER": "fake.mailserver.ca",

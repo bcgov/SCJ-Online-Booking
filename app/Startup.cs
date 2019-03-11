@@ -16,18 +16,9 @@ namespace SCJ.Booking.MVC
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
-            // Below code demonstrates usage of multiple configuration sources. For instance a setting say 'setting1'
-            // is found in both the registered sources, then the later source will win. By this way a Local config
-            // can be overridden by a different setting while deployed remotely.
-            IConfigurationBuilder builder = new ConfigurationBuilder()
-                .SetBasePath(hostingEnvironment.ContentRootPath)
-                .AddJsonFile("config.json")
-                //All environment variables in the process's context flow in as configuration values.
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }

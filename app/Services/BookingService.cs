@@ -356,14 +356,12 @@ namespace SCJ.Booking.MVC.Services
                 //read settings for SMTP
                 var smtpFromAddress = _configuration["SMTP_FROM_ADDRESS"] ?? "";
                 var smtpServer = _configuration["SMTP_SERVER"] ?? "";
-                var smtpUsername = _configuration["SMTP_USERNAME"] ?? "";
                 var smtpPassword = _configuration["SMTP_PASSWORD"] ?? "";
                 var smtpFromName = _configuration["AppSettings:SmtpDisplayName"];
 
                 //Do NULL checks to ensure we received all the settings
                 if (!string.IsNullOrEmpty(smtpFromAddress) &&
                     !string.IsNullOrEmpty(smtpServer) &&
-                    !string.IsNullOrEmpty(smtpUsername) &&
                     !string.IsNullOrEmpty(smtpPassword) &&
                     !string.IsNullOrEmpty(smtpFromName))
                 {
@@ -374,7 +372,7 @@ namespace SCJ.Booking.MVC.Services
                     msg.To.Add(new MailAddress(data.EmailAddress, bookingInfo.requestedBy));
 
                     //Email subject
-                    msg.Subject = "Thank You for booking a court date";
+                    msg.Subject = "Thank you for booking a TMC";
 
                     //Indicator that we are sending an HTML email
                     msg.IsBodyHtml = true;
@@ -395,13 +393,13 @@ namespace SCJ.Booking.MVC.Services
                         Time = _session.BookingInfo.TimeSlotFriendlyName
                     };
 
-                    //Read the email template 
+                    //Render the email template 
                     msg.Body = await viewRenderService.RenderToStringAsync("Booking/Email", viewModel);
 
                     //Create SMTP client
                     var smtp = new SmtpClient(smtpServer)
                     {
-                        Credentials = new System.Net.NetworkCredential(smtpUsername, smtpPassword),
+                        Credentials = new System.Net.NetworkCredential(smtpFromAddress, smtpPassword),
                         Port = 587,
                         EnableSsl = true
                     };

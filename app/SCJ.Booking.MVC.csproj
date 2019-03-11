@@ -59,7 +59,9 @@
     </Target>
 
     <ProjectExtensions>
-        <VisualStudio><UserProperties /></VisualStudio>
+        <VisualStudio>
+            <UserProperties bundleconfig_1json__JSONSchema="http://json.schemastore.org/commands" />
+        </VisualStudio>
     </ProjectExtensions>
 
 </Project>
