@@ -409,8 +409,8 @@ namespace SCJ.Booking.MVC.Services
                     var smtp = new SmtpClient(smtpServer)
                     {
                         Credentials = new System.Net.NetworkCredential(smtpUserName, smtpPassword),
-                        Port = 25,
-                        EnableSsl = false
+                        Port = 587,
+                        EnableSsl = true
                     };
 
                     //Send email
