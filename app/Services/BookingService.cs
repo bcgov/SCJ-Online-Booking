@@ -361,7 +361,11 @@ namespace SCJ.Booking.MVC.Services
                 var smtpFromName = _configuration["AppSettings:SmtpDisplayName"];
 
                 // log the settings the the console
-                _logger.Information($"smtpFromAddress={smtpFromAddress};smtpServer={smtpServer};smtpPassword={smtpPassword};smtpFromName={smtpFromName}");
+                _logger.Error($"SMTP_SERVER={smtpServer}");
+                _logger.Error($"SMTP_USERNAME={smtpUserName}");
+                _logger.Error($"SMTP_FROM_ADDRESS={smtpFromAddress}");
+                _logger.Error($"SMTP_PASSWORD={smtpPassword}");
+                _logger.Error($"AppSettings:SmtpDisplayName={smtpFromName}");
 
                 //Do NULL checks to ensure we received all the settings
                 if (!string.IsNullOrEmpty(smtpFromAddress) &&
@@ -405,8 +409,8 @@ namespace SCJ.Booking.MVC.Services
                     var smtp = new SmtpClient(smtpServer)
                     {
                         Credentials = new System.Net.NetworkCredential(smtpUserName, smtpPassword),
-                        Port = 587,
-                        EnableSsl = true
+                        Port = 25,
+                        EnableSsl = false
                     };
 
                     //Send email
