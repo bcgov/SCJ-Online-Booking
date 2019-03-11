@@ -17,7 +17,6 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.0" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.0" />
         <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="1.0.7" />
-        <PackageReference Include="BundlerMinifier.Core" Version="2.8.391" />
     </ItemGroup>
 
     <ItemGroup>
@@ -59,9 +58,7 @@
     </Target>
 
     <ProjectExtensions>
-        <VisualStudio>
-            <UserProperties bundleconfig_1json__JSONSchema="http://json.schemastore.org/commands" />
-        </VisualStudio>
+        <VisualStudio><UserProperties /></VisualStudio>
     </ProjectExtensions>
 
 </Project>
