@@ -359,6 +359,9 @@ namespace SCJ.Booking.MVC.Services
                 var smtpPassword = _configuration["SMTP_PASSWORD"] ?? "";
                 var smtpFromName = _configuration["AppSettings:SmtpDisplayName"];
 
+                // log the settings the the console
+                _logger.Information($"smtpFromAddress={smtpFromAddress};smtpServer={smtpServer};smtpPassword={smtpPassword};smtpFromName={smtpFromName}");
+
                 //Do NULL checks to ensure we received all the settings
                 if (!string.IsNullOrEmpty(smtpFromAddress) &&
                     !string.IsNullOrEmpty(smtpServer) &&
