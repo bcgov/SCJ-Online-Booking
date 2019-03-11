@@ -1,0 +1,18 @@
+@using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.Primitives
+@{
+    IHeaderDictionary headers = Context.Request.Headers;
+}
+
+<h2>Request Headers</h2>
+
+<ul>
+    @foreach (KeyValuePair<string, StringValues> header in headers)
+    {
+        <li>
+            <strong>@header.Key</strong>
+            :
+            <span>@header.Value</span>
+        </li>
+    }
+</ul>

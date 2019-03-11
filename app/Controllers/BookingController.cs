@@ -107,5 +107,11 @@ namespace SCJ.Booking.MVC.Controllers
             return View(
                 await _bookingService.BookCourtCase(model, userId, _viewRenderService));
         }
+
+        [HttpGet]
+        public IActionResult Headers()
+        {
+            return View();
+        }
     }
 }
