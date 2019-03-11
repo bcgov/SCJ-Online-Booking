@@ -57,11 +57,20 @@
         {
             "kind": "Route",
             "apiVersion": "v1",
-            "metadata": {
-                "name": "${NAME}"
+            "metadata":  {
+                "name": "${NAME}-siteminder-route"
+            },
+            "labels": {
+                "app": "${NAME}-siteminder-route"
+            },
+            "annotations": {
+                "haproxy.router.openshift.io/ip_whitelist": "${SITEMINDER_WHITE_LIST}"
             },
             "spec": {
-                "host": "${APPLICATION_DOMAIN}",
+                "host": "${SITEMINDER_APPLICATION_DOMAIN}",
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
                 "to": {
                     "kind": "Service",
                     "name": "${NAME}"
@@ -419,12 +428,6 @@
             "required": true
         },
         {
-            "name": "APPLICATION_DOMAIN",
-            "displayName": "Application Hostname",
-            "description": "The exposed hostname that will route to the .NET Core service, if left blank a value will be defaulted.",
-            "value": ""
-        },
-        {
             "name": "DATABASE_SERVICE_NAME",
             "required": true,
             "displayName": "Database Service Name",
@@ -502,6 +505,18 @@
             "displayName": "SMTP Password",
             "description": "Password for the SMTP Server",
             "required": true
+        },
+        {
+            "name": "SITEMINDER_APPLICATION_DOMAIN",
+            "displayName": "SiteMinder Application Domain",
+            "description": "The endpoint used for SiteMinder routed access to the application (*.bcgov domain).",
+            "required": true
+        },
+        {
+            "name": "SITEMINDER_WHITE_LIST",
+            "displayName": "SiteMinder Whitelist",
+            "description": "The space-delimited whitelist containing all of the trusted siteminder IPs.",
+            "required": false
         }
     ]
 }
