@@ -356,6 +356,7 @@ namespace SCJ.Booking.MVC.Services
                 //read settings for SMTP
                 var smtpFromAddress = _configuration["SMTP_FROM_ADDRESS"] ?? "";
                 var smtpServer = _configuration["SMTP_SERVER"] ?? "";
+                var smtpUserName = _configuration["SMTP_USERNAME"] ?? "";
                 var smtpPassword = _configuration["SMTP_PASSWORD"] ?? "";
                 var smtpFromName = _configuration["AppSettings:SmtpDisplayName"];
 
@@ -365,6 +366,7 @@ namespace SCJ.Booking.MVC.Services
                 //Do NULL checks to ensure we received all the settings
                 if (!string.IsNullOrEmpty(smtpFromAddress) &&
                     !string.IsNullOrEmpty(smtpServer) &&
+                    !string.IsNullOrEmpty(smtpUserName) &&
                     !string.IsNullOrEmpty(smtpPassword) &&
                     !string.IsNullOrEmpty(smtpFromName))
                 {
@@ -402,7 +404,7 @@ namespace SCJ.Booking.MVC.Services
                     //Create SMTP client
                     var smtp = new SmtpClient(smtpServer)
                     {
-                        Credentials = new System.Net.NetworkCredential(smtpFromAddress, smtpPassword),
+                        Credentials = new System.Net.NetworkCredential(smtpUserName, smtpPassword),
                         Port = 587,
                         EnableSsl = true
                     };

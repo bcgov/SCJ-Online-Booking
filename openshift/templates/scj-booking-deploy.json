@@ -169,6 +169,10 @@
                                         "value": "${SMTP_FROM_ADDRESS}"
                                     },
                                     {
+                                        "name": "SMTP_USERNAME",
+                                        "value": "${SMTP_USERNAME}"
+                                    },
+                                    {
                                         "name": "SMTP_PASSWORD",
                                         "valueFrom": {
                                             "secretKeyRef": {
@@ -485,6 +489,13 @@
             "description": "Email address to send confirmations",
             "required": true,
             "value": "no-reply_SC_Booking@courts.gov.bc.ca"
+        },
+        {
+            "name": "SMTP_USERNAME",
+            "displayName": "SMTP User Name",
+            "description": "UserName for the SMTP Server (DOMAIN\\User)",
+            "required": true,
+            "value": ""
         },
         {
             "name": "SMTP_PASSWORD",
