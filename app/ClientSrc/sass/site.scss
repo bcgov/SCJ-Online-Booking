@@ -304,15 +304,13 @@ select#SelectedRegistryId {
 }
 
 .booking-submit {
-    & > .content {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 14px;
 
-        .btn-secondary {
-            margin-left: 20px;
-        }
+    padding-top: 12px;
+
+    .btn-secondary {
+        margin-left: 20px;
     }
+    
 }
 
 .booking-new > .content {
