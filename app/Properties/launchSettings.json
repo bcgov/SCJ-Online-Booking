@@ -20,6 +20,7 @@
                 "SMTP_SERVER": "fake.mailserver.ca",
                 "SMTP_FROM_ADDRESS": "no-reply@fromaddress.ca",
                 "SMTP_PASSWORD": "fake_password",
+                "SMTP_USERNAME": "DOMAIN\\user",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
@@ -35,6 +36,7 @@
                 "SMTP_SERVER": "fake.mailserver.ca",
                 "SMTP_FROM_ADDRESS": "no-reply@fromaddress.ca",
                 "SMTP_PASSWORD": "fake_password",
+                "SMTP_USERNAME": "DOMAIN\\user",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "applicationUrl": "http://127.0.0.1:5000"
