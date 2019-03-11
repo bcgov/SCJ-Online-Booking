@@ -1,4 +1,6 @@
-@inject BookingService service
+@using Microsoft.Extensions.Configuration
+@inject BookingService Service
+@inject IConfiguration Configuration
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,10 +15,10 @@
         <ul class="nav navbar-nav">
             @RenderSection("BookingsLeft", false)
             <div class="bookingsLeft">
-                <span>@service.GetHearingsRemaining()</span>
+                <span>@Service.GetHearingsRemaining()</span>
             </div>
             <li class="nav-item">
-                <a asp-controller="User" asp-action="Logout">LOGOUT</a>
+                <a href="@Configuration["AppSettings:LogoutUrl"]">LOGOUT</a>
             </li>
         </ul>
     </div>
