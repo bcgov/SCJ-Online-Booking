@@ -14,7 +14,7 @@
 
 <div class="row booking-confirmation">
     <div class="content col-lg-6">
-        <form asp-controller="Booking" asp-action="CaseBooked" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+        <form action="/scjob/booking/CaseBooked" method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
             <input type="hidden" asp-for="HearingTypeName" />
             <input type="hidden" asp-for="LocationName" />
             <input type="hidden" asp-for="Date" />
@@ -63,7 +63,7 @@
 
             <div class="form-group booking-submit">
                 <button type="submit" class="btn btn-primary btn-lg" id="btnSearch">Confirm Booking</button>
-                @Html.ActionLink("Cancel", "CaseSearch", "Booking", null, new { @class = "btn btn-secondary btn-lg" })
+                <a class="btn btn-secondary btn-lg" href="/scjob/booking/CaseSearch">Cancel</a>
             </div>
 
         </form>

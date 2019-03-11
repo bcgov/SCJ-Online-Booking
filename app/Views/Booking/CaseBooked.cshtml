@@ -1,4 +1,6 @@
+@using Microsoft.Extensions.Configuration
 @model CaseConfirmViewModel
+@inject IConfiguration Configuration
 
 @{
     ViewData["Title"] = "Your Booking is Confirmed";
@@ -89,7 +91,7 @@
 </div>
 <div class="row booking-new">
     <div class="content col-lg-6">
-        @Html.ActionLink("Book Another Hearing", "CaseSearch", "Booking", null, new {@class = "btn btn-primary btn-lg"})
+        <a href="/scjob/booking/CaseSearch" class="btn btn-primary btn-lg">Book Another Hearing</a>
     </div>
 </div>
 <div class="row booking-logout">
@@ -99,6 +101,6 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        @Html.ActionLink("Log out of the BC Courts Booking System", "Logout", "User", null, null)
+        <a href="@Configuration["AppSettings:LogoutUrl"]">Log out of the BC Courts Booking System</a>
     </div>
 </div>

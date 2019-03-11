@@ -55,7 +55,7 @@ namespace SCJ.Booking.MVC.Controllers
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
                 //go to confirmation screen
             {
-                return RedirectToAction("CaseConfirm");
+                return new RedirectResult("/scjob/booking/CaseConfirm");
             }
 
             return View(model);
