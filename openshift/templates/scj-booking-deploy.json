@@ -189,6 +189,10 @@
                                                 "key": "smtp-password"
                                             }
                                         }
+                                    },
+                                    {
+                                        "name": "ASPNETCORE_ENVIRONMENT",
+                                        "value": "${ASPNETCORE_ENVIRONMENT}"
                                     }
                                 ],
                                 "resources": {
@@ -398,14 +402,14 @@
             "description": "Namespace containing application images.",
             "required": true,
             "value": "9xrnfn-tools"
-        },		
+        },
         {
             "name": "TAG_NAME",
             "displayName": "Environment TAG name",
             "description": "The TAG name for this environment, e.g., dev, test, prod.",
             "required": true,
             "value": "dev"
-        },		
+        },
         {
             "name": "MEMORY_LIMIT",
             "displayName": "Memory Limit",
@@ -517,6 +521,13 @@
             "displayName": "SiteMinder Whitelist",
             "description": "The space-delimited whitelist containing all of the trusted siteminder IPs.",
             "required": false
+        },
+        {
+            "name": "ASPNETCORE_ENVIRONMENT",
+            "displayName": "Hosting Environment (ASPNETCORE_ENVIRONMENT)",
+            "description": "'Development', 'Test', or 'Production'",
+            "required": true,
+            "value":  "Production" 
         }
     ]
 }
