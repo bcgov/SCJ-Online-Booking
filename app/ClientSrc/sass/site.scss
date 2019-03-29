@@ -321,6 +321,14 @@ select#SelectedRegistryId {
     margin-top: 10px;
 }
 
+.booking-same-height-item {
+    width: calc(100% / 2 - 5px);
+    float: left;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
 @include breakpoint(mobile) {
     .affixed {
         position: fixed;

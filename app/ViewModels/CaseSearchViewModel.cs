@@ -54,5 +54,8 @@ namespace SCJ.Booking.MVC.ViewModels
         //Date selected in the swiper
         public string SelectedCaseDate { get; set; }
 
+        //Contact person number for registry
+        public string RegistryContactNumber { get; set; }
+
     }
 }

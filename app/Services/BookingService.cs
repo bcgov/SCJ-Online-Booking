@@ -68,7 +68,7 @@ namespace SCJ.Booking.MVC.Services
             return new CaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
+                    locations.Select(x => new { Id = x.locationID, Value = x.locationName }),
                     "Id", "Value")
             };
         }
@@ -85,13 +85,23 @@ namespace SCJ.Booking.MVC.Services
             var retval = new CaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
+                    locations.Select(x => new { Id = x.locationID, Value = x.locationName }),
                     "Id", "Value"),
                 HearingTypeId = model.HearingTypeId,
                 SelectedRegistryId = model.SelectedRegistryId,
                 CaseNumber = model.CaseNumber,
-                TimeSlotExpired = model.TimeSlotExpired
+                TimeSlotExpired = model.TimeSlotExpired,
             };
+
+            //set location name
+            SelectListItem selectedRegistry =
+                retval.RegistryOptions.FirstOrDefault(x =>
+                    x.Value == retval.SelectedRegistryId.ToString());
+
+            if (selectedRegistry != null)
+            {
+                retval.SelectedRegistryName = selectedRegistry.Text;
+            }
 
             //search the current case number
             string caseNumber = await BuildCaseNumber(model.CaseNumber, model.SelectedRegistryId);
@@ -104,6 +114,9 @@ namespace SCJ.Booking.MVC.Services
 
                 //empty result set
                 retval.Results = new AvailableDatesByLocation();
+
+                //get contact infromation
+                retval.RegistryContactNumber = GetRegistryContactNumber(model.SelectedRegistryId);
             }
             else
             {
@@ -117,16 +130,6 @@ namespace SCJ.Booking.MVC.Services
                 int hearingLength = schedule.BookingDetails.detailBookingLength;
 
                 retval.Results = schedule;
-
-                //set location name
-                SelectListItem selectedRegistry =
-                    retval.RegistryOptions.FirstOrDefault(x =>
-                        x.Value == retval.SelectedRegistryId.ToString());
-
-                if (selectedRegistry != null)
-                {
-                    retval.SelectedRegistryName = selectedRegistry.Text;
-                }
 
                 //check for valid date
                 if (model.ContainerId > 0)
@@ -246,7 +249,8 @@ namespace SCJ.Booking.MVC.Services
 
                     bookingHistory.Add(new BookingHistory
                     {
-                        ContainerId = bookingInfo.ContainerId, SmGovUserGuid = userId,
+                        ContainerId = bookingInfo.ContainerId,
+                        SmGovUserGuid = userId,
                         Timestamp = DateTime.Now
                     });
 
@@ -271,7 +275,7 @@ namespace SCJ.Booking.MVC.Services
 
                     //clear booking info session
                     _session.BookingInfo = null;
-   
+
                 }
                 else
                 {
@@ -452,6 +456,52 @@ namespace SCJ.Booking.MVC.Services
 
             return userInfo;
         }
+
+        /// <summary>
+        /// Get registry contact number
+        /// </summary>
+        public string GetRegistryContactNumber(int registryId)
+        {
+            string contactNumber = string.Empty;
+
+            //TODO:Implement logic to find contact number
+            //Need to ask SCB to add a new field to the locations API
+            //for now TMP code to loop it up in a dictionary
+
+            Dictionary<int, string> numbers = new Dictionary<int, string>();
+            numbers.Add(7, "250-741-5860");
+            numbers.Add(10, "604-795-8349");
+            numbers.Add(9, "250-741-5860");
+            numbers.Add(6, "250-828-4351");
+            numbers.Add(11, "250-614-2750");
+            numbers.Add(12, "250-356-1450");
+            numbers.Add(13, "250-614-2750");
+            numbers.Add(15, "250-828-4351");
+            numbers.Add(17, "250-828-4351");
+            numbers.Add(18, "250-470-6935");
+            numbers.Add(20, "250-741-5860");
+            numbers.Add(21, "250-828-4351");
+            numbers.Add(3, "604-660-8551");
+            numbers.Add(26, "250-470-6935");
+            numbers.Add(22, "250-741-5860");
+            numbers.Add(24, "250-741-5860");
+            numbers.Add(4, "250-614-2750");
+            numbers.Add(25, "250-624-7474");
+            numbers.Add(27, "250-614-2750");
+            numbers.Add(29, "250-828-4351");
+            numbers.Add(28, "250-828-4351");
+            numbers.Add(30, "250-828-4351");
+            numbers.Add(31, "250-847-7482");
+            numbers.Add(32, "250-624-7474");
+            numbers.Add(1, "604-660-2853");
+            numbers.Add(34, "250-470-6935");
+            numbers.Add(2, "250-356-1450");
+            numbers.Add(33, "250-614-2750");
+
+            
+            return numbers[registryId];
+        }
+
 
     }
 }

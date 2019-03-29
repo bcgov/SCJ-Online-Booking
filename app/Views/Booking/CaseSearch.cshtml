@@ -33,6 +33,9 @@
                 <div class="col-md-6 form-group">
                     <label>What is the Court File Number for the case?</label>
                     <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber"/>
+                    <span class="ml-3" data-toggle="tooltip" data-html="true" title="<p>Your court file number should not include any special characters. If using a CSO file number, exclude the first 4 characters (ex. VLC-S-S-12345 would be S12345)</p>">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
                     <div class="invalid-feedback">
                         Please provide a Court File Number.
                     </div>
@@ -90,37 +93,32 @@ else
                     </div>
                 </div>
                 <div class="row options-nextStep">
-                    <div class="col col-md-4 col-sm-12 col-12">
+                    <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
                         <div class="card bg-light">
-                            <div class="card-header">Is it the right Court File Number?</div>
+                            <div class="card-header">Is it the right Court File Number or Registry?</div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    If this is not the correct Court File Number, you can change it and try again
-                                    for available times.
+                                    If this is not the correct Court File Number or Registry, you can change it and try again for available times. <br/> Ensure that your Court File Number does not contain any special characters.<br /> If using a CSO file number, exclude the first 4 characters (ex. VLC-S-S-12345 would be S12345).
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-4 col-sm-12 col-12">
+                    <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
                         <div class="card bg-light">
                             <div class="card-header">Is this a Supreme Family or Civil case?</div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    This online tool only covers Family and
-                                    Civil cases. If your case is not a Family or
-                                    Civil case, please go to [TBD]
+                                    This online tool covers Family and Civil cases. If your case is not a Familiy or Civil case please contact @Model.SelectedRegistryName scheduling at @Model.RegistryContactNumber.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-4 col-sm-12 col-12">
+                    <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
                         <div class="card bg-light">
                             <div class="card-header">Need to contact your registry?</div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    You can contact the registry for which
-                                    your hearing is associated (indicated in
-                                    your court filing documents)… [TBD]
+                                    You can contact the registry for which your hearing is associated (indicated in your court filing documents); <br />to contact @Model.SelectedRegistryName please call @Model.RegistryContactNumber.
                                 </p>
                             </div>
                         </div>
