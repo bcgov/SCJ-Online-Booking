@@ -329,6 +329,17 @@ select#SelectedRegistryId {
     display: flex;
 }
 
+.align-tooltip{
+    display:flex;
+    align-items: center;
+}
+
+.card-header-center {
+    align-items: center;
+    display: flex;
+    height: 65px;
+}
+
 @include breakpoint(mobile) {
     .affixed {
         position: fixed;
