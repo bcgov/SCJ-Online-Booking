@@ -23,6 +23,9 @@ namespace SCJ.Booking.RemoteAPIs
 
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
 
+            // The conservative default value is 65536.  Allow 100 times the default
+            binding.MaxReceivedMessageSize = (long) ushort.MaxValue * 100;
+
             var endpointAddress = new EndpointAddress(configuration["API_ENDPOINT"]);
 
             // use basic authentication to connect
