@@ -334,6 +334,10 @@ select#SelectedRegistryId {
     align-items: center;
 }
 
+.tooltip .arrow::before {
+    border-top-color: $blue;
+}
+
 .card-header-center {
     align-items: center;
     display: flex;

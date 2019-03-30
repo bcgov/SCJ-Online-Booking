@@ -458,47 +458,46 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        /// Get registry contact number
+        ///     Get registry contact number
         /// </summary>
         public string GetRegistryContactNumber(int registryId)
         {
-            string contactNumber = string.Empty;
-
             //TODO:Implement logic to find contact number
-            //Need to ask SCB to add a new field to the locations API
-            //for now TMP code to loop it up in a dictionary
+            //Need to ask SCJ to add a new field to the locations API
+            //for now temporary code to loop it up in a dictionary
 
-            Dictionary<int, string> numbers = new Dictionary<int, string>();
-            numbers.Add(7, "250-741-5860");
-            numbers.Add(10, "604-795-8349");
-            numbers.Add(9, "250-741-5860");
-            numbers.Add(6, "250-828-4351");
-            numbers.Add(11, "250-614-2750");
-            numbers.Add(12, "250-356-1450");
-            numbers.Add(13, "250-614-2750");
-            numbers.Add(15, "250-828-4351");
-            numbers.Add(17, "250-828-4351");
-            numbers.Add(18, "250-470-6935");
-            numbers.Add(20, "250-741-5860");
-            numbers.Add(21, "250-828-4351");
-            numbers.Add(3, "604-660-8551");
-            numbers.Add(26, "250-470-6935");
-            numbers.Add(22, "250-741-5860");
-            numbers.Add(24, "250-741-5860");
-            numbers.Add(4, "250-614-2750");
-            numbers.Add(25, "250-624-7474");
-            numbers.Add(27, "250-614-2750");
-            numbers.Add(29, "250-828-4351");
-            numbers.Add(28, "250-828-4351");
-            numbers.Add(30, "250-828-4351");
-            numbers.Add(31, "250-847-7482");
-            numbers.Add(32, "250-624-7474");
-            numbers.Add(1, "604-660-2853");
-            numbers.Add(34, "250-470-6935");
-            numbers.Add(2, "250-356-1450");
-            numbers.Add(33, "250-614-2750");
+            var numbers = new Dictionary<int, string>
+            {
+                {1, "604-660-2853"},
+                {2, "250-356-1450"},
+                {3, "604-660-8551"},
+                {4, "250-614-2750"},
+                {6, "250-828-4351"},
+                {7, "250-741-5860"},
+                {9, "250-741-5860"},
+                {10, "604-795-8349"},
+                {11, "250-614-2750"},
+                {12, "250-356-1450"},
+                {13, "250-614-2750"},
+                {15, "250-828-4351"},
+                {17, "250-828-4351"},
+                {18, "250-470-6935"},
+                {20, "250-741-5860"},
+                {21, "250-828-4351"},
+                {22, "250-741-5860"},
+                {24, "250-741-5860"},
+                {25, "250-624-7474"},
+                {26, "250-470-6935"},
+                {27, "250-614-2750"},
+                {28, "250-828-4351"},
+                {29, "250-828-4351"},
+                {30, "250-828-4351"},
+                {31, "250-847-7482"},
+                {32, "250-624-7474"},
+                {33, "250-614-2750"},
+                {34, "250-470-6935"}
+            };
 
-            
             return numbers[registryId];
         }
 
