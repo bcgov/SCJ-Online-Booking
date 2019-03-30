@@ -94,15 +94,27 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            //read smgov_userguid SiteMinder header
-            string userGuid = _httpContext.Request.Headers.ContainsKey("smgov_userguid")
-                ? _httpContext.Request.Headers["smgov_userguid"].ToString()
-                : string.Empty;
+            string userGuid;
+            string userDisplayName;
 
-            //read smgov_userdisplayname SiteMinder header
-            string userDisplayName = _httpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
-                ? _httpContext.Request.Headers["smgov_userdisplayname"].ToString()
-                : string.Empty;
+            if (_bookingService.IsLocalDevEnvironment)
+            {
+                // use fake SiteMinder header values for local development
+                userGuid = "072cfc73-e3b9-437b-8012-0b0945f09879";
+                userDisplayName = "Matthew Begbie";
+            }
+            else
+            {
+                //read smgov_userguid SiteMinder header
+                userGuid = _httpContext.Request.Headers.ContainsKey("smgov_userguid")
+                    ? _httpContext.Request.Headers["smgov_userguid"].ToString()
+                    : string.Empty;
+
+                //read smgov_userdisplayname SiteMinder header
+                userDisplayName = _httpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
+                    ? _httpContext.Request.Headers["smgov_userdisplayname"].ToString()
+                    : string.Empty;
+            }
 
             //make booking
             return View(

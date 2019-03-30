@@ -22,12 +22,12 @@ namespace SCJ.Booking.MVC.Services
 {
     public class BookingService
     {
-        private const int MaxHearingsPerDay = 250;
+        public readonly bool IsLocalDevEnvironment;
 
+        private const int MaxHearingsPerDay = 250;
         private readonly IOnlineBooking _client;
         private readonly ApplicationDbContext _dbContext;
         private readonly HttpContext _httpContext;
-        private readonly bool _isLocalDevEnvironment;
         private readonly Logger _logger;
         private readonly SessionService _session;
         private readonly IConfiguration _configuration;
@@ -51,7 +51,7 @@ namespace SCJ.Booking.MVC.Services
             string tagName = configuration["TAG_NAME"] ?? "";
             if (tagName.ToLower().Equals("localdev"))
             {
-                _isLocalDevEnvironment = true;
+                IsLocalDevEnvironment = true;
             }
         }
 
@@ -320,14 +320,14 @@ namespace SCJ.Booking.MVC.Services
         public int GetUserHearingsTotalRemaining()
         {
             //get user GUID
-            string uGuid;
+            string userGuid;
 
-            if (!_isLocalDevEnvironment)
+            if (!IsLocalDevEnvironment)
             {
                 //try and read the header
                 if (_httpContext.Request.Headers.ContainsKey("smgov_userguid"))
                 {
-                    uGuid = _httpContext.Request.Headers["smgov_userguid"].ToString();
+                    userGuid = _httpContext.Request.Headers["smgov_userguid"].ToString();
                 }
                 else
                 {
@@ -337,7 +337,7 @@ namespace SCJ.Booking.MVC.Services
             else
             {
                 //Dummy user guid
-                uGuid = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
+                userGuid = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
             }
 
             //today's date
@@ -346,7 +346,7 @@ namespace SCJ.Booking.MVC.Services
             //get all entries for logged-in user
             //booked on today
             List<BookingHistory> hearingsBookedForToday = _dbContext.BookingHistory
-                .Where(b => b.SmGovUserGuid == uGuid &&
+                .Where(b => b.SmGovUserGuid == userGuid &&
                             b.Timestamp.Day == today.Day &&
                             b.Timestamp.Month == today.Month &&
                             b.Timestamp.Year == today.Year).ToList();
