@@ -271,7 +271,8 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await SendEmail(model, bookInfo, viewRenderService);
+                    // todo: this is commented out because mail isn't working
+                    // await SendEmail(model, bookInfo, viewRenderService);
 
                     //clear booking info session
                     _session.BookingInfo = null;
