@@ -43,12 +43,10 @@ The website in this folder is configured to act as a fake implementation of BCeI
 
 2. Open the "Url Rewrite" feature and click "View Server Variables" on the right side.
 
-3. Add these 4 entries to the Allowed Server Variables 
+3. Add these 2 entries to the Allowed Server Variables 
 
-	* HTTP_SMGOV_USERGUID
-	* HTTP_SMGOV_USERDISPLAYNAME
-	* HTTP_SMGOV_USEREMAIL
-	* HTTP_SMGOV_USERPHONE
+	* HEADER_smgov_userguid
+	* HEADER_smgov_userdisplayname
 
 ## Run the website in Visual Studio access the proxy from your browser
 

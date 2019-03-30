@@ -94,18 +94,19 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
         {
-            // fake user id for testing without BCeID
-            var userId = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
+            //read smgov_userguid SiteMinder header
+            string userGuid = _httpContext.Request.Headers.ContainsKey("smgov_userguid")
+                ? _httpContext.Request.Headers["smgov_userguid"].ToString()
+                : string.Empty;
 
-            //read user-guid in headers
-            if (_httpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
-            {
-                userId = _httpContext.Request.Headers["SMGOV-USERGUID"].ToString();
-            }
+            //read smgov_userdisplayname SiteMinder header
+            string userDisplayName = _httpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
+                ? _httpContext.Request.Headers["smgov_userdisplayname"].ToString()
+                : string.Empty;
 
             //make booking
             return View(
-                await _bookingService.BookCourtCase(model, userId, _viewRenderService));
+                await _bookingService.BookCourtCase(model, userGuid, userDisplayName, _viewRenderService));
         }
 
         [HttpGet]

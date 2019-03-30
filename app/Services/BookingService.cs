@@ -202,10 +202,10 @@ namespace SCJ.Booking.MVC.Services
         ///     Book court case
         /// </summary>
         public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model,
-            string userId, IViewRenderService viewRenderService)
+            string userGuid, string userDisplayName, IViewRenderService viewRenderService)
         {
             //if the user could not be detected return 
-            if (string.IsNullOrWhiteSpace(userId))
+            if (string.IsNullOrWhiteSpace(userGuid))
             {
                 model.IsUserKnown = false;
                 return model;
@@ -231,7 +231,7 @@ namespace SCJ.Booking.MVC.Services
                     dateTime = model.FullDate,
                     hearingLength = bookingInfo.HearingLengthMinutes,
                     locationID = bookingInfo.LocationId,
-                    requestedBy = $"FULL_NAME {model.Phone} {model.EmailAddress}",
+                    requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                     hearingTypeId = bookingInfo.HearingTypeId
                 };
 
@@ -250,7 +250,7 @@ namespace SCJ.Booking.MVC.Services
                     bookingHistory.Add(new BookingHistory
                     {
                         ContainerId = bookingInfo.ContainerId,
-                        SmGovUserGuid = userId,
+                        SmGovUserGuid = userGuid,
                         Timestamp = DateTime.Now
                     });
 
@@ -265,7 +265,7 @@ namespace SCJ.Booking.MVC.Services
                     {
                         Phone = model.Phone,
                         Email = model.EmailAddress,
-                        ContactName = $"FULL_NAME {model.Phone} {model.EmailAddress}"
+                        ContactName = $"{userDisplayName} {model.Phone} {model.EmailAddress}"
                     };
 
                     _session.UserInfo = userInfo;
@@ -324,9 +324,9 @@ namespace SCJ.Booking.MVC.Services
             if (!_isLocalDevEnvironment)
             {
                 //try and read the header
-                if (_httpContext.Request.Headers.ContainsKey("SMGOV-USERGUID"))
+                if (_httpContext.Request.Headers.ContainsKey("smgov_userguid"))
                 {
-                    uGuid = _httpContext.Request.Headers["SMGOV-USERGUID"].ToString();
+                    uGuid = _httpContext.Request.Headers["smgov_userguid"].ToString();
                 }
                 else
                 {
@@ -424,37 +424,20 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        /// Get user information based on the session variables and custom headers. Session variables would get preference.
+        ///     Get user information based on the session variables and custom headers. Session variables would
+        ///     get preference.
         /// </summary>
         public SessionUserInfo GetUserInformation()
         {
-            SessionUserInfo userInfo = new SessionUserInfo();
-
-            //Phone number
-            if (!string.IsNullOrEmpty(_session.UserInfo.Phone))
+            return new SessionUserInfo
             {
-                userInfo.Phone = _session.UserInfo.Phone;
-            }
-            else
-            {
-                userInfo.Phone = _httpContext.Request.Headers.ContainsKey("SMGOV-USERPHONE")
-                    ? _httpContext.Request.Headers["SMGOV-USERPHONE"].ToString()
-                    : string.Empty;
-            }
-
-            //Email
-            if (!string.IsNullOrEmpty(_session.UserInfo.Email))
-            {
-                userInfo.Email = _session.UserInfo.Email;
-            }
-            else
-            {
-                userInfo.Email = _httpContext.Request.Headers.ContainsKey("SMGOV-USEREMAIL")
-                    ? _httpContext.Request.Headers["SMGOV-USEREMAIL"].ToString()
-                    : string.Empty;
-            }
-
-            return userInfo;
+                Phone = string.IsNullOrEmpty(_session.UserInfo.Phone)
+                    ? string.Empty
+                    : _session.UserInfo.Phone,
+                Email = string.IsNullOrEmpty(_session.UserInfo.Email)
+                    ? string.Empty
+                    : _session.UserInfo.Email
+            };
         }
 
         /// <summary>
