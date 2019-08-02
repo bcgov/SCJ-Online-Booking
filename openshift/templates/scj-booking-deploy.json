@@ -191,6 +191,14 @@
                                         }
                                     },
                                     {
+                                        "name": "SMTP_PORT",
+                                        "value": "${SMTP_PORT}"
+                                    },
+                                    {
+                                        "name": "SMTP_ENABLE_SSL",
+                                        "value": "${SMTP_ENABLE_SSL}"
+                                    },
+                                    {
                                         "name": "ASPNETCORE_ENVIRONMENT",
                                         "value": "${ASPNETCORE_ENVIRONMENT}"
                                     }
@@ -509,6 +517,20 @@
             "displayName": "SMTP Password",
             "description": "Password for the SMTP Server",
             "required": true
+        },
+        {
+            "name": "SMTP_PORT",
+            "displayName": "SMTP Port",
+            "description": "Port for the SMTP Server",
+            "required": true,
+            "value": "587"
+        },
+        {
+            "name": "SMTP_ENABLE_SSL",
+            "displayName": "Enable SMTP SSL",
+            "description": "Enable SSL for the SMTP server (\"True\" or \"False\")",
+            "required": true,
+            "value": "True"
         },
         {
             "name": "SITEMINDER_APPLICATION_DOMAIN",

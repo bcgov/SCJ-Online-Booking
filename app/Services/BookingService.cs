@@ -363,12 +363,19 @@ namespace SCJ.Booking.MVC.Services
                 var smtpUserName = _configuration["SMTP_USERNAME"] ?? "";
                 var smtpPassword = _configuration["SMTP_PASSWORD"] ?? "";
                 var smtpFromName = _configuration["AppSettings:SmtpDisplayName"];
+                int smtpPort = int.Parse(_configuration["SMTP_PORT"] ?? "587");
+                bool smtpEnableSsl = bool.Parse(_configuration["SMTP_ENABLE_SSL"] ?? "False");
 
                 // log the settings the the console
                 _logger.Error($"SMTP_SERVER={smtpServer}");
                 _logger.Error($"SMTP_USERNAME={smtpUserName}");
                 _logger.Error($"SMTP_FROM_ADDRESS={smtpFromAddress}");
+
+                //todo: remove this line.  For debugging SMPT issues ONLY!!!!
                 _logger.Error($"SMTP_PASSWORD={smtpPassword}");
+
+                _logger.Error($"SMTP_PORT={smtpPort}");
+                _logger.Error($"SMTP_ENABLE_SSL={smtpEnableSsl}");
                 _logger.Error($"AppSettings:SmtpDisplayName={smtpFromName}");
 
                 //Do NULL checks to ensure we received all the settings
@@ -413,8 +420,8 @@ namespace SCJ.Booking.MVC.Services
                     var smtp = new SmtpClient(smtpServer)
                     {
                         Credentials = new System.Net.NetworkCredential(smtpUserName, smtpPassword),
-                        Port = 587,
-                        EnableSsl = false,
+                        Port = smtpPort,
+                        EnableSsl = smtpEnableSsl,
                         Timeout = 30
                     };
 
