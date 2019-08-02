@@ -414,7 +414,8 @@ namespace SCJ.Booking.MVC.Services
                     {
                         Credentials = new System.Net.NetworkCredential(smtpUserName, smtpPassword),
                         Port = 587,
-                        EnableSsl = true
+                        EnableSsl = false,
+                        Timeout = 30
                     };
 
                     //Send email
