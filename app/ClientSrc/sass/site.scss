@@ -202,7 +202,12 @@ p.intro {
 }
 
 .home-description {
-    padding-bottom: 40px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    hr {
+        margin-bottom: 30px;
+    }
 }
 
 .home-login {

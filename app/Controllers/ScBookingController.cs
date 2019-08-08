@@ -10,7 +10,8 @@ using SCJ.Booking.MVC.ViewModels;
 
 namespace SCJ.Booking.MVC.Controllers
 {
-    public class BookingController : Controller
+    [Route("booking/sc/[action]")]
+    public class ScBookingController : Controller
     {
         //Services
         private readonly BookingService _bookingService;
@@ -25,7 +26,7 @@ namespace SCJ.Booking.MVC.Controllers
         private readonly IViewRenderService _viewRenderService;
 
         //Constructor
-        public BookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor,
+        public ScBookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor,
             IConfiguration configuration, SessionService sessionService, IViewRenderService viewRenderService)
         {
             _httpContext = httpAccessor.HttpContext;
@@ -55,13 +56,12 @@ namespace SCJ.Booking.MVC.Controllers
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
                 //go to confirmation screen
             {
-                return new RedirectResult("/scjob/booking/CaseConfirm");
+                return new RedirectResult("/scjob/booking/sc/CaseConfirm");
             }
 
             return View(model);
         }
 
-        [HttpGet]
         public IActionResult CaseConfirm()
         {
             SessionBookingInfo bookingInfo = _session.BookingInfo;

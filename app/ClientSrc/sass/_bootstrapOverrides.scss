@@ -46,7 +46,13 @@ a {
     &:hover, &:focus {
         background-color: $blue-darker;
         border-color: $blue-darker;
+        color: $white;
     }
+}
+
+.btn-secondary.disabled {
+    background-color: $grey-medium;
+    border-color: $grey-medium;
 }
 
 .card {

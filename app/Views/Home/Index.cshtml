@@ -19,15 +19,27 @@
         </p>
     </div>
 </div>
-<div class="row home-description">
-    <div class="offset-lg-3 col-lg-6 col-md-12">
-        <p class="intro">You can book up to ten trial management conferences (TMC) per day.</p>
+
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 col-md-12 text-center">
+        <a class="btn btn-primary btn-lg" href="#" id="btnSupreme">Supreme Court</a>
+        <a class="btn btn-secondary btn-lg disabled" href="#">Court of Appeal</a>
     </div>
 </div>
-<div class="row home-login">
-    <div class="col-md-12">
-        <a class="btn btn-primary btn-lg" href="/scjob/booking/CaseSearch">Log in with BCeID</a>
-        <p class="login-question">Don't have a BCeID?</p>
-        <a href="@Configuration["AppSettings:RegisterUrl"]">Register for a BCeID</a>
+
+<div id="pnlSupreme" style="display: none">
+    <div class="row home-description">
+        <div class="offset-lg-3 col-lg-6 col-md-12">
+            <hr/>
+            <p class="intro">You can book up to ten trial management conferences (TMC) per day.</p>
+        </div>
+    </div>
+
+    <div class="row home-login">
+        <div class="col-md-12">
+            <a class="btn btn-primary btn-lg" href="/scjob/booking/sc/CaseSearch">Log in with BCeID</a>
+            <p class="login-question">Don't have a BCeID?</p>
+            <a href="@Configuration["AppSettings:RegisterUrl"]">Register for a BCeID</a>
+        </div>
     </div>
 </div>

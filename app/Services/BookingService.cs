@@ -26,7 +26,7 @@ namespace SCJ.Booking.MVC.Services
     public class BookingService
     {
         private const int MaxHearingsPerDay = 250;
-        private const string EmailSubject = "Thank you for booking a TMC";
+        private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
@@ -416,7 +416,7 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Renders the template for the email body to a string (~/Views/Booking/Email.cshtml)
+        ///     Renders the template for the email body to a string (~/Views/ScBooking/Email.cshtml)
         /// </summary>
         private async Task<string> GetEmailBody(CaseConfirmViewModel data,
             BookHearingInfo bookingInfo)
@@ -438,7 +438,7 @@ namespace SCJ.Booking.MVC.Services
             };
 
             //Render the email template 
-            return await _viewRenderService.RenderToStringAsync("Booking/EmailText", viewModel);
+            return await _viewRenderService.RenderToStringAsync("ScBooking/EmailText", viewModel);
         }
 
         /// <summary>
