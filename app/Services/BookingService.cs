@@ -38,7 +38,7 @@ namespace SCJ.Booking.MVC.Services
         {
             //setup error logger settings
             _logger = new LoggerConfiguration()
-                .WriteTo.Console(LogEventLevel.Error)
+                .WriteTo.Console(LogEventLevel.Information)
                 .CreateLogger();
 
             _client = OnlineBookingClientFactory.GetClient(configuration);
@@ -367,16 +367,16 @@ namespace SCJ.Booking.MVC.Services
                 bool smtpEnableSsl = bool.Parse(_configuration["SMTP_ENABLE_SSL"] ?? "False");
 
                 // log the settings the the console
-                _logger.Error($"SMTP_SERVER={smtpServer}");
-                _logger.Error($"SMTP_USERNAME={smtpUserName}");
-                _logger.Error($"SMTP_FROM_ADDRESS={smtpFromAddress}");
+                _logger.Information($"SMTP_SERVER={smtpServer}");
+                _logger.Information($"SMTP_USERNAME={smtpUserName}");
+                _logger.Information($"SMTP_FROM_ADDRESS={smtpFromAddress}");
 
                 //todo: remove this line.  For debugging SMPT issues ONLY!!!!
-                _logger.Error($"SMTP_PASSWORD={smtpPassword}");
+                _logger.Information($"SMTP_PASSWORD={smtpPassword}");
 
-                _logger.Error($"SMTP_PORT={smtpPort}");
-                _logger.Error($"SMTP_ENABLE_SSL={smtpEnableSsl}");
-                _logger.Error($"AppSettings:SmtpDisplayName={smtpFromName}");
+                _logger.Information($"SMTP_PORT={smtpPort}");
+                _logger.Information($"SMTP_ENABLE_SSL={smtpEnableSsl}");
+                _logger.Information($"AppSettings:SmtpDisplayName={smtpFromName}");
 
                 //Do NULL checks to ensure we received all the settings
                 if (!string.IsNullOrEmpty(smtpFromAddress) &&
