@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Models;
@@ -17,24 +19,30 @@ using SCJ.SC.OnlineBooking;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using Task = System.Threading.Tasks.Task;
 
 namespace SCJ.Booking.MVC.Services
 {
     public class BookingService
     {
-        public readonly bool IsLocalDevEnvironment;
-
         private const int MaxHearingsPerDay = 250;
+        private const string EmailSubject = "Thank you for booking a TMC";
         private readonly IOnlineBooking _client;
+        private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
+        private readonly WebCredentials _emailCredentials;
+        private readonly string _emailPassword;
+        private readonly string _emailUserName;
         private readonly HttpContext _httpContext;
         private readonly Logger _logger;
         private readonly SessionService _session;
-        private readonly IConfiguration _configuration;
+        private readonly IViewRenderService _viewRenderService;
+        public readonly bool IsLocalDevEnvironment;
 
         //Constructor
         public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration, SessionService sessionService)
+            IConfiguration configuration, SessionService sessionService,
+            IViewRenderService viewRenderService)
         {
             //setup error logger settings
             _logger = new LoggerConfiguration()
@@ -46,6 +54,7 @@ namespace SCJ.Booking.MVC.Services
             _dbContext = dbContext;
             _httpContext = httpAccessor.HttpContext;
             _session = sessionService;
+            _viewRenderService = viewRenderService;
 
             //check if this is running on a developer workstation (outside OpenShift)
             string tagName = configuration["TAG_NAME"] ?? "";
@@ -53,6 +62,10 @@ namespace SCJ.Booking.MVC.Services
             {
                 IsLocalDevEnvironment = true;
             }
+
+            _emailUserName = _configuration["SMTP_USERNAME"] ?? "";
+            _emailPassword = _configuration["SMTP_PASSWORD"] ?? "";
+            _emailCredentials = new WebCredentials(_emailUserName, _emailPassword, "SCJ");
         }
 
 
@@ -68,7 +81,7 @@ namespace SCJ.Booking.MVC.Services
             return new CaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locations.Select(x => new { Id = x.locationID, Value = x.locationName }),
+                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
                     "Id", "Value")
             };
         }
@@ -85,12 +98,12 @@ namespace SCJ.Booking.MVC.Services
             var retval = new CaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locations.Select(x => new { Id = x.locationID, Value = x.locationName }),
+                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
                     "Id", "Value"),
                 HearingTypeId = model.HearingTypeId,
                 SelectedRegistryId = model.SelectedRegistryId,
                 CaseNumber = model.CaseNumber,
-                TimeSlotExpired = model.TimeSlotExpired,
+                TimeSlotExpired = model.TimeSlotExpired
             };
 
             //set location name
@@ -202,7 +215,7 @@ namespace SCJ.Booking.MVC.Services
         ///     Book court case
         /// </summary>
         public async Task<CaseConfirmViewModel> BookCourtCase(CaseConfirmViewModel model,
-            string userGuid, string userDisplayName, IViewRenderService viewRenderService)
+            string userGuid, string userDisplayName)
         {
             //if the user could not be detected return 
             if (string.IsNullOrWhiteSpace(userGuid))
@@ -218,7 +231,8 @@ namespace SCJ.Booking.MVC.Services
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
             AvailableDatesByLocation schedule =
-                await _client.AvailableDatesByLocationAsync(bookingInfo.LocationId, bookingInfo.HearingTypeId);
+                await _client.AvailableDatesByLocationAsync(bookingInfo.LocationId,
+                    bookingInfo.HearingTypeId);
 
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
@@ -261,7 +275,7 @@ namespace SCJ.Booking.MVC.Services
                     model.IsBooked = true;
 
                     //store user info in session for next booking
-                    var userInfo = new SessionUserInfo()
+                    var userInfo = new SessionUserInfo
                     {
                         Phone = model.Phone,
                         Email = model.EmailAddress,
@@ -271,11 +285,10 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await SendEmail(model, bookInfo, viewRenderService);
+                    await SendEmailExchange(model, bookInfo);
 
                     //clear booking info session
                     _session.BookingInfo = null;
-
                 }
                 else
                 {
@@ -353,82 +366,79 @@ namespace SCJ.Booking.MVC.Services
             return MaxHearingsPerDay - hearingsBookedForToday.Count();
         }
 
-        private async Task SendEmail(CaseConfirmViewModel data, BookHearingInfo bookingInfo, IViewRenderService viewRenderService)
+        /// <summary>
+        ///     Sends a confirmation email using an Exchange server
+        /// </summary>
+        private async Task SendEmailExchange(CaseConfirmViewModel data, BookHearingInfo bookingInfo)
         {
-            using (var msg = new MailMessage())
+            string emailFromName = _configuration["AppSettings:SmtpDisplayName"];
+            string emailFromAddress = _configuration["SMTP_FROM_ADDRESS"] ?? "";
+
+            // log the settings the the console
+            _logger.Information($"SMTP_USERNAME={_emailUserName}");
+            _logger.Information($"SMTP_FROM_ADDRESS={emailFromAddress}");
+
+            //todo: remove this line.  For debugging mail issues ONLY!!!!
+            _logger.Information($"SMTP_PASSWORD={_emailPassword}");
+            _logger.Information($"AppSettings:SmtpDisplayName={emailFromName}");
+
+            //Do NULL checks to ensure we received all the settings
+            if (!string.IsNullOrEmpty(emailFromAddress) &&
+                !string.IsNullOrEmpty(_emailUserName) &&
+                !string.IsNullOrEmpty(_emailPassword) &&
+                !string.IsNullOrEmpty(emailFromName))
             {
-                //read settings for SMTP
-                var smtpFromAddress = _configuration["SMTP_FROM_ADDRESS"] ?? "";
-                var smtpServer = _configuration["SMTP_SERVER"] ?? "";
-                var smtpUserName = _configuration["SMTP_USERNAME"] ?? "";
-                var smtpPassword = _configuration["SMTP_PASSWORD"] ?? "";
-                var smtpFromName = _configuration["AppSettings:SmtpDisplayName"];
-                int smtpPort = int.Parse(_configuration["SMTP_PORT"] ?? "587");
-                bool smtpEnableSsl = bool.Parse(_configuration["SMTP_ENABLE_SSL"] ?? "False");
-
-                // log the settings the the console
-                _logger.Information($"SMTP_SERVER={smtpServer}");
-                _logger.Information($"SMTP_USERNAME={smtpUserName}");
-                _logger.Information($"SMTP_FROM_ADDRESS={smtpFromAddress}");
-
-                //todo: remove this line.  For debugging SMPT issues ONLY!!!!
-                _logger.Information($"SMTP_PASSWORD={smtpPassword}");
-
-                _logger.Information($"SMTP_PORT={smtpPort}");
-                _logger.Information($"SMTP_ENABLE_SSL={smtpEnableSsl}");
-                _logger.Information($"AppSettings:SmtpDisplayName={smtpFromName}");
-
-                //Do NULL checks to ensure we received all the settings
-                if (!string.IsNullOrEmpty(smtpFromAddress) &&
-                    !string.IsNullOrEmpty(smtpServer) &&
-                    !string.IsNullOrEmpty(smtpUserName) &&
-                    !string.IsNullOrEmpty(smtpPassword) &&
-                    !string.IsNullOrEmpty(smtpFromName))
+                var exchangeService = new ExchangeService
                 {
-                    //set SMTP from address and from name
-                    msg.From = new MailAddress(smtpFromAddress, smtpFromName);
+                    Credentials = _emailCredentials,
+                    Url = new Uri("https://mail.courts.gov.bc.ca/EWS/Exchange.asmx"),
+                    UseDefaultCredentials = false,
+                    TraceEnabled = true,
+                    TraceFlags = TraceFlags.All,
+                    TraceListener = new ExchangeTraceListener(_logger)
+                };
 
-                    //set recipient email and name
-                    msg.To.Add(new MailAddress(data.EmailAddress, bookingInfo.requestedBy));
+                string emailBody = await GetEmailBody(data, bookingInfo);
 
-                    //Email subject
-                    msg.Subject = "Thank you for booking a TMC";
+                _logger.Information(emailBody);
 
-                    //Indicator that we are sending an HTML email
-                    msg.IsBodyHtml = true;
+                var message = new EmailMessage(exchangeService)
+                {
+                    Subject = EmailSubject,
+                    Body = new MessageBody(BodyType.Text, emailBody),
+                    From = new EmailAddress(emailFromName, emailFromAddress)
+                };
 
-                    //user information
-                    var user = GetUserInformation();
+                message.ToRecipients.Add(new EmailAddress(data.EmailAddress));
 
-                    //set ViewModel for the email
-                    var viewModel = new EmailViewModel()
-                    {
-                        EmailAddress = user.Email,
-                        Phone = user.Phone,
-                        CourtFileNumber = _session.BookingInfo.CaseNumber,
-                        Fullname = bookingInfo.requestedBy,
-                        RegistryName = data.LocationName,
-                        TypeOfConference = data.HearingTypeName,
-                        Date = data.Date,
-                        Time = _session.BookingInfo.TimeSlotFriendlyName
-                    };
-
-                    //Render the email template 
-                    msg.Body = await viewRenderService.RenderToStringAsync("Booking/Email", viewModel);
-
-                    //Create SMTP client
-                    var smtp = new SmtpClient(smtpServer)
-                    {
-                        Credentials = new System.Net.NetworkCredential(smtpUserName, smtpPassword),
-                        Port = smtpPort,
-                        EnableSsl = smtpEnableSsl,
-                        Timeout = 30
-                    };
-
-                    //Send email
-                    smtp.Send(msg);
-                }
+                await message.Send();
             }
+        }
+
+        /// <summary>
+        ///     Renders the template for the email body to a string (~/Views/Booking/Email.cshtml)
+        /// </summary>
+        private async Task<string> GetEmailBody(CaseConfirmViewModel data,
+            BookHearingInfo bookingInfo)
+        {
+            //user information
+            SessionUserInfo user = GetUserInformation();
+
+            //set ViewModel for the email
+            var viewModel = new EmailViewModel
+            {
+                EmailAddress = user.Email,
+                Phone = user.Phone,
+                CourtFileNumber = _session.BookingInfo.CaseNumber,
+                Fullname = bookingInfo.requestedBy,
+                RegistryName = data.LocationName,
+                TypeOfConference = data.HearingTypeName,
+                Date = data.Date,
+                Time = _session.BookingInfo.TimeSlotFriendlyName
+            };
+
+            //Render the email template 
+            return await _viewRenderService.RenderToStringAsync("Booking/EmailText", viewModel);
         }
 
         /// <summary>
@@ -491,7 +501,5 @@ namespace SCJ.Booking.MVC.Services
 
             return numbers[registryId];
         }
-
-
     }
 }

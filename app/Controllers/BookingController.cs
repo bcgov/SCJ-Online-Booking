@@ -31,7 +31,7 @@ namespace SCJ.Booking.MVC.Controllers
             _httpContext = httpAccessor.HttpContext;
             _viewRenderService = viewRenderService;
             _session = sessionService;
-            _bookingService = new BookingService(context, httpAccessor, configuration, sessionService);
+            _bookingService = new BookingService(context, httpAccessor, configuration, sessionService, viewRenderService);
         }
 
         [HttpGet]
@@ -118,7 +118,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //make booking
             return View(
-                await _bookingService.BookCourtCase(model, userGuid, userDisplayName, _viewRenderService));
+                await _bookingService.BookCourtCase(model, userGuid, userDisplayName));
         }
 
         [HttpGet]

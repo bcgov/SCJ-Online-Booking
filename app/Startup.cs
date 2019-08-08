@@ -61,6 +61,9 @@ namespace SCJ.Booking.MVC
                 });
             }
 
+            // this setting is needed because NTLM auth does not work by default on Unix 
+            AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false);
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
