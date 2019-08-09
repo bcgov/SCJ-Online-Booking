@@ -11,6 +11,6 @@ node {
 
   stage('build') {
     echo "Building: scj-booking-build"
-    openshiftBuild bldCfg: 'scj-booking-build', showBuildLogs: 'true'
+    openshiftBuild bldCfg: 'scj-booking-build', showBuildLogs: 'true', waitTime: 30, waitUnit: 'min'
   }
 }
