@@ -17,10 +17,10 @@
                 "API_USERNAME": "fake_username",
                 "API_ENDPOINT": "https://localhost",
                 "API_PASSWORD": "password",
-                "SMTP_SERVER": "fake.mailserver.ca",
-                "SMTP_FROM_ADDRESS": "no-reply@fromaddress.ca",
-                "SMTP_PASSWORD": "fake_password",
-                "SMTP_USERNAME": "DOMAIN\\user",
+                "EXCHANGE_URL": "https://mail.courts.gov.bc.ca/EWS/Exchange.asmx",
+                "EXCHANGE_PASSWORD": "fake_password",
+                "EXCHANGE_USERNAME": "fake_user",
+                "EXCHANGE_DOMAIN": "FAKE",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
@@ -33,10 +33,10 @@
                 "API_USERNAME": "fake_username",
                 "API_ENDPOINT": "https://localhost",
                 "API_PASSWORD": "password",
-                "SMTP_SERVER": "fake.mailserver.ca",
-                "SMTP_FROM_ADDRESS": "no-reply@fromaddress.ca",
-                "SMTP_PASSWORD": "fake_password",
-                "SMTP_USERNAME": "DOMAIN\\user",
+                "EXCHANGE_URL": "https://mail.courts.gov.bc.ca/EWS/Exchange.asmx",
+                "EXCHANGE_PASSWORD": "fake_password",
+                "EXCHANGE_USERNAME": "fake_user",
+                "EXCHANGE_DOMAIN": "FAKE",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "applicationUrl": "http://127.0.0.1:5000"

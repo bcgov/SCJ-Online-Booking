@@ -28,7 +28,7 @@
                 "database-password": "${DATABASE_PASSWORD}",
                 "api-password": "${API_PASSWORD}",
                 "connect-string": "Host=${DATABASE_SERVICE_NAME};Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}",
-                "smtp-password":  "${SMTP_PASSWORD}"
+                "exchange-password":  "${EXCHANGE_PASSWORD}"
             }
         },
         {
@@ -170,33 +170,21 @@
                                         }
                                     },
                                     {
-                                        "name": "SMTP_SERVER",
-                                        "value": "${SMTP_SERVER}"
+                                        "name": "EXCHANGE_URL",
+                                        "value": "${EXCHANGE_URL}"
                                     },
                                     {
-                                        "name": "SMTP_FROM_ADDRESS",
-                                        "value": "${SMTP_FROM_ADDRESS}"
+                                        "name": "EXCHANGE_USERNAME",
+                                        "value": "${EXCHANGE_USERNAME}"
                                     },
                                     {
-                                        "name": "SMTP_USERNAME",
-                                        "value": "${SMTP_USERNAME}"
-                                    },
-                                    {
-                                        "name": "SMTP_PASSWORD",
+                                        "name": "EXCHANGE_PASSWORD",
                                         "valueFrom": {
                                             "secretKeyRef": {
                                                 "name": "${NAME}",
-                                                "key": "smtp-password"
+                                                "key": "exchange-password"
                                             }
                                         }
-                                    },
-                                    {
-                                        "name": "SMTP_PORT",
-                                        "value": "${SMTP_PORT}"
-                                    },
-                                    {
-                                        "name": "SMTP_ENABLE_SSL",
-                                        "value": "${SMTP_ENABLE_SSL}"
                                     },
                                     {
                                         "name": "ASPNETCORE_ENVIRONMENT",
@@ -492,45 +480,31 @@
             "required": true
         },
         {
-            "name": "SMTP_SERVER",
-            "displayName": "SMTP Server",
-            "description": "Address of the SMTP server",
+            "name": "EXCHANGE_URL",
+            "displayName": "Exchange Server EWS URL",
+            "description": "Path to the .asmx file",
             "required": true,
-            "value": "mail.courts.gov.bc.ca"
+            "value": "https://mail.courts.gov.bc.ca/EWS/Exchange.asmx"
         },
         {
-            "name": "SMTP_FROM_ADDRESS",
-            "displayName": "SMTP Email Address",
-            "description": "Email address to send confirmations",
-            "required": true,
-            "value": "no-reply_SC_Booking@courts.gov.bc.ca"
-        },
-        {
-            "name": "SMTP_USERNAME",
-            "displayName": "SMTP User Name",
-            "description": "UserName for the SMTP Server (DOMAIN\\User)",
+            "name": "EXCHANGE_USERNAME",
+            "displayName": "Exchange User Name  (domain\\[USER])",
+            "description": "UserName for the Exchange Server",
             "required": true,
             "value": ""
         },
         {
-            "name": "SMTP_PASSWORD",
-            "displayName": "SMTP Password",
-            "description": "Password for the SMTP Server",
+            "name": "EXCHANGE_PASSWORD",
+            "displayName": "Exchange Password",
+            "description": "Password for the Exchange Server",
             "required": true
         },
         {
-            "name": "SMTP_PORT",
-            "displayName": "SMTP Port",
-            "description": "Port for the SMTP Server",
+            "name": "EXCHANGE_DOMAIN",
+            "displayName": "Exchange ActiveDirectory Domain ([DOMAIN]\\user)",
+            "description": "UserName for the Exchange Server",
             "required": true,
-            "value": "587"
-        },
-        {
-            "name": "SMTP_ENABLE_SSL",
-            "displayName": "Enable SMTP SSL",
-            "description": "Enable SSL for the SMTP server (\"True\" or \"False\")",
-            "required": true,
-            "value": "True"
+            "value": ""
         },
         {
             "name": "SITEMINDER_APPLICATION_DOMAIN",
@@ -549,7 +523,7 @@
             "displayName": "Hosting Environment (ASPNETCORE_ENVIRONMENT)",
             "description": "'Development', 'Test', or 'Production'",
             "required": true,
-            "value":  "Production" 
+            "value": "Production"
         }
     ]
 }

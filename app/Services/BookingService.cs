@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
@@ -30,23 +28,38 @@ namespace SCJ.Booking.MVC.Services
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
-        private readonly WebCredentials _emailCredentials;
-        private readonly string _emailPassword;
-        private readonly string _emailUserName;
         private readonly HttpContext _httpContext;
         private readonly Logger _logger;
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
         public readonly bool IsLocalDevEnvironment;
+        private WebCredentials _emailCredentials;
 
         //Constructor
         public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
             IConfiguration configuration, SessionService sessionService,
             IViewRenderService viewRenderService)
         {
+            // default log level is error (less verbose)
+            var logLevel = LogEventLevel.Error;
+
+            //check if this is running on a developer workstation (outside OpenShift)
+            string tagName = configuration["TAG_NAME"] ?? "";
+            if (tagName.ToLower().Equals("localdev"))
+            {
+                IsLocalDevEnvironment = true;
+                logLevel = LogEventLevel.Debug;
+            }
+
+            // check if this is the OpenShift devlopment environment
+            if (tagName.ToLower().Equals("dev"))
+            {
+                logLevel = LogEventLevel.Information;
+            }
+
             //setup error logger settings
             _logger = new LoggerConfiguration()
-                .WriteTo.Console(LogEventLevel.Information)
+                .WriteTo.Console(logLevel)
                 .CreateLogger();
 
             _client = OnlineBookingClientFactory.GetClient(configuration);
@@ -56,18 +69,9 @@ namespace SCJ.Booking.MVC.Services
             _session = sessionService;
             _viewRenderService = viewRenderService;
 
-            //check if this is running on a developer workstation (outside OpenShift)
-            string tagName = configuration["TAG_NAME"] ?? "";
-            if (tagName.ToLower().Equals("localdev"))
-            {
-                IsLocalDevEnvironment = true;
-            }
-
-            _emailUserName = _configuration["SMTP_USERNAME"] ?? "";
-            _emailPassword = _configuration["SMTP_PASSWORD"] ?? "";
-            _emailCredentials = new WebCredentials(_emailUserName, _emailPassword, "SCJ");
+            // get the Exchange credentials
+            SetExchangeCredentials();
         }
-
 
         /// <summary>
         ///     Populate the dropdown list for locations for the search
@@ -285,7 +289,7 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await SendEmailExchange(model, bookInfo);
+                    await SendEmail(model, bookInfo);
 
                     //clear booking info session
                     _session.BookingInfo = null;
@@ -369,29 +373,21 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Sends a confirmation email using an Exchange server
         /// </summary>
-        private async Task SendEmailExchange(CaseConfirmViewModel data, BookHearingInfo bookingInfo)
+        private async Task SendEmail(CaseConfirmViewModel data, BookHearingInfo bookingInfo)
         {
-            string emailFromName = _configuration["AppSettings:SmtpDisplayName"];
-            string emailFromAddress = _configuration["SMTP_FROM_ADDRESS"] ?? "";
+            string exchangeUrl = _configuration["EXCHANGE_URL"] ?? "";
 
             // log the settings the the console
-            _logger.Information($"SMTP_USERNAME={_emailUserName}");
-            _logger.Information($"SMTP_FROM_ADDRESS={emailFromAddress}");
-
-            //todo: remove this line.  For debugging mail issues ONLY!!!!
-            _logger.Information($"SMTP_PASSWORD={_emailPassword}");
-            _logger.Information($"AppSettings:SmtpDisplayName={emailFromName}");
+            _logger.Information($"EXCHANGE_URL={exchangeUrl}");
 
             //Do NULL checks to ensure we received all the settings
-            if (!string.IsNullOrEmpty(emailFromAddress) &&
-                !string.IsNullOrEmpty(_emailUserName) &&
-                !string.IsNullOrEmpty(_emailPassword) &&
-                !string.IsNullOrEmpty(emailFromName))
+            if (!string.IsNullOrEmpty(exchangeUrl) &&
+                _emailCredentials != null)
             {
                 var exchangeService = new ExchangeService
                 {
                     Credentials = _emailCredentials,
-                    Url = new Uri("https://mail.courts.gov.bc.ca/EWS/Exchange.asmx"),
+                    Url = new Uri(exchangeUrl),
                     UseDefaultCredentials = false,
                     TraceEnabled = true,
                     TraceFlags = TraceFlags.All,
@@ -405,8 +401,8 @@ namespace SCJ.Booking.MVC.Services
                 var message = new EmailMessage(exchangeService)
                 {
                     Subject = EmailSubject,
-                    Body = new MessageBody(BodyType.Text, emailBody),
-                    From = new EmailAddress(emailFromName, emailFromAddress)
+                    Body = new MessageBody(BodyType.Text, emailBody)
+                    //From = new EmailAddress(emailFromName, emailFromAddress)  // this line doesn't seem to do anything so I removed it to confirm
                 };
 
                 message.ToRecipients.Add(new EmailAddress(data.EmailAddress));
@@ -456,6 +452,25 @@ namespace SCJ.Booking.MVC.Services
                     ? string.Empty
                     : _session.UserInfo.Email
             };
+        }
+
+        /// <summary>
+        ///     Sets the exchange credentials
+        /// </summary>
+        private void SetExchangeCredentials()
+        {
+            string emailUserName = _configuration["EXCHANGE_USERNAME"] ?? "";
+            string emailPassword = _configuration["EXCHANGE_PASSWORD"] ?? "";
+            string emailDomain = _configuration["EXCHANGE_DOMAIN"] ?? "";
+
+            if (emailDomain != "" && emailPassword != "" && emailUserName != "")
+            {
+                _emailCredentials = new WebCredentials(emailUserName, emailPassword, emailDomain);
+            }
+            else
+            {
+                _emailCredentials = null;
+            }
         }
 
         /// <summary>
