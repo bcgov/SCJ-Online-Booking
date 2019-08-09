@@ -8,9 +8,18 @@
 
 <div class="row screen-intro">
     <div class="col-md-12">
-        <h1>@ViewData["Title"]</h1>
-        <p>The booking for your conference hearing is confirmed.</p>
-        <p>The following details will be sent to you by email.</p>
+        @if (Model.IsBooked)
+        {
+            <h1>@ViewData["Title"]</h1>
+            <p>The booking for your conference hearing is confirmed.</p>
+            <p>The following details will be sent to you by email.</p>
+        }
+        else
+        {
+            <h1>Error</h1>
+            <p>There was an error confirming your booking.</p>
+            <p>The following message was returned by the scheduling system.</p>
+        }
     </div>
 </div>
 
