@@ -69,7 +69,7 @@
             "spec": {
                 "host": "${SITEMINDER_APPLICATION_DOMAIN}",
                 "port": {
-                    "targetPort": "8080-tcp"
+                    "targetPort": "web"
                 },
                 "to": {
                     "kind": "Service",
@@ -404,7 +404,7 @@
             "displayName": "Environment TAG name",
             "description": "The TAG name for this environment, e.g., dev, test, prod.",
             "required": true,
-            "value": "dev"
+            "value": ""
         },
         {
             "name": "MEMORY_LIMIT",
@@ -488,8 +488,8 @@
         },
         {
             "name": "EXCHANGE_USERNAME",
-            "displayName": "Exchange User Name  (domain\\[USER])",
-            "description": "UserName for the Exchange Server",
+            "displayName": "Exchange Username",
+            "description": "Username for the Exchange Server",
             "required": true,
             "value": ""
         },
@@ -501,8 +501,8 @@
         },
         {
             "name": "EXCHANGE_DOMAIN",
-            "displayName": "Exchange ActiveDirectory Domain ([DOMAIN]\\user)",
-            "description": "UserName for the Exchange Server",
+            "displayName": "Exchange ActiveDirectory Domain",
+            "description": "Domain for the Exchange User",
             "required": true,
             "value": ""
         },
@@ -523,7 +523,7 @@
             "displayName": "Hosting Environment (ASPNETCORE_ENVIRONMENT)",
             "description": "'Development', 'Test', or 'Production'",
             "required": true,
-            "value": "Production"
+            "value": ""
         }
     ]
 }
