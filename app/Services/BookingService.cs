@@ -407,7 +407,7 @@ namespace SCJ.Booking.MVC.Services
 
                 message.ToRecipients.Add(new EmailAddress(data.EmailAddress));
 
-                await message.Send();
+                await message.SendAndSaveCopy();
             }
         }
 
