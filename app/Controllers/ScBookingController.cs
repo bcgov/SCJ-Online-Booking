@@ -62,9 +62,15 @@ namespace SCJ.Booking.MVC.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public IActionResult CaseConfirm()
         {
             SessionBookingInfo bookingInfo = _session.BookingInfo;
+
+            if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
+            {
+                return RedirectToAction("CaseSearch");
+            }
 
             //convert JS ticks to .Net date
             var dt = new DateTime(Convert.ToInt64(bookingInfo.SelectedCaseDate));
@@ -92,8 +98,13 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CaseBooked(CaseConfirmViewModel model)
+        public async Task<IActionResult> CaseConfirm(CaseConfirmViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             string userGuid;
             string userDisplayName;
 
@@ -117,8 +128,30 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             //make booking
-            return View(
-                await _bookingService.BookCourtCase(model, userGuid, userDisplayName));
+            var result = 
+                await _bookingService.BookCourtCase(model, userGuid, userDisplayName);
+
+            if (result.IsBooked)
+            {
+                return RedirectToAction("CaseBooked");
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CaseBooked()
+        {
+            SessionBookingInfo bookingInfo = _session.BookingInfo;
+
+            if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
+            {
+                return RedirectToAction("CaseSearch");
+            }
+
+            return View();
         }
 
         [HttpGet]

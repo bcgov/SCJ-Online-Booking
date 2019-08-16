@@ -13,5 +13,12 @@ namespace SCJ.Booking.MVC.Utils
         public string HearingTypeName { get; set; }
         public string TimeSlotFriendlyName { get; set; }
         public string SelectedCaseDate { get; set; }
+
+        //The result string returned by the SOAP API when the hearing was booked
+        public string RawResult { get; set; }
+
+        public bool IsBooked { get; set; }
+
+        public string DateFriendlyName { get; set; }
     }
 }

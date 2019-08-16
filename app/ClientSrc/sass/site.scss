@@ -60,6 +60,18 @@ body {
     }
 }
 
+.form-control.input-validation-error {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+div.invalid-field-message {
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
 .header-logo-div {
     .container {
         @include breakpoint(sm) {

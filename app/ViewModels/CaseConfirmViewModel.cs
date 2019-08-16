@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
@@ -25,9 +26,6 @@ namespace SCJ.Booking.MVC.ViewModels
         //indicate if the case was booked successfully
         public bool IsBooked { get; set; }
 
-        //The result string returned by the SOAP API when the hearing was booked
-        public string RawResult { get; set; }
-
         //ContainerId for locations
         public int ContainerId { get; set; }
 
@@ -38,12 +36,16 @@ namespace SCJ.Booking.MVC.ViewModels
         public DateTime FullDate { get; set; }
 
         //User email address
+        [Required(ErrorMessage = "Please provide a valid email address.")]
+        [EmailAddress(ErrorMessage = "Please provide a valid email address.")]
         public string EmailAddress { get; set; }
 
         //Is user known?
         public bool IsUserKnown { get; set; }
 
         //Phone number
+        [Required(ErrorMessage = "Please provide a valid phone number.")]
+        [RegularExpression(@"\d{3}[\-]\d{3}[\-]\d{4}", ErrorMessage = "Please provide a valid phone number.")]
         public string Phone { get; set; }
     }
 }

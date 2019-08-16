@@ -81,6 +81,9 @@ namespace SCJ.Booking.MVC.Services
             //Load locations from API
             Location[] locations = await _client.getLocationsAsync();
 
+            //clear booking info session
+            _session.BookingInfo = null;
+
             //Model instance
             return new CaseSearchViewModel
             {
@@ -181,7 +184,8 @@ namespace SCJ.Booking.MVC.Services
                         LocationId = model.SelectedRegistryId,
                         RegistryName = retval.SelectedRegistryName,
                         TimeSlotFriendlyName = bookingTime,
-                        SelectedCaseDate = model.SelectedCaseDate
+                        SelectedCaseDate = model.SelectedCaseDate,
+                        DateFriendlyName = dt.ToString("dddd, MMMM dd, yyyy")
                     };
                 }
             }
@@ -257,7 +261,7 @@ namespace SCJ.Booking.MVC.Services
                 BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
 
                 //get the raw result
-                model.RawResult = result.bookingResult;
+                bookingInfo.RawResult = result.bookingResult;
 
                 //test to see if the booking was successful
                 if (result.bookingResult.ToLower().StartsWith("success"))
@@ -277,6 +281,7 @@ namespace SCJ.Booking.MVC.Services
 
                     //update model
                     model.IsBooked = true;
+                    bookingInfo.IsBooked = true;
 
                     //store user info in session for next booking
                     var userInfo = new SessionUserInfo
@@ -297,6 +302,7 @@ namespace SCJ.Booking.MVC.Services
                 else
                 {
                     model.IsBooked = false;
+                    bookingInfo.IsBooked = false;
                 }
             }
             else
@@ -305,7 +311,11 @@ namespace SCJ.Booking.MVC.Services
                 //user needs to choose a new time slot
                 model.IsTimeSlotAvailable = false;
                 model.IsBooked = false;
+                bookingInfo.IsBooked = false;
             }
+
+            // save the booking info back to the session
+            _session.BookingInfo = bookingInfo;
 
             return model;
         }

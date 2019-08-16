@@ -1,5 +1,5 @@
 @using Microsoft.Extensions.Configuration
-@model CaseConfirmViewModel
+@inject SessionService SessionService
 @inject IConfiguration Configuration
 
 @{
@@ -8,7 +8,7 @@
 
 <div class="row screen-intro">
     <div class="col-md-12">
-        @if (Model.IsBooked)
+        @if (SessionService.BookingInfo.IsBooked)
         {
             <h1>@ViewData["Title"]</h1>
             <p>The booking for your conference hearing is confirmed.</p>
@@ -23,17 +23,17 @@
     </div>
 </div>
 
-@if (!Model.IsBooked)
+@if (!SessionService.BookingInfo.IsBooked)
 {
     <div class="alert alert-danger">
-        @Model.RawResult
+        @SessionService.BookingInfo.RawResult
     </div>
 }
 else
 {
     <div class="row booking-confirmation">
         <div class="content col-md-6">
-            @if (!Model.IsUserKnown)
+            @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
             {
                 <div class="row">
                     <div class="col-md-12">
@@ -50,40 +50,40 @@ else
                     <div class="form-group">
                         <label class="font-weight-bold">Type of Conference Hearing</label>
                         <div>
-                            <label>@Model.HearingTypeName</label>
+                            <label>@SessionService.BookingInfo.HearingTypeName</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Registry Name</label>
                         <div>
-                            <label>@Model.LocationName</label>
+                            <label>@SessionService.BookingInfo.RegistryName</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Court File Number</label>
                         <div>
-                            <label>@Model.CaseNumber</label>
+                            <label>@SessionService.BookingInfo.CaseNumber</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Date and Time of Conference Hearing</label>
                         <div>
-                            <label>@Model.Date</label>
+                            <label>@SessionService.BookingInfo.DateFriendlyName</label>
                         </div>
                         <div>
-                            <label>@Model.Time</label>
+                            <label>@SessionService.BookingInfo.TimeSlotFriendlyName</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">E-mail address</label>
                         <div>
-                            <label>@Model.EmailAddress</label>
+                            <label>@SessionService.UserInfo.Email</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Phone</label>
                         <div>
-                            <label>@Model.Phone</label>
+                            <label>@SessionService.UserInfo.Phone</label>
                         </div>
                     </div>
                 </div>
@@ -121,3 +121,7 @@ else
         <a href="@Configuration["AppSettings:LogoutUrl"]">Log out of the BC Courts Booking System</a>
     </div>
 </div>
+
+@{
+    SessionService.BookingInfo = null;
+}
