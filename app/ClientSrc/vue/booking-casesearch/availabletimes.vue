@@ -86,7 +86,7 @@
                 this.selectedBookingTime = bookingTime;
 
                 //check if date is still available
-                validateCaseDate(containerId, this.convertToTicks(bookingTime));
+                validateCaseDate(containerId, this.convertToTicks(bookingTime + 'Z'));
             },
             convertToTicks(dt) {
                 var date = new Date(dt);
@@ -98,7 +98,7 @@
 
                 // add 621355968000000000 to jsTicks
                 // netTicks is number of ticks from midnight Jan 1, 01 CE
-                return ((jsTicks + 621355968000000000) - (date.getTimezoneOffset() * 600000000));
+                return jsTicks + 621355968000000000;
                 
             }
         },
