@@ -25,6 +25,14 @@ body {
 
 .main {
     flex: 1 0 auto;
+
+    @media (min-width: $breakpoint-md) {
+        min-height: calc(100% - 120px);
+    }
+
+    @media (max-width: $breakpoint-md) {
+        min-height: calc(100% - 80px);
+    }
 }
 
 .footer {
@@ -36,6 +44,11 @@ body {
     padding-bottom: 60px;
     background-color: $white;
     height: calc(100% - 120px);
+    min-height: 85vh;
+
+    @media (max-width: $breakpoint-md) {
+        height: calc(100% - 80px);
+    }
 }
 
 .fas {
