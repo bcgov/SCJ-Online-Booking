@@ -32,7 +32,12 @@
             <span class="app-name">
                 @if (ViewBag.CourtName == "supreme")
                 {
-                    <a href="/scjob/booking/sc/CaseSearch">BC Courts Booking System - Supreme Court</a>
+                    <a href="/scjob/booking/sc/CaseSearch">
+                        BC Courts Booking System
+                        <span class="d-none d-sm-inline-block">-</span>
+                        <br class="d-sm-none" />
+                        Supreme Court
+                    </a>
                 }
                 else
                 {
