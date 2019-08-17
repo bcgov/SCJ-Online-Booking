@@ -256,6 +256,7 @@ p.intro {
 
 #btnSearch {
     width: 275px;
+    max-width: 100%;
 }
 
 .results-linebreak {
@@ -337,8 +338,10 @@ select#SelectedRegistryId {
 
     padding-top: 12px;
 
-    .btn-secondary {
-        margin-left: 20px;
+    @media (min-width: $breakpoint-sm) {
+        .btn-secondary {
+            margin-left: 20px;
+        }
     }
     
 }
