@@ -131,14 +131,7 @@ namespace SCJ.Booking.MVC.Controllers
             var result = 
                 await _bookingService.BookCourtCase(model, userGuid, userDisplayName);
 
-            if (result.IsBooked)
-            {
-                return RedirectToAction("CaseBooked");
-            }
-            else
-            {
-                return View(model);
-            }
+            return RedirectToAction("CaseBooked", new {booked = result.IsBooked ? "true" : "false"});
         }
 
         [HttpGet]
