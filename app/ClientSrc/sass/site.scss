@@ -344,6 +344,11 @@ select#SelectedRegistryId {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    flex-direction: column;
+
+    .card {
+        height: 100%;
+    }
 }
 
 .align-tooltip{
