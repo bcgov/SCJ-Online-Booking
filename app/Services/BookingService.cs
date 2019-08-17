@@ -258,7 +258,12 @@ namespace SCJ.Booking.MVC.Services
                 };
 
                 //submit booking
-                BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
+                //BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
+                //todo: this is a fake booking result!!!
+                var result = new BookingHearingResult
+                {
+                    bookingResult = "Success - Hearing was booked"
+                };
 
                 //get the raw result
                 bookingInfo.RawResult = result.bookingResult;
