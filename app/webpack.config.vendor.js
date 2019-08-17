@@ -125,6 +125,11 @@ module.exports = (env) => {
                         to: "css/swiper.css",
                         toType: "file"
                     },
+                    {
+                        from: "node_modules/spin/dist/spin.min.js",
+                        to: "lib/spin.min.js",
+                        toType: "file"
+                    },
                 ]),
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'

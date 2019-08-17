@@ -373,3 +373,29 @@ select#SelectedRegistryId {
         box-shadow: 0px 4px 40px 0px rgba(34, 34, 34, 0.3);
     }
 }
+
+div#progress-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    background: url(/Images/transparent.png);
+    background: rgba(0,0,0,0.35);
+
+    &-spinner {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 5000;
+    }
+
+    img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+}

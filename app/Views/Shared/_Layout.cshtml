@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -65,6 +65,8 @@
     </nav>
 </footer>
 
+<div id="progress-overlay" style="display: none"><div id="progress-overlay-spinner"></div></div>
+
 <environment include="Development">
     <script src="/scjob/dist/lib/jquery.js" asp-append-version="true"></script>
     <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
@@ -75,6 +77,8 @@
     <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
     <script src="/scjob/dist/lib/bootstrap.min.js" asp-append-version="true"></script>
 </environment>
+<script src="/scjob/dist/lib/spin.min.js" asp-append-version="true"></script>
+<script src="/scjob/js/jquery.spin.js" asp-append-version="true"></script>
 <script src="/scjob/js/site.js" asp-append-version="true"></script>
 
 @RenderSection("Scripts", false)

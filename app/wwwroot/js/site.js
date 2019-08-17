@@ -56,3 +56,11 @@ function validateCaseDate(containerId, bookingDate) {
     //simulate form submit
     $("#btnSearch").trigger("click");
 }
+
+$('body').on('click', 'input.progress-spinner, a.progress-spinner, button.progress-spinner', function () {
+    $('div#progress-overlay').show();
+    $('div#progress-overlay-spinner').spin();
+});
+
+// kills the spinner when the back button is pressed 
+window.onunload = function () { };
