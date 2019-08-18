@@ -1,9 +1,6 @@
-$(document).ready(function() {
-
-    // Init Tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-
-    // setup Bootstrap 4 Forms Validation
+// setup Bootstrap 4 Forms Validation
+(function() {
+    "use strict";
     window.addEventListener("load",
         function() {
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -23,6 +20,12 @@ $(document).ready(function() {
                 });
         },
         false);
+})();
+
+$(document).ready(function () {
+
+    // Init Tooltips
+    $('[data-toggle="tooltip"]').tooltip();
 
     //caches a jQuery object containing the header element
     var header = $("#scj-header-nav");
