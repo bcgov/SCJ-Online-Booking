@@ -69,7 +69,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return RedirectToAction("CaseSearch");
+                return Redirect("/scjob/booking/sc/CaseSearch");
             }
 
             //convert JS ticks to .Net date
@@ -131,7 +131,8 @@ namespace SCJ.Booking.MVC.Controllers
             var result = 
                 await _bookingService.BookCourtCase(model, userGuid, userDisplayName);
 
-            return RedirectToAction("CaseBooked", new {booked = result.IsBooked ? "true" : "false"});
+            return Redirect(
+                $"/scjob/booking/sc/CaseBooked?booked={(result.IsBooked ? "true" : "false")}");
         }
 
         [HttpGet]
@@ -141,7 +142,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return RedirectToAction("CaseSearch");
+                return Redirect("/scjob/booking/sc/CaseSearch");
             }
 
             return View();
