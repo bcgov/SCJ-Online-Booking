@@ -45,7 +45,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Phone number
         [Required(ErrorMessage = "Please provide a valid phone number.")]
-        [RegularExpression(@"\d{3}[\-]\d{3}[\-]\d{4}", ErrorMessage = "Please provide a valid phone number.")]
+        [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}", ErrorMessage = "Please provide a valid phone number.")]
         public string Phone { get; set; }
     }
 }

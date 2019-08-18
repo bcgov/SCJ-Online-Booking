@@ -1,9 +1,9 @@
-// Write your JavaScript code.
 $(document).ready(function() {
 
-    //Init Tooltips
+    // Init Tooltips
     $('[data-toggle="tooltip"]').tooltip();
 
+    // setup Bootstrap 4 Forms Validation
     window.addEventListener("load",
         function() {
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -35,6 +35,19 @@ $(document).ready(function() {
         }
     });
 
+    // phone number inputs - form field data tidy up
+    $("input.phone-input").change(function () {
+        var phone = this.value.replace(/[^0-9]/g, "");
+
+        if (phone.indexOf("1") === 0) {
+            phone = phone.substr(1);
+        }
+
+        if (phone.length === 10) {
+            this.value = phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+        }
+    });
+
     // Homepage panels
     $("#btnSupreme").click(function(e) {
         e.preventDefault();
@@ -46,21 +59,24 @@ $(document).ready(function() {
             $("html,body").animate({ scrollTop: panel.offset().top }, "fast");
         }
     });
+
+    // Set up the progress spinner overlay
+    $('body').on('click', 'input.progress-spinner, a.progress-spinner, button.progress-spinner', function () {
+        $('div#progress-overlay').show();
+        $('div#progress-overlay-spinner').spin();
+    });
+
+    // kills the spinner when the back button is pressed 
+    window.onunload = function () { };
 });
 
+// Called by Vue when a timeslot is selected
 function validateCaseDate(containerId, bookingDate) {
     //set hidden fields based on the swiper selected dates
     $("#hidContainerId").val(containerId);
     $("#hidDate").val(bookingDate);
 
-    //simulate form submit
+    //submit the form to go to the next page
     $("#btnSearch").trigger("click");
 }
 
-$('body').on('click', 'input.progress-spinner, a.progress-spinner, button.progress-spinner', function () {
-    $('div#progress-overlay').show();
-    $('div#progress-overlay-spinner').spin();
-});
-
-// kills the spinner when the back button is pressed 
-window.onunload = function () { };
