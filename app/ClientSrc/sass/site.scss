@@ -367,9 +367,14 @@ select#SelectedRegistryId {
     }
 }
 
-.align-tooltip{
-    display:flex;
-    align-items: center;
+.align-tooltip {
+    display: flex;
+
+    div.invalid-feedback {
+        max-width: 100px;
+        white-space: nowrap;
+        overflow-x: visible;
+    }
 }
 
 .tooltip .arrow::before {
