@@ -178,6 +178,10 @@
                                         "value": "${EXCHANGE_USERNAME}"
                                     },
                                     {
+                                        "name": "EXCHANGE_DOMAIN",
+                                        "value": "${EXCHANGE_DOMAIN}"
+                                    },
+                                    {
                                         "name": "EXCHANGE_PASSWORD",
                                         "valueFrom": {
                                             "secretKeyRef": {

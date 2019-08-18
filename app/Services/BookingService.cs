@@ -258,13 +258,8 @@ namespace SCJ.Booking.MVC.Services
                 };
 
                 //submit booking
-                //BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
-                //todo: this is a fake booking result!!!
-                var result = new BookingHearingResult
-                {
-                    bookingResult = "Success - Hearing was booked"
-                };
-
+                BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
+                
                 //get the raw result
                 bookingInfo.RawResult = result.bookingResult;
 
@@ -478,13 +473,24 @@ namespace SCJ.Booking.MVC.Services
             string emailPassword = _configuration["EXCHANGE_PASSWORD"] ?? "";
             string emailDomain = _configuration["EXCHANGE_DOMAIN"] ?? "";
 
-            if (emailDomain != "" && emailPassword != "" && emailUserName != "")
+            if (emailDomain == "")
             {
-                _emailCredentials = new WebCredentials(emailUserName, emailPassword, emailDomain);
+                _emailCredentials = null;
+                _logger.Error("EXCHANGE_DOMAIN is not set");
+            }
+            else if (emailPassword == "")
+            {
+                _emailCredentials = null;
+                _logger.Error("EXCHANGE_PASSWORD is not set");
+            }
+            else if (emailUserName == "")
+            {
+                _emailCredentials = null;
+                _logger.Error("EXCHANGE_USERNAME is not set");
             }
             else
             {
-                _emailCredentials = null;
+                _emailCredentials = new WebCredentials(emailUserName, emailPassword, emailDomain);
             }
         }
 
