@@ -10,8 +10,8 @@
     <div class="col-md-12">
         @if (SessionService.BookingInfo.IsBooked)
         {
-            <h1>@ViewData["Title"]</h1>
-            <p>The booking for your conference hearing is confirmed.</p>
+            <h2 class="blue">The TMC has been scheduled for the date and time below.</h2>
+            <h2 class="blue">Please file a requisition to secure TMC date.</h2>
             <p>The following details will be sent to you by email.</p>
         }
         else
@@ -84,20 +84,6 @@ else
                         <label class="font-weight-bold">Phone</label>
                         <div>
                             <label>@SessionService.UserInfo.Phone</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="content col-lg-6">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            Next Steps Before Your Hearing
-                        </div>
-                        <div class="card-body">
-                            <p>TBD: Instructions on filing documents</p>
                         </div>
                     </div>
                 </div>

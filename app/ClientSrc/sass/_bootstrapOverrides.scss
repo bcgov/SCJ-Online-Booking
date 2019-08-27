@@ -13,6 +13,10 @@ h2 {
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 1.25rem;
+
+    &.blue {
+        color: $blue-text;
+    }
 }
 
 h3 {
