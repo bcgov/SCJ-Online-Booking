@@ -13,6 +13,10 @@
                             if (form.checkValidity() === false) {
                                 event.preventDefault();
                                 event.stopPropagation();
+                                // cancel the spinner
+                                window.setTimeout(function () {
+                                    $('div#progress-overlay').hide();
+                                }, 100);
                             }
                             form.classList.add("was-validated");
                         },
