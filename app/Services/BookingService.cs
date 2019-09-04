@@ -23,7 +23,7 @@ namespace SCJ.Booking.MVC.Services
 {
     public class BookingService
     {
-        private const int MaxHearingsPerDay = 10;
+        public const int MaxHearingsPerDay = 10;
         private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
