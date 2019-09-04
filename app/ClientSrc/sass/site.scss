@@ -306,15 +306,18 @@ select#SelectedRegistryId {
     padding: 5px;
 }
 
-.custom-slide-time {
+a.custom-slide-time {
+    display: block;
     background-color: $grey-light;
     border-radius: 0.3rem;
     padding: 10px 5px;
     margin: 5px 5px 10px 5px;
     cursor: pointer;
     text-align: center;
+    text-decoration: none;
+    color: $black;
 
-    &.selected {
+    &.selected, &:focus {
         background-color: $blue-active;
         color: $white;
     }
