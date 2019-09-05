@@ -9,10 +9,14 @@
 <ul>
     @foreach (KeyValuePair<string, StringValues> header in headers)
     {
-        <li>
-            <strong>@header.Key</strong>
-            :
-            <span>@header.Value</span>
-        </li>
+        // removed X-Forwarded-For, Forwarded, Host headers so we don't give away proxy/routing info
+        if (!header.Key.Contains("Forwarded") && !header.Key.Equals("Host"))
+        {
+            <li>
+                <strong>@header.Key</strong>
+                :
+                <span>@header.Value</span>
+            </li>
+        }
     }
 </ul>
