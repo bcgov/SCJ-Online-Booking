@@ -43,7 +43,7 @@ module.exports = (env) => {
             },
             output: {
                 path: path.join(__dirname, "wwwroot", "dist"),
-                publicPath: "/core/dist/",
+                publicPath: "/scjob/dist/",
                 filename: "[name].js",
                 library: "[name]_[hash]",
             },
