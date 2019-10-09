@@ -1,5 +1,5 @@
 using System;
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 using Xunit;
 
 namespace SCJ.Booking.UnitTest

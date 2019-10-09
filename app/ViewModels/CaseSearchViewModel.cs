@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels
 {

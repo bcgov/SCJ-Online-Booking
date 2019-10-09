@@ -13,7 +13,7 @@ using SCJ.Booking.MVC.Models;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;

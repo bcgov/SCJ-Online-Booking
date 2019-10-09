@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using SCJ.Booking.RemoteAPIs.Fixtures;
 
 // ReSharper disable once CheckNamespace
-namespace SCJ.SC.OnlineBooking
+namespace SCJ.OnlineBooking
 {
     /// <summary>
     ///     Test implementation of OnlineBookingClient
@@ -41,6 +41,21 @@ namespace SCJ.SC.OnlineBooking
             await Task.Delay(100);
 
             return BookingResults.Success;
+        }
+
+        public Task<CoAClassInfo> CoACaseNumberValidAsync(string caseNum)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<CoAAvailableDates> COAAvailableDatesAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<BookingHearingResult> CoAQueueHearingAsync(CoABookingHearingInfo bookingInfo)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Controllers
 {
