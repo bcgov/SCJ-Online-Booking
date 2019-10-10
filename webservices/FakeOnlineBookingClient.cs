@@ -25,7 +25,7 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return Locations.All;
+            return LocationFixture.All;
         }
 
         public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID,
@@ -33,29 +33,46 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return AvailableDates.VancouverTmc;
+            return AvailableDatesByLocationFixture.VancouverTmc;
         }
 
         public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
         {
             await Task.Delay(100);
 
-            return BookingResults.Success;
+            return BookingHearingResultFixture.Success;
         }
 
-        public Task<CoAClassInfo> CoACaseNumberValidAsync(string caseNum)
+        public async Task<CoAClassInfo> CoACaseNumberValidAsync(string caseNum)
         {
-            throw new System.NotImplementedException();
+            await Task.Delay(100);
+
+            if (caseNum.ToUpper() == "CA39029")
+            {
+                return CoAClassInfoFixture.CivilCase;
+            }
+
+            if (caseNum.ToUpper() == "CA42024")
+            {
+                return CoAClassInfoFixture.CriminalCase;
+            }
+
+            return CoAClassInfoFixture.NotFound;
         }
 
-        public Task<CoAAvailableDates> COAAvailableDatesAsync()
+        public async Task<CoAAvailableDates> COAAvailableDatesAsync()
         {
-            throw new System.NotImplementedException();
+            await Task.Delay(100);
+
+            return CoAAvailableDatesFixture.Dates;
         }
 
-        public Task<BookingHearingResult> CoAQueueHearingAsync(CoABookingHearingInfo bookingInfo)
+        public async Task<BookingHearingResult> CoAQueueHearingAsync(
+            CoABookingHearingInfo bookingInfo)
         {
-            throw new System.NotImplementedException();
+            await Task.Delay(100);
+
+            return BookingHearingResultFixture.Success;
         }
     }
 }
