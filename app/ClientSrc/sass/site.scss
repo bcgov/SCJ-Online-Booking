@@ -5,6 +5,7 @@
 // Import partial stylesheets
 @import 'variables';
 @import 'bootstrapOverrides';
+@import 'accessibility';
 
 html, body {
     height: 100%;
@@ -372,6 +373,7 @@ a.custom-slide-time {
 
 .align-tooltip {
     display: flex;
+    align-items: center;
 
     div.invalid-feedback {
         max-width: 100px;

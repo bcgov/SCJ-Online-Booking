@@ -20,6 +20,7 @@
 </head>
 <body>
 <div class="main">
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
     <div class="header-logo-div">
         <div class="container">
             <a class="header-logo" href="/scjob">
@@ -47,7 +48,7 @@
             @RenderSection("NavBar", false)
         </div>
     </nav>
-    <div class="container body-content">
+    <div id="content" class="container body-content">
         @RenderBody()
     </div>
 </div>
