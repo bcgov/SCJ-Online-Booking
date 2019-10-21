@@ -72,7 +72,7 @@ namespace SCJ.Booking.MVC
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //service to get hearings left for logged-in user
-            services.AddTransient<BookingService>();
+            services.AddTransient<ScBookingService>();
 
             services.AddScoped<IViewRenderService, ViewRenderService>();
         }

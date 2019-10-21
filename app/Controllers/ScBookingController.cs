@@ -14,7 +14,7 @@ namespace SCJ.Booking.MVC.Controllers
     public class ScBookingController : Controller
     {
         //Services
-        private readonly BookingService _bookingService;
+        private readonly ScBookingService _scBookingService;
 
         //HttpContext
         private readonly HttpContext _httpContext;
@@ -32,14 +32,14 @@ namespace SCJ.Booking.MVC.Controllers
             _httpContext = httpAccessor.HttpContext;
             _viewRenderService = viewRenderService;
             _session = sessionService;
-            _bookingService = new BookingService(context, httpAccessor, configuration, sessionService, viewRenderService);
+            _scBookingService = new ScBookingService(context, httpAccessor, configuration, sessionService, viewRenderService);
         }
 
         [HttpGet]
         public async Task<IActionResult> CaseSearch()
         {
             //Populate dropdown list values
-            return View(await _bookingService.LoadSearchForm());
+            return View(await _scBookingService.LoadSearchForm());
         }
 
         [HttpPost]
@@ -50,7 +50,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            model = await _bookingService.GetSearchResults(model);
+            model = await _scBookingService.GetSearchResults(model);
 
             //test if the user selected a time-slot that is available
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
@@ -76,7 +76,7 @@ namespace SCJ.Booking.MVC.Controllers
             var dt = new DateTime(Convert.ToInt64(bookingInfo.SelectedCaseDate));
 
             //user information
-            var sui = _bookingService.GetUserInformation();
+            var sui = _scBookingService.GetUserInformation();
 
             //Time-slot is still available
             var ccm = new CaseConfirmViewModel
@@ -108,7 +108,7 @@ namespace SCJ.Booking.MVC.Controllers
             string userGuid;
             string userDisplayName;
 
-            if (_bookingService.IsLocalDevEnvironment)
+            if (_scBookingService.IsLocalDevEnvironment)
             {
                 // use fake SiteMinder header values for local development
                 userGuid = "072cfc73-e3b9-437b-8012-0b0945f09879";
@@ -129,7 +129,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //make booking
             var result = 
-                await _bookingService.BookCourtCase(model, userGuid, userDisplayName);
+                await _scBookingService.BookCourtCase(model, userGuid, userDisplayName);
 
             return Redirect(
                 $"/scjob/booking/sc/CaseBooked?booked={(result.IsBooked ? "true" : "false")}");

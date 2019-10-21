@@ -21,7 +21,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SCJ.Booking.MVC.Services
 {
-    public class BookingService
+    public class ScBookingService
     {
         public const int MaxHearingsPerDay = 10;
         private const string EmailSubject = "BC Courts Booking Confirmation";
@@ -36,7 +36,7 @@ namespace SCJ.Booking.MVC.Services
         private WebCredentials _emailCredentials;
 
         //Constructor
-        public BookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
+        public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
             IConfiguration configuration, SessionService sessionService,
             IViewRenderService viewRenderService)
         {
