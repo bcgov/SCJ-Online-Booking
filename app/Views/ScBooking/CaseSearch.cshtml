@@ -22,7 +22,7 @@
             <input type="hidden" asp-for="HearingTypeId" />
             <div class="row search-info">
                 <div class="col-md-6 form-group">
-                    <label asp-for="SelectedRegistryId">Pick the registry where the file was created.</label>
+                    <label for="ddlLocation">Pick the registry where the file was created.</label>
                     <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.RegistryOptions" required>
                         <option value="">-- Pick a registry --</option>
                     </select>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 form-group">
-                    <label asp-for="CaseNumber">What is the Court File Number for the case?</label>
+                    <label for="txtCaseNumber">What is the Court File Number for the case?</label>
                     <div class="align-tooltip">
                         <div>
                             <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber" />
