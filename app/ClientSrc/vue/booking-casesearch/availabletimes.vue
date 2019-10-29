@@ -14,6 +14,7 @@
                             <a class="custom-slide-time" v-for="container in entry.times" @click="selectTime(container.containerId, container.startDateTime)"
                                  @keyup.enter="selectTime(container.containerId, container.startDateTime)"
                                  :class="{'selected': container.containerId === selectedContainerId}" tabindex="0">
+                                <span class="sr-text">{{ entry.weekday }} {{ entry.formattedDate }}</span>
                                 {{ container.start }} - {{ container.end }}
                             </a>
                         </div>
