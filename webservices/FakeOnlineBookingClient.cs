@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using SCJ.Booking.RemoteAPIs.Fixtures;
 
 // ReSharper disable once CheckNamespace
-namespace SCJ.SC.OnlineBooking
+namespace SCJ.OnlineBooking
 {
     /// <summary>
     ///     Test implementation of OnlineBookingClient
@@ -25,7 +25,7 @@ namespace SCJ.SC.OnlineBooking
         {
             await Task.Delay(100);
 
-            return Locations.All;
+            return LocationFixture.All;
         }
 
         public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID,
@@ -33,14 +33,46 @@ namespace SCJ.SC.OnlineBooking
         {
             await Task.Delay(100);
 
-            return AvailableDates.VancouverTmc;
+            return AvailableDatesByLocationFixture.VancouverTmc;
         }
 
         public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
         {
             await Task.Delay(100);
 
-            return BookingResults.Success;
+            return BookingHearingResultFixture.Success;
+        }
+
+        public async Task<CoAClassInfo> CoACaseNumberValidAsync(string caseNum)
+        {
+            await Task.Delay(100);
+
+            if (caseNum.ToUpper() == "CA39029")
+            {
+                return CoAClassInfoFixture.CivilCase;
+            }
+
+            if (caseNum.ToUpper() == "CA42024")
+            {
+                return CoAClassInfoFixture.CriminalCase;
+            }
+
+            return CoAClassInfoFixture.NotFound;
+        }
+
+        public async Task<CoAAvailableDates> COAAvailableDatesAsync()
+        {
+            await Task.Delay(100);
+
+            return CoAAvailableDatesFixture.Dates;
+        }
+
+        public async Task<BookingHearingResult> CoAQueueHearingAsync(
+            CoABookingHearingInfo bookingInfo)
+        {
+            await Task.Delay(100);
+
+            return BookingHearingResultFixture.Success;
         }
     }
 }

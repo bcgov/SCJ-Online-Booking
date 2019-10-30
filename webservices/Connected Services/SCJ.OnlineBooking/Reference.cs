@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SCJ.SC.OnlineBooking
+namespace SCJ.OnlineBooking
 {
     using System.Runtime.Serialization;
     
@@ -70,12 +70,12 @@ namespace SCJ.SC.OnlineBooking
     public partial class AvailableDatesByLocation : object
     {
         
-        private SCJ.SC.OnlineBooking.ContainerInfo[] AvailableDatesField;
+        private SCJ.OnlineBooking.ContainerInfo[] AvailableDatesField;
         
-        private SCJ.SC.OnlineBooking.BookingDetail BookingDetailsField;
+        private SCJ.OnlineBooking.BookingDetail BookingDetailsField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public SCJ.SC.OnlineBooking.ContainerInfo[] AvailableDates
+        public SCJ.OnlineBooking.ContainerInfo[] AvailableDates
         {
             get
             {
@@ -88,7 +88,7 @@ namespace SCJ.SC.OnlineBooking
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public SCJ.SC.OnlineBooking.BookingDetail BookingDetails
+        public SCJ.OnlineBooking.BookingDetail BookingDetails
         {
             get
             {
@@ -309,8 +309,231 @@ namespace SCJ.SC.OnlineBooking
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SCJ.SC.OnlineBooking.IOnlineBooking")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CoAClassInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class CoAClassInfo : object
+    {
+        
+        private int CaseIdField;
+        
+        private string CaseTypeField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CaseId
+        {
+            get
+            {
+                return this.CaseIdField;
+            }
+            set
+            {
+                this.CaseIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CaseType
+        {
+            get
+            {
+                return this.CaseTypeField;
+            }
+            set
+            {
+                this.CaseTypeField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CoAAvailableDates", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class CoAAvailableDates : object
+    {
+        
+        private SCJ.OnlineBooking.ShedulesInfo[] AvailableDatesField;
+        
+        private string BookingNotesField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SCJ.OnlineBooking.ShedulesInfo[] AvailableDates
+        {
+            get
+            {
+                return this.AvailableDatesField;
+            }
+            set
+            {
+                this.AvailableDatesField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string BookingNotes
+        {
+            get
+            {
+                return this.BookingNotesField;
+            }
+            set
+            {
+                this.BookingNotesField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ShedulesInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class ShedulesInfo : object
+    {
+        
+        private string availabilityField;
+        
+        private System.DateTime scheduleDateField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string availability
+        {
+            get
+            {
+                return this.availabilityField;
+            }
+            set
+            {
+                this.availabilityField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime scheduleDate
+        {
+            get
+            {
+                return this.scheduleDateField;
+            }
+            set
+            {
+                this.scheduleDateField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CoABookingHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
+    public partial class CoABookingHearingInfo : object
+    {
+        
+        private int caseIDField;
+        
+        private string emailField;
+        
+        private System.DateTime hearingDateField;
+        
+        private string hearingLengthField;
+        
+        private int hearingTypeIdField;
+        
+        private string phoneField;
+        
+        private string requestedByField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int caseID
+        {
+            get
+            {
+                return this.caseIDField;
+            }
+            set
+            {
+                this.caseIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string email
+        {
+            get
+            {
+                return this.emailField;
+            }
+            set
+            {
+                this.emailField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime hearingDate
+        {
+            get
+            {
+                return this.hearingDateField;
+            }
+            set
+            {
+                this.hearingDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string hearingLength
+        {
+            get
+            {
+                return this.hearingLengthField;
+            }
+            set
+            {
+                this.hearingLengthField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int hearingTypeId
+        {
+            get
+            {
+                return this.hearingTypeIdField;
+            }
+            set
+            {
+                this.hearingTypeIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string phone
+        {
+            get
+            {
+                return this.phoneField;
+            }
+            set
+            {
+                this.phoneField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string requestedBy
+        {
+            get
+            {
+                return this.requestedByField;
+            }
+            set
+            {
+                this.requestedByField = value;
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SCJ.OnlineBooking.IOnlineBooking")]
     public interface IOnlineBooking
     {
         
@@ -318,23 +541,32 @@ namespace SCJ.SC.OnlineBooking
         System.Threading.Tasks.Task<int> caseNumberValidAsync(string caseNum);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/getLocations", ReplyAction="http://tempuri.org/IOnlineBooking/getLocationsResponse")]
-        System.Threading.Tasks.Task<SCJ.SC.OnlineBooking.Location[]> getLocationsAsync();
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> getLocationsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableDatesByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableDatesByLocationResponse")]
-        System.Threading.Tasks.Task<SCJ.SC.OnlineBooking.AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID, int hearingTypeID);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID, int hearingTypeID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/BookingHearing", ReplyAction="http://tempuri.org/IOnlineBooking/BookingHearingResponse")]
-        System.Threading.Tasks.Task<SCJ.SC.OnlineBooking.BookingHearingResult> BookingHearingAsync(SCJ.SC.OnlineBooking.BookHearingInfo bookInfo);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookingHearingAsync(SCJ.OnlineBooking.BookHearingInfo bookInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoACaseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/CoACaseNumberValidResponse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAClassInfo> CoACaseNumberValidAsync(string caseNum);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/COAAvailableDates", ReplyAction="http://tempuri.org/IOnlineBooking/COAAvailableDatesResponse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAAvailableDates> COAAvailableDatesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAQueueHearing", ReplyAction="http://tempuri.org/IOnlineBooking/CoAQueueHearingResponse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> CoAQueueHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
-    public interface IOnlineBookingChannel : SCJ.SC.OnlineBooking.IOnlineBooking, System.ServiceModel.IClientChannel
+    public interface IOnlineBookingChannel : SCJ.OnlineBooking.IOnlineBooking, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
-    public partial class OnlineBookingClient : System.ServiceModel.ClientBase<SCJ.SC.OnlineBooking.IOnlineBooking>, SCJ.SC.OnlineBooking.IOnlineBooking
+    public partial class OnlineBookingClient : System.ServiceModel.ClientBase<SCJ.OnlineBooking.IOnlineBooking>, SCJ.OnlineBooking.IOnlineBooking
     {
         
     /// <summary>
@@ -382,19 +614,34 @@ namespace SCJ.SC.OnlineBooking
             return base.Channel.caseNumberValidAsync(caseNum);
         }
         
-        public System.Threading.Tasks.Task<SCJ.SC.OnlineBooking.Location[]> getLocationsAsync()
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> getLocationsAsync()
         {
             return base.Channel.getLocationsAsync();
         }
         
-        public System.Threading.Tasks.Task<SCJ.SC.OnlineBooking.AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID, int hearingTypeID)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID, int hearingTypeID)
         {
             return base.Channel.AvailableDatesByLocationAsync(locationID, hearingTypeID);
         }
         
-        public System.Threading.Tasks.Task<SCJ.SC.OnlineBooking.BookingHearingResult> BookingHearingAsync(SCJ.SC.OnlineBooking.BookHearingInfo bookInfo)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookingHearingAsync(SCJ.OnlineBooking.BookHearingInfo bookInfo)
         {
             return base.Channel.BookingHearingAsync(bookInfo);
+        }
+        
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAClassInfo> CoACaseNumberValidAsync(string caseNum)
+        {
+            return base.Channel.CoACaseNumberValidAsync(caseNum);
+        }
+        
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAAvailableDates> COAAvailableDatesAsync()
+        {
+            return base.Channel.COAAvailableDatesAsync();
+        }
+        
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> CoAQueueHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo)
+        {
+            return base.Channel.CoAQueueHearingAsync(bookingInfo);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

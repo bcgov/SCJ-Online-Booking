@@ -1,9 +1,9 @@
 using System;
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
-    public static class AvailableDates
+    public static class AvailableDatesByLocationFixture
     {
         public static AvailableDatesByLocation VancouverTmc = new AvailableDatesByLocation
         {

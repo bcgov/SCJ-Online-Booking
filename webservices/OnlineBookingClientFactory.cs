@@ -1,7 +1,7 @@
 using System;
 using System.ServiceModel;
 using Microsoft.Extensions.Configuration;
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.RemoteAPIs
 {

@@ -1,4 +1,4 @@
-@inject BookingService service
+@inject ScBookingService service
 @model CaseSearchViewModel
 
 @{
@@ -62,8 +62,8 @@
         <div class="col col-md-12">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <i class="fas fa-exclamation-triangle"></i>
-                You've used all your bookings for today. You can book up to @BookingService.MaxHearingsPerDay
-                hearings each day. You can book @BookingService.MaxHearingsPerDay more hearings tomorrow.
+                You've used all your bookings for today. You can book up to @ScBookingService.MaxHearingsPerDay
+                hearings each day. You can book @ScBookingService.MaxHearingsPerDay more hearings tomorrow.
             </div>
         </div>
     </div>

@@ -1,8 +1,8 @@
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
-    public static class Locations
+    public static class LocationFixture
     {
         // this is the partial list of locations copied from the dev environment.
         // staging and production will have more locations.

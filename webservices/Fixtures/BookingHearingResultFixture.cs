@@ -1,10 +1,10 @@
-using SCJ.SC.OnlineBooking;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
-    public static class BookingResults
+    public static class BookingHearingResultFixture
     {
-        public static BookingHearingResult Failure = new BookingHearingResult
+        public static BookingHearingResult SupremeCourtFailure = new BookingHearingResult
         {
             // Failure messages always start with "Fail"
 
@@ -21,6 +21,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
             // Success messages always start with "Success"
 
             bookingResult = "Success - Hearing Booked"
+        };
+
+        public static BookingHearingResult CoAFailure = new BookingHearingResult
+        {
+            bookingResult =
+                "Fail - Booking could not be completed. Please contact scheduling or select a different date/time."
         };
     }
 }
