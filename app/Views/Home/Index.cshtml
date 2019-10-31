@@ -20,26 +20,24 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="offset-lg-3 col-lg-6 col-md-12 text-center">
-        <a class="btn btn-secondary btn-lg disabled" href="#">Court of Appeal</a>
-        <a class="btn btn-primary btn-lg" href="#" id="btnSupreme">Supreme Court</a>
+<div class="row home-court-options">
+    <div class="court-option-box text-center">
+        <h2>Court of Appeal</h2>
+        <p>For Civil cases, you can book a Hearing of Appeal.</p>
+        <p>For Criminal cases, you can book a Hearing of Appeal, Conviction Appeal or Sentence Appeal.</p>
+        <a class="btn btn-primary btn-lg" href="/scjob/booking/coa/CaseSearch">Log in with BCeID</a>
+    </div>
+    <div class="court-option-box text-center">
+        <h2>Supreme Court</h2>
+        <p>You can book up to ten trial management conferences (TMC) per day.</p>
+        <a class="btn btn-primary btn-lg" href="/scjob/booking/sc/CaseSearch">Log in with BCeID</a>
     </div>
 </div>
 
-<div id="pnlSupreme" style="display: none">
-    <div class="row home-description">
-        <div class="offset-lg-3 col-lg-6 col-md-12">
-            <hr/>
-            <p class="intro">You can book up to ten trial management conferences (TMC) per day.</p>
-        </div>
-    </div>
-
-    <div class="row home-login">
-        <div class="col-md-12">
-            <a class="btn btn-primary btn-lg" href="/scjob/booking/sc/CaseSearch">Log in with BCeID</a>
-            <p class="login-question">Don't have a BCeID?</p>
-            <a href="@Configuration["AppSettings:RegisterUrl"]">Register for a BCeID</a>
-        </div>
+<div class="home-login">
+    <div class="offset-lg-3 col-lg-6 col-md-12">
+        <hr />
+        <p class="login-question">Don't have a BCeID?</p>
+        <a href="@Configuration["AppSettings:RegisterUrl"]">Register for a BCeID</a>
     </div>
 </div>

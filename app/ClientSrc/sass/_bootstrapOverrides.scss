@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Styles to override bootstrap elements' styles
 */
 h1 {
@@ -6,7 +6,10 @@ h1 {
     font-weight: 700;
     margin-bottom: 1.875rem;
     line-height: 1.4;
-    color: $blue-text;
+
+    &.blue {
+        color: $blue-text;
+    }
 }
 
 h2 {

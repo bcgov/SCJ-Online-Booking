@@ -56,16 +56,16 @@ $(document).ready(function () {
     });
 
     // Homepage panels
-    $("#btnSupreme").click(function(e) {
-        e.preventDefault();
-        $("#pnlSupreme").toggle();
+    //$("#btnSupreme").click(function(e) {
+    //    e.preventDefault();
+    //    $("#pnlSupreme").toggle();
 
-        // scroll down to the bceid button
-        if ($("#pnlSupreme").css("display") !== "none") {
-            var panel = $("div[id='pnlSupreme']");
-            $("html,body").animate({ scrollTop: panel.offset().top }, "fast");
-        }
-    });
+    //    // scroll down to the bceid button
+    //    if ($("#pnlSupreme").css("display") !== "none") {
+    //        var panel = $("div[id='pnlSupreme']");
+    //        $("html,body").animate({ scrollTop: panel.offset().top }, "fast");
+    //    }
+    //});
 
     // Set up the progress spinner overlay
     $('body').on('click', 'input.progress-spinner, a.progress-spinner, button.progress-spinner', function () {

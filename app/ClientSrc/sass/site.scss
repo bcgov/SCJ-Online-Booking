@@ -245,6 +245,61 @@ p.intro {
     }
 }
 
+.home-court-options {
+    margin-left: 0;
+    margin-right: 0;
+
+    @media (min-width: $breakpoint-lg) {
+        margin-left: 60px;
+        margin-right: 60px;
+        margin-top: 20px;
+    }
+
+    .court-option-box {
+        background: $grey-light;
+        width: 100%;
+        margin-bottom: 30px;
+        padding: 40px 40px 120px;
+        position: relative;
+
+        p {
+            text-align: left;
+        }
+
+        .btn {
+            margin-bottom: 0;
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            margin-left: 40px;
+            margin-right: 40px;
+
+            @media (min-width: $breakpoint-xl) {
+                margin-left: 100px;
+                margin-right: 100px;
+            }
+        }
+
+        @media (min-width: $breakpoint-lg) {
+            width: calc(50% - 40px);
+        }
+
+        &:first-of-type {
+
+            @media (min-width: $breakpoint-lg) {
+                margin-right: 40px;
+            }
+        }
+
+        &:last-of-type {
+            @media (min-width: $breakpoint-lg) {
+                margin-left: 20px;
+            }
+        }
+    }
+}
+
 /*Book Your Hearing*/
 .search-info {
     background-color: $blue-light;
