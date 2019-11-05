@@ -1,6 +1,6 @@
 namespace SCJ.Booking.MVC.Utils
 {
-    public class SessionBookingInfo
+    public class ScSessionBookingInfo
     {
         public int CaseId { get; set; }
         public string CaseNumber { get; set; }

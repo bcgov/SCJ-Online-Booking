@@ -1,5 +1,5 @@
-@inject ScBookingService service
-@model CaseSearchViewModel
+@inject CoaBookingService service
+@model CoaCaseSearchViewModel
 
 @{
     ViewData["Title"] = "Book your Request for Hearing Date";
@@ -21,87 +21,171 @@
     </div>
 </div>
 
-<!-- Search filter-->
-<div class="row search-container">
-    <div class="col col-md-12">
-        <div class="search-info">
-            <div class="row search-info-row">
-                <div class="col-md-6 form-group">
-                    <label for="hearingLocation">Where will the hearing occur.</label>
-                    <div class="align-tooltip">
-                        <select class="form-control registryOptions" id="hearingLocation" required>
-                            <option value="">Vancouver </option>
-                        </select>
-                        <span class="ml-3" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>Online Booking is currently active for Vancouver Hearing dates only.</p>" aria-label="Online Booking is currently active for Vancouver Hearing dates only.">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
+<form method="post">
+    <!-- Search filter-->
+    <div class="row search-container">
+        <div class="col col-md-12">
+            <div class="search-info">
+                <div class="row search-info-row">
+                    <div class="col-md-6 form-group">
+                        <label for="hearingLocation">Where will the hearing occur.</label>
+                        <div class="align-tooltip">
+                            <select class="form-control registryOptions" id="hearingLocation">
+                                <option value="">Vancouver </option>
+                            </select>
+                            <span class="ml-3" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>Online Booking is currently active for Vancouver Hearing dates only.</p>" aria-label="Online Booking is currently active for Vancouver Hearing dates only.">
+                                <i class="fas fa-question-circle"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label asp-for="CaseNumber">What is the Court File Number for the case?</label>
+                        <div class="align-tooltip">
+                            <div>
+                                <input class="form-control caseNumber" asp-for="CaseNumber" />
+                            </div>
+                            <span class="ml-3" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.">
+                                <i class="fas fa-question-circle"></i>
+                            </span>
+                        </div>
+                        <span class="text-danger" asp-validation-for="CaseNumber"></span>
                     </div>
                 </div>
-                <div class="col-md-6 form-group">
-                    <label for="coaCaseNumber">What is the Court File Number for the case?</label>
-                    <div class="align-tooltip">
-                        <div>
-                            <input class="form-control caseNumber" id="coaCaseNumber" required />
-                            <div class="invalid-feedback">
-                                Please provide a Court File Number.
+
+                @if (Context.Request.Method == "POST")
+                {
+                    @if (Model.CaseNumber != null)
+                    {
+                        if (Model.IsValidCaseNumber)
+                        {
+                            if (Model.Results != null)
+                            {
+                                <p>@Model.CaseNumber</p>
+                                <div id="pnlCoaCivil">
+                                    <div class="row search-info-row">
+                                        <div class="col-md-6">
+                                            <label>Has a Certificate of Readines been filled?</label>
+                                            <div class="btn-radio-group">
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="Yes" /> Yes
+                                                </label>
+
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="No" /> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Is the Hearing date agreed upon by all parties?</label>
+                                            <div class="btn-radio-group">
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="Yes" /> Yes
+                                                </label>
+
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="No" /> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row search-info-row">
+                                        <div class="col-md-6">
+                                            <label>How long will you require for your Hearing?</label>
+                                            <div class="btn-radio-group">
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="Yes" /> Yes
+                                                </label>
+
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="No" /> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            //if (Model.HearingTypeId == '72', 96, 97)
+                            {
+                                <div id="pnlCoaCriminal" style="display: none">
+                                    <div class="row search-info-row">
+                                        <div class="col-md-6">
+                                            <label>Have you submitted a Lower Court Order?</label>
+                                            <div class="btn-radio-group">
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="Yes" /> Yes
+                                                </label>
+
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="No" /> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Is the Hearing date agreed upon by all parties?</label>
+                                            <div class="btn-radio-group">
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="Yes" /> Yes
+                                                </label>
+
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="No" /> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row search-info-row">
+                                        <div class="col-md-6">
+                                            <label>How long will you require for your Hearing?</label>
+                                            <div class="btn-radio-group">
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="Yes" /> Yes
+                                                </label>
+
+                                                <label class="btn btn-radio">
+                                                    <input type="radio" value="No" /> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="hearingType">What type of Appeal Hearing do you need to book?</label>
+                                            <select class="form-control registryOptions" id="hearingType">
+                                                <option value="hearing">Hearing of Appeal</option>
+                                                <option value="conviction">Conviction Appeal</option>
+                                                <option value="sentence">Sentence Appeal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                        <div class="row search-info-row">
+                            <div class="col col-md-12">
+                                <p class="text-danger">We could not find the case for @Model.CaseNumber</p>
                             </div>
                         </div>
-                        <span class="ml-3" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                    </div>
-                </div>
+                        }
+                    }
+                }
             </div>
-            <div id="pnlCoaCivil" style="display: none">
-                <div class="row search-info-row">
-                    <div class="col-md-6">
-                        <label>Has a Certificate of Readines been filled?</label>
-                        <div class="btn-radio-group">
-                            <label class="btn btn-radio">
-                                <input type="radio" value="Yes" /> Yes
-                            </label>
 
-                            <label class="btn btn-radio">
-                                <input type="radio" value="No" /> No
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label>Is the Hearing date agreed upon by all parties?</label>
-                        <div class="btn-radio-group">
-                            <label class="btn btn-radio">
-                                <input type="radio" value="Yes" /> Yes
-                            </label>
-
-                            <label class="btn btn-radio">
-                                <input type="radio" value="No" /> No
-                            </label>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <button type="submit" class="btn btn-primary btn-lg" id="btnNextCoa">Next</button>
+                    <button type="submit" class="btn btn-primary btn-lg" id="btnSubmitCoa" style="display: none">Show Available Times</button>
                 </div>
-                <div class="row search-info-row">
-                    <div class="col-md-6">
-                        <label>How long will you require for your Hearing?</label>
-                        <div class="btn-radio-group">
-                            <label class="btn btn-radio">
-                                <input type="radio" value="Yes" /> Yes
-                            </label>
-
-                            <label class="btn btn-radio">
-                                <input type="radio" value="No" /> No
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col col-md-12">
-                <button type="submit" class="btn btn-primary btn-lg" id="btnNextCoa">Next</button>
-                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmitCoa" style="display: none">Show Available Times</button>
             </div>
         </div>
     </div>
-</div>
+</form>
 
+@*@if (Model.IsValidCaseNumber)
+    {
+        foreach (var timeSlot in Model.Results.AvailableDates)
+        {
+        @timeSlot.scheduleDate <text> | </text>  @timeSlot.availability
+        <br />
+        }
+    }
+<p>Not a valid case number</p>*@

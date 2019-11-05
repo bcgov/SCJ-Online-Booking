@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
-    public class CaseConfirmViewModel
+    public class ScCaseConfirmViewModel
     {
         //Case number
         public string CaseNumber { get; set; }

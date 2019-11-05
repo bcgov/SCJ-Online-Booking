@@ -43,7 +43,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CaseSearch(CaseSearchViewModel model)
+        public async Task<IActionResult> CaseSearch(ScCaseSearchViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpGet]
         public IActionResult CaseConfirm()
         {
-            SessionBookingInfo bookingInfo = _session.BookingInfo;
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
@@ -79,7 +79,7 @@ namespace SCJ.Booking.MVC.Controllers
             var sui = _scBookingService.GetUserInformation();
 
             //Time-slot is still available
-            var ccm = new CaseConfirmViewModel
+            var ccm = new ScCaseConfirmViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
@@ -98,7 +98,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CaseConfirm(CaseConfirmViewModel model)
+        public async Task<IActionResult> CaseConfirm(ScCaseConfirmViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -138,7 +138,7 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpGet]
         public IActionResult CaseBooked()
         {
-            SessionBookingInfo bookingInfo = _session.BookingInfo;
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {

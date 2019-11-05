@@ -4,9 +4,9 @@ using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
-    public class CaseSearchViewModel
+    public class ScCaseSearchViewModel
     {
-        public CaseSearchViewModel()
+        public ScCaseSearchViewModel()
         {
             //Default values
             Results = new AvailableDatesByLocation();

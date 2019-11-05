@@ -7,7 +7,8 @@ namespace SCJ.Booking.MVC.Services
     public class SessionService
     {
         // session keys
-        private const string BookingInfoKey = "BookingInfo";
+        private const string ScBookingInfoKey = "ScBookingInfo";
+        private const string CoaBookingInfoKey = "CoaBookingInfo";
         private const string UserInfoKey = "UserInfo";
 
         // services
@@ -21,11 +22,21 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Stores information about the booking in the session
         /// </summary>
-        public SessionBookingInfo BookingInfo
+        public ScSessionBookingInfo ScBookingInfo
         {
-            get => GetObject<SessionBookingInfo>(_httpContext.Session, BookingInfoKey) ??
-                   new SessionBookingInfo();
-            set => SetObject(_httpContext.Session, BookingInfoKey, value);
+            get => GetObject<ScSessionBookingInfo>(_httpContext.Session, ScBookingInfoKey) ??
+                   new ScSessionBookingInfo();
+            set => SetObject(_httpContext.Session, ScBookingInfoKey, value);
+        }
+
+        /// <summary>
+        ///     Stores information about the booking in the session
+        /// </summary>
+        public CoaSessionBookingInfo CoaBookingInfo
+        {
+            get => GetObject<CoaSessionBookingInfo>(_httpContext.Session, CoaBookingInfoKey) ??
+                   new CoaSessionBookingInfo();
+            set => SetObject(_httpContext.Session, CoaBookingInfoKey, value);
         }
 
         /// <summary>
@@ -43,7 +54,7 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public void ClearBookingInfo()
         {
-            SetObject(_httpContext.Session, BookingInfoKey, new SessionBookingInfo());
+            SetObject(_httpContext.Session, ScBookingInfoKey, new ScSessionBookingInfo());
         }
 
         /// <summary>

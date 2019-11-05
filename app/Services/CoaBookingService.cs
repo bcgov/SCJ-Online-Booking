@@ -21,7 +21,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SCJ.Booking.MVC.Services
 {
-    public class ScBookingService
+    public class CoaBookingService
     {
         public const int MaxHearingsPerDay = 10;
         private const string EmailSubject = "BC Courts Booking Confirmation";
@@ -36,7 +36,7 @@ namespace SCJ.Booking.MVC.Services
         private WebCredentials _emailCredentials;
 
         //Constructor
-        public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
+        public CoaBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
             IConfiguration configuration, SessionService sessionService,
             IViewRenderService viewRenderService)
         {
@@ -74,58 +74,21 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Populate the dropdown list for locations for the search
-        /// </summary>
-        public async Task<ScCaseSearchViewModel> LoadSearchForm()
-        {
-            //Load locations from API
-            Location[] locations = await _client.getLocationsAsync();
-
-            //clear booking info session
-            _session.ScBookingInfo = null;
-
-            //Model instance
-            return new ScCaseSearchViewModel
-            {
-                RegistryOptions = new SelectList(
-                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
-                    "Id", "Value")
-            };
-        }
-
-
-        /// <summary>
         ///     Search for available times
         /// </summary>
-        public async Task<ScCaseSearchViewModel> GetSearchResults(ScCaseSearchViewModel model)
+        public async Task<CoaCaseSearchViewModel> GetSearchResults(CoaCaseSearchViewModel model)
         {
-            // Load locations from API
-            Location[] locations = await _client.getLocationsAsync();
 
-            var retval = new ScCaseSearchViewModel
+            var retval = new CoaCaseSearchViewModel
             {
-                RegistryOptions = new SelectList(
-                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
-                    "Id", "Value"),
-                HearingTypeId = model.HearingTypeId,
-                SelectedRegistryId = model.SelectedRegistryId,
-                CaseNumber = model.CaseNumber,
-                TimeSlotExpired = model.TimeSlotExpired
+                CaseNumber = model.CaseNumber
             };
 
-            //set location name
-            SelectListItem selectedRegistry =
-                retval.RegistryOptions.FirstOrDefault(x =>
-                    x.Value == retval.SelectedRegistryId.ToString());
-
-            if (selectedRegistry != null)
-            {
-                retval.SelectedRegistryName = selectedRegistry.Text;
-            }
-
             //search the current case number
-            string caseNumber = await BuildCaseNumber(model.CaseNumber, model.SelectedRegistryId);
-            int caseId = await _client.caseNumberValidAsync(caseNumber);
+            CoAClassInfo caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
+
+            int caseId = caseNumberResult.CaseId;
+            string caseType = caseNumberResult.CaseType;
 
             if (caseId == 0)
             {
@@ -133,59 +96,49 @@ namespace SCJ.Booking.MVC.Services
                 retval.IsValidCaseNumber = false;
 
                 //empty result set
-                retval.Results = new AvailableDatesByLocation();
-
-                //get contact infromation
-                retval.RegistryContactNumber = GetRegistryContactNumber(model.SelectedRegistryId);
+                retval.Results = new CoAAvailableDates();
             }
             else
             {
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
-                AvailableDatesByLocation schedule =
-                    await _client.AvailableDatesByLocationAsync(model.SelectedRegistryId,
-                        model.HearingTypeId);
+                CoAAvailableDates schedule =
+                    await _client.COAAvailableDatesAsync();
 
-                int hearingLength = schedule.BookingDetails.detailBookingLength;
 
                 retval.Results = schedule;
 
                 //check for valid date
-                if (model.ContainerId > 0)
+                if (model.SelectedDate != null)
                 {
-                    if (!IsTimeStillAvailable(retval.Results, model.ContainerId))
+                    if (!IsTimeStillAvailable(retval.Results, model.SelectedDate.Value))
                     {
                         retval.TimeSlotExpired = true;
                     }
 
                     //convert JS ticks to .Net date
-                    var dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
+                    //var dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
 
                     //set date properties
-                    retval.ContainerId = model.ContainerId;
-                    retval.SelectedCaseDate = model.SelectedCaseDate;
+                    retval.SelectedDate = model.SelectedDate;
 
-                    string bookingTime = dt.ToString("hh:mm tt") + " to " +
-                                         dt.AddMinutes(hearingLength).ToString("hh:mm tt");
+                    //string bookingTime = dt.ToString("hh:mm tt") + " to " +
+                    //                     dt.AddMinutes(hearingLength).ToString("hh:mm tt");
 
-                    retval.TimeSlotFriendlyName =
-                        dt.ToString("MMMM dd") + " from " + bookingTime;
+                    //retval.TimeSlotFriendlyName =
+                    //    dt.ToString("MMMM dd") + " from " + bookingTime;
 
-                    _session.ScBookingInfo = new ScSessionBookingInfo
+                    _session.CoaBookingInfo = new CoaSessionBookingInfo
                     {
-                        ContainerId = model.ContainerId,
+                        //ContainerId = model.ContainerId,
                         CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                        FullCaseNumber = caseNumber,
                         CaseId = caseId,
                         HearingTypeId = model.HearingTypeId,
                         HearingTypeName = "Trial Management Conference (TMC)",
-                        HearingLengthMinutes = hearingLength,
-                        LocationId = model.SelectedRegistryId,
-                        RegistryName = retval.SelectedRegistryName,
-                        TimeSlotFriendlyName = bookingTime,
-                        SelectedCaseDate = model.SelectedCaseDate,
-                        DateFriendlyName = dt.ToString("dddd, MMMM dd, yyyy")
+                        //TimeSlotFriendlyName = bookingTime,
+                        //SelectedCaseDate = model.SelectedDate.Value,
+                        //DateFriendlyName = dt.ToString("dddd, MMMM dd, yyyy")
                     };
                 }
             }
@@ -197,10 +150,10 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Check if a time slot is still available for a court booking
         /// </summary>
-        public bool IsTimeStillAvailable(AvailableDatesByLocation schedule, int containerId)
+        public bool IsTimeStillAvailable(CoAAvailableDates schedule, DateTime selectedDate)
         {
             //check if the container ID is still available
-            return schedule.AvailableDates.Any(x => x.ContainerID == containerId);
+            return schedule.AvailableDates.Any(x => x.scheduleDate == selectedDate);
         }
 
         /// <summary>
@@ -232,18 +185,16 @@ namespace SCJ.Booking.MVC.Services
                 return model;
             }
 
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+            CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
 
             //we know who the user is.
             model.IsUserKnown = true;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
-            AvailableDatesByLocation schedule =
-                await _client.AvailableDatesByLocationAsync(bookingInfo.LocationId,
-                    bookingInfo.HearingTypeId);
+            CoAAvailableDates schedule =  await _client.COAAvailableDatesAsync();
 
             //ensure time slot is still available
-            if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
+            if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate))
             {
                 //build object to send to the API
                 var bookInfo = new BookHearingInfo
@@ -297,7 +248,7 @@ namespace SCJ.Booking.MVC.Services
                     await SendEmail(model, bookInfo);
 
                     //clear booking info session
-                    _session.ScBookingInfo = null;
+                    _session.CoaBookingInfo = null;
                 }
                 else
                 {
@@ -315,7 +266,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             // save the booking info back to the session
-            _session.ScBookingInfo = bookingInfo;
+            _session.CoaBookingInfo = bookingInfo;
 
             return model;
         }
@@ -435,12 +386,12 @@ namespace SCJ.Booking.MVC.Services
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
-                CourtFileNumber = _session.ScBookingInfo.CaseNumber,
+                CourtFileNumber = _session.CoaBookingInfo.CaseNumber,
                 Fullname = bookingInfo.requestedBy,
                 RegistryName = data.LocationName,
                 TypeOfConference = data.HearingTypeName,
                 Date = data.Date,
-                Time = _session.ScBookingInfo.TimeSlotFriendlyName
+                Time = _session.CoaBookingInfo.TimeSlotFriendlyName
             };
 
             //Render the email template 

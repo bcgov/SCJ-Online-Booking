@@ -25,10 +25,11 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         /// <summary>
-        ///     API for getting list of available dates.  Used by the vue.js date slider control
+        ///     API for getting list of Supreme Court available dates.
+        ///     Used by the vue.js date slider control
         /// </summary>
-        [Route("/booking/api/available-dates-by-location/{locationId}/{hearingType}")]
-        public async Task<List<AvailableDayViewModel>> AvailableDatesByLocation(int locationId,
+        [Route("/booking/api/sc-available-dates-by-location/{locationId}/{hearingType}")]
+        public async Task<List<ScAvailableDayViewModel>> AvailableScDatesByLocation(int locationId,
             int hearingType)
         {
             // call the remote API
@@ -41,9 +42,9 @@ namespace SCJ.Booking.MVC.Controllers
                 .OrderBy(d => d.Date_Time);
 
             // create the return object
-            var result = new List<AvailableDayViewModel>();
+            var result = new List<ScAvailableDayViewModel>();
 
-            AvailableDayViewModel day = null;
+            ScAvailableDayViewModel day = null;
             DateTime? lastDate = null;
 
             // loop through the available times and group them by date
@@ -61,17 +62,17 @@ namespace SCJ.Booking.MVC.Controllers
                     }
 
                     // create a new day grouping
-                    day = new AvailableDayViewModel
+                    day = new ScAvailableDayViewModel
                     {
                         Date = date,
                         Weekday = date.DayOfWeek.ToString(),
                         FormattedDate = date.ToString("MMMM dd, yyyy"),
-                        Times = new List<AvailableTimeViewModel>()
+                        Times = new List<ScAvailableTimeViewModel>()
                     };
                 }
 
                 // add the timeslot to the day grouping
-                day.Times.Add(new AvailableTimeViewModel
+                day.Times.Add(new ScAvailableTimeViewModel
                 {
                     ContainerId = item.ContainerID,
                     StartDateTime = item.Date_Time,

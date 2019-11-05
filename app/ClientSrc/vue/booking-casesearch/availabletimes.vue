@@ -106,7 +106,7 @@
         },
         created() {
             let self = this;
-            axios.get(`/scjob/booking/api/available-dates-by-location/${this.locationId}/${this.hearingType}`)
+            axios.get(`/scjob/booking/api/sc-available-dates-by-location/${this.locationId}/${this.hearingType}`)
                 .then(response => {
                     self.availabletimes = response.data;
                 });

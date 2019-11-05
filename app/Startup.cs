@@ -73,6 +73,7 @@ namespace SCJ.Booking.MVC
 
             //service to get hearings left for logged-in user
             services.AddTransient<ScBookingService>();
+            services.AddTransient<CoaBookingService>();
 
             services.AddScoped<IViewRenderService, ViewRenderService>();
         }

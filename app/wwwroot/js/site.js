@@ -56,18 +56,18 @@ $(document).ready(function () {
     });
 
     // CoA additional questions for Civil cases
-    $("#btnNextCoa").click(function (e) {
-        e.preventDefault();
-        $("#pnlCoaCivil").toggle();
-        $("#btnNextCoa").toggle();
-        $("#btnSubmitCoa").toggle();
+    //$("#btnNextCoa").click(function (e) {
+    //    e.preventDefault();
+    //    $("#pnlCoaCivil").toggle();
+    //    $("#btnNextCoa").toggle();
+    //    $("#btnSubmitCoa").toggle();
 
-        // scroll down to the bceid button
-        if ($("#btnSubmitCoa").css("display") !== "none") {
-            var panel = $("div[id='pnlCoaCivil']");
-            $("html,body").animate({ scrollTop: panel.offset().top }, "fast");
-        }
-    });
+    //    // scroll down to the bceid button
+    //    if ($("#btnSubmitCoa").css("display") !== "none") {
+    //        var panel = $("div[id='pnlCoaCivil']");
+    //        $("html,body").animate({ scrollTop: panel.offset().top }, "fast");
+    //    }
+    //});
 
     // Set up the progress spinner overlay
     $('body').on('click', 'input.progress-spinner, a.progress-spinner, button.progress-spinner', function () {

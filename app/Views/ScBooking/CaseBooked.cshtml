@@ -8,7 +8,7 @@
 
 <div class="row screen-intro">
     <div class="col-md-12">
-        @if (SessionService.BookingInfo.IsBooked)
+        @if (SessionService.ScBookingInfo.IsBooked)
         {
             <h2 class="blue">The TMC has been scheduled for the date and time below.</h2>
             <h2 class="blue">Please file a requisition to secure TMC date.</h2>
@@ -23,10 +23,10 @@
     </div>
 </div>
 
-@if (!SessionService.BookingInfo.IsBooked)
+@if (!SessionService.ScBookingInfo.IsBooked)
 {
     <div class="alert alert-danger">
-        @SessionService.BookingInfo.RawResult
+        @SessionService.ScBookingInfo.RawResult
     </div>
 }
 else
@@ -50,28 +50,28 @@ else
                     <div class="form-group">
                         <label class="font-weight-bold">Type of Conference Hearing</label>
                         <div>
-                            <label>@SessionService.BookingInfo.HearingTypeName</label>
+                            <label>@SessionService.ScBookingInfo.HearingTypeName</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Registry Name</label>
                         <div>
-                            <label>@SessionService.BookingInfo.RegistryName</label>
+                            <label>@SessionService.ScBookingInfo.RegistryName</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Court File Number</label>
                         <div>
-                            <label>@SessionService.BookingInfo.CaseNumber</label>
+                            <label>@SessionService.ScBookingInfo.CaseNumber</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Date and Time of Conference Hearing</label>
                         <div>
-                            <label>@SessionService.BookingInfo.DateFriendlyName</label>
+                            <label>@SessionService.ScBookingInfo.DateFriendlyName</label>
                         </div>
                         <div>
-                            <label>@SessionService.BookingInfo.TimeSlotFriendlyName</label>
+                            <label>@SessionService.ScBookingInfo.TimeSlotFriendlyName</label>
                         </div>
                     </div>
                     <div class="form-group contact-information">
@@ -110,5 +110,5 @@ else
 </div>
 
 @{
-    SessionService.BookingInfo = null;
+    SessionService.ScBookingInfo = null;
 }
