@@ -316,7 +316,9 @@ p.intro {
 
     #pnlCoaCivil, #pnlCoaCriminal {
         .search-info-row {
-            margin-top: 20px;
+            @media (min-width: $breakpoint-md) {
+                margin-top: 20px;
+            }
         }
     }
 }

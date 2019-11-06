@@ -86,8 +86,31 @@ $(document).ready(function () {
         });
     });
 
-    //Display last row of questions if previous questions are answered Yes
 
+    //Display last row of questions for Civil case if previous questions are answered Yes
+    var toggleCivil = function () {
+        var $CivilCertificateOfReadiness = $('input[name="CivilCertificateOfReadiness"]:checked').val();
+        var $CivilDateIsAgreed = $('input[name="CivilDateIsAgreed"]:checked').val();
+        if ($CivilCertificateOfReadiness === 'true' && $CivilDateIsAgreed === 'true') {
+            $('#CivilAdditionalQs').toggle();
+        }
+    };
+
+    $('input[name="CivilCertificateOfReadiness"]').click(toggleCivil);
+    $('input[name="CivilDateIsAgreed"]').click(toggleCivil);
+
+
+    //Display last row of questions for Criminal case if previous questions are answered Yes
+    var toggleCriminal = function () {
+        var $CriminalLowerCourtOrder = $('input[name="CriminalLowerCourtOrder"]:checked').val();
+        var $CriminalDateIsAgreed = $('input[name="CriminalDateIsAgreed"]:checked').val();
+        if ($CriminalLowerCourtOrder === 'true' && $CriminalDateIsAgreed === 'true') {
+            $('#CriminalAdditionalQs').toggle();
+        }
+    };
+
+    $('input[name="CriminalLowerCourtOrder"]').click(toggleCriminal);
+    $('input[name="CriminalDateIsAgreed"]').click(toggleCriminal);
 });
 
 // Called by Vue when a timeslot is selected
