@@ -23,5 +23,12 @@ namespace SCJ.Booking.MVC.Utils
         public bool IsBooked { get; set; }
 
         public string DateFriendlyName { get; set; }
+
+        public string CaseType { get; internal set; }
+        public bool? CertificateOfReadiness { get; set; }
+        public bool? DateIsAgreed { get; set; }
+        public bool? LowerCourtOrder { get; set; }
+        public bool? IsFullDay { get; set; }
+        public string HearingType { get; set; }
     }
 }

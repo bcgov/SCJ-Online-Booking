@@ -22,6 +22,7 @@
 </div>
 
 <form method="post">
+    <input type="hidden" asp-for="CaseType" />
     <!-- Search filter-->
     <div class="row search-container">
         <div class="col col-md-12">
@@ -58,65 +59,66 @@
                     {
                         if (Model.IsValidCaseNumber)
                         {
-                            if (Model.Results != null)
+                            if (Model.CaseType == CoaCaseType.Civil)
                             {
-                                <p>@Model.CaseNumber</p>
                                 <div id="pnlCoaCivil">
                                     <div class="row search-info-row">
                                         <div class="col-md-6">
-                                            <label>Has a Certificate of Readines been filled?</label>
+                                            <label>Has a Certificate of Readiness been filled?</label>
                                             <div class="btn-radio-group">
-                                                <label class="btn btn-radio">
-                                                    <input type="radio" value="Yes" /> Yes
+                                                <label class="btn btn-radio @((Model.CertificateOfReadiness ?? false) ? "active" : "")">
+                                                    <input type="radio" asp-for="CertificateOfReadiness" value="true" /> Yes
                                                 </label>
 
-                                                <label class="btn btn-radio">
-                                                    <input type="radio" value="No" /> No
-                                                </label>
+                                                <label class="btn btn-radio @((Model.CertificateOfReadiness ?? false) ? "" : "active")">
+                                                    <input type="radio" asp-for="CertificateOfReadiness" value="false" /> No
+                                                </label> 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Is the Hearing date agreed upon by all parties?</label>
                                             <div class="btn-radio-group">
                                                 <label class="btn btn-radio">
-                                                    <input type="radio" value="Yes" /> Yes
+                                                    <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
                                                 </label>
 
                                                 <label class="btn btn-radio">
-                                                    <input type="radio" value="No" /> No
+                                                    <input type="radio" asp-for="DateIsAgreed" value="false" /> No
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row search-info-row">
+
+                                    <div class="row search-info-row" style="display: @((Model.CertificateOfReadiness ?? false) && (Model.DateIsAgreed ?? false) ? "block" : "none")">
                                         <div class="col-md-6">
                                             <label>How long will you require for your Hearing?</label>
                                             <div class="btn-radio-group">
-                                                <label class="btn btn-radio">
-                                                    <input type="radio" value="Yes" /> Yes
+                                                <label class="btn btn-radio btn-radio--day">
+                                                    <input type="radio" asp-for="IsFullDay" value="false" /> Half day
                                                 </label>
 
-                                                <label class="btn btn-radio">
-                                                    <input type="radio" value="No" /> No
+                                                <label class="btn btn-radio btn-radio--day">
+                                                    <input type="radio" asp-for="IsFullDay" value="true" /> Full day
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             }
-                            //if (Model.HearingTypeId == '72', 96, 97)
+                            else if (Model.CaseType == CoaCaseType.Criminal)
                             {
-                                <div id="pnlCoaCriminal" style="display: none">
+                                <div id="pnlCoaCriminal">
                                     <div class="row search-info-row">
                                         <div class="col-md-6">
                                             <label>Have you submitted a Lower Court Order?</label>
                                             <div class="btn-radio-group">
                                                 <label class="btn btn-radio">
-                                                    <input type="radio" value="Yes" /> Yes
+                                                    <input type="radio" asp-for="LowerCourtOrder" value="true" /> Yes
                                                 </label>
 
                                                 <label class="btn btn-radio">
-                                                    <input type="radio" value="No" /> No
+                                                    <input type="radio" asp-for="LowerCourtOrder" value="false" /> No
                                                 </label>
                                             </div>
                                         </div>
@@ -124,25 +126,26 @@
                                             <label>Is the Hearing date agreed upon by all parties?</label>
                                             <div class="btn-radio-group">
                                                 <label class="btn btn-radio">
-                                                    <input type="radio" value="Yes" /> Yes
+                                                    <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
                                                 </label>
 
                                                 <label class="btn btn-radio">
-                                                    <input type="radio" value="No" /> No
+                                                    <input type="radio" asp-for="DateIsAgreed" value="false" /> No
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+                                    @*if (LowerCourtOrder == false && DateisAgreed == false)*@
                                     <div class="row search-info-row">
                                         <div class="col-md-6">
                                             <label>How long will you require for your Hearing?</label>
                                             <div class="btn-radio-group">
-                                                <label class="btn btn-radio">
-                                                    <input type="radio" value="Yes" /> Yes
+                                                <label class="btn btn-radio btn-radio--day">
+                                                    <input type="radio" asp-for="IsFullDay" value="false" /> Half day
                                                 </label>
 
-                                                <label class="btn btn-radio">
-                                                    <input type="radio" value="No" /> No
+                                                <label class="btn btn-radio btn-radio--day">
+                                                    <input type="radio" asp-for="IsFullDay" value="true" /> Full day
                                                 </label>
                                             </div>
                                         </div>
@@ -160,11 +163,11 @@
                         }
                         else
                         {
-                        <div class="row search-info-row">
-                            <div class="col col-md-12">
-                                <p class="text-danger">We could not find the case for @Model.CaseNumber</p>
+                            <div class="row search-info-row">
+                                <div class="col col-md-12">
+                                    <p class="text-danger">We could not find the case for Court File Number @Model.CaseNumber</p>
+                                </div>
                             </div>
-                        </div>
                         }
                     }
                 }
@@ -172,20 +175,35 @@
 
             <div class="row">
                 <div class="col col-md-12">
-                    <button type="submit" class="btn btn-primary btn-lg" id="btnNextCoa">Next</button>
-                    <button type="submit" class="btn btn-primary btn-lg" id="btnSubmitCoa" style="display: none">Show Available Times</button>
+                    @if (string.IsNullOrEmpty(Model.CaseType))
+                    {
+                        <button type="submit" class="btn btn-primary btn-lg">Next</button>
+                    }
+                    else
+                    {
+                        //should trigger error messages if there are empty fields/unchecked radio buttons
+                        <button type="submit" class="btn btn-primary btn-lg">Show Available Dates</button>
+                    }
                 </div>
             </div>
+
+            @if (false)
+            {
+                foreach (var timeSlot in Model.Results.AvailableDates)
+                {
+                @timeSlot.scheduleDate <text> | </text>  @timeSlot.availability
+                <br />
+                }
+            }
         </div>
     </div>
 </form>
 
-@*@if (Model.IsValidCaseNumber)
+@*@if (Model.Results != null && Model.Results.AvailableDates.Any())
+{
+    foreach (var timeSlot in Model.Results.AvailableDates)
     {
-        foreach (var timeSlot in Model.Results.AvailableDates)
-        {
-        @timeSlot.scheduleDate <text> | </text>  @timeSlot.availability
-        <br />
-        }
+    @timeSlot.scheduleDate <text> | </text>  @timeSlot.availability
+    <br />
     }
-<p>Not a valid case number</p>*@
+}*@

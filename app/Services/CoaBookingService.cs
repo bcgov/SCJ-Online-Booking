@@ -79,10 +79,7 @@ namespace SCJ.Booking.MVC.Services
         public async Task<CoaCaseSearchViewModel> GetSearchResults(CoaCaseSearchViewModel model)
         {
 
-            var retval = new CoaCaseSearchViewModel
-            {
-                CaseNumber = model.CaseNumber
-            };
+            var retval = model;
 
             //search the current case number
             CoAClassInfo caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
@@ -100,6 +97,8 @@ namespace SCJ.Booking.MVC.Services
             }
             else
             {
+                //case type
+                retval.CaseType = caseType;
                 //valid case number
                 retval.IsValidCaseNumber = true;
 

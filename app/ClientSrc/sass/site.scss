@@ -519,7 +519,11 @@ div#progress-overlay {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
 
-    &:hover, &:active, &:focus {
+    &--day {
+        padding: 12px 0;
+    }
+
+    &:hover, &:active, &:focus, &.active {
         color: $white;
         background-color: $blue-active;
         -webkit-transition: all 0.1s ease-in-out;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
+using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
 
 namespace SCJ.Booking.MVC.Controllers
@@ -47,6 +48,37 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseSearch(ViewModels.CoaCaseSearchViewModel model)
         {
+
+            if (!string.IsNullOrEmpty(model.CaseType))
+            {
+                if (model.CaseType == CoaCaseType.Civil)
+                {
+                    if (model.CertificateOfReadiness == null)
+                    {
+                        ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
+                    }
+                }
+
+                if (model.CaseType == CoaCaseType.Criminal)
+                {
+                    if (model.LowerCourtOrder == null)
+                    {
+                        ModelState.AddModelError("LowerCourtOrder", "Please answer this question.");
+                    }
+                }
+
+                if (model.DateIsAgreed == null)
+                {
+                    ModelState.AddModelError("DateisAgree", "Please answer this question.");
+                }
+
+                if (model.IsFullDay == null)
+                {
+                    ModelState.AddModelError("IsFullDay", "Please choose the length of time required for your Hearing.");
+                }
+            }
+
+
             if (!ModelState.IsValid)
             {
                 return View(model);
