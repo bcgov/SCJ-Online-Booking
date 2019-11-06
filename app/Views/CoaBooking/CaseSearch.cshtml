@@ -65,25 +65,25 @@
                                     <div class="row search-info-row">
                                         <div class="col-md-6">
                                             <label>Has a Certificate of Readiness been filled?</label>
-                                            <div class="btn-radio-group">
+                                            <div id="Civil_CertificateOfReadiness" class="btn-radio-group">
                                                 <label class="btn btn-radio @((Model.CertificateOfReadiness ?? false) ? "active" : "")">
-                                                    <input type="radio" asp-for="CertificateOfReadiness" name="CivilCertificateOfReadiness" value="true" /> Yes
+                                                    <input type="radio" asp-for="CertificateOfReadiness" value="true" /> Yes
                                                 </label>
 
                                                 <label class="btn btn-radio @((Model.CertificateOfReadiness ?? true) ? "" : "active")">
-                                                    <input type="radio" asp-for="CertificateOfReadiness" name="CivilCertificateOfReadiness" value="false" /> No
+                                                    <input type="radio" asp-for="CertificateOfReadiness" value="false" /> No
                                                 </label> 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Is the Hearing date agreed upon by all parties?</label>
-                                            <div class="btn-radio-group">
+                                            <div id="Civil_DateIsAgreed" class="btn-radio-group">
                                                 <label class="btn btn-radio @((Model.DateIsAgreed ?? false) ? "active" : "")">
-                                                    <input type="radio" asp-for="DateIsAgreed"  name="CivilDateIsAgreed" value="true" /> Yes
+                                                    <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
                                                 </label>
 
                                                 <label class="btn btn-radio @((Model.DateIsAgreed ?? true) ? "" : "active")">
-                                                    <input type="radio" asp-for="DateIsAgreed" name="CivilDateIsAgreed" value="false" /> No
+                                                    <input type="radio" asp-for="DateIsAgreed" value="false" /> No
                                                 </label>
                                             </div>
                                         </div>
@@ -92,12 +92,12 @@
                                     <div id="CivilAdditionalQs" class="row search-info-row" style="display: @((Model.CertificateOfReadiness ?? false) && (Model.DateIsAgreed ?? false) ? "block" : "none")">
                                         <div class="col-md-6">
                                             <label>How long will you require for your Hearing?</label>
-                                            <div class="btn-radio-group">
-                                                <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "")">
+                                            <div id="Civil_IsFullDay" class="btn-radio-group">
+                                                <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active")">
                                                     <input type="radio" asp-for="IsFullDay" value="false" /> Half day
                                                 </label>
 
-                                                <label class="btn btn-radio btn-radio--day  @((Model.DateIsAgreed ?? true) ? "" : "active")">
+                                                <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "")">
                                                     <input type="radio" asp-for="IsFullDay" value="true" /> Full day
                                                 </label>
                                             </div>
@@ -112,25 +112,25 @@
                                     <div class="row search-info-row">
                                         <div class="col-md-6">
                                             <label>Have you submitted a Lower Court Order?</label>
-                                            <div class="btn-radio-group">
+                                            <div id="Criminal_LowerCourtOrder" class="btn-radio-group">
                                                 <label class="btn btn-radio @((Model.LowerCourtOrder ?? false) ? "active" : "")">
-                                                    <input type="radio" asp-for="LowerCourtOrder" name="CriminalLowerCourtOrder" value="true" /> Yes
+                                                    <input type="radio" asp-for="LowerCourtOrder" value="true" /> Yes
                                                 </label>
 
-                                                <label class="btn btn-radio @((Model.LowerCourtOrder ?? true) ? "" : "active")">
-                                                    <input type="radio" asp-for="LowerCourtOrder" name="CriminalLowerCourtOrder" value="false" /> No
+                                                <label class="btn btn-radio @((Model.LowerCourtOrder ?? false) ? "" : "active")">
+                                                    <input type="radio" asp-for="LowerCourtOrder" value="false" /> No
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Is the Hearing date agreed upon by all parties?</label>
-                                            <div class="btn-radio-group">
+                                            <div id="Criminal_DateIsAgreed" class="btn-radio-group">
                                                 <label class="btn btn-radio @((Model.DateIsAgreed ?? false) ? "active" : "")">
-                                                    <input type="radio" asp-for="DateIsAgreed" name="CriminalDateIsAgreed" value="true" /> Yes
+                                                    <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
                                                 </label>
 
                                                 <label class="btn btn-radio @((Model.DateIsAgreed ?? true) ? "" : "active")">
-                                                    <input type="radio" asp-for="DateIsAgreed" name="CriminalDateIsAgreed" value="false" /> No
+                                                    <input type="radio" asp-for="DateIsAgreed" value="false" /> No
                                                 </label>
                                             </div>
                                         </div>
@@ -138,12 +138,12 @@
                                     <div id="CriminalAdditionalQs" class="row search-info-row" style="display: @((Model.LowerCourtOrder ?? false) && (Model.DateIsAgreed ?? false) ? "flex" : "none")">
                                         <div class="col-md-6">
                                             <label>How long will you require for your Hearing?</label>
-                                            <div class="btn-radio-group">
-                                                <label class="btn btn-radio btn-radio--day @((Model.IsFullDay ?? false) ? "active" : "")">
+                                            <div id="Criminal_IsFullDay" class="btn-radio-group">
+                                                <label class="btn btn-radio btn-radio--day @((Model.IsFullDay ?? true) ? "" : "active")">
                                                     <input type="radio" asp-for="IsFullDay" value="false" /> Half day
                                                 </label>
 
-                                                <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active")">
+                                                <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "")">
                                                     <input type="radio" asp-for="IsFullDay" value="true" /> Full day
                                                 </label>
                                             </div>
@@ -176,33 +176,25 @@
                 <div class="col col-md-12">
                     @if (string.IsNullOrEmpty(Model.CaseType))
                     {
-                        <button type="submit" class="btn btn-primary btn-lg">Next</button>
+                        <button type="submit" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-lg">Next</button>
                     }
                     else
                     {
                         //should trigger error messages if there are empty fields/unchecked radio buttons
-                        <button type="submit" class="btn btn-primary btn-lg">Show Available Dates</button>
+
+                        <button type="submit" id="btnShowDates" value="GetDates" name="SubmitButton" class="btn btn-primary btn-lg">Show Available Dates</button>
                     }
                 </div>
             </div>
-
-            @if (false)
-            {
-                foreach (var timeSlot in Model.Results.AvailableDates)
-                {
-                @timeSlot.scheduleDate <text> | </text>  @timeSlot.availability
-                <br />
-                }
-            }
         </div>
     </div>
 </form>
 
-@*@if (Model.Results != null && Model.Results.AvailableDates.Any())
+@if (Model.Results != null && Model.Results.AvailableDates.Any())
 {
     foreach (var timeSlot in Model.Results.AvailableDates)
     {
     @timeSlot.scheduleDate <text> | </text>  @timeSlot.availability
     <br />
     }
-}*@
+}

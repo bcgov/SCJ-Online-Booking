@@ -89,28 +89,28 @@ $(document).ready(function () {
 
     //Display last row of questions for Civil case if previous questions are answered Yes
     var toggleCivil = function () {
-        var $CivilCertificateOfReadiness = $('input[name="CivilCertificateOfReadiness"]:checked').val();
-        var $CivilDateIsAgreed = $('input[name="CivilDateIsAgreed"]:checked').val();
-        if ($CivilCertificateOfReadiness === 'true' && $CivilDateIsAgreed === 'true') {
+        var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
+        var $Civil_DateIsAgreed = $('#Civil_DateIsAgreed input[type="radio"]:checked').val();
+        if ($Civil_CertificateOfReadiness === 'true' && $Civil_DateIsAgreed === 'true') {
             $('#CivilAdditionalQs').toggle();
         }
     };
 
-    $('input[name="CivilCertificateOfReadiness"]').click(toggleCivil);
-    $('input[name="CivilDateIsAgreed"]').click(toggleCivil);
+    $('#Civil_CertificateOfReadiness input[type="radio"]').click(toggleCivil);
+    $('#Civil_DateIsAgreed input[type="radio"]').click(toggleCivil);
 
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
     var toggleCriminal = function () {
-        var $CriminalLowerCourtOrder = $('input[name="CriminalLowerCourtOrder"]:checked').val();
-        var $CriminalDateIsAgreed = $('input[name="CriminalDateIsAgreed"]:checked').val();
-        if ($CriminalLowerCourtOrder === 'true' && $CriminalDateIsAgreed === 'true') {
+        var $Criminal_LowerCourtOrder = $('#Criminal_LowerCourtOrder input[type="radio"]:checked').val();
+        var $Criminal_DateIsAgreed = $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
+        if ($Criminal_LowerCourtOrder === 'true' && $Criminal_DateIsAgreed === 'true') {
             $('#CriminalAdditionalQs').toggle();
         }
-    };
+    }; 
 
-    $('input[name="CriminalLowerCourtOrder"]').click(toggleCriminal);
-    $('input[name="CriminalDateIsAgreed"]').click(toggleCriminal);
+    $('#Criminal_LowerCourtOrder input[type="radio"]').click(toggleCriminal);
+    $('#Criminal_DateIsAgreed input[type="radio"]').click(toggleCriminal);
 });
 
 // Called by Vue when a timeslot is selected

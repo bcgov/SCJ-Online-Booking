@@ -15,7 +15,7 @@ namespace SCJ.Booking.MVC.ViewModels
         [Required(ErrorMessage = "Please provide a Court File Number.")]
         public string CaseNumber { get; set; }
 
-        public string CaseType { get; internal set; }
+        public string CaseType { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
         public bool? LowerCourtOrder { get; set; }
@@ -29,5 +29,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool TimeSlotExpired { get; internal set; }
         public string TimeSlotFriendlyName { get; internal set; }
         public int HearingTypeId { get; internal set; }
+        public string SubmitButton { get; set; }
     }
 }

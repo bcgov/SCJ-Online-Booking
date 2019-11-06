@@ -102,11 +102,13 @@ namespace SCJ.Booking.MVC.Services
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
-                CoAAvailableDates schedule =
-                    await _client.COAAvailableDatesAsync();
+                if (model.SubmitButton == "GetDates")
+                {
+                    CoAAvailableDates schedule =
+                        await _client.COAAvailableDatesAsync();
 
-
-                retval.Results = schedule;
+                    retval.Results = schedule;
+                }
 
                 //check for valid date
                 if (model.SelectedDate != null)
