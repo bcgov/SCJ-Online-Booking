@@ -51,25 +51,32 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (!string.IsNullOrEmpty(model.CaseType))
             {
+
                 if (model.CaseType == CoaCaseType.Civil)
                 {
                     if (model.CertificateOfReadiness == null)
                     {
                         ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
                     }
+
+                    // todo: add error for No
                 }
 
-                if (model.CaseType == CoaCaseType.Criminal)
+                else if (model.CaseType == CoaCaseType.Criminal)
                 {
                     if (model.LowerCourtOrder == null)
                     {
                         ModelState.AddModelError("LowerCourtOrder", "Please answer this question.");
                     }
+
+                    // todo: add error for No
                 }
 
                 if (model.DateIsAgreed == null)
                 {
-                    ModelState.AddModelError("DateisAgree", "Please answer this question.");
+                    ModelState.AddModelError("DateIsAgreed", "Please answer this question.");
+
+                    // todo: add error for No
                 }
 
                 if (model.IsFullDay == null)
@@ -77,7 +84,6 @@ namespace SCJ.Booking.MVC.Controllers
                     ModelState.AddModelError("IsFullDay", "Please choose the length of time required for your Hearing.");
                 }
             }
-
 
             if (!ModelState.IsValid)
             {
@@ -93,6 +99,8 @@ namespace SCJ.Booking.MVC.Controllers
                 return new RedirectResult("/scjob/booking/sc/CaseConfirm");
             }
 
+            ModelState.Remove("CaseType");
+            ModelState.Remove("IsValidCaseNumber");
             return View(model);
         }
     }

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels
@@ -13,22 +15,22 @@ namespace SCJ.Booking.MVC.ViewModels
         }
 
         [Required(ErrorMessage = "Please provide a Court File Number.")]
+        public int CaseId { get; set; }
         public string CaseNumber { get; set; }
-
+        public bool IsValidCaseNumber { get; set; }
         public string CaseType { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
         public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
-        public string HearingType { get; set; }
-
-
-        public bool IsValidCaseNumber { get; internal set; }
-        public CoAAvailableDates Results { get; internal set; }
-        public DateTime? SelectedDate { get; set; }
-        public bool TimeSlotExpired { get; internal set; }
-        public string TimeSlotFriendlyName { get; internal set; }
-        public int HearingTypeId { get; internal set; }
+        public SelectList HearingTypes { get; set; }
+        public int HearingTypeId { get; set; }
+        public string HearingTypeName { get; set; }
+        public Dictionary<DateTime, List<DateTime>> Results { get; set; }
         public string SubmitButton { get; set; }
+
+        public DateTime? SelectedDate { get; set; }
+        public bool TimeSlotExpired { get; set; }
+        public string TimeSlotFriendlyName { get; set; }
     }
 }

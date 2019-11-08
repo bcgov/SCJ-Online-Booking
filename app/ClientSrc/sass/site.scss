@@ -217,7 +217,7 @@ p.intro {
 }
 
 /*Homepage*/
-.home-intro, .home-de   iption {
+.home-intro {
     text-align: center;
 }
 
@@ -540,5 +540,11 @@ div#progress-overlay {
         position: absolute;
         clip: rect(0,0,0,0);
         pointer-events: none;
+    }
+}
+
+h3 {
+    .h3--monthgrouping {
+        font-weight: 700;
     }
 }

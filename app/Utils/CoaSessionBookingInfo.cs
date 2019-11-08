@@ -11,12 +11,6 @@ namespace SCJ.Booking.MVC.Utils
         public string RegistryName { get; set; }
         public int HearingLengthMinutes { get; set; }
         public int ContainerId { get; set; }
-        public int HearingTypeId { get; set; }
-        public string HearingTypeName { get; set; }
-        public string TimeSlotFriendlyName { get; set; }
-        public string SelectedCaseDate { get; set; }
-        public DateTime SelectedDate { get; set; }
-
         //The result string returned by the SOAP API when the hearing was booked
         public string RawResult { get; set; }
 
@@ -24,11 +18,15 @@ namespace SCJ.Booking.MVC.Utils
 
         public string DateFriendlyName { get; set; }
 
-        public string CaseType { get; internal set; }
+        public string CaseType { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
         public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
-        public string HearingType { get; set; }
+        public int HearingTypeId { get; set; }
+        public string HearingTypeName { get; set; }
+        public string TimeSlotFriendlyName { get; set; }
+        public string SelectedCaseDate { get; set; }
+        public DateTime SelectedDate { get; set; }
     }
 }

@@ -23,6 +23,7 @@
 
 <form method="post">
     <input type="hidden" asp-for="CaseType" />
+    <input type="hidden" asp-for="IsValidCaseNumber" />
     <!-- Search filter-->
     <div class="row search-container">
         <div class="col col-md-12">
@@ -72,8 +73,9 @@
 
                                                 <label class="btn btn-radio @((Model.CertificateOfReadiness ?? true) ? "" : "active")">
                                                     <input type="radio" asp-for="CertificateOfReadiness" value="false" /> No
-                                                </label> 
+                                                </label>
                                             </div>
+                                            <span class="text-danger" asp-validation-for="CertificateOfReadiness"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Is the Hearing date agreed upon by all parties?</label>
@@ -86,6 +88,7 @@
                                                     <input type="radio" asp-for="DateIsAgreed" value="false" /> No
                                                 </label>
                                             </div>
+                                            <span class="text-danger" asp-validation-for="DateIsAgreed"></span>
                                         </div>
                                     </div>
 
@@ -101,9 +104,10 @@
                                                     <input type="radio" asp-for="IsFullDay" value="true" /> Full day
                                                 </label>
                                             </div>
+                                            <span class="text-danger" asp-validation-for="IsFullDay"></span>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             }
                             else if (Model.CaseType == CoaCaseType.Criminal)
@@ -117,10 +121,11 @@
                                                     <input type="radio" asp-for="LowerCourtOrder" value="true" /> Yes
                                                 </label>
 
-                                                <label class="btn btn-radio @((Model.LowerCourtOrder ?? false) ? "" : "active")">
+                                                <label class="btn btn-radio @((Model.LowerCourtOrder ?? true) ? "" : "active")">
                                                     <input type="radio" asp-for="LowerCourtOrder" value="false" /> No
                                                 </label>
                                             </div>
+                                            <span class="text-danger" asp-validation-for="LowerCourtOrder"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Is the Hearing date agreed upon by all parties?</label>
@@ -133,6 +138,7 @@
                                                     <input type="radio" asp-for="DateIsAgreed" value="false" /> No
                                                 </label>
                                             </div>
+                                            <span class="text-danger" asp-validation-for="DateIsAgreed"></span>
                                         </div>
                                     </div>
                                     <div id="CriminalAdditionalQs" class="row search-info-row" style="display: @((Model.LowerCourtOrder ?? false) && (Model.DateIsAgreed ?? false) ? "flex" : "none")">
@@ -147,13 +153,11 @@
                                                     <input type="radio" asp-for="IsFullDay" value="true" /> Full day
                                                 </label>
                                             </div>
+                                            <span class="text-danger" asp-validation-for="IsFullDay"></span>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="hearingType">What type of Appeal Hearing do you need to book?</label>
-                                            <select class="form-control registryOptions" id="hearingType">
-                                                <option value="hearing">Hearing of Appeal</option>
-                                                <option value="conviction">Conviction Appeal</option>
-                                                <option value="sentence">Sentence Appeal</option>
+                                            <select asp-for="HearingTypeId" class="form-control registryOptions" asp-items="@Model.HearingTypes">
                                             </select>
                                         </div>
                                     </div>
@@ -180,8 +184,7 @@
                     }
                     else
                     {
-                        //should trigger error messages if there are empty fields/unchecked radio buttons
-
+                        // todo: hide if submission succeeds; apply same for Sc?
                         <button type="submit" id="btnShowDates" value="GetDates" name="SubmitButton" class="btn btn-primary btn-lg">Show Available Dates</button>
                     }
                 </div>
@@ -190,11 +193,29 @@
     </div>
 </form>
 
-@if (Model.Results != null && Model.Results.AvailableDates.Any())
+@if (Model.Results != null && Model.Results.Any())
 {
-    foreach (var timeSlot in Model.Results.AvailableDates)
-    {
-    @timeSlot.scheduleDate <text> | </text>  @timeSlot.availability
-    <br />
-    }
+    // todo: fill with corresponding value for TYPE OF APPEAL and LENGTH OF DAY
+    <hr class="results-linebreak" />
+    <h2>Available Dates for @Model.HearingTypeName</h2>
+    <p>Choose the date that works best for you. Each hearing is @((Model.IsFullDay ?? false) ? "full day" : "half day") long.</p>
+
+    int rows = 0;
+
+    <div class="availableDatesContainer">
+        @foreach (var month in Model.Results)
+        {
+            var days = month.Value;
+
+            <h3 class="h3--month-grouping">@month.Key.ToString("MMMM yyyy")</h3>
+
+            foreach (var day in days)
+            {
+                @day.ToString("dddd, MMMM d, yyyy")
+                rows++;
+                <br />
+            }
+            <br />
+        }
+    </div>
 }

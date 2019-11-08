@@ -93,7 +93,7 @@ namespace SCJ.Booking.MVC.Services
                 retval.IsValidCaseNumber = false;
 
                 //empty result set
-                retval.Results = new CoAAvailableDates();
+                retval.Results = new Dictionary<DateTime, List<DateTime>>();
             }
             else
             {
@@ -102,18 +102,44 @@ namespace SCJ.Booking.MVC.Services
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
+                retval.HearingTypes = new SelectList(
+
+                CoaHearingType.GetHearingTypes()
+                    .Where(x => x.IsCriminal)
+                    .Select(x => new { Id = x.HearingTypeId, Value = x.Description }),
+                    "Id", "Value");
+
+                CoAAvailableDates availableDates = new CoAAvailableDates();
+
+                if (caseType == CoaCaseType.Civil)
+                {
+                    retval.HearingTypeId = 24;
+                }
+                else if (caseType == CoaCaseType.Criminal)
+                {
+                    retval.HearingTypeId = model.HearingTypeId;
+                }
+
                 if (model.SubmitButton == "GetDates")
                 {
-                    CoAAvailableDates schedule =
-                        await _client.COAAvailableDatesAsync();
+                    availableDates = await _client.COAAvailableDatesAsync();
+
+                    //check if full day
+                    var schedule = 
+                        GroupAvailableDates(availableDates, (model.IsFullDay ?? false));
 
                     retval.Results = schedule;
+
+                    retval.HearingTypeName = CoaHearingType
+                    .GetHearingTypes()
+                    .FirstOrDefault(h => h.HearingTypeId == model.HearingTypeId)?
+                    .Description ?? "";
                 }
 
                 //check for valid date
                 if (model.SelectedDate != null)
                 {
-                    if (!IsTimeStillAvailable(retval.Results, model.SelectedDate.Value))
+                    if (!IsTimeStillAvailable(availableDates, model.SelectedDate.Value))
                     {
                         retval.TimeSlotExpired = true;
                     }
@@ -135,8 +161,8 @@ namespace SCJ.Booking.MVC.Services
                         //ContainerId = model.ContainerId,
                         CaseNumber = model.CaseNumber.ToUpper().Trim(),
                         CaseId = caseId,
-                        HearingTypeId = model.HearingTypeId,
-                        HearingTypeName = "Trial Management Conference (TMC)",
+                        HearingTypeId = retval.HearingTypeId,
+                        HearingTypeName = retval.HearingTypeName,
                         //TimeSlotFriendlyName = bookingTime,
                         //SelectedCaseDate = model.SelectedDate.Value,
                         //DateFriendlyName = dt.ToString("dddd, MMMM dd, yyyy")
@@ -206,7 +232,7 @@ namespace SCJ.Booking.MVC.Services
                     hearingLength = bookingInfo.HearingLengthMinutes,
                     locationID = bookingInfo.LocationId,
                     requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
-                    hearingTypeId = bookingInfo.HearingTypeId
+                    //hearingTypeId = bookingInfo.HearingTypeId
                 };
 
                 //submit booking
@@ -447,47 +473,54 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Get registry contact number
+        ///         ///   Groups Court of Appeal available hearing dates by month and filter by full day if needed
         /// </summary>
-        public string GetRegistryContactNumber(int registryId)
+        public Dictionary<DateTime, List<DateTime>> GroupAvailableDates(CoAAvailableDates availableDates, bool fullDay)
         {
-            //TODO:Implement logic to find contact number
-            //Need to ask SCJ to add a new field to the locations API
-            //for now temporary code to loop it up in a dictionary
+            var result = new Dictionary<DateTime, List<DateTime>>();
 
-            var numbers = new Dictionary<int, string>
+            IOrderedEnumerable<DateTime> dates;
+            if (fullDay)
             {
-                {1, "604-660-2853"},
-                {2, "250-356-1450"},
-                {3, "604-660-8551"},
-                {4, "250-614-2750"},
-                {6, "250-828-4351"},
-                {7, "250-741-5860"},
-                {9, "250-741-5860"},
-                {10, "604-795-8349"},
-                {11, "250-614-2750"},
-                {12, "250-356-1450"},
-                {13, "250-614-2750"},
-                {15, "250-828-4351"},
-                {17, "250-828-4351"},
-                {18, "250-470-6935"},
-                {20, "250-741-5860"},
-                {21, "250-828-4351"},
-                {22, "250-741-5860"},
-                {24, "250-741-5860"},
-                {25, "250-624-7474"},
-                {26, "250-470-6935"},
-                {27, "250-614-2750"},
-                {28, "250-828-4351"},
-                {29, "250-828-4351"},
-                {30, "250-828-4351"},
-                {31, "250-847-7482"},
-                {32, "250-624-7474"},
-                {33, "250-614-2750"},
-                {34, "250-470-6935"}
-            };
+                dates = availableDates.AvailableDates
+                    .Where(d => d.availability == "Full Day")
+                    .Select(s => s.scheduleDate)
+                    .Distinct()
+                    .OrderBy(s => s);
+            }
+            else
+            {
+                dates = availableDates.AvailableDates
+                    .Select(s => s.scheduleDate)
+                    .Distinct()
+                    .OrderBy(s => s);
+            }
 
-            return numbers[registryId];
+            DateTime previousMonth = DateTime.MinValue;
+
+            List<DateTime> availableDatesInMonth = new List<DateTime>();
+            DateTime currentMonth = previousMonth;
+
+            foreach (DateTime date in dates)
+            {
+                currentMonth = new DateTime(date.Year, date.Month, 1);
+
+                if (previousMonth.Month != date.Month || previousMonth.Year != date.Year)
+                {
+                    availableDatesInMonth = new List<DateTime>();
+
+                    if (currentMonth != DateTime.MinValue)
+                    {
+                        result.Add(currentMonth, availableDatesInMonth);
+                    }
+                }
+
+                availableDatesInMonth.Add(date);
+
+                previousMonth = currentMonth;
+            }
+
+            return result;
         }
     }
 }
