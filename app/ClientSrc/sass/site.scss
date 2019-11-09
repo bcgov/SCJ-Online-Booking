@@ -256,7 +256,7 @@ p.intro {
     }
 
     .court-option-box {
-        background: $grey-light;
+        background: $blue-light;
         width: 100%;
         margin-bottom: 30px;
         padding: 40px 40px 120px;
@@ -303,10 +303,11 @@ p.intro {
 /*Book Your Hearing*/
 .search-info {
     background-color: $blue-light;
-    padding: 15px 0;
+    padding: 20px 10px 5px;
     margin-right: 0;
     margin-left: 0;
     margin-bottom: 20px;
+    margin-top: 40px;
     border-radius: 0.3rem;
 
     &-row {
@@ -317,7 +318,7 @@ p.intro {
     #pnlCoaCivil, #pnlCoaCriminal {
         .search-info-row {
             @media (min-width: $breakpoint-md) {
-                margin-top: 20px;
+                margin-top: 15px;
             }
         }
     }
@@ -377,14 +378,15 @@ select#SelectedRegistryId {
 
 a.custom-slide-time {
     display: block;
-    background-color: $grey-light;
     border-radius: 0.3rem;
     padding: 10px 5px;
     margin: 5px 5px 10px 5px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    color: $black;
+    color: $blue;
+    background-color:$blue-active-lighter;
+    border: 1px solid darken($blue-light, 10%);
 
     &.selected, &:focus {
         background-color: $blue-active;
@@ -508,8 +510,8 @@ div#progress-overlay {
 }
 
 .btn-radio {
-    color: #19355b;
-    background-color: darken($blue-light, 10%);
+    color: $blue;
+    background-color: $white;
     font-size: 16px;
     line-height: 16px;
     letter-spacing: 0.08em;
@@ -532,6 +534,10 @@ div#progress-overlay {
         transition: all 0.1s ease-in-out;
     }
 
+    &:active, &.active {
+        border: 3px solid darken($blue-light, 20%);
+    }
+
     & + .btn-radio {
         margin-left: 20px;
     }
@@ -543,8 +549,46 @@ div#progress-overlay {
     }
 }
 
+label {
+    font-weight: 700;
+}
+
 h3 {
-    .h3--monthgrouping {
+    &.h3--month-grouping {
         font-weight: 700;
+        margin-top: 40px;
+    }
+}
+
+.availableDatesContainer {
+    .availableDatesByMonth {
+        display: flex;
+        flex-wrap: wrap;
+
+        .availableDate {
+            width: 200px;
+            min-width: 200px;
+            text-align: center;
+            border-radius: 0.5rem;
+            padding: 20px 10px;
+            margin: 10px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            background-color: $blue-active-lighter;
+            border: 1px solid darken($blue-light, 10%);
+            color: $blue;
+
+            &:hover {
+                background-color: $blue-active;
+                color: $white;
+                transition: all 0.1s ease-in-out;
+            }
+
+            p {
+                margin-bottom: 0;
+                font-weight: 700;
+            }
+        }
     }
 }
