@@ -139,16 +139,13 @@ namespace SCJ.Booking.MVC.Services
                 //check for valid date
                 if (model.SelectedDate != null)
                 {
-                    if (!IsTimeStillAvailable(availableDates, model.SelectedDate.Value))
-                    {
-                        retval.TimeSlotExpired = true;
-                    }
-
-                    //convert JS ticks to .Net date
-                    //var dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
+                    //if (!istimestillavailable(availabledates, model.selecteddate.value))
+                    //{
+                    //    retval.timeslotexpired = true;
+                    //}
 
                     //set date properties
-                    retval.SelectedDate = model.SelectedDate;
+                    //retval.SelectedDate = model.SelectedDate;
 
                     //string bookingTime = dt.ToString("hh:mm tt") + " to " +
                     //                     dt.AddMinutes(hearingLength).ToString("hh:mm tt");
@@ -158,8 +155,9 @@ namespace SCJ.Booking.MVC.Services
 
                     _session.CoaBookingInfo = new CoaSessionBookingInfo
                     {
-                        CaseNumber = model.CaseNumber.ToUpper().Trim(),
                         CaseId = caseId,
+                        CaseNumber = model.CaseNumber.ToUpper().Trim(),
+                        CaseType = caseType,
                         CertificateOfReadiness = model.CertificateOfReadiness,
                         DateIsAgreed = model.DateIsAgreed,
                         LowerCourtOrder = model.LowerCourtOrder,

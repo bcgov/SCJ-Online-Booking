@@ -127,9 +127,10 @@ $(document).ready(function () {
         }
     });
 
-    $("a.availableDate").click(function () {
-        $("input#SelectedDate").val($(this).data('date'));
-        $("#CaseSearchForm").submit();
+    //Submitting selected date for Coa
+    $('a.availableDate').click(function () {
+        $('input#SelectedDate').val($(this).data('date'));
+        $('#CaseSearchForm').submit();
     });
 
 });

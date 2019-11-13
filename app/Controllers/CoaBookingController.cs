@@ -90,12 +90,48 @@ namespace SCJ.Booking.MVC.Controllers
             if (model != null && model.SelectedDate != null && !model.TimeSlotExpired)
             //go to confirmation screen
             {
-                return new RedirectResult("/scjob/booking/coa/CaseSearch");
+                return new RedirectResult("/scjob/booking/coa/CaseConfirm");
             }
 
             ModelState.Remove("CaseType");
             ModelState.Remove("IsValidCaseNumber");
             return View(model);
         }
+
+        public IActionResult CaseConfirm()
+        {
+            var model = new CoaCaseConfirmViewModel();
+
+            CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
+
+            if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
+            {
+                return Redirect("/scjob/booking/coa/CaseSearch");
+            }
+
+
+            //user information
+            var sui = _coaBookingService.GetUserInformation();
+
+            //Time-slot is still available
+            var ccm = new CoaCaseConfirmViewModel
+            {
+                CaseNumber = bookingInfo.CaseNumber,
+                CaseType = bookingInfo.CaseType,
+                CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
+                DateIsAgreed = bookingInfo.DateIsAgreed,
+                LowerCourtOrder = bookingInfo.LowerCourtOrder,
+                IsFullDay = bookingInfo.IsFullDay,
+                HearingTypeId = bookingInfo.HearingTypeId,
+                HearingTypeName = bookingInfo.HearingTypeName,
+                SelectedDate = bookingInfo.SelectedDate,
+                IsUserKnown = true,
+                EmailAddress = sui.Email,
+                Phone = sui.Phone
+            };
+
+            return View(ccm);
+        }
+
     }
 }
