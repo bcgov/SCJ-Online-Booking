@@ -120,7 +120,7 @@ namespace SCJ.Booking.MVC.Services
                     retval.HearingTypeId = model.HearingTypeId;
                 }
 
-                if (model.SubmitButton == "GetDates")
+                if (model.SubmitButton == "GetDates" || model.SelectedDate != null)
                 {
                     availableDates = await _client.COAAvailableDatesAsync();
 
@@ -158,14 +158,15 @@ namespace SCJ.Booking.MVC.Services
 
                     _session.CoaBookingInfo = new CoaSessionBookingInfo
                     {
-                        //ContainerId = model.ContainerId,
                         CaseNumber = model.CaseNumber.ToUpper().Trim(),
                         CaseId = caseId,
+                        CertificateOfReadiness = model.CertificateOfReadiness,
+                        DateIsAgreed = model.DateIsAgreed,
+                        LowerCourtOrder = model.LowerCourtOrder,
+                        IsFullDay = model.IsFullDay,
                         HearingTypeId = retval.HearingTypeId,
                         HearingTypeName = retval.HearingTypeName,
-                        //TimeSlotFriendlyName = bookingTime,
-                        //SelectedCaseDate = model.SelectedDate.Value,
-                        //DateFriendlyName = dt.ToString("dddd, MMMM dd, yyyy")
+                        SelectedDate = model.SelectedDate.Value
                     };
                 }
             }
@@ -232,7 +233,7 @@ namespace SCJ.Booking.MVC.Services
                     hearingLength = bookingInfo.HearingLengthMinutes,
                     locationID = bookingInfo.LocationId,
                     requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
-                    //hearingTypeId = bookingInfo.HearingTypeId
+                    hearingTypeId = bookingInfo.HearingTypeId
                 };
 
                 //submit booking

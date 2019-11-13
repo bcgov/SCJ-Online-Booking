@@ -92,7 +92,10 @@ $(document).ready(function () {
         var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
         var $Civil_DateIsAgreed = $('#Civil_DateIsAgreed input[type="radio"]:checked').val();
         if ($Civil_CertificateOfReadiness === 'true' && $Civil_DateIsAgreed === 'true') {
-            $('#CivilAdditionalQs').toggle();
+            $('#CivilAdditionalQs').css("display", "block");
+        }
+        else {
+            $('#CivilAdditionalQs').css("display", "none");
         }
     };
 
@@ -105,12 +108,30 @@ $(document).ready(function () {
         var $Criminal_LowerCourtOrder = $('#Criminal_LowerCourtOrder input[type="radio"]:checked').val();
         var $Criminal_DateIsAgreed = $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
         if ($Criminal_LowerCourtOrder === 'true' && $Criminal_DateIsAgreed === 'true') {
-            $('#CriminalAdditionalQs').toggle();
+            $('#CriminalAdditionalQs').css('display', 'flex');
+        }
+        else {
+            $('#CriminalAdditionalQs').css('display', 'none');
         }
     }; 
 
     $('#Criminal_LowerCourtOrder input[type="radio"]').click(toggleCriminal);
     $('#Criminal_DateIsAgreed input[type="radio"]').click(toggleCriminal);
+
+    //Display more available dates by groups of 2 months
+    $('#btnShowMore').click(function () {
+        $('.availableDates__month.hidden').slice(0, 2).removeClass('hidden');
+
+        if (!($('.availableDates__month.hidden').length)) {
+            $('#btnShowMore').css('display', 'none')
+        }
+    });
+
+    $("a.availableDate").click(function () {
+        $("input#SelectedDate").val($(this).data('date'));
+        $("#CaseSearchForm").submit();
+    });
+
 });
 
 // Called by Vue when a timeslot is selected

@@ -261,6 +261,7 @@ p.intro {
         margin-bottom: 30px;
         padding: 40px 40px 120px;
         position: relative;
+        border-radius: 0.3rem;
 
         p {
             text-align: left;
@@ -315,7 +316,7 @@ p.intro {
         margin-right: 0;
     }
 
-    #pnlCoaCivil, #pnlCoaCriminal {
+    .preliminary_questions {
         .search-info-row {
             @media (min-width: $breakpoint-md) {
                 margin-top: 15px;
@@ -387,6 +388,7 @@ a.custom-slide-time {
     color: $blue;
     background-color:$blue-active-lighter;
     border: 1px solid darken($blue-light, 10%);
+    font-weight: 700;
 
     &.selected, &:focus {
         background-color: $blue-active;
@@ -554,40 +556,50 @@ label {
 }
 
 h3 {
-    &.h3--month-grouping {
+    &.h3--month {
         font-weight: 700;
-        margin-top: 40px;
     }
 }
 
-.availableDatesContainer {
-    .availableDatesByMonth {
-        display: flex;
-        flex-wrap: wrap;
+.availableDates {
+    &__month {
+        margin: 40px 0 30px;
 
-        .availableDate {
-            width: 200px;
-            min-width: 200px;
-            text-align: center;
-            border-radius: 0.5rem;
-            padding: 20px 10px;
-            margin: 10px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            background-color: $blue-active-lighter;
-            border: 1px solid darken($blue-light, 10%);
-            color: $blue;
+        &.hidden {
+            display: none;
+        }
 
-            &:hover {
-                background-color: $blue-active;
-                color: $white;
-                transition: all 0.1s ease-in-out;
-            }
+        &__days {
+            display: flex;
+            flex-wrap: wrap;
 
-            p {
-                margin-bottom: 0;
-                font-weight: 700;
+            .availableDate {
+                width: 200px;
+                min-width: 200px;
+                text-align: center;
+                border-radius: 0.5rem;
+                padding: 20px 10px;
+                margin: 10px;
+                cursor: pointer;
+                text-align: center;
+                text-decoration: none;
+                background-color: $blue-active-lighter;
+                border: 1px solid darken($blue-light, 10%);
+
+                &:hover, &:active, &:focus {
+                    background-color: $blue-active;
+                    transition: all 0.1s ease-in-out;
+
+                    p {
+                        color: $white;
+                    }
+                }
+
+                p {
+                    margin-bottom: 0;
+                    font-weight: 700;
+                    color: $blue;
+                }
             }
         }
     }

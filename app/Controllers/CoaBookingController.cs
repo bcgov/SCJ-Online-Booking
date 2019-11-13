@@ -58,8 +58,6 @@ namespace SCJ.Booking.MVC.Controllers
                     {
                         ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
                     }
-
-                    // todo: add error for No
                 }
 
                 else if (model.CaseType == CoaCaseType.Criminal)
@@ -68,15 +66,11 @@ namespace SCJ.Booking.MVC.Controllers
                     {
                         ModelState.AddModelError("LowerCourtOrder", "Please answer this question.");
                     }
-
-                    // todo: add error for No
                 }
 
                 if (model.DateIsAgreed == null)
                 {
                     ModelState.AddModelError("DateIsAgreed", "Please answer this question.");
-
-                    // todo: add error for No
                 }
 
                 if (model.IsFullDay == null)
@@ -93,10 +87,10 @@ namespace SCJ.Booking.MVC.Controllers
             model = await _coaBookingService.GetSearchResults(model);
 
             //test if the user selected a time-slot that is available
-            if (model != null && model.SelectedDate != null  && !model.TimeSlotExpired)
+            if (model != null && model.SelectedDate != null && !model.TimeSlotExpired)
             //go to confirmation screen
             {
-                return new RedirectResult("/scjob/booking/sc/CaseConfirm");
+                return new RedirectResult("/scjob/booking/coa/CaseSearch");
             }
 
             ModelState.Remove("CaseType");
