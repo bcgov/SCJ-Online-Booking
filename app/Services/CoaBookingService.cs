@@ -367,7 +367,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Sends a confirmation email using an Exchange server
         /// </summary>
-        private async Task SendEmail(ScCaseConfirmViewModel data, BookHearingInfo bookingInfo)
+        private async Task SendEmail(CoaCaseConfirmViewModel data, BookHearingInfo bookingInfo)
         {
             string exchangeUrl = _configuration["EXCHANGE_URL"] ?? "";
 
@@ -406,9 +406,9 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Renders the template for the email body to a string (~/Views/ScBooking/Email.cshtml)
+        ///     Renders the template for the email body to a string (~/Views/CoaBooking/Email.cshtml)
         /// </summary>
-        private async Task<string> GetEmailBody(ScCaseConfirmViewModel data,
+        private async Task<string> GetEmailBody(CoaCaseConfirmViewModel data,
             BookHearingInfo bookingInfo)
         {
             //user information
@@ -421,10 +421,9 @@ namespace SCJ.Booking.MVC.Services
                 Phone = user.Phone,
                 CourtFileNumber = _session.CoaBookingInfo.CaseNumber,
                 Fullname = bookingInfo.requestedBy,
-                RegistryName = data.LocationName,
                 TypeOfConference = data.HearingTypeName,
-                Date = data.Date,
-                Time = _session.CoaBookingInfo.TimeSlotFriendlyName
+                HearingLength = (data.IsFullDay ?? false) ? "Full Day" : "Half Day",
+                Date = data.SelectedDate.Value.ToString("dddd, MMMM dd, yyyy")
             };
 
             //Render the email template 

@@ -10,5 +10,8 @@ namespace SCJ.Booking.MVC.ViewModels
         public string Date { get; set; }
         public string Time { get; set; }
         public string Phone { get; set; }
+
+        //For Court of Appeal
+        public string HearingLength { get; set; }
     }
 }
