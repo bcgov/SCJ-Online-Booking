@@ -21,14 +21,11 @@ namespace SCJ.Booking.MVC.ViewModels
         public string SubmitButton { get; set; }
         public bool TimeSlotExpired { get; set; }
 
-        ////indicate if the time-slot was available on the time the user clicked on the confirm button
-        //public bool IsTimeSlotAvailable { get; set; }
+        //indicate if the time-slot was available on the time the user clicked on the confirm button
+        public bool IsTimeSlotAvailable { get; set; }
 
-        ////indicate if the case was booked successfully
-        //public bool IsBooked { get; set; }
-
-        ////Full date for the booking
-        //public DateTime FullDate { get; set; }
+        //indicate if the case was booked successfully
+        public bool IsBooked { get; set; }
 
         //User email address
         [Required(ErrorMessage = "Please provide a valid email address.")]

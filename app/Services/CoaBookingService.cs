@@ -185,25 +185,32 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Fetch location-code for specific case ID
         /// </summary>
-        public async Task<string> BuildCaseNumber(string caseId, int locationId)
-        {
-            //load all locations
-            Location[] locations = await _client.getLocationsAsync();
+        //public async Task<string> BuildCaseNumber(string caseId, int locationId)
+        //{
+        //    //load all locations
+        //    Location[] locations = await _client.getLocationsAsync();
 
-            //fetch location prefix
-            string locationPrefix =
-                locations.FirstOrDefault(x => x.locationID == locationId)?.locationCode;
+        //    //fetch location prefix
+        //    string locationPrefix =
+        //        locations.FirstOrDefault(x => x.locationID == locationId)?.locationCode;
 
-            //return location prefix + case number
-            return locationPrefix + caseId;
-        }
+        //    //return location prefix + case number
+        //    return locationPrefix + caseId;
+        //}
 
         /// <summary>
         ///     Book court case
         /// </summary>
-        public async Task<ScCaseConfirmViewModel> BookCourtCase(ScCaseConfirmViewModel model,
+        public async Task<CoaCaseConfirmViewModel> BookCourtCase(CoaCaseConfirmViewModel model,
             string userGuid, string userDisplayName)
         {
+            //if the user could not be detected return 
+            if (string.IsNullOrWhiteSpace(userGuid))
+            {
+                model.IsUserKnown = false;
+                return model;
+            }
+
             //if the user could not be detected return 
             if (string.IsNullOrWhiteSpace(userGuid))
             {
@@ -223,19 +230,19 @@ namespace SCJ.Booking.MVC.Services
             if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate))
             {
                 //build object to send to the API
-                var bookInfo = new BookHearingInfo
+                var bookInfo = new CoABookingHearingInfo
                 {
                     caseID = bookingInfo.CaseId,
-                    containerID = bookingInfo.ContainerId,
-                    dateTime = model.FullDate,
-                    hearingLength = bookingInfo.HearingLengthMinutes,
-                    locationID = bookingInfo.LocationId,
-                    requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
-                    hearingTypeId = bookingInfo.HearingTypeId
+                    email = $"{model.EmailAddress}",
+                    hearingDate = DateTime.Parse($"{model.SelectedDate.Value}"),
+                    hearingLength = (bookingInfo.IsFullDay ?? false) ? "Full" : "Half",
+                    phone = $"{model.Phone}",
+                    hearingTypeId = bookingInfo.HearingTypeId,
+                    requestedBy = $"{userDisplayName}"
                 };
 
                 //submit booking
-                BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
+                BookingHearingResult result = await _client.CoAQueueHearingAsync(bookInfo);
                 
                 //get the raw result
                 bookingInfo.RawResult = result.bookingResult;
@@ -271,7 +278,7 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await SendEmail(model, bookInfo);
+                    //await SendEmail(model, bookInfo);
 
                     //clear booking info session
                     _session.CoaBookingInfo = null;

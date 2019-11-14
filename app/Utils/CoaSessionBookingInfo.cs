@@ -19,7 +19,7 @@ namespace SCJ.Booking.MVC.Utils
         public string FullCaseNumber { get; set; }
         public int LocationId { get; set; }
         public string RegistryName { get; set; }
-        public int HearingLengthMinutes { get; set; }
+        public string HearingLength { get; set; }
         public int ContainerId { get; set; }
         //The result string returned by the SOAP API when the hearing was booked
         public string RawResult { get; set; }

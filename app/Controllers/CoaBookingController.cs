@@ -98,6 +98,7 @@ namespace SCJ.Booking.MVC.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public IActionResult CaseConfirm()
         {
             var model = new CoaCaseConfirmViewModel();
@@ -109,9 +110,8 @@ namespace SCJ.Booking.MVC.Controllers
                 return Redirect("/scjob/booking/coa/CaseSearch");
             }
 
-
             //user information
-            var sui = _coaBookingService.GetUserInformation();
+            var cui = _coaBookingService.GetUserInformation();
 
             //Time-slot is still available
             var ccm = new CoaCaseConfirmViewModel
@@ -126,12 +126,64 @@ namespace SCJ.Booking.MVC.Controllers
                 HearingTypeName = bookingInfo.HearingTypeName,
                 SelectedDate = bookingInfo.SelectedDate,
                 IsUserKnown = true,
-                EmailAddress = sui.Email,
-                Phone = sui.Phone
+                EmailAddress = cui.Email,
+                Phone = cui.Phone
             };
 
             return View(ccm);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CaseConfirm(CoaCaseConfirmViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string userGuid;
+            string userDisplayName;
+
+            if (_coaBookingService.IsLocalDevEnvironment)
+            {
+                // use fake SiteMinder header values for local development
+                userGuid = "072cfc73-e3b9-437b-8012-0b0945f09879";
+                userDisplayName = "Matthew Begbie";
+            }
+            else
+            {
+                //read smgov_userguid SiteMinder header
+                userGuid = _httpContext.Request.Headers.ContainsKey("smgov_userguid")
+                    ? _httpContext.Request.Headers["smgov_userguid"].ToString()
+                    : string.Empty;
+
+                //read smgov_userdisplayname SiteMinder header
+                userDisplayName = _httpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
+                    ? _httpContext.Request.Headers["smgov_userdisplayname"].ToString()
+                    : string.Empty;
+            }
+
+            //make booking
+            var result =
+                await _coaBookingService.BookCourtCase(model, userGuid, userDisplayName);
+
+            return Redirect(
+                $"/scjob/booking/coa/CaseBooked?booked={(result.IsBooked ? "true" : "false")}");
+        }
+
+
+
+
+        public IActionResult CaseBooked()
+        {
+            CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
+
+            if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
+            {
+                return Redirect("/scjob/booking/coa/CaseSearch");
+            }
+
+            return View();
+        }
     }
 }
