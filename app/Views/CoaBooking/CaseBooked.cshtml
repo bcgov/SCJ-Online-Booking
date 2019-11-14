@@ -8,29 +8,29 @@
 
     <div class="row screen-intro">
         <div class="col-md-12 paragraph">
-        @*@if (SessionService.CoaBookingInfo.IsBooked)
-        {*@
+        @if (SessionService.CoaBookingInfo.IsBooked)
+        {
             <h1>@ViewData["Title"]</h1>
-            <p>The following time is reserved for your Hearing.</p>
-            <p>Check that the following information is accurate before confirming your booking.</p>
-        @*}
+            <p>The booking for your Hearing has been added to the booking queue.</p>
+            <p>You will be contacted for further confirmation of this booking.</p>
+        }
         else
         {
-            <h1>Error</h1>
-            <p>There was an error confirming your booking.</p>
-            <p>The following message was returned by the scheduling system.</p>
-        }*@
+            <h1>error</h1>
+            <p>there was an error confirming your booking.</p>
+            <p>the following message was returned by the scheduling system.</p>
+        }
         </div>
     </div>
 
-@*@if (!SessionService.CoaBookingInfo.IsBooked)
+@if (!SessionService.CoaBookingInfo.IsBooked)
 {
     <div class="alert alert-danger">
         @SessionService.CoaBookingInfo.RawResult
     </div>
 }
 else
-{*@
+{
     <div class="row booking-confirmation">
         <div class="content col-md-6">
             @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
@@ -119,7 +119,7 @@ else
             </div>
         </div>
     </div>
-@*}*@
+}
 
 <div class="row booking-new">
     <div class="content col-lg-6">
