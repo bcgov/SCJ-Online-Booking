@@ -89,7 +89,6 @@ namespace SCJ.Booking.MVC.Controllers
                 ContainerId = bookingInfo.ContainerId,
                 LocationId = bookingInfo.LocationId,
                 FullDate = dt,
-                IsUserKnown = true,
                 EmailAddress =  sui.Email,
                 Phone = sui.Phone
             };

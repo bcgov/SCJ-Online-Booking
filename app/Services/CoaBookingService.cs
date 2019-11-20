@@ -207,21 +207,10 @@ namespace SCJ.Booking.MVC.Services
             //if the user could not be detected return 
             if (string.IsNullOrWhiteSpace(userGuid))
             {
-                model.IsUserKnown = false;
-                return model;
-            }
-
-            //if the user could not be detected return 
-            if (string.IsNullOrWhiteSpace(userGuid))
-            {
-                model.IsUserKnown = false;
                 return model;
             }
 
             CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
-
-            //we know who the user is.
-            model.IsUserKnown = true;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
             CoAAvailableDates schedule =  await _client.COAAvailableDatesAsync();

@@ -125,7 +125,6 @@ namespace SCJ.Booking.MVC.Controllers
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,
                 SelectedDate = bookingInfo.SelectedDate,
-                IsUserKnown = true,
                 EmailAddress = cui.Email,
                 Phone = cui.Phone
             };

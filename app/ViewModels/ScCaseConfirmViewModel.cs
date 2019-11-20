@@ -40,9 +40,6 @@ namespace SCJ.Booking.MVC.ViewModels
         [EmailAddress(ErrorMessage = "Please provide a valid email address.")]
         public string EmailAddress { get; set; }
 
-        //Is user known?
-        public bool IsUserKnown { get; set; }
-
         //Phone number
         [Required(ErrorMessage = "Please provide a valid phone number.")]
         [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}", ErrorMessage = "Please provide a valid phone number.")]
