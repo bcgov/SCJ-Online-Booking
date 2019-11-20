@@ -17,7 +17,7 @@ namespace SCJ.Booking.MVC.ViewModels
             ContainerId = -1;
             SelectedCaseDate = string.Empty;
             CaseNumber = string.Empty;
-            HearingTypeId = Utils.HearingType.TMC;
+            HearingTypeId = Utils.ScHearingType.TMC;
         }
 
         //Search fields
