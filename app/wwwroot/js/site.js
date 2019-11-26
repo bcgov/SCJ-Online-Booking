@@ -175,6 +175,7 @@ $(document).ready(function () {
         }
     });
 
+
     //Submitting selected date for Coa
     $('a.availableDate').click(function () {
         $('input#SelectedDate').val($(this).data('date'));
@@ -182,6 +183,7 @@ $(document).ready(function () {
     });
 
 });
+
 
 // Called by Vue when a timeslot is selected
 function validateCaseDate(containerId, bookingDate) {

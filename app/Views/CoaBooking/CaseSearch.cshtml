@@ -179,21 +179,25 @@
                 }
             </div>
 
-            <div class="row">
-                <div class="col col-md-12">
-                    @if (string.IsNullOrEmpty(Model.CaseType))
-                    {
-                        <button type="submit" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-lg">Next</button>
-                    }
-                    else
-                    {
-                        <button type="submit" id="btnShowDates" value="GetDates" name="SubmitButton" class="btn btn-primary btn-lg">Show Available Dates</button>
-                    }
+            @if (Model.Results == null)
+            {
+                <div class="row">
+                    <div class="col col-md-12">
+                        @if (string.IsNullOrEmpty(Model.CaseType))
+                        {
+                            <button type="submit" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-lg">Next</button>
+                        }
+                        else
+                        {
+                            <button type="submit" id="btnShowDates" value="GetDates" name="SubmitButton" class="btn btn-primary btn-lg">Show Available Dates</button>
+                        }
+                    </div>
                 </div>
-            </div>
+            }
+
             <div class="row">
                 <div class="col col-md-12">
-                    <a href="">Reset Search</a>
+                    <a href="">Restart Search</a>
                 </div>
             </div>
 
