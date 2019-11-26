@@ -573,7 +573,7 @@ h3 {
             display: flex;
             flex-wrap: wrap;
 
-            .availableDate {
+            a.availableDate {
                 width: 200px;
                 min-width: 200px;
                 text-align: center;
@@ -582,25 +582,32 @@ h3 {
                 margin: 10px;
                 cursor: pointer;
                 text-align: center;
-                text-decoration: none;
-                background-color: $blue-active-lighter;
-                border: 1px solid darken($blue-light, 10%);
+                color: $white;
 
-                &:hover, &:active, &:focus {
+                &:hover, &:focus {
+                    color: $white;
                     background-color: $blue-active;
-                    transition: all 0.1s ease-in-out;
-
-                    p {
-                        color: $white;
-                    }
+                    border-color: $blue-active;
                 }
 
                 p {
                     margin-bottom: 0;
-                    font-weight: 700;
-                    color: $blue;
                 }
             }
         }
+    }
+}
+
+#btnShowDates {
+    display: none;
+}
+
+.alert--preliminary_question {
+    display: none;
+}
+
+select, input {
+    &.disabled {
+        background-color: $grey-disabled;
     }
 }
