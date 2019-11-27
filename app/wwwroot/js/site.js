@@ -166,6 +166,14 @@ $(document).ready(function () {
     });
 
 
+    //Disable changing states on radio buttons after submission for date retrieval
+    //$(input[type = "radio"]).change(function () {
+    //    if ($("#IsFullDay") != null) {
+    //        return false;
+    //    }
+    //});
+
+
     //Display more available dates by groups of 2 months
     $('#btnShowMore').click(function () {
         $('.availableDates__month.hidden').slice(0, 2).removeClass('hidden');

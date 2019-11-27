@@ -540,6 +540,15 @@ div#progress-overlay {
         border: 3px solid darken($blue-light, 20%);
     }
 
+    &.disabled {
+        cursor: default;
+
+        &:hover, &:focus {
+            color: $blue;
+            background-color: $white;
+        }
+    }
+
     & + .btn-radio {
         margin-left: 20px;
     }
@@ -600,6 +609,10 @@ h3 {
 
 #btnShowDates {
     display: none;
+}
+
+#btnShowMore {
+    margin-bottom: 60px;
 }
 
 .alert--preliminary_question {
