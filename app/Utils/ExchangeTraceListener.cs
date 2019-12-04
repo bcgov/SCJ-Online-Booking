@@ -6,7 +6,6 @@ namespace SCJ.Booking.MVC.Utils
 {
     internal class ExchangeTraceListener : ITraceListener
     {
-        private readonly IConfiguration _config;
         private readonly Logger _logger;
 
         public ExchangeTraceListener(Logger logger)
