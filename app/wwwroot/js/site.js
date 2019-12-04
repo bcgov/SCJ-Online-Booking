@@ -64,6 +64,7 @@ $(document).ready(function () {
     // kills the spinner when the back button is pressed 
     window.onunload = function () { };
 
+
     // CoA additional questions for Civil cases
     //$("#btnNextCoa").click(function (e) {
     //    e.preventDefault();
@@ -77,6 +78,7 @@ $(document).ready(function () {
     //        $("html,body").animate({ scrollTop: panel.offset().top }, "fast");
     //    }
     //});
+
 
     // Give active style class to checked radio button input
     var $radiobtns = $('input[type="radio"]');
@@ -118,6 +120,60 @@ $(document).ready(function () {
     $('#Criminal_LowerCourtOrder input[type="radio"]').click(toggleCriminal);
     $('#Criminal_DateIsAgreed input[type="radio"]').click(toggleCriminal);
 
+
+    //Display Show Available Dates button when all fields are correctly selected
+    //and display errors for required preliminary questions
+    $('.preliminary_questions input[type="radio"]').click(function () {
+        var caseType = $("#CaseType").val().toLowerCase();
+        var $radioBtnGroup = $(this).parent().parent();
+
+        if ($radioBtnGroup.hasClass('preliminary_questions__radio')) {
+            var $radioBtnValue = $(this).val();
+
+            if ($radioBtnValue === 'false') {
+                $radioBtnGroup.siblings('.alert--preliminary_question').css('display', 'block');
+            }
+            else if ($radioBtnValue === 'true') {
+                $radioBtnGroup.siblings(".alert--preliminary_question").css('display', 'none');
+            }
+        }
+
+        if (caseType === "civil") {
+            var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
+            var $Civil_DateIsAgreed = $('#Civil_DateIsAgreed input[type="radio"]:checked').val();
+            var $Civil_IsFullDay = $('#Civil_IsFullDay input[type="radio"]:checked').val();
+
+            if ($Civil_CertificateOfReadiness === 'true' && $Civil_DateIsAgreed === 'true' && ($Civil_IsFullDay === 'true' || $Civil_IsFullDay === 'false')) {
+                $("#btnShowDates").css('display', 'block');
+            }
+            else {
+                $("#btnShowDates").css('display', 'none');
+            }
+        }
+
+        if (caseType === "criminal") {
+            var $Criminal_LowerCourtOrder = $('#Criminal_LowerCourtOrder input[type="radio"]:checked').val();
+            var $Criminal_DateIsAgreed = $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
+            var $Criminal_IsFullDay = $('#Criminal_IsFullDay input[type="radio"]:checked').val();
+
+            if ($Criminal_LowerCourtOrder === 'true' && $Criminal_DateIsAgreed === 'true' && ($Criminal_IsFullDay === "true" || $Criminal_IsFullDay === "false")) {
+                $("#btnShowDates").css('display', 'block');
+            }
+            else {
+                $("#btnShowDates").css('display', 'none');
+            }
+        }
+    });
+
+
+    //Disable changing states on radio buttons after submission for date retrieval
+    //$(input[type = "radio"]).change(function () {
+    //    if ($("#IsFullDay") != null) {
+    //        return false;
+    //    }
+    //});
+
+
     //Display more available dates by groups of 2 months
     $('#btnShowMore').click(function () {
         $('.availableDates__month.hidden').slice(0, 2).removeClass('hidden');
@@ -127,6 +183,7 @@ $(document).ready(function () {
         }
     });
 
+
     //Submitting selected date for Coa
     $('a.availableDate').click(function () {
         $('input#SelectedDate').val($(this).data('date'));
@@ -134,6 +191,7 @@ $(document).ready(function () {
     });
 
 });
+
 
 // Called by Vue when a timeslot is selected
 function validateCaseDate(containerId, bookingDate) {

@@ -540,6 +540,15 @@ div#progress-overlay {
         border: 3px solid darken($blue-light, 20%);
     }
 
+    &.disabled {
+        cursor: default;
+
+        &:hover, &:focus {
+            color: $blue;
+            background-color: $white;
+        }
+    }
+
     & + .btn-radio {
         margin-left: 20px;
     }
@@ -573,34 +582,103 @@ h3 {
             display: flex;
             flex-wrap: wrap;
 
-            .availableDate {
-                width: 200px;
-                min-width: 200px;
+            a.availableDate {
+                width: 240px;
+                min-width: 240px;
                 text-align: center;
                 border-radius: 0.5rem;
                 padding: 20px 10px;
-                margin: 10px;
+                margin: 20px auto;
                 cursor: pointer;
                 text-align: center;
-                text-decoration: none;
-                background-color: $blue-active-lighter;
-                border: 1px solid darken($blue-light, 10%);
+                color: $white;
 
-                &:hover, &:active, &:focus {
+                &:hover, &:focus {
+                    color: $white;
                     background-color: $blue-active;
-                    transition: all 0.1s ease-in-out;
+                    border-color: $blue-active;
+                }
 
-                    p {
-                        color: $white;
+                @media(min-width: 568px) {
+                    width: 240px;
+                    min-width: 240px;
+                    margin: 15px;
+                }
+
+                @media(min-width: 568px) and (max-width: $breakpoint-md) {
+                    &:nth-of-type(2n+1) {
+                        margin-left: 0;
+                    }
+
+                    &:nth-of-type(2n+2) {
+                        margin-right: 0;
+                    }
+                }
+
+                @media(min-width: $breakpoint-md) and (max-width: $breakpoint-lg) {
+                    width: 210px;
+                    min-width: 210px;
+                    margin: 10px 15px;
+
+                    &:nth-of-type(3n+1) {
+                        margin-left: 0;
+                    }
+
+                    &:nth-of-type(3n+3) {
+                        margin-right: 0;
+                    }
+                }
+
+                @media(min-width: $breakpoint-lg) and (max-width: $breakpoint-xl) {
+                    width: 210px;
+                    min-width: 210px;
+                    margin: 10px 15px;
+
+                    &:nth-of-type(4n+1) {
+                        margin-left: 0;
+                    }
+
+                    &:nth-of-type(4n+4) {
+                        margin-right: 0;
+                    }
+                }
+
+                @media(min-width: $breakpoint-xl) {
+                    width: 206px;
+                    min-width: 206px;
+                    margin: 10px;
+
+                    &:nth-of-type(5n+1) {
+                        margin-left: 0;
+                    }
+
+                    &:nth-of-type(5n+5) {
+                        margin-right: 0;
                     }
                 }
 
                 p {
                     margin-bottom: 0;
-                    font-weight: 700;
-                    color: $blue;
                 }
             }
         }
+    }
+}
+
+#btnShowDates {
+    display: none;
+}
+
+#btnShowMore {
+    margin-bottom: 60px;
+}
+
+.alert--preliminary_question {
+    display: none;
+}
+
+select, input {
+    &.disabled {
+        background-color: $grey-disabled;
     }
 }
