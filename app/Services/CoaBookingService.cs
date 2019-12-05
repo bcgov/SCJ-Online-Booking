@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Exchange.WebServices.Data;
@@ -17,28 +15,24 @@ using SCJ.OnlineBooking;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using Task = System.Threading.Tasks.Task;
 
 namespace SCJ.Booking.MVC.Services
 {
     public class CoaBookingService
     {
-        public const int MaxHearingsPerDay = 10;
         private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
-        private readonly HttpContext _httpContext;
         private readonly Logger _logger;
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
         public readonly bool IsLocalDevEnvironment;
-        private WebCredentials _emailCredentials;
+        private readonly MailService _mailService;
 
         //Constructor
-        public CoaBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration, SessionService sessionService,
-            IViewRenderService viewRenderService)
+        public CoaBookingService(ApplicationDbContext dbContext, IConfiguration configuration,
+            SessionService sessionService, IViewRenderService viewRenderService)
         {
             // default log level is error (less verbose)
             var logLevel = LogEventLevel.Error;
@@ -51,7 +45,7 @@ namespace SCJ.Booking.MVC.Services
                 logLevel = LogEventLevel.Debug;
             }
 
-            // check if this is the OpenShift devlopment environment
+            // check if this is the OpenShift development environment
             if (tagName.ToLower().Equals("dev"))
             {
                 logLevel = LogEventLevel.Information;
@@ -65,12 +59,9 @@ namespace SCJ.Booking.MVC.Services
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _configuration = configuration;
             _dbContext = dbContext;
-            _httpContext = httpAccessor.HttpContext;
             _session = sessionService;
             _viewRenderService = viewRenderService;
-
-            // get the Exchange credentials
-            //SetExchangeCredentials();
+            _mailService = new MailService("CA", _configuration, _logger);
         }
 
         /// <summary>
@@ -78,7 +69,6 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<CoaCaseSearchViewModel> GetSearchResults(CoaCaseSearchViewModel model)
         {
-
             var retval = model;
 
             //search the current case number
@@ -139,20 +129,6 @@ namespace SCJ.Booking.MVC.Services
                 //check for valid date
                 if (model.SelectedDate != null)
                 {
-                    //if (!istimestillavailable(availabledates, model.selecteddate.value))
-                    //{
-                    //    retval.timeslotexpired = true;
-                    //}
-
-                    //set date properties
-                    //retval.SelectedDate = model.SelectedDate;
-
-                    //string bookingTime = dt.ToString("hh:mm tt") + " to " +
-                    //                     dt.AddMinutes(hearingLength).ToString("hh:mm tt");
-
-                    //retval.TimeSlotFriendlyName =
-                    //    dt.ToString("MMMM dd") + " from " + bookingTime;
-
                     _session.CoaBookingInfo = new CoaSessionBookingInfo
                     {
                         CaseId = caseId,
@@ -171,7 +147,6 @@ namespace SCJ.Booking.MVC.Services
 
             return retval;
         }
-
 
         /// <summary>
         ///     Check if a time slot is still available for a court booking
@@ -245,13 +220,16 @@ namespace SCJ.Booking.MVC.Services
                     {
                         Phone = model.Phone,
                         Email = model.EmailAddress,
-                        ContactName = $"{userDisplayName} {model.Phone} {model.EmailAddress}"
+                        ContactName = $"{userDisplayName}"
                     };
 
                     _session.UserInfo = userInfo;
 
                     //send email
-                    //await SendEmail(model, bookInfo);
+                    await _mailService.SendEmail(
+                        model.EmailAddress,
+                        EmailSubject,
+                        await GetEmailBody());
 
                     //clear booking info session
                     _session.CoaBookingInfo = null;
@@ -278,114 +256,15 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Get the number of hearings left for the day
-        /// </summary>
-        public HtmlString GetHearingsRemaining()
-        {
-            int hearingsRemaining = GetUserHearingsTotalRemaining();
-
-            switch (hearingsRemaining)
-            {
-                case MaxHearingsPerDay:
-                    return new HtmlString($"You can book {MaxHearingsPerDay} hearings today.");
-                case 1:
-                    return new HtmlString("You can book 1 more hearing today.");
-                case 0:
-                    return new HtmlString("You cannot book anymore hearings today.");
-                default:
-                    return new HtmlString($"You can book {hearingsRemaining} more hearings today.");
-            }
-        }
-
-        /// <summary>
-        ///     Read the database and get the total number of hearings left for the day
-        /// </summary>
-        public int GetUserHearingsTotalRemaining()
-        {
-            //get user GUID
-            string userGuid;
-
-            if (!IsLocalDevEnvironment)
-            {
-                //try and read the header
-                if (_httpContext.Request.Headers.ContainsKey("smgov_userguid"))
-                {
-                    userGuid = _httpContext.Request.Headers["smgov_userguid"].ToString();
-                }
-                else
-                {
-                    return MaxHearingsPerDay;
-                }
-            }
-            else
-            {
-                //Dummy user guid
-                userGuid = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
-            }
-
-            //today's date
-            var today = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
-
-            //get all entries for logged-in user
-            //booked on today
-            List<BookingHistory> hearingsBookedForToday = _dbContext.BookingHistory
-                .Where(b => b.SmGovUserGuid == userGuid &&
-                            b.Timestamp.Day == today.Day &&
-                            b.Timestamp.Month == today.Month &&
-                            b.Timestamp.Year == today.Year).ToList();
-
-            return MaxHearingsPerDay - hearingsBookedForToday.Count();
-        }
-
-        /// <summary>
-        ///     Sends a confirmation email using an Exchange server
-        /// </summary>
-        private async Task SendEmail(CoaCaseConfirmViewModel data, BookHearingInfo bookingInfo)
-        {
-            string exchangeUrl = _configuration["EXCHANGE_URL"] ?? "";
-
-            // log the settings the the console
-            _logger.Information($"EXCHANGE_URL={exchangeUrl}");
-
-            //Do NULL checks to ensure we received all the settings
-            if (!string.IsNullOrEmpty(exchangeUrl) &&
-                _emailCredentials != null)
-            {
-                var exchangeService = new ExchangeService
-                {
-                    Credentials = _emailCredentials,
-                    Url = new Uri(exchangeUrl),
-                    UseDefaultCredentials = false,
-                    TraceEnabled = true,
-                    TraceFlags = TraceFlags.All,
-                    TraceListener = new ExchangeTraceListener(_logger)
-                };
-
-                string emailBody = await GetEmailBody(data, bookingInfo);
-
-                _logger.Information(emailBody);
-
-                var message = new EmailMessage(exchangeService)
-                {
-                    Subject = EmailSubject,
-                    Body = new MessageBody(BodyType.Text, emailBody)
-                    //From = new EmailAddress(emailFromName, emailFromAddress)  // this line doesn't seem to do anything so I removed it to confirm
-                };
-
-                message.ToRecipients.Add(new EmailAddress(data.EmailAddress));
-
-                await message.SendAndSaveCopy();
-            }
-        }
-
-        /// <summary>
         ///     Renders the template for the email body to a string (~/Views/CoaBooking/Email.cshtml)
         /// </summary>
-        private async Task<string> GetEmailBody(CoaCaseConfirmViewModel data,
-            BookHearingInfo bookingInfo)
+        private async Task<string> GetEmailBody()
         {
             //user information
-            SessionUserInfo user = GetUserInformation();
+            SessionUserInfo user = _session.GetUserInformation();
+
+            // booking information
+            CoaSessionBookingInfo booking = _session.CoaBookingInfo;
 
             //set ViewModel for the email
             var viewModel = new EmailViewModel
@@ -393,65 +272,17 @@ namespace SCJ.Booking.MVC.Services
                 EmailAddress = user.Email,
                 Phone = user.Phone,
                 CourtFileNumber = _session.CoaBookingInfo.CaseNumber,
-                Fullname = bookingInfo.requestedBy,
-                TypeOfConference = data.HearingTypeName,
-                HearingLength = (data.IsFullDay ?? false) ? "Full Day" : "Half Day",
-                Date = data.SelectedDate.Value.ToString("dddd, MMMM dd, yyyy")
+                TypeOfConference = booking.HearingTypeName,
+                HearingLength = booking.IsFullDay ?? false ? "Full Day" : "Half Day",
+                Date = booking.SelectedDate.ToString("dddd, MMMM dd, yyyy")
             };
 
             //Render the email template 
-            return await _viewRenderService.RenderToStringAsync("ScBooking/EmailText", viewModel);
+            return await _viewRenderService.RenderToStringAsync("CoaBooking/EmailText", viewModel);
         }
 
         /// <summary>
-        ///     Get user information based on the session variables and custom headers. Session variables would
-        ///     get preference.
-        /// </summary>
-        public SessionUserInfo GetUserInformation()
-        {
-            return new SessionUserInfo
-            {
-                Phone = string.IsNullOrEmpty(_session.UserInfo.Phone)
-                    ? string.Empty
-                    : _session.UserInfo.Phone,
-                Email = string.IsNullOrEmpty(_session.UserInfo.Email)
-                    ? string.Empty
-                    : _session.UserInfo.Email
-            };
-        }
-
-        /// <summary>
-        ///     Sets the exchange credentials
-        /// </summary>
-        private void SetExchangeCredentials()
-        {
-            string emailUserName = _configuration["EXCHANGE_USERNAME"] ?? "";
-            string emailPassword = _configuration["EXCHANGE_PASSWORD"] ?? "";
-            string emailDomain = _configuration["EXCHANGE_DOMAIN"] ?? "";
-
-            if (emailDomain == "")
-            {
-                _emailCredentials = null;
-                _logger.Error("EXCHANGE_DOMAIN is not set");
-            }
-            else if (emailPassword == "")
-            {
-                _emailCredentials = null;
-                _logger.Error("EXCHANGE_PASSWORD is not set");
-            }
-            else if (emailUserName == "")
-            {
-                _emailCredentials = null;
-                _logger.Error("EXCHANGE_USERNAME is not set");
-            }
-            else
-            {
-                _emailCredentials = new WebCredentials(emailUserName, emailPassword, emailDomain);
-            }
-        }
-
-        /// <summary>
-        ///         ///   Groups Court of Appeal available hearing dates by month and filter by full day if needed
+        ///     Groups Court of Appeal available hearing dates by month and filter by full day if needed
         /// </summary>
         public Dictionary<DateTime, List<DateTime>> GroupAvailableDates(CoAAvailableDates availableDates, bool fullDay)
         {

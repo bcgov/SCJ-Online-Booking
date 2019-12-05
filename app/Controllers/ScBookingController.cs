@@ -16,23 +16,14 @@ namespace SCJ.Booking.MVC.Controllers
         //Services
         private readonly ScBookingService _scBookingService;
 
-        //HttpContext
-        private readonly HttpContext _httpContext;
-
         // Strongly typed session
         private readonly SessionService _session;
 
-        //Give us access to the HostEnvironment properties
-        private readonly IViewRenderService _viewRenderService;
-
         //Constructor
-        public ScBookingController(ApplicationDbContext context, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration, SessionService sessionService, IViewRenderService viewRenderService)
+        public ScBookingController(SessionService sessionService, ScBookingService scBookingService)
         {
-            _httpContext = httpAccessor.HttpContext;
-            _viewRenderService = viewRenderService;
             _session = sessionService;
-            _scBookingService = new ScBookingService(context, httpAccessor, configuration, sessionService, viewRenderService);
+            _scBookingService = scBookingService;
         }
 
         [HttpGet]
@@ -76,10 +67,10 @@ namespace SCJ.Booking.MVC.Controllers
             var dt = new DateTime(Convert.ToInt64(bookingInfo.SelectedCaseDate));
 
             //user information
-            var sui = _scBookingService.GetUserInformation();
+            var user = _session.GetUserInformation();
 
             //Time-slot is still available
-            var ccm = new ScCaseConfirmViewModel
+            var model = new ScCaseConfirmViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
@@ -89,11 +80,11 @@ namespace SCJ.Booking.MVC.Controllers
                 ContainerId = bookingInfo.ContainerId,
                 LocationId = bookingInfo.LocationId,
                 FullDate = dt,
-                EmailAddress =  sui.Email,
-                Phone = sui.Phone
+                EmailAddress =  user.Email,
+                Phone = user.Phone
             };
 
-            return View(ccm);
+            return View(model);
         }
 
         [HttpPost]
@@ -116,13 +107,13 @@ namespace SCJ.Booking.MVC.Controllers
             else
             {
                 //read smgov_userguid SiteMinder header
-                userGuid = _httpContext.Request.Headers.ContainsKey("smgov_userguid")
-                    ? _httpContext.Request.Headers["smgov_userguid"].ToString()
+                userGuid = HttpContext.Request.Headers.ContainsKey("smgov_userguid")
+                    ? HttpContext.Request.Headers["smgov_userguid"].ToString()
                     : string.Empty;
 
                 //read smgov_userdisplayname SiteMinder header
-                userDisplayName = _httpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
-                    ? _httpContext.Request.Headers["smgov_userdisplayname"].ToString()
+                userDisplayName = HttpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
+                    ? HttpContext.Request.Headers["smgov_userdisplayname"].ToString()
                     : string.Empty;
             }
 

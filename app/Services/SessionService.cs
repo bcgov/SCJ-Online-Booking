@@ -20,6 +20,23 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
+        ///     Get user information based on the session variables and custom headers. Session variables would
+        ///     get preference.
+        /// </summary>
+        public SessionUserInfo GetUserInformation()
+        {
+            return new SessionUserInfo
+            {
+                Phone = string.IsNullOrEmpty(UserInfo.Phone)
+                    ? string.Empty
+                    : UserInfo.Phone,
+                Email = string.IsNullOrEmpty(UserInfo.Email)
+                    ? string.Empty
+                    : UserInfo.Email
+            };
+        }
+
+        /// <summary>
         ///     Stores information about the booking in the session
         /// </summary>
         public ScSessionBookingInfo ScBookingInfo

@@ -3,7 +3,6 @@ namespace SCJ.Booking.MVC.ViewModels
     public class EmailViewModel
     {
         public string EmailAddress { get; set; }
-        public string Fullname { get; set; }
         public string TypeOfConference { get; set; }
         public string RegistryName { get; set; }
         public string CourtFileNumber { get; set; }

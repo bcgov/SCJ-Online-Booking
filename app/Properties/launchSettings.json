@@ -18,8 +18,10 @@
                 "API_ENDPOINT": "https://localhost",
                 "API_PASSWORD": "password",
                 "EXCHANGE_URL": "https://mail.courts.gov.bc.ca/EWS/Exchange.asmx",
-                "EXCHANGE_PASSWORD": "fake_password",
-                "EXCHANGE_USERNAME": "fake_user",
+                "SC_MAIL_PASSWORD": "fake_password",
+                "SC_MAIL_USERNAME": "fake_user",
+                "CA_MAIL_PASSWORD": "fake_password",
+                "CA_MAIL_USERNAME": "fake_user",
                 "EXCHANGE_DOMAIN": "FAKE",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
@@ -34,8 +36,10 @@
                 "API_ENDPOINT": "https://localhost",
                 "API_PASSWORD": "password",
                 "EXCHANGE_URL": "https://mail.courts.gov.bc.ca/EWS/Exchange.asmx",
-                "EXCHANGE_PASSWORD": "fake_password",
-                "EXCHANGE_USERNAME": "fake_user",
+                "SC_MAIL_PASSWORD": "fake_password",
+                "SC_MAIL_USERNAME": "fake_user",
+                "CA_MAIL_PASSWORD": "fake_password",
+                "CA_MAIL_USERNAME": "fake_user",
                 "EXCHANGE_DOMAIN": "FAKE",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },

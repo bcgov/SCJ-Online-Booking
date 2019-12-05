@@ -1,14 +1,13 @@
 using Microsoft.Exchange.WebServices.Data;
-using Microsoft.Extensions.Configuration;
-using Serilog.Core;
+using Serilog;
 
 namespace SCJ.Booking.MVC.Utils
 {
     internal class ExchangeTraceListener : ITraceListener
     {
-        private readonly Logger _logger;
+        private readonly ILogger _logger;
 
-        public ExchangeTraceListener(Logger logger)
+        public ExchangeTraceListener(ILogger logger)
         {
             _logger = logger;
         }

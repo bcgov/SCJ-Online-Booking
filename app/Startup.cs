@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
@@ -35,13 +34,14 @@ namespace SCJ.Booking.MVC
 
             services.AddApplicationDbContext(Configuration);
 
-            services.AddSession(options => {
+            services.AddSession(options =>
+            {
                 options.Cookie.Name = "ScjBooking.Session";
                 options.Cookie.HttpOnly = true;
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
             });
 
-            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<SessionService>();
 
             if (Configuration["TAG_NAME"] == "localdev")
@@ -71,10 +71,9 @@ namespace SCJ.Booking.MVC
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //service to get hearings left for logged-in user
+            //services
             services.AddTransient<ScBookingService>();
             services.AddTransient<CoaBookingService>();
-
             services.AddScoped<IViewRenderService, ViewRenderService>();
         }
 
@@ -118,13 +117,15 @@ namespace SCJ.Booking.MVC
         {
             var platform = new Platform();
 
-            using (var serviceScope = app.ApplicationServices
+            using (IServiceScope serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+                using (var context =
+                    serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
-                    string cs = Environment.GetEnvironmentVariable("ConnectionString") ?? string.Empty;
+                    string cs = Configuration["ConnectionString"] ?? // environment variable
+                                Configuration["Data:DefaultConnection:ConnectionString"]; // appsettings.json
 
                     // the migrations should run on pretty much any platform except Mac localdev environments
                     if (cs != string.Empty || !platform.UseInMemoryStore)

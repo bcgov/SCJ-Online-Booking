@@ -28,7 +28,8 @@
                 "database-password": "${DATABASE_PASSWORD}",
                 "api-password": "${API_PASSWORD}",
                 "connect-string": "Host=${DATABASE_SERVICE_NAME};Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}",
-                "exchange-password":  "${EXCHANGE_PASSWORD}"
+                "sc-mail-password": "${SC_MAIL_PASSWORD}",
+                "ca-mail-password": "${CA_MAIL_PASSWORD}"
             }
         },
         {
@@ -174,19 +175,32 @@
                                         "value": "${EXCHANGE_URL}"
                                     },
                                     {
-                                        "name": "EXCHANGE_USERNAME",
-                                        "value": "${EXCHANGE_USERNAME}"
+                                        "name": "SC_MAIL_USERNAME",
+                                        "value": "${SC_MAIL_USERNAME}"
                                     },
                                     {
-                                        "name": "EXCHANGE_DOMAIN",
-                                        "value": "${EXCHANGE_DOMAIN}"
+                                        "name": "CA_MAIL_USERNAME",
+                                        "value": "${CA_MAIL_USERNAME}"
                                     },
                                     {
-                                        "name": "EXCHANGE_PASSWORD",
+                                        "name": "MAIL_DOMAIN",
+                                        "value": "${MAIL_DOMAIN}"
+                                    },
+                                    {
+                                        "name": "SC_MAIL_PASSWORD",
                                         "valueFrom": {
                                             "secretKeyRef": {
                                                 "name": "${NAME}",
-                                                "key": "exchange-password"
+                                                "key": "sc-mail-password"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "CA_MAIL_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "name": "${NAME}",
+                                                "key": "ca-mail-password"
                                             }
                                         }
                                     },
@@ -491,22 +505,35 @@
             "value": "https://mail.courts.gov.bc.ca/EWS/Exchange.asmx"
         },
         {
-            "name": "EXCHANGE_USERNAME",
-            "displayName": "Exchange Username",
+            "name": "SC_MAIL_USERNAME",
+            "displayName": "Supreme Court Exchange Username",
             "description": "Username for the Exchange Server",
             "required": true,
             "value": ""
         },
         {
-            "name": "EXCHANGE_PASSWORD",
-            "displayName": "Exchange Password",
+            "name": "SC_MAIL_PASSWORD",
+            "displayName": "Supreme Court Exchange Password",
             "description": "Password for the Exchange Server",
             "required": true
         },
         {
-            "name": "EXCHANGE_DOMAIN",
+            "name": "CA_MAIL_USERNAME",
+            "displayName": "Court of Appeal Exchange Username",
+            "description": "Username for the Exchange Server",
+            "required": true,
+            "value": ""
+        },
+        {
+            "name": "CA_MAIL_PASSWORD",
+            "displayName": "Court of Appeal Exchange Password",
+            "description": "Password for the Exchange Server",
+            "required": true
+        },
+        {
+            "name": "MAIL_DOMAIN",
             "displayName": "Exchange ActiveDirectory Domain",
-            "description": "Domain for the Exchange User",
+            "description": "Domain for the Exchange Users",
             "required": true,
             "value": ""
         },

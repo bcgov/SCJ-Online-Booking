@@ -33,7 +33,7 @@ namespace SCJ.Booking.MVC.Services
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
         public readonly bool IsLocalDevEnvironment;
-        private WebCredentials _emailCredentials;
+        private readonly MailService _mailService;
 
         //Constructor
         public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
@@ -51,7 +51,7 @@ namespace SCJ.Booking.MVC.Services
                 logLevel = LogEventLevel.Debug;
             }
 
-            // check if this is the OpenShift devlopment environment
+            // check if this is the OpenShift development environment
             if (tagName.ToLower().Equals("dev"))
             {
                 logLevel = LogEventLevel.Information;
@@ -68,9 +68,7 @@ namespace SCJ.Booking.MVC.Services
             _httpContext = httpAccessor.HttpContext;
             _session = sessionService;
             _viewRenderService = viewRenderService;
-
-            // get the Exchange credentials
-            //SetExchangeCredentials();
+            _mailService = new MailService("SC", _configuration, _logger);
         }
 
         /// <summary>
@@ -284,13 +282,16 @@ namespace SCJ.Booking.MVC.Services
                     {
                         Phone = model.Phone,
                         Email = model.EmailAddress,
-                        ContactName = $"{userDisplayName} {model.Phone} {model.EmailAddress}"
+                        ContactName = $"{userDisplayName}"
                     };
 
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await SendEmail(model, bookInfo);
+                    await _mailService.SendEmail(
+                        model.EmailAddress,
+                        EmailSubject,
+                        await GetEmailBody());
 
                     //clear booking info session
                     _session.ScBookingInfo = null;
@@ -377,54 +378,15 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Sends a confirmation email using an Exchange server
-        /// </summary>
-        private async Task SendEmail(ScCaseConfirmViewModel data, BookHearingInfo bookingInfo)
-        {
-            string exchangeUrl = _configuration["EXCHANGE_URL"] ?? "";
-
-            // log the settings the the console
-            _logger.Information($"EXCHANGE_URL={exchangeUrl}");
-
-            //Do NULL checks to ensure we received all the settings
-            if (!string.IsNullOrEmpty(exchangeUrl) &&
-                _emailCredentials != null)
-            {
-                var exchangeService = new ExchangeService
-                {
-                    Credentials = _emailCredentials,
-                    Url = new Uri(exchangeUrl),
-                    UseDefaultCredentials = false,
-                    TraceEnabled = true,
-                    TraceFlags = TraceFlags.All,
-                    TraceListener = new ExchangeTraceListener(_logger)
-                };
-
-                string emailBody = await GetEmailBody(data, bookingInfo);
-
-                _logger.Information(emailBody);
-
-                var message = new EmailMessage(exchangeService)
-                {
-                    Subject = EmailSubject,
-                    Body = new MessageBody(BodyType.Text, emailBody)
-                    //From = new EmailAddress(emailFromName, emailFromAddress)  // this line doesn't seem to do anything so I removed it to confirm
-                };
-
-                message.ToRecipients.Add(new EmailAddress(data.EmailAddress));
-
-                await message.SendAndSaveCopy();
-            }
-        }
-
-        /// <summary>
         ///     Renders the template for the email body to a string (~/Views/ScBooking/Email.cshtml)
         /// </summary>
-        private async Task<string> GetEmailBody(ScCaseConfirmViewModel data,
-            BookHearingInfo bookingInfo)
+        private async Task<string> GetEmailBody()
         {
             //user information
-            SessionUserInfo user = GetUserInformation();
+            SessionUserInfo user = _session.GetUserInformation();
+
+            //booking information
+            var booking = _session.ScBookingInfo;
 
             //set ViewModel for the email
             var viewModel = new EmailViewModel
@@ -432,62 +394,14 @@ namespace SCJ.Booking.MVC.Services
                 EmailAddress = user.Email,
                 Phone = user.Phone,
                 CourtFileNumber = _session.ScBookingInfo.CaseNumber,
-                Fullname = bookingInfo.requestedBy,
-                RegistryName = data.LocationName,
-                TypeOfConference = data.HearingTypeName,
-                Date = data.Date,
-                Time = _session.ScBookingInfo.TimeSlotFriendlyName
+                RegistryName = booking.RegistryName,
+                TypeOfConference = booking.HearingTypeName,
+                Date = booking.SelectedCaseDate,
+                Time = booking.TimeSlotFriendlyName
             };
 
             //Render the email template 
             return await _viewRenderService.RenderToStringAsync("ScBooking/EmailText", viewModel);
-        }
-
-        /// <summary>
-        ///     Get user information based on the session variables and custom headers. Session variables would
-        ///     get preference.
-        /// </summary>
-        public SessionUserInfo GetUserInformation()
-        {
-            return new SessionUserInfo
-            {
-                Phone = string.IsNullOrEmpty(_session.UserInfo.Phone)
-                    ? string.Empty
-                    : _session.UserInfo.Phone,
-                Email = string.IsNullOrEmpty(_session.UserInfo.Email)
-                    ? string.Empty
-                    : _session.UserInfo.Email
-            };
-        }
-
-        /// <summary>
-        ///     Sets the exchange credentials
-        /// </summary>
-        private void SetExchangeCredentials()
-        {
-            string emailUserName = _configuration["EXCHANGE_USERNAME"] ?? "";
-            string emailPassword = _configuration["EXCHANGE_PASSWORD"] ?? "";
-            string emailDomain = _configuration["EXCHANGE_DOMAIN"] ?? "";
-
-            if (emailDomain == "")
-            {
-                _emailCredentials = null;
-                _logger.Error("EXCHANGE_DOMAIN is not set");
-            }
-            else if (emailPassword == "")
-            {
-                _emailCredentials = null;
-                _logger.Error("EXCHANGE_PASSWORD is not set");
-            }
-            else if (emailUserName == "")
-            {
-                _emailCredentials = null;
-                _logger.Error("EXCHANGE_USERNAME is not set");
-            }
-            else
-            {
-                _emailCredentials = new WebCredentials(emailUserName, emailPassword, emailDomain);
-            }
         }
 
         /// <summary>
