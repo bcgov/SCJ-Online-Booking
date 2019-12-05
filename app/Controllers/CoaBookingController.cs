@@ -51,6 +51,12 @@ namespace SCJ.Booking.MVC.Controllers
                     {
                         ModelState.AddModelError("LowerCourtOrder", "Please answer this question.");
                     }
+
+                    if (model.HearingTypeId == null)
+                    {
+                        ModelState.AddModelError("HearingTypeId",
+                            "Please select a hearing type.");
+                    }
                 }
 
                 if (model.DateIsAgreed == null)
@@ -67,6 +73,8 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.HearingTypes = CoaBookingService.GetHearingTypes();
+
                 return View(model);
             }
 

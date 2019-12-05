@@ -171,9 +171,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="hearingType">What type of Appeal Hearing do you need to book?</label>
-                                    <select asp-for="HearingTypeId" class="form-control registryOptions" asp-items="@Model.HearingTypes" disabled="@((Model.Results != null && Model.Results.Any()) ? true : false)">
+                                    <select asp-for="HearingTypeId" class="form-control registryOptions" asp-items="@Model.HearingTypes" disabled="@(Model.Results != null && Model.Results.Any())">
+                                        <option value="">--- Hearing Type ---</option>
                                     </select>
-                                    <input type="hidden" asp-for="HearingTypeId" value="@Model.HearingTypeId" />
+                                    @if (Model.Results != null && Model.Results.Any())
+                                    {
+                                        <input type="hidden" asp-for="HearingTypeId" value="@Model.HearingTypeId" />
+                                    }
+                                    <span class="text-danger" asp-validation-for="HearingTypeId"></span>
                                 </div>
                             </div>
                         </div>

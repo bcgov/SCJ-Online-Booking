@@ -92,12 +92,7 @@ namespace SCJ.Booking.MVC.Services
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
-                retval.HearingTypes = new SelectList(
-
-                CoaHearingType.GetHearingTypes()
-                    .Where(x => x.IsCriminal)
-                    .Select(x => new { Id = x.HearingTypeId, Value = x.Description }),
-                    "Id", "Value");
+                retval.HearingTypes = GetHearingTypes();
 
                 CoAAvailableDates availableDates = new CoAAvailableDates();
 
@@ -138,7 +133,8 @@ namespace SCJ.Booking.MVC.Services
                         DateIsAgreed = model.DateIsAgreed,
                         LowerCourtOrder = model.LowerCourtOrder,
                         IsFullDay = model.IsFullDay,
-                        HearingTypeId = retval.HearingTypeId,
+                        // ReSharper disable once PossibleInvalidOperationException
+                        HearingTypeId = retval.HearingTypeId.Value,
                         HearingTypeName = retval.HearingTypeName,
                         SelectedDate = model.SelectedDate.Value
                     };
@@ -146,6 +142,18 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return retval;
+        }
+
+        /// <summary>
+        ///     Gets a list of hearing types
+        /// </summary>
+        public static SelectList GetHearingTypes()
+        {
+            return new SelectList(
+                CoaHearingType.GetHearingTypes()
+                    .Where(x => x.IsCriminal)
+                    .Select(x => new {Id = x.HearingTypeId, Value = x.Description}),
+                "Id", "Value");
         }
 
         /// <summary>

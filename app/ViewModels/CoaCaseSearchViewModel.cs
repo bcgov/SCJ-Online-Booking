@@ -24,12 +24,11 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
         public SelectList HearingTypes { get; set; }
-        public int HearingTypeId { get; set; }
+        public int? HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
         public Dictionary<DateTime, List<DateTime>> Results { get; set; }
         public DateTime? SelectedDate { get; set; }
         public string SubmitButton { get; set; }
         public bool TimeSlotExpired { get; set; }
-        //public string TimeSlotFriendlyName { get; set; }
     }
 }
