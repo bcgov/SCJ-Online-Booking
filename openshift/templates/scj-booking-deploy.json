@@ -58,14 +58,14 @@
         {
             "kind": "Route",
             "apiVersion": "v1",
-            "metadata":  {
-                "name": "${NAME}-siteminder-route"
+            "metadata": {
+                "name": "${NAME}-siteminder-route",
+                "annotations": {
+                    "haproxy.router.openshift.io/ip_whitelist": "${SITEMINDER_WHITE_LIST}"
+                }
             },
             "labels": {
                 "app": "${NAME}-siteminder-route"
-            },
-            "annotations": {
-                "haproxy.router.openshift.io/ip_whitelist": "${SITEMINDER_WHITE_LIST}"
             },
             "spec": {
                 "host": "${SITEMINDER_APPLICATION_DOMAIN}",
