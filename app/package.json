@@ -16,7 +16,7 @@
         "install": "webpack  --mode development --config webpack.config.vendor.js"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.10.2",
+        "@fortawesome/fontawesome-free": "^5.11.2",
         "axios": "^0.18.1",
         "es6-promise": "^4.2.8",
         "spin": "0.0.1",
@@ -36,11 +36,11 @@
         "file-loader": "^4.0.0",
         "jquery": "^3.4.1",
         "mini-css-extract-plugin": "^0.8.0",
-        "node-sass": "^4.12.0",
+        "node-sass": "^4.13.0",
         "optimize-css-assets-webpack-plugin": "^5.0.1",
         "popper.js": "^1.16.0",
         "sass-loader": "^7.3.1",
-        "select2": "^4.0.10",
+        "select2": "^4.0.12",
         "select2-bootstrap-theme": "0.1.0-beta.10",
         "style-loader": "^0.23.1",
         "url-loader": "^2.0.1",

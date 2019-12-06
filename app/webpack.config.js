@@ -36,7 +36,6 @@ module.exports = (env) => {
             modules: false,
             entrypoints: false,
         },
-
         resolve: {
             extensions: ['.js', '.vue', ',scss'],
             alias: {
