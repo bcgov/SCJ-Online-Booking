@@ -591,12 +591,17 @@ h3 {
                 margin: 20px auto;
                 cursor: pointer;
                 text-align: center;
-                color: $white;
+                text-decoration: none;
+                background-color: $blue-active-lighter;
+                border: 1px solid darken($blue-light, 10%);
 
-                &:hover, &:focus {
-                    color: $white;
+                &:hover, &:active, &:focus {
                     background-color: $blue-active;
-                    border-color: $blue-active;
+                    transition: all 0.1s ease-in-out;
+
+                    p {
+                        color: $white;
+                    }
                 }
 
                 @media(min-width: 568px) {
@@ -659,6 +664,8 @@ h3 {
 
                 p {
                     margin-bottom: 0;
+                    font-weight: 700;
+                    color: $blue;
                 }
             }
         }
