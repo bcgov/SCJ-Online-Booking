@@ -28,7 +28,15 @@ fs.readdirSync(appBasePath + "sass/").forEach(function (file) {
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     return [{
-        stats: { modules: false },
+        mode: (isDevBuild ? "development" : "production"),
+        performance: {
+            hints: false
+        },
+        stats: {
+            modules: false,
+            entrypoints: false,
+        },
+
         resolve: {
             extensions: ['.js', '.vue', ',scss'],
             alias: {
@@ -50,7 +58,7 @@ module.exports = (env) => {
                     options: { loaders: { js: { loader: 'babel-loader', options: { presets: 'es2015' } } } }
                 },
                 { test: /\.js$/, include: /ClientSrc/, use: "babel-loader?presets=es2015" },
-                { test: /\.(css|scss)/, use: ExtractTextPlugin.extract(['css-loader', 'sass-loader']) }
+                { test: /\.scss/, use: ExtractTextPlugin.extract(['css-loader', 'sass-loader']) }
             ]
         },
         plugins: [
@@ -66,10 +74,6 @@ module.exports = (env) => {
             })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
-            new webpack.SourceMapDevToolPlugin({
-                filename: '[file].map', // Remove this line if you prefer inline source maps
-                moduleFilenameTemplate: path.relative(bundleOutputDir, "[resourcePath]") // Point sourcemap entries to the original file locations on disk
-            })
         ] : [
                 // Plugins that apply in production builds only
                 new webpack.optimize.UglifyJsPlugin(),

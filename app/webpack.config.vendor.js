@@ -1,15 +1,21 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = (env) => {
-    const extractCSS = new ExtractTextPlugin("css/vendor.min.css");
     const isDevBuild = !(env && env.prod);
     return [
         {
-            stats: { modules: false },
+            performance: {
+                hints: false
+            },
+            stats: {
+                modules: false,
+                entrypoints: false,
+            },
             resolve: {
                 extensions: [".js"]
             },
@@ -25,7 +31,12 @@ module.exports = (env) => {
                     },
                     {
                         test: /\.css(\?|$)/,
-                        use: extractCSS.extract(["css-loader"])
+                        use: [
+                            {
+                                loader: MiniCssExtractPlugin.loader,
+                                options: {}
+                            }, 'css-loader'
+                        ]
                     }
                 ]
             },
@@ -48,7 +59,9 @@ module.exports = (env) => {
                 library: "[name]_[hash]",
             },
             plugins: [
-                extractCSS,
+                new MiniCssExtractPlugin({
+                    filename: "css/vendor.min.css"
+                }),
                 // Compress extracted CSS.
                 new OptimizeCSSPlugin({
                     cssProcessorOptions: {
