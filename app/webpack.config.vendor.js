@@ -14,10 +14,13 @@ module.exports = (env) => {
             },
             stats: {
                 modules: false,
-                entrypoints: false,
+                entrypoints: false
             },
             resolve: {
                 extensions: [".js"]
+            },
+            optimization: {
+                minimize: isDevBuild
             },
             module: {
                 rules: [
@@ -147,11 +150,7 @@ module.exports = (env) => {
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
                 })
-            ].concat(isDevBuild
-                ? []
-                : [
-                    new webpack.optimize.UglifyJsPlugin()
-                ])
+            ]
         }
     ];
 };

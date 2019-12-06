@@ -34,7 +34,10 @@ module.exports = (env) => {
         },
         stats: {
             modules: false,
-            entrypoints: false,
+            entrypoints: false
+        },
+        optimization: {
+            minimize: isDevBuild
         },
         resolve: {
             extensions: ['.js', '.vue', ',scss'],
@@ -75,7 +78,6 @@ module.exports = (env) => {
             // Plugins that apply in development builds only
         ] : [
                 // Plugins that apply in production builds only
-                new webpack.optimize.UglifyJsPlugin(),
                 new ExtractTextPlugin("site.css")
             ])
     }];
