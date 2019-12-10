@@ -46,8 +46,15 @@
                         <label asp-for="CaseNumber">What is the Court File Number for the case?</label>
                         <div class="align-tooltip">
                             <div>
-                                <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(Context.Request.Method == "POST" && Model.CaseNumber != null)" />
-                                <input type="hidden" asp-for="CaseNumber" value="@Model.CaseNumber" />
+                                @if (Model.Step1Complete)
+                                {
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(true)" />
+                                    <input type="hidden" asp-for="CaseNumber" value="@Model.CaseNumber" />
+                                }
+                                else
+                                {
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" />
+                                }
                             </div>
                             <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.">
                                 <i class="fas fa-question-circle"></i>
@@ -57,7 +64,7 @@
                     </div>
                 </div>
 
-                @if (Context.Request.Method == "POST" && Model.CaseNumber != null && (Model.IsValidCaseNumber ?? false))
+                @if (Model.Step1Complete)
                 {
                     if (Model.CaseType == CoaCaseType.Civil)
                     {
@@ -191,7 +198,7 @@
             {
                 <div class="row">
                     <div class="col col-md-12">
-                        @if (string.IsNullOrEmpty(Model.CaseType))
+                        @if (!Model.Step1Complete)
                         {
                             <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-lg">Next</button>
                         }
@@ -203,7 +210,7 @@
                 </div>
             }
 
-            @if (Context.Request.Method == "POST" && Model.CaseNumber != null && !(Model.IsValidCaseNumber ?? false))
+            @if (Model.CaseNumber != null && !(Model.IsValidCaseNumber ?? false))
             {
                 <hr class="results-linebreak" />
                 <div class="alert alert-warning">
@@ -252,6 +259,6 @@
 
 <div class="row">
     <div class="col col-md-12">
-        <a href="">Restart Search</a>
+        <a asp-action="Restart">Restart Search</a>
     </div>
 </div>

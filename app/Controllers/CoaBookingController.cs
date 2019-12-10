@@ -23,10 +23,45 @@ namespace SCJ.Booking.MVC.Controllers
             _coaBookingService = coaBookingService;
         }
 
+
         [HttpGet]
-        public IActionResult CaseSearch()
+        public IActionResult Restart()
         {
-            var model = new CoaCaseSearchViewModel();
+            _session.CoaBookingInfo = null;
+            return new RedirectResult("/scjob/booking/coa/CaseSearch");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CaseSearch()
+        {
+            var bookingInfo = _session.CoaBookingInfo;
+
+            if (bookingInfo == null)
+            {
+                return View(new CoaCaseSearchViewModel());
+            }
+
+            var model = new CoaCaseSearchViewModel
+            {
+                CaseId = bookingInfo.CaseId,
+                HearingTypeId = bookingInfo.HearingTypeId,
+                CaseNumber = bookingInfo.CaseNumber,
+                CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
+                IsFullDay = bookingInfo.IsFullDay,
+                DateIsAgreed = bookingInfo.DateIsAgreed,
+                HearingTypeName = bookingInfo.HearingTypeName,
+                CaseType = bookingInfo.CaseType,
+                LowerCourtOrder = bookingInfo.LowerCourtOrder,
+                SelectedDate = bookingInfo.SelectedDate,
+                IsValidCaseNumber = !string.IsNullOrEmpty(bookingInfo.CaseNumber)
+            };
+
+            if (model.Step2Complete)
+            {
+                model.Results = await _coaBookingService.GetAvailableDates(model.IsFullDay ?? false);
+            }
+
+            model.HearingTypes = CoaBookingService.GetHearingTypes();
 
             return View(model);
         }
@@ -34,7 +69,7 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseSearch(CoaCaseSearchViewModel model)
         {
-            if (!string.IsNullOrEmpty(model.CaseType))
+            if (model.Step1Complete)
             {
                 if (model.CaseType == CoaCaseType.Civil)
                 {
@@ -87,9 +122,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return new RedirectResult("/scjob/booking/coa/CaseConfirm");
             }
 
-            ModelState.Remove("CaseType");
-            ModelState.Remove("IsValidCaseNumber");
-            return View(model);
+            return new RedirectResult("/scjob/booking/coa/CaseSearch");
         }
 
         [HttpGet]

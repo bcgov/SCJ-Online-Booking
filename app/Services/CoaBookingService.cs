@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Models;
@@ -96,8 +95,6 @@ namespace SCJ.Booking.MVC.Services
 
                 retval.HearingTypes = GetHearingTypes();
 
-                CoAAvailableDates availableDates = new CoAAvailableDates();
-
                 if (caseType == CoaCaseType.Civil)
                 {
                     retval.HearingTypeId = 24;
@@ -107,16 +104,8 @@ namespace SCJ.Booking.MVC.Services
                     retval.HearingTypeId = model.HearingTypeId;
                 }
 
-                if (model.SubmitButton == "GetDates" || model.SelectedDate != null)
+                if (model.Step2Complete)
                 {
-                    availableDates = await _client.COAAvailableDatesAsync();
-
-                    //check if full day
-                    var schedule = 
-                        GroupAvailableDates(availableDates, (model.IsFullDay ?? false));
-
-                    retval.Results = schedule;
-
                     retval.HearingTypeName = CoaHearingType
                     .GetHearingTypes()
                     .FirstOrDefault(h => h.HearingTypeId == model.HearingTypeId)?
@@ -145,6 +134,16 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return retval;
+        }
+
+        /// <summary>
+        ///     List available times
+        /// </summary>
+        public async Task<Dictionary<DateTime, List<DateTime>>> GetAvailableDates(bool isFullDay)
+        {
+                    var availableDates = await _client.COAAvailableDatesAsync();
+
+                    return GroupAvailableDates(availableDates, isFullDay);
         }
 
         /// <summary>
