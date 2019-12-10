@@ -148,6 +148,8 @@ namespace SCJ.Booking.MVC.Services
                 int hearingLength = schedule.BookingDetails.detailBookingLength;
 
                 retval.Results = schedule;
+                string bookingTime = "";
+                DateTime? dt = null;
 
                 //check for valid date
                 if (model.ContainerId > 0)
@@ -158,34 +160,35 @@ namespace SCJ.Booking.MVC.Services
                     }
 
                     //convert JS ticks to .Net date
-                    var dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
+                    dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
 
                     //set date properties
                     retval.ContainerId = model.ContainerId;
                     retval.SelectedCaseDate = model.SelectedCaseDate;
 
-                    string bookingTime = dt.ToString("hh:mm tt") + " to " +
-                                         dt.AddMinutes(hearingLength).ToString("hh:mm tt");
+                    bookingTime = dt.Value.ToString("hh:mm tt") + " to " +
+                                         dt.Value.AddMinutes(hearingLength).ToString("hh:mm tt");
 
                     retval.TimeSlotFriendlyName =
-                        dt.ToString("MMMM dd") + " from " + bookingTime;
+                        dt.Value.ToString("MMMM dd") + " from " + bookingTime;
 
-                    _session.ScBookingInfo = new ScSessionBookingInfo
-                    {
-                        ContainerId = model.ContainerId,
-                        CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                        FullCaseNumber = caseNumber,
-                        CaseId = caseId,
-                        HearingTypeId = model.HearingTypeId,
-                        HearingTypeName = "Trial Management Conference (TMC)",
-                        HearingLengthMinutes = hearingLength,
-                        LocationId = model.SelectedRegistryId,
-                        RegistryName = retval.SelectedRegistryName,
-                        TimeSlotFriendlyName = bookingTime,
-                        SelectedCaseDate = model.SelectedCaseDate,
-                        DateFriendlyName = dt.ToString("dddd, MMMM dd, yyyy")
-                    };
                 }
+
+                _session.ScBookingInfo = new ScSessionBookingInfo
+                {
+                    ContainerId = model.ContainerId,
+                    CaseNumber = model.CaseNumber.ToUpper().Trim(),
+                    FullCaseNumber = caseNumber,
+                    CaseId = caseId,
+                    HearingTypeId = model.HearingTypeId,
+                    HearingTypeName = "Trial Management Conference (TMC)",
+                    HearingLengthMinutes = hearingLength,
+                    LocationId = model.SelectedRegistryId,
+                    RegistryName = retval.SelectedRegistryName,
+                    TimeSlotFriendlyName = bookingTime,
+                    SelectedCaseDate = model.SelectedCaseDate,
+                    DateFriendlyName = dt?.ToString("dddd, MMMM dd, yyyy") ?? ""
+                };
             }
 
             return retval;

@@ -18,7 +18,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string CaseNumber { get; set; }
         public int CaseId { get; set; }
         public string CaseType { get; set; }
-        public bool IsValidCaseNumber { get; set; }
+        public bool? IsValidCaseNumber { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
         public bool? LowerCourtOrder { get; set; }

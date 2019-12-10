@@ -87,6 +87,8 @@ namespace SCJ.Booking.MVC.Services
             }
             else
             {
+                retval.CaseId = caseId;
+
                 //case type
                 retval.CaseType = caseType;
                 //valid case number
@@ -121,24 +123,25 @@ namespace SCJ.Booking.MVC.Services
                     .Description ?? "";
                 }
 
-                //check for valid date
-                if (model.SelectedDate != null)
+                var bookingInfo = new CoaSessionBookingInfo
                 {
-                    _session.CoaBookingInfo = new CoaSessionBookingInfo
-                    {
-                        CaseId = caseId,
-                        CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                        CaseType = caseType,
-                        CertificateOfReadiness = model.CertificateOfReadiness,
-                        DateIsAgreed = model.DateIsAgreed,
-                        LowerCourtOrder = model.LowerCourtOrder,
-                        IsFullDay = model.IsFullDay,
-                        // ReSharper disable once PossibleInvalidOperationException
-                        HearingTypeId = retval.HearingTypeId.Value,
-                        HearingTypeName = retval.HearingTypeName,
-                        SelectedDate = model.SelectedDate.Value
-                    };
+                    CaseId = caseId,
+                    CaseNumber = model.CaseNumber.ToUpper().Trim(),
+                    CaseType = caseType,
+                    CertificateOfReadiness = model.CertificateOfReadiness,
+                    DateIsAgreed = model.DateIsAgreed,
+                    LowerCourtOrder = model.LowerCourtOrder,
+                    IsFullDay = model.IsFullDay,
+                    HearingTypeName = retval.HearingTypeName,
+                    SelectedDate = model.SelectedDate
+                };
+
+                if (model.HearingTypeId != null)
+                {
+                    bookingInfo.HearingTypeId = model.HearingTypeId.Value;
                 }
+
+                _session.CoaBookingInfo = bookingInfo;
             }
 
             return retval;
@@ -183,7 +186,7 @@ namespace SCJ.Booking.MVC.Services
             CoAAvailableDates schedule =  await _client.COAAvailableDatesAsync();
 
             //ensure time slot is still available
-            if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate))
+            if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate.Value))
             {
                 //build object to send to the API
                 var bookInfo = new CoABookingHearingInfo
@@ -282,7 +285,7 @@ namespace SCJ.Booking.MVC.Services
                 CourtFileNumber = _session.CoaBookingInfo.CaseNumber,
                 TypeOfConference = booking.HearingTypeName,
                 HearingLength = booking.IsFullDay ?? false ? "Full Day" : "Half Day",
-                Date = booking.SelectedDate.ToString("dddd, MMMM dd, yyyy")
+                Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? ""
             };
 
             var template = $"CoaBooking/EmailText-{booking.CaseType}";

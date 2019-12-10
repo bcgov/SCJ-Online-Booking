@@ -14,7 +14,7 @@ namespace SCJ.Booking.MVC.Utils
         //public SelectList HearingTypes { get; set; }
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
-        public DateTime SelectedDate { get; set; }
+        public DateTime? SelectedDate { get; set; }
 
         public string FullCaseNumber { get; set; }
         public int LocationId { get; set; }
