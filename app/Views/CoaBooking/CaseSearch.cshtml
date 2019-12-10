@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Book your Request for Hearing Date";
+    bool showingDates = Model.Results != null && Model.Results.Any();
 }
 
 <div class="row screen-intro">
@@ -45,7 +46,7 @@
                         <label asp-for="CaseNumber">What is the Court File Number for the case?</label>
                         <div class="align-tooltip">
                             <div>
-                                <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(((Context.Request.Method == "POST") && (Model.CaseNumber != null)) ? true : false)" />
+                                <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(Context.Request.Method == "POST" && Model.CaseNumber != null)" />
                                 <input type="hidden" asp-for="CaseNumber" value="@Model.CaseNumber" />
                             </div>
                             <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.">
@@ -56,7 +57,7 @@
                     </div>
                 </div>
 
-                @if ((Context.Request.Method == "POST") && (Model.CaseNumber != null) && Model.IsValidCaseNumber)
+                @if (Context.Request.Method == "POST" && Model.CaseNumber != null && (Model.IsValidCaseNumber ?? false))
                 {
                     if (Model.CaseType == CoaCaseType.Civil)
                     {
@@ -69,8 +70,8 @@
                                             <input type="radio" asp-for="CertificateOfReadiness" value="true" /> Yes
                                         </label>
 
-                                        <label class="btn btn-radio @((Model.CertificateOfReadiness ?? true) ? "" : "active") @(((Model.Results != null) && Model.Results.Any() && (Model.CertificateOfReadiness ?? false)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="CertificateOfReadiness" value="false" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.CertificateOfReadiness ?? false)) ? true : false)" /> No
+                                        <label class="btn btn-radio @((Model.CertificateOfReadiness ?? true) ? "" : "active") @(showingDates && (Model.CertificateOfReadiness ?? false) ? "disabled" : "")">
+                                            <input type="radio" asp-for="CertificateOfReadiness" value="false" disabled="@(showingDates && (Model.CertificateOfReadiness ?? false))" /> No
                                         </label>
                                     </div>
                                     <span class="text-danger" asp-validation-for="CertificateOfReadiness"></span>
@@ -86,8 +87,8 @@
                                             <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
                                         </label>
 
-                                        <label class="btn btn-radio @((Model.DateIsAgreed ?? true) ? "" : "active") @(((Model.Results != null) && Model.Results.Any() && (Model.DateIsAgreed ?? false)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="DateIsAgreed" value="false" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.DateIsAgreed ?? false)) ? true : false)" /> No
+                                        <label class="btn btn-radio @((Model.DateIsAgreed ?? true) ? "" : "active") @(showingDates && (Model.DateIsAgreed ?? false) ? "disabled" : "")">
+                                            <input type="radio" asp-for="DateIsAgreed" value="false" disabled="@(showingDates && (Model.DateIsAgreed ?? false))" /> No
                                         </label>
                                     </div>
                                     <span class="text-danger" asp-validation-for="DateIsAgreed"></span>
@@ -102,12 +103,12 @@
                                 <div class="col-md-6">
                                     <label>How long will you require for your Hearing?</label>
                                     <div id="Civil_IsFullDay" class="btn-radio-group">
-                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == true)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="IsFullDay" value="false" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == true)) ? true : false)" /> Half day
+                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates && Model.IsFullDay == true ? "disabled" : "")">
+                                            <input type="radio" asp-for="IsFullDay" value="false" disabled="@(showingDates && Model.IsFullDay == true)" /> Half day
                                         </label>
 
-                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == false)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="IsFullDay" value="true" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == false)) ? true : false)" /> Full day
+                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates && Model.IsFullDay == false ? "disabled" : "")">
+                                            <input type="radio" asp-for="IsFullDay" value="true" disabled="@(showingDates && Model.IsFullDay == false)" /> Full day
                                         </label>
                                     </div>
                                     <span class="text-danger" asp-validation-for="IsFullDay"></span>
@@ -127,8 +128,8 @@
                                             <input type="radio" asp-for="LowerCourtOrder" value="true" /> Yes
                                         </label>
 
-                                        <label class="btn btn-radio @((Model.LowerCourtOrder ?? true) ? "" : "active") @(((Model.Results != null) && Model.Results.Any() && (Model.LowerCourtOrder ?? false)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="LowerCourtOrder" value="false" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.LowerCourtOrder ?? false)) ? true : false)" /> No
+                                        <label class="btn btn-radio @((Model.LowerCourtOrder ?? true) ? "" : "active") @(showingDates && (Model.LowerCourtOrder ?? false) ? "disabled" : "")">
+                                            <input type="radio" asp-for="LowerCourtOrder" value="false" disabled="@(showingDates && (Model.LowerCourtOrder ?? false))" /> No
                                         </label>
                                     </div>
                                     <span class="text-danger" asp-validation-for="LowerCourtOrder"></span>
@@ -140,12 +141,12 @@
                                 <div class="col-md-6">
                                     <label>Is the Hearing date agreed upon by all parties?</label>
                                     <div id="Criminal_DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
-                                        <label class="btn btn-radio @((Model.DateIsAgreed ?? false) ? "active" : "")">
+                                        <label class="btn btn-radio @(Model.DateIsAgreed ?? false ? "active" : "")">
                                             <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
                                         </label>
 
-                                        <label class="btn btn-radio @((Model.DateIsAgreed ?? true) ? "" : "active") @(((Model.Results != null) && Model.Results.Any() && (Model.DateIsAgreed ?? false)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="DateIsAgreed" value="false" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.DateIsAgreed ?? false)) ? true : false)" /> No
+                                        <label class="btn btn-radio @(Model.DateIsAgreed ?? true ? "" : "active") @(showingDates && (Model.DateIsAgreed ?? false) ? "disabled" : "")">
+                                            <input type="radio" asp-for="DateIsAgreed" value="false" disabled="@(showingDates && (Model.DateIsAgreed ?? false))" /> No
                                         </label>
                                     </div>
                                     <span class="text-danger" asp-validation-for="DateIsAgreed"></span>
@@ -159,22 +160,22 @@
                                 <div class="col-md-6">
                                     <label>How long will you require for your Hearing?</label>
                                     <div id="Criminal_IsFullDay" class="btn-radio-group">
-                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == true)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="IsFullDay" value="false" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == true)) ? true : false)" /> Half day
+                                        <label class="btn btn-radio btn-radio--day  @(Model.IsFullDay ?? true ? "" : "active") @(showingDates && (Model.IsFullDay == true) ? "disabled" : "")">
+                                            <input type="radio" asp-for="IsFullDay" value="false" disabled="@(showingDates && Model.IsFullDay == true)" /> Half day
                                         </label>
 
-                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == false)) ? "disabled" : "")">
-                                            <input type="radio" asp-for="IsFullDay" value="true" disabled="@(((Model.Results != null) && Model.Results.Any() && (Model.IsFullDay == false)) ? true : false)" /> Full day
+                                        <label class="btn btn-radio btn-radio--day  @(Model.IsFullDay ?? false ? "active" : "") @(showingDates && Model.IsFullDay == false ? "disabled" : "")">
+                                            <input type="radio" asp-for="IsFullDay" value="true" disabled="@(showingDates && Model.IsFullDay == false)" /> Full day
                                         </label>
                                     </div>
                                     <span class="text-danger" asp-validation-for="IsFullDay"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="hearingType">What type of Appeal Hearing do you need to book?</label>
-                                    <select asp-for="HearingTypeId" class="form-control registryOptions" asp-items="@Model.HearingTypes" disabled="@(Model.Results != null && Model.Results.Any())">
+                                    <select asp-for="HearingTypeId" class="form-control registryOptions" asp-items="@Model.HearingTypes" disabled="@showingDates">
                                         <option value="">--- Hearing Type ---</option>
                                     </select>
-                                    @if (Model.Results != null && Model.Results.Any())
+                                    @if (showingDates)
                                     {
                                         <input type="hidden" asp-for="HearingTypeId" value="@Model.HearingTypeId" />
                                     }
@@ -202,7 +203,7 @@
                 </div>
             }
 
-            @if ((Context.Request.Method == "POST") && (Model.CaseNumber != null) && !Model.IsValidCaseNumber)
+            @if (Context.Request.Method == "POST" && Model.CaseNumber != null && !(Model.IsValidCaseNumber ?? false))
             {
                 <hr class="results-linebreak" />
                 <div class="alert alert-warning">
@@ -214,7 +215,7 @@
     </div>
 </form>
 
-@if ((Model.Results != null) && Model.Results.Any())
+@if (showingDates)
 {
     <hr class="results-linebreak" />
     <h2>Available Dates for @Model.HearingTypeName</h2>
