@@ -37,7 +37,7 @@ module.exports = (env) => {
             entrypoints: false
         },
         optimization: {
-            minimize: isDevBuild
+            minimize: !isDevBuild
         },
         resolve: {
             extensions: ['.js', '.vue', ',scss'],
