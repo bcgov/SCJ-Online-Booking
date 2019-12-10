@@ -38,7 +38,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Views\CoaBooking\EmailText.cshtml">
+      <Content Update="Views\CoaBooking\EmailText-Criminal.cshtml">
+        <Pack>$(IncludeRazorContentInPack)</Pack>
+      </Content>
+      <Content Update="Views\CoaBooking\EmailText-Civil.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
       <Content Update="Views\ScBooking\EmailText.cshtml">

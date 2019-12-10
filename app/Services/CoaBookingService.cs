@@ -285,8 +285,10 @@ namespace SCJ.Booking.MVC.Services
                 Date = booking.SelectedDate.ToString("dddd, MMMM dd, yyyy")
             };
 
+            var template = $"CoaBooking/EmailText-{booking.CaseType}";
+
             //Render the email template 
-            return await _viewRenderService.RenderToStringAsync("CoaBooking/EmailText", viewModel);
+            return await _viewRenderService.RenderToStringAsync(template, viewModel);
         }
 
         /// <summary>
