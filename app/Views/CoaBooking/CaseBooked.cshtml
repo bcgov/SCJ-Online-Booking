@@ -68,15 +68,6 @@ else
                             </div>
                         </div>
                     }
-                    else if (@SessionService.CoaBookingInfo.CaseType == CoaCaseType.Criminal)
-                    {
-                        <div class="form-group">
-                            <label>Have you submitted a Lower Court Order?</label>
-                            <div>
-                                <span>@((@SessionService.CoaBookingInfo.LowerCourtOrder ?? false) ? "Yes" : "No")</span>
-                            </div>
-                        </div>
-                    }
                     <div class="form-group">
                         <label>Is the Hearing date agreed upon by all parties?</label>
                         <div>

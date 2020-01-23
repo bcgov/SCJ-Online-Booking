@@ -30,14 +30,6 @@ namespace SCJ.Booking.MVC.Utils
                 IsCriminal = false
             });
 
-            // - criminal hearing of appeal = 72
-            result.Add(new CoaHearingTypeInfo
-            {
-                HearingTypeId = 72,
-                Description = "Hearing of Appeal",
-                IsCriminal = true
-            });
-
             // - criminal conviction appeal = 96
             result.Add(new CoaHearingTypeInfo
             {
@@ -51,6 +43,14 @@ namespace SCJ.Booking.MVC.Utils
             {
                 HearingTypeId = 97,
                 Description = "Sentence Appeal",
+                IsCriminal = true
+            });
+
+            // - criminal hearing of appeal = 72
+            result.Add(new CoaHearingTypeInfo
+            {
+                HearingTypeId = 72,
+                Description = "Other Appeal",
                 IsCriminal = true
             });
 

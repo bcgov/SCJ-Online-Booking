@@ -51,7 +51,7 @@ namespace SCJ.Booking.MVC.Controllers
                 DateIsAgreed = bookingInfo.DateIsAgreed,
                 HearingTypeName = bookingInfo.HearingTypeName,
                 CaseType = bookingInfo.CaseType,
-                LowerCourtOrder = bookingInfo.LowerCourtOrder,
+                //LowerCourtOrder = bookingInfo.LowerCourtOrder,
                 SelectedDate = bookingInfo.SelectedDate,
                 IsValidCaseNumber = !string.IsNullOrEmpty(bookingInfo.CaseNumber)
             };
@@ -82,10 +82,10 @@ namespace SCJ.Booking.MVC.Controllers
 
                 else if (model.CaseType == CoaCaseType.Criminal)
                 {
-                    if (model.LowerCourtOrder == null)
-                    {
-                        ModelState.AddModelError("LowerCourtOrder", "Please answer this question.");
-                    }
+                    //if (model.LowerCourtOrder == null)
+                    //{
+                    //    ModelState.AddModelError("LowerCourtOrder", "Please answer this question.");
+                    //}
 
                     if (model.HearingTypeId == null)
                     {
@@ -145,7 +145,7 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseType = bookingInfo.CaseType,
                 CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
-                LowerCourtOrder = bookingInfo.LowerCourtOrder,
+                //LowerCourtOrder = bookingInfo.LowerCourtOrder,
                 IsFullDay = bookingInfo.IsFullDay,
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,

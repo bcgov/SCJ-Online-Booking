@@ -133,23 +133,6 @@
                         <div class="preliminary_questions preliminary_questions--Criminal">
                             <div class="row search-info-row">
                                 <div class="col-md-6">
-                                    <label>Have you submitted a Lower Court Order?</label>
-                                    <div id="Criminal_LowerCourtOrder" class="btn-radio-group preliminary_questions__radio">
-                                        <label class="btn btn-radio @((Model.LowerCourtOrder ?? false) ? "active" : "")">
-                                            <input type="radio" asp-for="LowerCourtOrder" value="true" /> Yes
-                                        </label>
-
-                                        <label class="btn btn-radio @((Model.LowerCourtOrder ?? true) ? "" : "active") @(showingDates && (Model.LowerCourtOrder ?? false) ? "disabled" : "")">
-                                            <input type="radio" asp-for="LowerCourtOrder" value="false" disabled="@(showingDates && (Model.LowerCourtOrder ?? false))" /> No
-                                        </label>
-                                    </div>
-                                    <span class="text-danger" asp-validation-for="LowerCourtOrder"></span>
-                                    <div class="alert alert-warning alert--preliminary_question">
-                                        <i class="fa fa-exclamation-triangle"></i>
-                                        You will not be able to book a Hearing of Appeal until a Lower Court Order has been filed. If you require assistance for your booking, please contact the scheduler at 604-660-2865.
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
                                     <label>Is the Hearing date agreed upon by all parties?</label>
                                     <div id="Criminal_DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
                                         <label class="btn btn-radio @(Model.DateIsAgreed ?? false ? "active" : "")">
@@ -167,7 +150,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="CriminalAdditionalQs" class="row search-info-row" style="display: @((Model.LowerCourtOrder ?? false) && (Model.DateIsAgreed ?? false) ? "flex" : "none")">
+                            <div id="CriminalAdditionalQs" class="row search-info-row" style="display: @((Model.DateIsAgreed ?? false) ? "flex" : "none")">
                                 <div class="col-md-6">
                                     <label>How long will you require for your Hearing?</label>
                                     <div id="Criminal_IsFullDay" class="btn-radio-group">

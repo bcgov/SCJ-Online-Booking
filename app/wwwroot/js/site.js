@@ -94,17 +94,14 @@ $(document).ready(function() {
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
     var toggleCriminal = function() {
-        var $Criminal_LowerCourtOrder =
-            $('#Criminal_LowerCourtOrder input[type="radio"]:checked').val();
         var $Criminal_DateIsAgreed = $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
-        if ($Criminal_LowerCourtOrder === "true" && $Criminal_DateIsAgreed === "true") {
+        if ($Criminal_DateIsAgreed === "true") {
             $("#CriminalAdditionalQs").css("display", "flex");
         } else {
             $("#CriminalAdditionalQs").css("display", "none");
         }
     };
 
-    $('#Criminal_LowerCourtOrder input[type="radio"]').click(toggleCriminal);
     $('#Criminal_DateIsAgreed input[type="radio"]').click(toggleCriminal);
 
 
@@ -142,16 +139,13 @@ $(document).ready(function() {
         }
 
         if (caseType === "criminal") {
-            var $Criminal_LowerCourtOrder =
-                $('#Criminal_LowerCourtOrder input[type="radio"]:checked').val();
             var $Criminal_DateIsAgreed =
                 $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
             var $Criminal_IsFullDay = $('#Criminal_IsFullDay input[type="radio"]:checked').val();
 
             var $Criminal_HearingTypeId = $("select#HearingTypeId").val();
 
-            if ($Criminal_LowerCourtOrder === "true" &&
-                $Criminal_DateIsAgreed === "true" &&
+            if ($Criminal_DateIsAgreed === "true" &&
                 ($Criminal_IsFullDay === "true" || $Criminal_IsFullDay === "false") &&
                 $Criminal_HearingTypeId !== "") {
                 $("#btnShowDates").css("display", "block");

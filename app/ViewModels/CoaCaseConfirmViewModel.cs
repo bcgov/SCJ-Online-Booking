@@ -11,7 +11,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool IsValidCaseNumber { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
-        public bool? LowerCourtOrder { get; set; }
+        //public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
         //public SelectList HearingTypes { get; set; }
         public int HearingTypeId { get; set; }

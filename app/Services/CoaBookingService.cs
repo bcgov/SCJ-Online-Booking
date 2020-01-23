@@ -119,7 +119,7 @@ namespace SCJ.Booking.MVC.Services
                     CaseType = caseType,
                     CertificateOfReadiness = model.CertificateOfReadiness,
                     DateIsAgreed = model.DateIsAgreed,
-                    LowerCourtOrder = model.LowerCourtOrder,
+                    //LowerCourtOrder = model.LowerCourtOrder,
                     IsFullDay = model.IsFullDay,
                     HearingTypeName = retval.HearingTypeName,
                     SelectedDate = model.SelectedDate
