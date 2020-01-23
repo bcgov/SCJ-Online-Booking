@@ -119,8 +119,10 @@ $(document).ready(function() {
 
             if ($radioBtnValue === "false") {
                 $radioBtnGroup.siblings(".alert--preliminary_question").css("display", "block");
+                $radioBtnGroup.siblings(".notice--preliminary_question").css("display", "none");
             } else if ($radioBtnValue === "true") {
                 $radioBtnGroup.siblings(".alert--preliminary_question").css("display", "none");
+                $radioBtnGroup.siblings(".notice--preliminary_question").css("display", "block");
             }
         }
 

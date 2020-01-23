@@ -2,7 +2,7 @@
 @model CoaCaseSearchViewModel
 
 @{
-    ViewData["Title"] = "Book your Request for Hearing Date";
+    ViewData["Title"] = "Request a Hearing Date";
     bool showingDates = Model.Results != null && Model.Results.Any();
 }
 
@@ -12,12 +12,11 @@
 
         <div class="paragraph">
             <p>All bookings will be entered in a queue and will be reviewed by the court scheduler.</p>
-            <p>You will be notified when the booking has been processed.</p>
+            <p>You will be notified by email when the booking has been confirmed.</p>
         </div>
 
         <div class="paragraph">
-            <p>Before we can bring back available times for the hearing, we’ll need to know the following.</p>
-            <p>If you require assistance for your booking, please contact the scheduler at 604-660-2865.</p>
+            <p>Please answer the following questions:</p>
         </div>
     </div>
 </div>
@@ -48,12 +47,12 @@
                             <div>
                                 @if (Model.Step1Complete)
                                 {
-                                    <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(true)" />
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" value="@(string.IsNullOrEmpty(Model.CaseNumber) ? "CA" : Model.CaseNumber)" disabled="@(true)" />
                                     <input type="hidden" asp-for="CaseNumber" value="@Model.CaseNumber" />
                                 }
                                 else
                                 {
-                                    <input class="form-control caseNumber" asp-for="CaseNumber" />
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" value="@(string.IsNullOrEmpty(Model.CaseNumber) ? "CA" : Model.CaseNumber)"/>
                                 }
                             </div>
                             <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.">
@@ -71,7 +70,7 @@
                         <div class="preliminary_questions preliminary_questions--Civil">
                             <div class="row search-info-row">
                                 <div class="col-md-6">
-                                    <label>Has a Certificate of Readiness been filled?</label>
+                                    <label>Has a Certificate of Readiness been filed?</label>
                                     <div id="Civil_CertificateOfReadiness" class="btn-radio-group preliminary_questions__radio">
                                         <label class="btn btn-radio @((Model.CertificateOfReadiness ?? false) ? "active" : "")">
                                             <input type="radio" asp-for="CertificateOfReadiness" value="true" /> Yes
@@ -81,7 +80,12 @@
                                             <input type="radio" asp-for="CertificateOfReadiness" value="false" disabled="@(showingDates && (Model.CertificateOfReadiness ?? false))" /> No
                                         </label>
                                     </div>
+
                                     <span class="text-danger" asp-validation-for="CertificateOfReadiness"></span>
+
+                                    <div class="notice--preliminary_question">
+                                        <span>Your hearing will not be confirmed unless the Order(s) of the Lower Court are submitted.</span>
+                                    </div>
                                     <div class="alert alert-warning  alert--preliminary_question">
                                         <i class="fa fa-exclamation-triangle"></i>
                                         You will not be able to book a Hearing of Appeal until the Certifcate of Readiness for this case has been filed. If you require assistance for your booking, please contact the scheduler at 604-660-2865.

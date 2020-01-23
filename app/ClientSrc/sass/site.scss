@@ -689,3 +689,8 @@ select, input {
         background-color: $grey-disabled;
     }
 }
+
+.notice--preliminary_question {
+    margin-bottom: 20px;
+    display: none;
+}
