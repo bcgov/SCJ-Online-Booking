@@ -1,13 +1,13 @@
 @model CoaCaseConfirmViewModel
 
 @{
-    ViewData["Title"] = "Confirm your Request for Booking";
+    ViewData["Title"] = "Confirm your Request";
 }
 
 <div class="row screen-intro">
     <div class="col-md-12 paragraph">
         <h1>@ViewData["Title"]</h1>
-        <p>The following time is reserved for your Hearing.</p>
+        <p>The selected date will be reserved for your Hearing.</p>
         <p>Check that the following information is accurate before confirming your booking.</p>
     </div>
 </div>
@@ -28,6 +28,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label>Related File Number(s)</label>
+                <div>
+                    <span>TBD</span>
+                </div>
+            </div>
+            <div class="form-group">
                 <label>Case Type</label>
                 <div>
                     <span>@Model.CaseType</span>
@@ -36,7 +42,7 @@
             @if (Model.CaseType == CoaCaseType.Civil)
             {
                 <div class="form-group">
-                    <label>Has a Certificate of Readiness been filled?</label>
+                    <label>Has a Certificate of Readiness been filed?</label>
                     <div>
                         <span>@((Model.CertificateOfReadiness ?? false) ? "Yes" : "No")</span>
                     </div>

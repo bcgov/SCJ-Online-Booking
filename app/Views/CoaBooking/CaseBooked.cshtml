@@ -3,7 +3,7 @@
 @inject IConfiguration Configuration
 
 @{
-    ViewData["Title"] = "Your Request is Queued";
+    ViewData["Title"] = "Your Request has been sent";
 }
 
     <div class="row screen-intro">
@@ -11,13 +11,13 @@
         @if (SessionService.CoaBookingInfo.IsBooked)
         {
             <h1>@ViewData["Title"]</h1>
-            <p>The booking for your Hearing has been added to the booking queue.</p>
-            <p>You will be contacted for further confirmation of this booking.</p>
+            <p>Thank you for your request.</p>
+            <p>You will receive confirmation by email.</p>
         }
         else
         {
-            <h1>error</h1>
-            <p>there was an error confirming your booking.</p>
+            <h1>Error</h1>
+            <p>There was an error confirming your booking.</p>
             <p>the following message was returned by the scheduling system.</p>
         }
         </div>
@@ -44,70 +44,6 @@ else
                     </div>
                 </div>
             }
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Court File Number</label>
-                        <div>
-                            <span>@SessionService.CoaBookingInfo.CaseNumber</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Case Type</label>
-                        <div>
-                            <span>@SessionService.CoaBookingInfo.CaseType</span>
-                        </div>
-                    </div>
-                    @if (@SessionService.CoaBookingInfo.CaseType == CoaCaseType.Civil)
-                    {
-                        <div class="form-group">
-                            <label>Has a Certificate of Readiness been filled?</label>
-                            <div>
-                                <span>@((@SessionService.CoaBookingInfo.CertificateOfReadiness ?? false) ? "Yes" : "No")</span>
-                            </div>
-                        </div>
-                    }
-                    <div class="form-group">
-                        <label>Is the Hearing date agreed upon by all parties?</label>
-                        <div>
-                            <span>@((@SessionService.CoaBookingInfo.DateIsAgreed ?? false) ? "Yes" : "No")</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>How long will you require for your Hearing?</label>
-                        <div>
-                            <span>@((@SessionService.CoaBookingInfo.IsFullDay ?? false) ? "Full Day" : "Half Day")</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Type of Appeal Hearing</label>
-                        <div>
-                            <span>@SessionService.CoaBookingInfo.HearingTypeName</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Date of Hearing</label>
-                        <div>
-                            <span>@SessionService.CoaBookingInfo.SelectedDate?.ToString("dddd, MMMM dd, yyyy")</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group contact-information">
-                        <h2>Your Contact Information</h2>
-                        <label>E-mail address</label>
-                        <div>
-                            <span>@SessionService.UserInfo.Email</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <div>
-                            <span>@SessionService.UserInfo.Phone</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 }
