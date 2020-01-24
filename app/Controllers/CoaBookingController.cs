@@ -38,14 +38,14 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (bookingInfo == null)
             {
-                return View(new CoaCaseSearchViewModel());
+                return View(new CoaCaseSearchViewModel {CaseNumber = "CA"});
             }
 
             var model = new CoaCaseSearchViewModel
             {
                 CaseId = bookingInfo.CaseId,
                 HearingTypeId = bookingInfo.HearingTypeId,
-                CaseNumber = bookingInfo.CaseNumber,
+                CaseNumber = string.IsNullOrWhiteSpace(bookingInfo.CaseNumber) ? "CA" : bookingInfo.CaseNumber, 
                 CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
                 IsFullDay = bookingInfo.IsFullDay,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
@@ -69,6 +69,14 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseSearch(CoaCaseSearchViewModel model)
         {
+            if (!model.Step1Complete)
+            {
+                if ((model.CaseNumber ?? "CA").ToUpper().Trim() == "CA")
+                {
+                    ModelState.AddModelError("CaseNumber", "Please provide a Court File Number.");
+                }
+            }
+
             if (model.Step1Complete)
             {
                 if (model.CaseType == CoaCaseType.Civil)

@@ -36,7 +36,7 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                if (string.IsNullOrEmpty(CaseNumber))
+                if (string.IsNullOrEmpty(CaseNumber) || CaseNumber.ToUpper().Trim() == "CA")
                 {
                     return false;
                 }

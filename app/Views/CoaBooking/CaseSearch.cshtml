@@ -197,7 +197,7 @@
                 </div>
             }
 
-            @if (Model.CaseNumber != null && !(Model.IsValidCaseNumber ?? false))
+            @if (Model.CaseNumber != null && Model.CaseNumber != "CA" && !(Model.IsValidCaseNumber ?? false))
             {
                 <hr class="results-linebreak" />
                 <div class="alert alert-warning">
