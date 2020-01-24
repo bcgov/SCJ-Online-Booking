@@ -47,12 +47,16 @@
                             <div>
                                 @if (Model.Step1Complete)
                                 {
-                                    <input class="form-control caseNumber" asp-for="CaseNumber" value="@(string.IsNullOrEmpty(Model.CaseNumber) ? "CA" : Model.CaseNumber)" disabled="@(true)" />
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(true)" />
                                     <input type="hidden" asp-for="CaseNumber" value="@Model.CaseNumber" />
+                                }
+                                else if (Model.CaseNumber != null && Model.CaseNumber != "CA" && !(Model.IsValidCaseNumber ?? false))
+                                {
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(true)" />
                                 }
                                 else
                                 {
-                                    <input class="form-control caseNumber" asp-for="CaseNumber" value="@(string.IsNullOrEmpty(Model.CaseNumber) ? "CA" : Model.CaseNumber)"/>
+                                <input class="form-control caseNumber" asp-for="CaseNumber" value="CA" />
                                 }
                             </div>
                             <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.">
