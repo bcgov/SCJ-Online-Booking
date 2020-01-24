@@ -114,17 +114,19 @@ namespace SCJ.Booking.MVC.Controllers
                 }
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                model = await _coaBookingService.GetSearchResults(model);
+            }
+
+            if (!ModelState.IsValid || model.CaseId == 0)
             {
                 model.HearingTypes = CoaBookingService.GetHearingTypes();
-
                 return View(model);
             }
 
-            model = await _coaBookingService.GetSearchResults(model);
-
             //test if the user selected a time-slot that is available
-            if (model != null && model.SelectedDate != null && !model.TimeSlotExpired)
+            if (model.SelectedDate != null && !model.TimeSlotExpired)
                 //go to confirmation screen
             {
                 return new RedirectResult("/scjob/booking/coa/CaseConfirm");
