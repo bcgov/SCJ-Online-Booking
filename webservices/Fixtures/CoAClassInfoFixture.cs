@@ -4,22 +4,79 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
     public static class CoAClassInfoFixture
     {
-        public static CoAClassInfo CivilCase = new CoAClassInfo
+        public static COACaseList CivilCase = new COACaseList
         {
-            CaseId = 37351,
-            CaseType = "Civil"
+            CaseType = "Civil",
+            CaseList = new CoAClassInfo[] {
+
+                new CoAClassInfo {
+                    CaseId = 37351,
+                    Case_Num = "CA39029",
+                    Main = true
+                }
+            }
         };
 
-        public static CoAClassInfo CriminalCase = new CoAClassInfo
+        public static COACaseList CivilCaseWithChildCA39000 = new COACaseList
         {
-            CaseId = 40368,
-            CaseType = "Criminal"
+            CaseType = "Civil",
+            CaseList = new CoAClassInfo[] {
+
+                new CoAClassInfo {
+                    CaseId = 37350,
+                    Case_Num = "CA39000",
+                    Main = true
+                },
+
+                new CoAClassInfo {
+                    CaseId = 37349,
+                    Case_Num = "CA39001",
+                    Main = false
+                }
+
+            }
         };
 
-        public static CoAClassInfo NotFound = new CoAClassInfo
+        public static COACaseList CivilCaseWithParentCA39001 = new COACaseList
         {
-            CaseId = 0,
-            CaseType = "Not Found"
+            CaseType = "Civil",
+            CaseList = new CoAClassInfo[] {
+
+                new CoAClassInfo {
+                    CaseId = 37350,
+                    Case_Num = "CA39000",
+                    Main = true
+                },
+
+                new CoAClassInfo {
+                    CaseId = 37349,
+                    Case_Num = "CA39001",
+                    Main = false
+                }
+
+            }
+        };
+
+
+
+        public static COACaseList CriminalCase = new COACaseList
+        {
+            CaseType = "Criminal",
+            CaseList = new CoAClassInfo[] {
+
+                new CoAClassInfo {
+                    CaseId = 40368,
+                    Case_Num = "CA42024",
+                    Main = true
+                }
+            }
+        };
+
+        public static COACaseList NotFound = new COACaseList
+        {
+            CaseType = "Not Found",
+            CaseList = new CoAClassInfo[] { }
         };
     }
 }
+

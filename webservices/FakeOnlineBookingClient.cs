@@ -43,7 +43,7 @@ namespace SCJ.OnlineBooking
             return BookingHearingResultFixture.Success;
         }
 
-        public async Task<CoAClassInfo> CoACaseNumberValidAsync(string caseNum)
+        public async Task<SCJ.OnlineBooking.COACaseList> CoACaseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
 
@@ -55,6 +55,18 @@ namespace SCJ.OnlineBooking
             if (caseNum.ToUpper() == "CA42024")
             {
                 return CoAClassInfoFixture.CriminalCase;
+            }
+
+            //Fake case with a child
+            if (caseNum.ToUpper() == "CA39000")
+            {
+                return CoAClassInfoFixture.CivilCaseWithChildCA39000;
+            }
+
+            //Fake case with a parent
+            if (caseNum.ToUpper() == "CA39001")
+            {
+                return CoAClassInfoFixture.CivilCaseWithParentCA39001;
             }
 
             return CoAClassInfoFixture.NotFound;

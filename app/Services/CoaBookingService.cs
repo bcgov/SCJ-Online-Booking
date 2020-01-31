@@ -71,9 +71,9 @@ namespace SCJ.Booking.MVC.Services
             var retval = model;
 
             //search the current case number
-            CoAClassInfo caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
+            COACaseList caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
 
-            int caseId = caseNumberResult.CaseId;
+            int caseId = caseNumberResult.CaseList[0].CaseId;
             string caseType = caseNumberResult.CaseType;
 
             if (caseId == 0)

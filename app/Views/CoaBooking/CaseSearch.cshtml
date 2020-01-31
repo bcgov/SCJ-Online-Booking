@@ -69,6 +69,16 @@
 
                 @if (Model.Step1Complete)
                 {
+                    <div class="related_cases">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Please select the related file numbers that will be heard on the same date.</label>
+                                <p>Note: Only one related file number can be requested in a hearing unless the main file number is also included.</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+
                     if (Model.CaseType == CoaCaseType.Civil)
                     {
                         <div class="preliminary_questions preliminary_questions--Civil">

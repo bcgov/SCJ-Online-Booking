@@ -107,18 +107,18 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoACaseNumberValidAsync_Civil()
         {
-            CoAClassInfo result = _soapClient.CoACaseNumberValidAsync("CA39029").Result;
+            COACaseList result = _soapClient.CoACaseNumberValidAsync("CA39029").Result;
             Assert.NotNull(result);
-            Assert.True(result.CaseId == 37351);
+            Assert.True(result.CaseList[0].CaseId == 37351);
             Assert.True(result.CaseType == "Civil");
         }
 
         [Fact]
         public void CoACaseNumberValidAsync_Criminal()
         {
-            CoAClassInfo result = _soapClient.CoACaseNumberValidAsync("CA42024").Result;
+            COACaseList result = _soapClient.CoACaseNumberValidAsync("CA42024").Result;
             Assert.NotNull(result);
-            Assert.True(result.CaseId == 40368);
+            Assert.True(result.CaseList[0].CaseId == 40368);
             Assert.True(result.CaseType == "Criminal");
         }
 
@@ -126,9 +126,9 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoACaseNumberValidAsync_Invalid()
         {
-            CoAClassInfo result = _soapClient.CoACaseNumberValidAsync("12345").Result;
+            COACaseList result = _soapClient.CoACaseNumberValidAsync("12345").Result;
             Assert.NotNull(result);
-            Assert.True(result.CaseId == 0);
+            Assert.True(result.CaseList.Length == 0);
             Assert.True(result.CaseType == "Not Found");
         }
 
