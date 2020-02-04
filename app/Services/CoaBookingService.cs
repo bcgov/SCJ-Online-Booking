@@ -73,10 +73,7 @@ namespace SCJ.Booking.MVC.Services
             //search the current case number
             COACaseList caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
 
-            int caseId = caseNumberResult.CaseList[0].CaseId;
-            string caseType = caseNumberResult.CaseType;
-
-            if (caseId == 0)
+            if (caseNumberResult.CaseList.Length == 0)
             {
                 //case could not be found
                 retval.IsValidCaseNumber = false;
@@ -84,8 +81,11 @@ namespace SCJ.Booking.MVC.Services
                 //empty result set
                 retval.Results = new Dictionary<DateTime, List<DateTime>>();
             }
+
             else
             {
+                int caseId = caseNumberResult.CaseList[0].CaseId;
+                string caseType = caseNumberResult.CaseType;
                 retval.CaseId = caseId;
 
                 //case type
@@ -94,6 +94,10 @@ namespace SCJ.Booking.MVC.Services
                 retval.IsValidCaseNumber = true;
 
                 retval.HearingTypes = GetHearingTypes();
+
+                retval.CaseList = caseNumberResult.CaseList;
+                //retval.CaseList = caseNumberResult.CaseList.Where(x => x.CaseId != caseId).ToArray();
+
 
                 if (caseType == CoaCaseType.Civil)
                 {
@@ -122,7 +126,8 @@ namespace SCJ.Booking.MVC.Services
                     //LowerCourtOrder = model.LowerCourtOrder,
                     IsFullDay = model.IsFullDay,
                     HearingTypeName = retval.HearingTypeName,
-                    SelectedDate = model.SelectedDate
+                    SelectedDate = model.SelectedDate,
+                    CaseList = retval.CaseList
                 };
 
                 if (model.HearingTypeId != null)

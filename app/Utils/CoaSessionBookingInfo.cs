@@ -1,3 +1,4 @@
+using SCJ.OnlineBooking;
 using System;
 
 namespace SCJ.Booking.MVC.Utils
@@ -28,5 +29,7 @@ namespace SCJ.Booking.MVC.Utils
         public string RelatedCases { get; set; }
         public string DateFriendlyName { get; set; }
         public string TimeSlotFriendlyName { get; set; }
+        public CoAClassInfo[] CaseList { get; set; }
+
     }
 }

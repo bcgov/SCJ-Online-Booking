@@ -33,6 +33,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public DateTime? SelectedDate { get; set; }
         public string SubmitButton { get; set; }
         public bool TimeSlotExpired { get; set; }
+        public CoAClassInfo[] CaseList { get; set; }
 
         public bool Step1Complete
         {

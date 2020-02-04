@@ -33,7 +33,6 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     Case_Num = "CA39001",
                     Main = false
                 }
-
             }
         };
 

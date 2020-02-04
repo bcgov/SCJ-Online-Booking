@@ -53,7 +53,10 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseType = bookingInfo.CaseType,
                 //LowerCourtOrder = bookingInfo.LowerCourtOrder,
                 SelectedDate = bookingInfo.SelectedDate,
-                IsValidCaseNumber = !string.IsNullOrEmpty(bookingInfo.CaseNumber)
+                IsValidCaseNumber = !string.IsNullOrEmpty(bookingInfo.CaseNumber),
+                RelatedCases = bookingInfo.RelatedCases,
+                CaseList = bookingInfo.CaseList
+
             };
 
             if (model.Step2Complete)
