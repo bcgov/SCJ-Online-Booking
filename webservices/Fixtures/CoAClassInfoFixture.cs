@@ -32,6 +32,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     CaseId = 37349,
                     Case_Num = "CA39001",
                     Main = false
+                },
+
+                new CoAClassInfo {
+                    CaseId = 37348,
+                    Case_Num = "CA39002",
+                    Main = false
                 }
             }
         };
@@ -51,12 +57,40 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     CaseId = 37349,
                     Case_Num = "CA39001",
                     Main = false
-                }
+                },
 
+                new CoAClassInfo {
+                    CaseId = 37348,
+                    Case_Num = "CA39002",
+                    Main = false
+                }
             }
         };
 
+        public static COACaseList CivilCaseWithParentCA39002 = new COACaseList
+        {
+            CaseType = "Civil",
+            CaseList = new CoAClassInfo[] {
 
+                new CoAClassInfo {
+                    CaseId = 37350,
+                    Case_Num = "CA39000",
+                    Main = true
+                },
+
+                new CoAClassInfo {
+                    CaseId = 37349,
+                    Case_Num = "CA39001",
+                    Main = false
+                },
+
+                new CoAClassInfo {
+                    CaseId = 37348,
+                    Case_Num = "CA39002",
+                    Main = false
+                }
+            }
+        };
 
         public static COACaseList CriminalCase = new COACaseList
         {

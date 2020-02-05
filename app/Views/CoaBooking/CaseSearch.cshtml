@@ -56,7 +56,7 @@
                                 }
                                 else
                                 {
-                                <input class="form-control caseNumber" asp-for="CaseNumber" value="CA" />
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" value="CA" />
                                 }
                             </div>
                             <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.">
@@ -69,16 +69,19 @@
 
                 @if (Model.Step1Complete)
                 {
-                    <div class="related_cases">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Please select the related file numbers that will be heard on the same date.</label>
-                                <p>Note: Only one related file number can be requested in a hearing unless the main file number is also included.</p>
+                    <div class="row search-info-row related-cases">
+                        <div class="col-md-12">
+                            <label>Please select the related file numbers that will be heard on the same date.</label>
+                            <p>Note: Only one related file number can be requested in a hearing unless the main file number is also included.</p>
+                            <ul>
                                 @foreach (var x in Model.CaseList)
                                 {
-                                    <p>@x.Case_Num</p>
+                                <li>
+                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" />
+                                    <label>@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
+                                </li>
                                 }
-                            </div>
+                            </ul>
                         </div>
                     </div>
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SCJ.Booking.MVC.ViewModels
@@ -6,11 +7,12 @@ namespace SCJ.Booking.MVC.ViewModels
     public class CoaCaseConfirmViewModel
     {
         public string CaseNumber { get; set; }
+        public List<string> SelectedCases { get; set; }
         public int CaseId { get; set; }
         public string CaseType { get; set; }
         public bool IsValidCaseNumber { get; set; }
         public bool IsMainCase { get; set; }
-        public string RelatedCases { get; set; }
+        public List<string> RelatedCases { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
         //public bool? LowerCourtOrder { get; set; }

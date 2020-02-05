@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
+using System.Collections.Generic;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -55,8 +56,8 @@ namespace SCJ.Booking.MVC.Controllers
                 SelectedDate = bookingInfo.SelectedDate,
                 IsValidCaseNumber = !string.IsNullOrEmpty(bookingInfo.CaseNumber),
                 RelatedCases = bookingInfo.RelatedCases,
-                CaseList = bookingInfo.CaseList
-
+                CaseList = bookingInfo.CaseList,
+                SelectedCases = bookingInfo.SelectedCases
             };
 
             if (model.Step2Complete)
@@ -151,6 +152,16 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             SessionUserInfo cui = _session.GetUserInformation();
 
+            //Filtering out selected cases from all related cases
+            var RelatedCases = new List<string>();
+            foreach (var x in bookingInfo.CaseList)
+            {
+                if (!bookingInfo.SelectedCases.Contains(x.Case_Num))
+                {
+                    RelatedCases.Add(x.Case_Num);
+                }
+            }
+
             //Time-slot is still available
             var model = new CoaCaseConfirmViewModel
             {
@@ -164,7 +175,9 @@ namespace SCJ.Booking.MVC.Controllers
                 HearingTypeName = bookingInfo.HearingTypeName,
                 SelectedDate = bookingInfo.SelectedDate,
                 EmailAddress = cui.Email,
-                Phone = cui.Phone
+                Phone = cui.Phone,
+                SelectedCases = bookingInfo.SelectedCases,
+                RelatedCases = RelatedCases
             };
 
             return View(model);

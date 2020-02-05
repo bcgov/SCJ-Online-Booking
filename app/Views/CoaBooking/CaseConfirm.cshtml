@@ -24,15 +24,24 @@
             <div class="form-group">
                 <label>Court File Number</label>
                 <div>
-                    <span>@Model.CaseNumber</span>
+                    <span>
+                        @string.Join(", ", Model.SelectedCases)
+                    </span>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Related File Number(s)</label>
-                <div>
-                    <span>TBD</span>
+
+            @if (Model.RelatedCases.Count > 0)
+            {
+                <div class="form-group">
+                    <label>Related File Number(s)</label>
+                    <div>
+                        <span>
+                            @string.Join(", ", Model.RelatedCases)
+                        </span>
+                    </div>
                 </div>
-            </div>
+            }
+
             <div class="form-group">
                 <label>Case Type</label>
                 <div>

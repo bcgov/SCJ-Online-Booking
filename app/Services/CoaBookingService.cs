@@ -96,8 +96,6 @@ namespace SCJ.Booking.MVC.Services
                 retval.HearingTypes = GetHearingTypes();
 
                 retval.CaseList = caseNumberResult.CaseList;
-                //retval.CaseList = caseNumberResult.CaseList.Where(x => x.CaseId != caseId).ToArray();
-
 
                 if (caseType == CoaCaseType.Civil)
                 {
@@ -127,7 +125,8 @@ namespace SCJ.Booking.MVC.Services
                     IsFullDay = model.IsFullDay,
                     HearingTypeName = retval.HearingTypeName,
                     SelectedDate = model.SelectedDate,
-                    CaseList = retval.CaseList
+                    CaseList = retval.CaseList,
+                    SelectedCases = model.SelectedCases,
                 };
 
                 if (model.HearingTypeId != null)
