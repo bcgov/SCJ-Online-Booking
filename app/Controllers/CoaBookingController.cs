@@ -152,13 +152,13 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             SessionUserInfo cui = _session.GetUserInformation();
 
-            //Filtering out selected cases from all related cases
+            //Filtering out related cases
             var RelatedCases = new List<string>();
-            foreach (var x in bookingInfo.CaseList)
+            foreach (var x in bookingInfo.SelectedCases)
             {
-                if (!bookingInfo.SelectedCases.Contains(x.Case_Num))
+                if (x != bookingInfo.CaseNumber)
                 {
-                    RelatedCases.Add(x.Case_Num);
+                    RelatedCases.Add(x);
                 }
             }
 

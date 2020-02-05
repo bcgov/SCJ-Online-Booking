@@ -74,12 +74,35 @@
                             <label>Please select the related file numbers that will be heard on the same date.</label>
                             <p>Note: Only one related file number can be requested in a hearing unless the main file number is also included.</p>
                             <ul>
-                                @foreach (var x in Model.CaseList)
+                                @if (showingDates)
                                 {
+                                    @foreach (var x in Model.CaseList)
+                                    {
                                 <li>
-                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" />
+                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(true)" />
+
+                                    @if ((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))
+                                    {
+                                        <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
+                                    }
                                     <label>@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
                                 </li>
+                                    }
+                                }
+
+                                else
+                                {
+                                    @foreach (var x in Model.CaseList)
+                                    {
+                                        <li>
+                                            <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber)" disabled="@(x.Case_Num == Model.CaseNumber)" />
+                                            @if (x.Case_Num == Model.CaseNumber)
+                                            {
+                                                <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
+                                            }
+                                            <label>@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
+                                        </li>
+                                    }
                                 }
                             </ul>
                         </div>
