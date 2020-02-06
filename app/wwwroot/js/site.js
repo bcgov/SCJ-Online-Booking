@@ -135,12 +135,10 @@ $(document).ready(function () {
         var caseType = $("#CaseType").val().toLowerCase();
         if (caseType === "civil") {
             toggleCivil();
-            alert(caseType);
         }
 
         if (caseType === "criminal") {
             toggleCriminal();
-            alert(caseType);
         }
     });
 
