@@ -78,15 +78,15 @@
                                 {
                                     @foreach (var x in Model.CaseList)
                                     {
-                                <li>
-                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(true)" />
+                                        <li>
+                                            <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(true)" data-main="@(x.Main)" />
 
-                                    @if ((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))
-                                    {
-                                        <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
-                                    }
-                                    <label>@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
-                                </li>
+                                            @if ((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))
+                                            {
+                                                <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
+                                            }
+                                            <label>@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
+                                        </li>
                                     }
                                 }
 
@@ -95,7 +95,7 @@
                                     @foreach (var x in Model.CaseList)
                                     {
                                         <li>
-                                            <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber)" disabled="@(x.Case_Num == Model.CaseNumber)" />
+                                            <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber)" disabled="@(x.Case_Num == Model.CaseNumber)" data-main="@(x.Main)" />
                                             @if (x.Case_Num == Model.CaseNumber)
                                             {
                                                 <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
@@ -105,6 +105,10 @@
                                     }
                                 }
                             </ul>
+                            <div class="alert alert-warning  alert--related-cases">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                Only one related file number can be requested in a hearing unless the main file number is also included.
+                            </div>
                         </div>
                     </div>
 

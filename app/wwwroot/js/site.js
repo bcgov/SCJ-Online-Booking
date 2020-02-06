@@ -32,6 +32,7 @@ $(document).ready(function() {
     // Init Tooltips
     $('[data-toggle="tooltip"]').tooltip();
 
+
     //caches a jQuery object containing the header element
     var header = $("#scj-header-nav");
     $(window).scroll(function() {
@@ -42,6 +43,7 @@ $(document).ready(function() {
             header.removeClass("affixed");
         }
     });
+
 
     // phone number inputs - form field data tidy up
     $("input.phone-input").change(function() {
@@ -55,6 +57,7 @@ $(document).ready(function() {
             this.value = phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
         }
     });
+
 
     // Set up the progress spinner overlay
     $("body").on("click",
@@ -76,6 +79,54 @@ $(document).ready(function() {
     });
 
 
+    //Set checked attribute dynamically from clicks and
+    //Display error message on relate case file selection
+    var $checkboxes = $('.related-cases input[name="SelectedCases"]');
+    $checkboxes.click(function () {
+        if ($(this).is(':checked')) {
+
+            if (!($checkboxes.filter('[data-main="True"]').attr("checked") == "checked")) {
+                if ($(this).attr("data-main") == "True") {
+                    //If the main is not checked, and the current checked one is the main
+                    $(".alert--related-cases").css("display", "none");
+                }
+
+                else {
+                    //If the main is not checked, and the current checked one is another sub
+                    $(".alert--related-cases").css("display", "block");
+                }
+            }
+
+            this.setAttribute("checked", "checked");
+            this.checked = true;
+        }
+
+        else {
+            var $checked = $('.related-cases input[name="SelectedCases"]:checked');
+
+            if ($checkboxes.filter('[data-main="True"]').attr("checked") == "checked") {
+                if ($(this).attr("data-main") == "True" && $checked.length > 1) {
+                    //If the main is checked, and the current unchecked one is the main
+                    //AND there are more than 1 sub options that are checked
+                    $(".alert--related-cases").css("display", "block");
+                }
+            }
+
+            else {
+                if ($checked.length == 1) {
+                    //If the main is not checked
+                    //AND there is only 1 other sub option that is checked
+                    $(".alert--related-cases").css("display", "none");
+                }
+            }
+
+            this.setAttribute("checked", ""); // For IE
+            this.removeAttribute("checked"); // For other browsers
+            this.checked = false;
+        }
+    });
+
+
     //Display last row of questions for Civil case if previous questions are answered Yes
     var toggleCivil = function() {
         var $Civil_CertificateOfReadiness =
@@ -90,7 +141,6 @@ $(document).ready(function() {
 
     $('#Civil_CertificateOfReadiness input[type="radio"]').click(toggleCivil);
     $('#Civil_DateIsAgreed input[type="radio"]').click(toggleCivil);
-
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
     var toggleCriminal = function() {
