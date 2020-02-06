@@ -1,4 +1,5 @@
 // setup Bootstrap 4 Forms Validation
+
 (function() {
     "use strict";
     window.addEventListener("load",
@@ -27,7 +28,9 @@
         false);
 })();
 
-$(document).ready(function() {
+var validCaseSelection = true;
+
+$(document).ready(function () {
 
     // Init Tooltips
     $('[data-toggle="tooltip"]').tooltip();
@@ -89,11 +92,13 @@ $(document).ready(function() {
                 if ($(this).attr("data-main") == "True") {
                     //If the main is not checked, and the current checked one is the main
                     $(".alert--related-cases").css("display", "none");
+                    validCaseSelection = true;
                 }
 
                 else {
                     //If the main is not checked, and the current checked one is another sub
                     $(".alert--related-cases").css("display", "block");
+                    validCaseSelection = false;
                 }
             }
 
@@ -109,6 +114,7 @@ $(document).ready(function() {
                     //If the main is checked, and the current unchecked one is the main
                     //AND there are more than 1 sub options that are checked
                     $(".alert--related-cases").css("display", "block");
+                    validCaseSelection = false;
                 }
             }
 
@@ -117,6 +123,7 @@ $(document).ready(function() {
                     //If the main is not checked
                     //AND there is only 1 other sub option that is checked
                     $(".alert--related-cases").css("display", "none");
+                    validCaseSelection = true;
                 }
             }
 
@@ -124,15 +131,26 @@ $(document).ready(function() {
             this.removeAttribute("checked"); // For other browsers
             this.checked = false;
         }
+
+        var caseType = $("#CaseType").val().toLowerCase();
+        if (caseType === "civil") {
+            toggleCivil();
+            alert(caseType);
+        }
+
+        if (caseType === "criminal") {
+            toggleCriminal();
+            alert(caseType);
+        }
     });
 
 
     //Display last row of questions for Civil case if previous questions are answered Yes
+    //And selection of related case files is valid
     var toggleCivil = function() {
-        var $Civil_CertificateOfReadiness =
-            $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
+        var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
         var $Civil_DateIsAgreed = $('#Civil_DateIsAgreed input[type="radio"]:checked').val();
-        if ($Civil_CertificateOfReadiness === "true" && $Civil_DateIsAgreed === "true") {
+        if ($Civil_CertificateOfReadiness === "true" && $Civil_DateIsAgreed === "true" && validCaseSelection) {
             $("#CivilAdditionalQs").css("display", "block");
         } else {
             $("#CivilAdditionalQs").css("display", "none");
@@ -143,9 +161,10 @@ $(document).ready(function() {
     $('#Civil_DateIsAgreed input[type="radio"]').click(toggleCivil);
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
+    //And selection of related case files is valid
     var toggleCriminal = function() {
         var $Criminal_DateIsAgreed = $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
-        if ($Criminal_DateIsAgreed === "true") {
+        if ($Criminal_DateIsAgreed === "true" && validCaseSelection) {
             $("#CriminalAdditionalQs").css("display", "flex");
         } else {
             $("#CriminalAdditionalQs").css("display", "none");
@@ -157,7 +176,7 @@ $(document).ready(function() {
 
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
-    $('.preliminary_questions input[type="radio"], .preliminary_questions select').change(function() {
+    $('.preliminary_questions input[type="radio"], .preliminary_questions select, input[name="SelectedCases"]').change(function() {
         var caseType = $("#CaseType").val().toLowerCase();
         var $radioBtnGroup = $(this).parent().parent();
 
@@ -174,14 +193,14 @@ $(document).ready(function() {
         }
 
         if (caseType === "civil") {
-            var $Civil_CertificateOfReadiness =
-                $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
+            var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
             var $Civil_DateIsAgreed = $('#Civil_DateIsAgreed input[type="radio"]:checked').val();
             var $Civil_IsFullDay = $('#Civil_IsFullDay input[type="radio"]:checked').val();
 
             if ($Civil_CertificateOfReadiness === "true" &&
                 $Civil_DateIsAgreed === "true" &&
-                ($Civil_IsFullDay === "true" || $Civil_IsFullDay === "false")) {
+                ($Civil_IsFullDay === "true" || $Civil_IsFullDay === "false") &&
+                validCaseSelection) {
                 $("#btnShowDates").css("display", "block");
             } else {
                 $("#btnShowDates").css("display", "none");
@@ -197,7 +216,8 @@ $(document).ready(function() {
 
             if ($Criminal_DateIsAgreed === "true" &&
                 ($Criminal_IsFullDay === "true" || $Criminal_IsFullDay === "false") &&
-                $Criminal_HearingTypeId !== "") {
+                $Criminal_HearingTypeId !== "" &&
+                validCaseSelection) {
                 $("#btnShowDates").css("display", "block");
             } else {
                 $("#btnShowDates").css("display", "none");

@@ -69,6 +69,12 @@ namespace SCJ.OnlineBooking
                 return CoAClassInfoFixture.CivilCaseWithParentCA39001;
             }
 
+            //Fake case with a parent
+            if (caseNum.ToUpper() == "CA39002")
+            {
+                return CoAClassInfoFixture.CivilCaseWithParentCA39002;
+            }
+
             return CoAClassInfoFixture.NotFound;
         }
 
