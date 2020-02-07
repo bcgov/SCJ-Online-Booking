@@ -191,10 +191,24 @@ namespace SCJ.Booking.MVC.Services
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate.Value))
             {
+                //Fetch caseID from final case number
+                var finalCase = bookingInfo.CaseList.Where(x => x.Case_Num == model.CaseNumber).First();
+                var relatedCases = "";
+                if (finalCase.Main) {
+                    var relatedCaseIDList = bookingInfo.CaseList.Where(x => model.RelatedCaseList.Contains(x.Case_Num)).Select(x => x.CaseId).ToList();
+
+                    if (relatedCaseIDList != null && relatedCaseIDList.Count > 0)
+                    {
+                        relatedCases = string.Join("|", relatedCaseIDList);
+                    }
+                }
+
                 //build object to send to the API
                 var bookInfo = new CoABookingHearingInfo
                 {
-                    caseID = bookingInfo.CaseId,
+                    caseID = finalCase.CaseId,
+                    MainCase = finalCase.Main,
+                    RelatedCases = relatedCases,
                     email = $"{model.EmailAddress}",
                     hearingDate = DateTime.Parse($"{model.SelectedDate.Value}"),
                     hearingLength = (bookingInfo.IsFullDay ?? false) ? "Full" : "Half",

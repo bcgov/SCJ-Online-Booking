@@ -1,3 +1,4 @@
+using SCJ.OnlineBooking;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,12 +8,9 @@ namespace SCJ.Booking.MVC.ViewModels
     public class CoaCaseConfirmViewModel
     {
         public string CaseNumber { get; set; }
-        public List<string> SelectedCases { get; set; }
         public int CaseId { get; set; }
         public string CaseType { get; set; }
         public bool IsValidCaseNumber { get; set; }
-        public bool IsMainCase { get; set; }
-        public List<string> RelatedCases { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
         //public bool? LowerCourtOrder { get; set; }
@@ -40,5 +38,8 @@ namespace SCJ.Booking.MVC.ViewModels
         [Required(ErrorMessage = "Please provide a valid phone number.")]
         [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}", ErrorMessage = "Please provide a valid phone number.")]
         public string Phone { get; set; }
+        public CoAClassInfo[] CaseList { get; set; }
+        public List<string> SelectedCases { get; set; }
+        public List<string> RelatedCaseList { get; set; }
     }
 }

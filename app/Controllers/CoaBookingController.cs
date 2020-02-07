@@ -5,6 +5,7 @@ using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -55,7 +56,6 @@ namespace SCJ.Booking.MVC.Controllers
                 //LowerCourtOrder = bookingInfo.LowerCourtOrder,
                 SelectedDate = bookingInfo.SelectedDate,
                 IsValidCaseNumber = !string.IsNullOrEmpty(bookingInfo.CaseNumber),
-                RelatedCases = bookingInfo.RelatedCases,
                 CaseList = bookingInfo.CaseList,
                 SelectedCases = bookingInfo.SelectedCases
             };
@@ -152,20 +152,25 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             SessionUserInfo cui = _session.GetUserInformation();
 
+            //Swapping Case Number to the main case file if it was selected
+            //TO DO
+            var mainCase = bookingInfo.CaseList.Where(x => x.Main).First();
+            var finalCaseNumber = bookingInfo.SelectedCases.Where(x => x == mainCase.Case_Num).FirstOrDefault() ?? bookingInfo.CaseNumber;
+
             //Filtering out related cases
-            var RelatedCases = new List<string>();
+            var relatedCaseList = new List<string>();
             foreach (var x in bookingInfo.SelectedCases)
             {
-                if (x != bookingInfo.CaseNumber)
+                if (x != finalCaseNumber)
                 {
-                    RelatedCases.Add(x);
+                    relatedCaseList.Add(x);
                 }
             }
 
             //Time-slot is still available
             var model = new CoaCaseConfirmViewModel
             {
-                CaseNumber = bookingInfo.CaseNumber,
+                CaseNumber = finalCaseNumber,
                 CaseType = bookingInfo.CaseType,
                 CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
@@ -176,8 +181,9 @@ namespace SCJ.Booking.MVC.Controllers
                 SelectedDate = bookingInfo.SelectedDate,
                 EmailAddress = cui.Email,
                 Phone = cui.Phone,
+                CaseList = bookingInfo.CaseList,
                 SelectedCases = bookingInfo.SelectedCases,
-                RelatedCases = RelatedCases
+                RelatedCaseList = relatedCaseList
             };
 
             return View(model);
