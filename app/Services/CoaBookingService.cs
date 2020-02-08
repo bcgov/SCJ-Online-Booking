@@ -84,12 +84,14 @@ namespace SCJ.Booking.MVC.Services
 
             else
             {
+                //case ID
                 int caseId = caseNumberResult.CaseList[0].CaseId;
-                string caseType = caseNumberResult.CaseType;
                 retval.CaseId = caseId;
 
                 //case type
+                string caseType = caseNumberResult.CaseType;
                 retval.CaseType = caseType;
+
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
@@ -191,16 +193,12 @@ namespace SCJ.Booking.MVC.Services
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate.Value))
             {
-                //Fetch caseID from final case number
-                var finalCase = bookingInfo.CaseList.Where(x => x.Case_Num == model.CaseNumber).First();
+                //Fetch final main case file after ruling out selection of cases with main case and related cases
+                var finalCase = bookingInfo.CaseList.Where(x => x.Case_Num == bookingInfo.CaseNumber).First();
                 var relatedCases = "";
-                if (finalCase.Main) {
+                if (finalCase.Main && model.RelatedCaseList != null && model.RelatedCaseList.Count > 0) {
                     var relatedCaseIDList = bookingInfo.CaseList.Where(x => model.RelatedCaseList.Contains(x.Case_Num)).Select(x => x.CaseId).ToList();
-
-                    if (relatedCaseIDList != null && relatedCaseIDList.Count > 0)
-                    {
-                        relatedCases = string.Join("|", relatedCaseIDList);
-                    }
+                    relatedCases = string.Join("|", relatedCaseIDList);
                 }
 
                 //build object to send to the API
@@ -299,13 +297,15 @@ namespace SCJ.Booking.MVC.Services
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
-                CourtFileNumber = _session.CoaBookingInfo.CaseNumber,
+                CourtFileNumber = booking.CaseNumber,
+                RelatedCaseList = booking.RelatedCaseList,
+                CaseType = booking.CaseType,
                 TypeOfConference = booking.HearingTypeName,
                 HearingLength = booking.IsFullDay ?? false ? "Full Day" : "Half Day",
                 Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? ""
             };
 
-            var template = $"CoaBooking/EmailText-{booking.CaseType}";
+            var template = $"CoaBooking/EmailText";
 
             //Render the email template 
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

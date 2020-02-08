@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace SCJ.Booking.MVC.ViewModels
 {
     public class EmailViewModel
@@ -12,5 +14,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //For Court of Appeal
         public string HearingLength { get; set; }
+        public string CaseType { get; internal set; }
+        public List<string> RelatedCaseList { get; set; }
     }
 }

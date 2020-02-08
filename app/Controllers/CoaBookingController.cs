@@ -152,10 +152,11 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             SessionUserInfo cui = _session.GetUserInformation();
 
-            //Swapping Case Number to the main case file if it was selected
-            //TO DO
+            //Swapping Case Number to the main case file if it was selected from the search result of a sub case file number
             var mainCase = bookingInfo.CaseList.Where(x => x.Main).First();
             var finalCaseNumber = bookingInfo.SelectedCases.Where(x => x == mainCase.Case_Num).FirstOrDefault() ?? bookingInfo.CaseNumber;
+            //Store final main case number back to the session
+            bookingInfo.CaseNumber = finalCaseNumber;
 
             //Filtering out related cases
             var relatedCaseList = new List<string>();
@@ -166,6 +167,8 @@ namespace SCJ.Booking.MVC.Controllers
                     relatedCaseList.Add(x);
                 }
             }
+            //Store final main case number back to the session
+            bookingInfo.RelatedCaseList = relatedCaseList;
 
             //Time-slot is still available
             var model = new CoaCaseConfirmViewModel
@@ -185,6 +188,9 @@ namespace SCJ.Booking.MVC.Controllers
                 SelectedCases = bookingInfo.SelectedCases,
                 RelatedCaseList = relatedCaseList
             };
+
+            // save the booking info back to the session
+            _session.CoaBookingInfo = bookingInfo;
 
             return View(model);
         }
