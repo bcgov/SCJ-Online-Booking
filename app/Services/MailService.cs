@@ -51,7 +51,7 @@ namespace SCJ.Booking.MVC.Services
 
                 message.ToRecipients.Add(new EmailAddress(to));
 
-                await message.SendAndSaveCopy();
+                //await message.SendAndSaveCopy();
             }
         }
 
