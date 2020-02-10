@@ -18,6 +18,10 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.0" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.0" />
         <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="1.0.7" />
+        <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
+        <PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
+        <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
+       
     </ItemGroup>
 
     <ItemGroup>

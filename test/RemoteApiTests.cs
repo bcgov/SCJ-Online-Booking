@@ -128,7 +128,7 @@ namespace SCJ.Booking.UnitTest
         {
             COACaseList result = _soapClient.CoACaseNumberValidAsync("12345").Result;
             Assert.NotNull(result);
-            Assert.True(result.CaseList.Length == 0);
+            Assert.True(result.CaseList.Length == 1);
             Assert.True(result.CaseType == "Not Found");
         }
 

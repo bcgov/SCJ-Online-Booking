@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -69,11 +70,23 @@ namespace SCJ.Booking.MVC.Services
         public async Task<CoaCaseSearchViewModel> GetSearchResults(CoaCaseSearchViewModel model)
         {
             var retval = model;
+            bool invalidCaseNumberFormat = false;
+            COACaseList caseNumberResult = new COACaseList();
 
             //search the current case number
-            COACaseList caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
+            try
+            {
+                caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
+            }
+            catch (FaultException ex)
+            {
+                if (ex.Message.ToLower().Contains("string was not in a correct format"))
+                {
+                    invalidCaseNumberFormat = true;
+                }
+            }
 
-            if (caseNumberResult.CaseType.ToLower() == "not found")
+            if (invalidCaseNumberFormat || caseNumberResult.CaseType.ToLower() == "not found")
             {
                 //case could not be found
                 retval.IsValidCaseNumber = false;
