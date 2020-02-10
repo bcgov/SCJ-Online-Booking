@@ -73,13 +73,15 @@ namespace SCJ.Booking.MVC.Services
             //search the current case number
             COACaseList caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
 
-            if (caseNumberResult.CaseList.Length == 0)
+            if (caseNumberResult.CaseList[0].CaseId == 0)
             {
                 //case could not be found
                 retval.IsValidCaseNumber = false;
 
                 //empty result set
                 retval.Results = new Dictionary<DateTime, List<DateTime>>();
+
+                //retval.CaseId = 0;
             }
 
             else

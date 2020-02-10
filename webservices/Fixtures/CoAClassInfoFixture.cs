@@ -108,7 +108,14 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
         public static COACaseList NotFound = new COACaseList
         {
             CaseType = "Not Found",
-            CaseList = new CoAClassInfo[] { }
+            CaseList = new CoAClassInfo[] {
+
+                new CoAClassInfo {
+                    CaseId = 0,
+                    Case_Num = "",
+                    Main = false
+                }
+            }
         };
     }
 }
