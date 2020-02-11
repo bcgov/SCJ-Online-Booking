@@ -16,5 +16,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public string HearingLength { get; set; }
         public string CaseType { get; internal set; }
         public List<string> RelatedCaseList { get; set; }
+        public string RelatedCasesString { get; set; }
     }
 }

@@ -6,13 +6,7 @@ You will be contacted for further confirmation of this booking.
 ----
 COURT FILE NUMBER:
 @Model.CourtFileNumber
-
-@if (Model.RelatedCaseList.Count > 0)
-{
-@:RELATED FILE NUMBER(S):
-@string.Join(", ", Model.RelatedCaseList)
-@:
-}
+@Html.Raw(Model.RelatedCasesString)
 CASE TYPE:
 @Model.CaseType
 

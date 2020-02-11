@@ -317,8 +317,15 @@ namespace SCJ.Booking.MVC.Services
                 CaseType = booking.CaseType,
                 TypeOfConference = booking.HearingTypeName,
                 HearingLength = booking.IsFullDay ?? false ? "Full Day" : "Half Day",
-                Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? ""
+                Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? "",
+                RelatedCasesString = ""
             };
+
+            if (booking.RelatedCaseList.Any())
+            {
+                viewModel.RelatedCasesString = "\nRELATED FILE NUMBER(S):\n" + string.Join(", ", booking.RelatedCaseList) + "\n";
+            }
+
 
             var template = $"CoaBooking/EmailText";
 
