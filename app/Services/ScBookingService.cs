@@ -399,7 +399,7 @@ namespace SCJ.Booking.MVC.Services
                 CourtFileNumber = _session.ScBookingInfo.CaseNumber,
                 RegistryName = booking.RegistryName,
                 TypeOfConference = booking.HearingTypeName,
-                Date = booking.SelectedCaseDate,
+                Date = booking.DateFriendlyName,
                 Time = booking.TimeSlotFriendlyName
             };
 
