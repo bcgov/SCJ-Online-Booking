@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -40,6 +40,18 @@
                         Supreme Court
                     </a>
                 }
+
+
+                else if (ViewBag.CourtName == "coa")
+                {
+                    <a href="/scjob/booking/coa/Restart">
+                        BC Courts Online Booking System
+                        <span class="d-none d-sm-inline-block">-</span>
+                        <br class="d-sm-none" />
+                        Court of Appeal
+                    </a>
+                }
+
                 else
                 {
                     <a href="/scjob">BC Courts Online Booking System</a>
