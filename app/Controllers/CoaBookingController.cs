@@ -153,27 +153,30 @@ namespace SCJ.Booking.MVC.Controllers
             SessionUserInfo cui = _session.GetUserInformation();
 
             //Swapping Case Number to the main case file if it was selected from the search result of a sub case file number
-            var mainCase = bookingInfo.CaseList.Where(x => x.Main).First();
-            var finalCaseNumber = bookingInfo.SelectedCases.Where(x => x == mainCase.Case_Num).FirstOrDefault() ?? bookingInfo.CaseNumber;
-            //Store final main case number back to the session
-            bookingInfo.CaseNumber = finalCaseNumber;
-
-            //Filtering out related cases
-            var relatedCaseList = new List<string>();
-            foreach (var x in bookingInfo.SelectedCases)
+            if (bookingInfo.CaseList.Length > 1)
             {
-                if (x != finalCaseNumber)
+                var mainCase = bookingInfo.CaseList.Where(x => x.Main).First();
+                var finalCaseNumber = bookingInfo.SelectedCases.Where(x => x == mainCase.Case_Num).FirstOrDefault() ?? bookingInfo.CaseNumber;
+                //Store final main case number back to the session
+                bookingInfo.CaseNumber = finalCaseNumber;
+
+                //Filtering out related cases
+                var relatedCaseList = new List<string>();
+                foreach (var x in bookingInfo.SelectedCases)
                 {
-                    relatedCaseList.Add(x);
+                    if (x != finalCaseNumber)
+                    {
+                        relatedCaseList.Add(x);
+                    }
                 }
+                //Store final main case number back to the session
+                bookingInfo.RelatedCaseList = relatedCaseList;
             }
-            //Store final main case number back to the session
-            bookingInfo.RelatedCaseList = relatedCaseList;
 
             //Time-slot is still available
             var model = new CoaCaseConfirmViewModel
             {
-                CaseNumber = finalCaseNumber,
+                CaseNumber = bookingInfo.CaseNumber,
                 CaseType = bookingInfo.CaseType,
                 CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
@@ -186,7 +189,7 @@ namespace SCJ.Booking.MVC.Controllers
                 Phone = cui.Phone,
                 CaseList = bookingInfo.CaseList,
                 SelectedCases = bookingInfo.SelectedCases,
-                RelatedCaseList = relatedCaseList
+                RelatedCaseList = bookingInfo.RelatedCaseList
             };
 
             // save the booking info back to the session

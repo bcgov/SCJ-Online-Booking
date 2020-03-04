@@ -321,7 +321,7 @@ namespace SCJ.Booking.MVC.Services
                 RelatedCasesString = ""
             };
 
-            if (booking.RelatedCaseList.Any())
+            if (booking.RelatedCaseList != null && booking.RelatedCaseList.Any())
             {
                 viewModel.RelatedCasesString = "\nRELATED FILE NUMBER(S):\n" + string.Join(", ", booking.RelatedCaseList) + "\n";
             }
