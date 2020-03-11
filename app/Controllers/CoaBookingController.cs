@@ -77,7 +77,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 if ((model.CaseNumber ?? "CA").ToUpper().Trim() == "CA")
                 {
-                    ModelState.AddModelError("CaseNumber", "Please provide a Court File Number.");
+                    ModelState.AddModelError("CaseNumber", "Please provide a court file number.");
                 }
             }
 

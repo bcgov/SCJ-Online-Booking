@@ -1,13 +1,13 @@
 @model CoaCaseConfirmViewModel
 
 @{
-    ViewData["Title"] = "Confirm your Request";
+    ViewData["Title"] = "Confirm Your Request";
 }
 
 <div class="row screen-intro">
     <div class="col-md-12 paragraph">
         <h1>@ViewData["Title"]</h1>
-        <p>The selected date will be reserved for your Hearing.</p>
+        <p>The selected date will be reserved for your hearing.</p>
         <p>Check that the following information is accurate before confirming your booking.</p>
     </div>
 </div>
@@ -23,7 +23,7 @@
             <input type="hidden" asp-for="SelectedDate" />
 
             <div class="form-group">
-                <label>Court File Number</label>
+                <label>Court file number</label>
                 <div>
                     <span>@Model.CaseNumber</span>
                 </div>
@@ -37,7 +37,7 @@
                 }
 
                 <div class="form-group">
-                    <label>Related File Number(s)</label>
+                    <label>Related file number(s)</label>
                     <div>
                         <span>
                             @string.Join(", ", Model.RelatedCaseList)
@@ -47,7 +47,7 @@
             }
 
             <div class="form-group">
-                <label>Case Type</label>
+                <label>Case type</label>
                 <div>
                     <span>@Model.CaseType</span>
                 </div>
@@ -62,25 +62,25 @@
                 </div>
             }
             <div class="form-group">
-                <label>Is the Hearing date agreed upon by all parties?</label>
+                <label>Is the hearing date agreed upon by all parties?</label>
                 <div>
                     <span>@((Model.DateIsAgreed ?? false) ? "Yes" : "No")</span>
                 </div>
             </div>
             <div class="form-group">
-                <label>How long will you require for your Hearing?</label>
+                <label>How long will you require for your hearing?</label>
                 <div>
                     <span>@((Model.IsFullDay ?? false) ? "Full Day" : "Half Day")</span>
                 </div>
             </div>
             <div class="form-group">
-                <label>Type of Appeal Hearing</label>
+                <label>Type of appeal hearing</label>
                 <div>
                     <span>@Model.HearingTypeName</span>
                 </div>
             </div>
             <div class="form-group">
-                <label>Date of Hearing</label>
+                <label>Date of hearing</label>
                 <div>
                     <span>@Model.SelectedDate.Value.ToString("dddd, MMMM dd, yyyy")</span>
                 </div>
