@@ -33,7 +33,7 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return AvailableDatesByLocationFixture.VancouverTmc;
+            return AvailableDatesByLocationFixture.AvailableDatesResult;
         }
 
         public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
