@@ -2,7 +2,7 @@
 @model ScCaseSearchViewModel
 
 @{
-    ViewData["Title"] = "Book Your Hearing - TMC";
+    ViewData["Title"] = "Book Your Hearing";
 }
 
 <div class="row screen-intro">
@@ -20,28 +20,39 @@
             <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
             <input type="hidden" asp-for="TimeSlotExpired" />
             <input type="hidden" asp-for="HearingTypeId" />
-            <div class="row search-info">
-                <div class="col-md-6 form-group">
-                    <label for="ddlLocation">Pick the registry where the file was created.</label>
-                    <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.RegistryOptions" required>
-                        <option value="">-- Pick a registry --</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Please provide the registry the file was created at.
+            <div class="search-info">
+                <div class="row search-info-row">
+                    <div class="col-md-12 form-group">
+                        <label>Please pick conference type: </label>
+                        <input type="radio" id="TMC" name="TMC" value="TMC">
+                        <label for="TMC">TMC</label>
+                        <input type="radio" id="TCH" name="TCH" value="TCH">
+                        <label for="TCH">TCH</label>
                     </div>
                 </div>
-                <div class="col-md-6 form-group">
-                    <label for="txtCaseNumber">What is the court file number for the case?</label>
-                    <div class="align-tooltip">
-                        <div>
-                            <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber" />
-                            <div class="invalid-feedback">
-                                Please provide a Court File Number.
-                            </div>
+                <div class="row search-info-row">
+                    <div class="col-md-6 form-group">
+                        <label for="ddlLocation">Pick the registry where the file was created.</label>
+                        <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.RegistryOptions" required>
+                            <option value="">-- Pick a registry --</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please provide the registry the file was created at.
                         </div>
-                        <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>Your court file number should not include any special characters. If using a CSO file number, ensure that the class number is prepended to the file number without a hyphen and exclude the first four characters (ex. VLC-S-M-12345 would be M12345)</p>" aria-label="Your court file number should not include any special characters. If using a CSO file number, ensure that the class number is prepended to the file number without a hyphen and exclude the first four characters (ex. VLC-S-M-12345 would be M12345)">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="txtCaseNumber">What is the court file number for the case?</label>
+                        <div class="align-tooltip">
+                            <div>
+                                <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber" />
+                                <div class="invalid-feedback">
+                                    Please provide a Court File Number.
+                                </div>
+                            </div>
+                            <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>Your court file number should not include any special characters. If using a CSO file number, ensure that the class number is prepended to the file number without a hyphen and exclude the first four characters (ex. VLC-S-M-12345 would be M12345)</p>" aria-label="Your court file number should not include any special characters. If using a CSO file number, ensure that the class number is prepended to the file number without a hyphen and exclude the first four characters (ex. VLC-S-M-12345 would be M12345)">
+                                <i class="fas fa-question-circle"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,7 +155,7 @@ else
             </div>
             <div class="row">
                 <div class="col col-md-12">
-                    <p>Please select a date/time below for your TMC.</p>
+                    <p>Please select a date/time below for your <span class="conference-type">TCH</span>.</p>
                     @if (!string.IsNullOrEmpty(Model.Results.BookingDetails.bookingNotes))
                     {
                         <p>@Model.Results.BookingDetails.bookingNotes</p>
