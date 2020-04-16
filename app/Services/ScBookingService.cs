@@ -103,13 +103,20 @@ namespace SCJ.Booking.MVC.Services
             var retval = new ScCaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
+                    locations.Select(x => new { Id = x.locationID, Value = x.locationName }),
                     "Id", "Value"),
                 HearingTypeId = model.HearingTypeId,
                 SelectedRegistryId = model.SelectedRegistryId,
                 CaseNumber = model.CaseNumber,
                 TimeSlotExpired = model.TimeSlotExpired
             };
+
+
+            //set hearing type name
+            if (retval.HearingTypeId > 0 && ScHearingType.HearingTypeNameMap.ContainsKey(retval.HearingTypeId))
+            {
+                retval.HearingTypeName = ScHearingType.HearingTypeNameMap[retval.HearingTypeId];
+            }
 
             //set location name
             SelectListItem selectedRegistry =
@@ -181,7 +188,7 @@ namespace SCJ.Booking.MVC.Services
                     FullCaseNumber = caseNumber,
                     CaseId = caseId,
                     HearingTypeId = model.HearingTypeId,
-                    HearingTypeName = "Trial Management Conference (TMC)",
+                    HearingTypeName = retval.HearingTypeName,
                     HearingLengthMinutes = hearingLength,
                     LocationId = model.SelectedRegistryId,
                     RegistryName = retval.SelectedRegistryName,

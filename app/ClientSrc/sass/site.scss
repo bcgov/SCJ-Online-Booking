@@ -304,7 +304,7 @@ p.intro {
 /*Book Your Hearing*/
 .search-info {
     background-color: $blue-light;
-    padding: 20px 10px 5px;
+    padding: 20px 10px;
     margin-right: 0;
     margin-left: 0;
     margin-bottom: 20px;
@@ -326,10 +326,6 @@ p.intro {
                     font-weight: 400;
                 }
             }
-        }
-
-        input:last-of-type {
-            margin-left: 12px;
         }
     }
 
@@ -462,7 +458,7 @@ a.custom-slide-time {
 
 .align-tooltip {
     display: flex;
-    align-items: center;
+    align-items: baseline;
 
     div.invalid-feedback {
         max-width: 100px;
@@ -710,4 +706,44 @@ select, input {
 .notice--preliminary_question {
     margin-bottom: 20px;
     display: none;
+}
+
+/* Supreme Court side */
+.conference-type-selection {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: $breakpoint-md) {
+        flex-direction: row;
+    }
+
+    label {
+        @media (min-width: $breakpoint-md) {
+            white-space: nowrap;
+        }
+    }
+
+    .btn-radio-group {
+        display: flex;
+        width: 100%;
+        position: relative;
+
+        @media (min-width: $breakpoint-md) {
+            margin-left: 8px;
+        }
+
+        .form-check {
+            position: initial;
+
+            & + .form-check {
+                margin-left: 20px;
+            }
+        }
+
+        .invalid-feedback {
+            position: absolute;
+            width: 100%;
+            left: 0;
+        }
+    }
 }

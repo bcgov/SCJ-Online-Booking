@@ -19,15 +19,24 @@
             <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
             <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
             <input type="hidden" asp-for="TimeSlotExpired" />
-            <input type="hidden" asp-for="HearingTypeId" />
+
             <div class="search-info">
                 <div class="row search-info-row">
-                    <div class="col-md-12 form-group">
+                    <div class="col-md-12 form-group conference-type-selection">
                         <label>Please pick conference type: </label>
-                        <input type="radio" id="TMC" name="TMC" value="TMC">
-                        <label for="TMC">TMC</label>
-                        <input type="radio" id="TCH" name="TCH" value="TCH">
-                        <label for="TCH">TCH</label>
+                        <div class="btn-radio-group form-group">
+                            <div class="form-check">
+                                <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TMC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TMC" required>
+                                <label for="TMC" class="form-check-label">TMC</label>
+                                <div class="invalid-feedback">
+                                    Please provide a conference type.
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TCH" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TCH">
+                                <label for="TCH" class="form-check-label">TCH</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row search-info-row">
@@ -155,7 +164,7 @@ else
             </div>
             <div class="row">
                 <div class="col col-md-12">
-                    <p>Please select a date/time below for your <span class="conference-type">TCH</span>.</p>
+                    <p>Please select a date/time below for your @Model.HearingTypeName.</p>
                     @if (!string.IsNullOrEmpty(Model.Results.BookingDetails.bookingNotes))
                     {
                         <p>@Model.Results.BookingDetails.bookingNotes</p>

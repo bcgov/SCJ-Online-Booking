@@ -17,15 +17,14 @@ namespace SCJ.Booking.MVC.ViewModels
             ContainerId = -1;
             SelectedCaseDate = string.Empty;
             CaseNumber = string.Empty;
-            HearingTypeId = Utils.ScHearingType.TMC;
+            HearingTypeId = -1;
+            HearingTypeName = string.Empty;
         }
 
         //Search fields
-        [Required(ErrorMessage = "Please provide a Case Action Number.")]
         public string CaseNumber { get; set; }
-
-        [Required(ErrorMessage = "Please choose the type of conference hearing.")]
         public int HearingTypeId { get; set; }
+        public string HearingTypeName { get; set; }
 
         //Available dates
         public AvailableDatesByLocation Results { get; set; }
