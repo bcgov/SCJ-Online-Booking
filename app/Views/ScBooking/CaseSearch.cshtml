@@ -34,7 +34,7 @@
                             </div>
                             <div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TCH" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TCH">
-                                <label for="TCH" class="form-check-label">TCH</label>
+                                <label for="TCH" class="form-check-label">CV-TCH</label>
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,7 @@ else
         {
             <!-- No available times for this hearing - next steps-->
             <div class="no-available-times">
-                <h2>There are currently no available times for this hearing in [Location].</h2>
+                <h2>There are currently no available times for this type of conference hearing in [Location].</h2>
                 <div class="row">
                     <div class="col col-md-4 col-sm-12 col-12">
                         <div class="card bg-light mb-3">

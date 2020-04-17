@@ -10,7 +10,7 @@ namespace SCJ.Booking.MVC.Utils
         public static readonly Dictionary<int, string> HearingTypeNameMap = new Dictionary<int, string>
         {
             {TMC, "Trial Management Conference (TMC)" },
-            {TCH, "Trial Conference Hearing (TCH)" }
+            {TCH, "CV-Telephone Conference Hearing (CV-TCH)" }
         };
     }
 }
