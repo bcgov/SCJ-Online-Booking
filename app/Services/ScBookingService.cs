@@ -23,7 +23,9 @@ namespace SCJ.Booking.MVC.Services
 {
     public class ScBookingService
     {
-        public const int MaxHearingsPerDay = 10;
+        // todo: this is usually 10.  It was changed to int.MaxValue on 4/20/2020 to quickly disable the limit.
+        public const int MaxHearingsPerDay = int.MaxValue; 
+
         private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
@@ -332,19 +334,22 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public HtmlString GetHearingsRemaining()
         {
-            int hearingsRemaining = GetUserHearingsTotalRemaining();
+            return new HtmlString("");
 
-            switch (hearingsRemaining)
-            {
-                case MaxHearingsPerDay:
-                    return new HtmlString($"You can book {MaxHearingsPerDay} hearings today.");
-                case 1:
-                    return new HtmlString("You can book 1 more hearing today.");
-                case 0:
-                    return new HtmlString("You cannot book anymore hearings today.");
-                default:
-                    return new HtmlString($"You can book {hearingsRemaining} more hearings today.");
-            }
+            // todo: 4/20/2020 - I commented this out to quickly disable the message in the header. MaxHearingsPerDay was also changed from 10 to int.MaxValue.
+            // int hearingsRemaining = GetUserHearingsTotalRemaining();
+            //
+            // switch (hearingsRemaining)
+            // {
+            //     case MaxHearingsPerDay:
+            //         return new HtmlString($"You can book {MaxHearingsPerDay} hearings today.");
+            //     case 1:
+            //         return new HtmlString("You can book 1 more hearing today.");
+            //     case 0:
+            //         return new HtmlString("You cannot book anymore hearings today.");
+            //     default:
+            //         return new HtmlString($"You can book {hearingsRemaining} more hearings today.");
+            // }
         }
 
         /// <summary>
