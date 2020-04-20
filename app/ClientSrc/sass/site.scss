@@ -583,6 +583,10 @@ h3 {
     }
 }
 
+span.nowrap {
+    white-space: nowrap;
+}
+
 .availableDates {
     &__month {
         margin: 40px 0 30px;
@@ -710,12 +714,6 @@ select, input {
 
 /* Supreme Court side */
 .conference-type-selection {
-    display: flex;
-    flex-direction: column;
-
-    @media (min-width: $breakpoint-md) {
-        flex-direction: row;
-    }
 
     label {
         @media (min-width: $breakpoint-md) {
@@ -724,7 +722,6 @@ select, input {
     }
 
     .btn-radio-group {
-        display: flex;
         width: 100%;
         position: relative;
 
@@ -735,8 +732,10 @@ select, input {
         .form-check {
             position: initial;
 
-            & + .form-check {
-                margin-left: 20px;
+            label {
+                font-weight: normal;
+                line-height: 2;
+                font-size: 0.9em;
             }
         }
 

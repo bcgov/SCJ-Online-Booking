@@ -27,14 +27,14 @@
                         <div class="btn-radio-group form-group">
                             <div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TMC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TMC" required>
-                                <label for="TMC" class="form-check-label">TMC</label>
-                                <div class="invalid-feedback">
-                                    Please provide a conference type.
-                                </div>
+                                <label for="TMC" class="form-check-label">Trial Management Conference (TMC)</label>
                             </div>
                             <div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TCH" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TCH">
-                                <label for="TCH" class="form-check-label">CV-TCH</label>
+                                <label for="TCH" class="form-check-label"><span class="nowrap">CV-Telephone</span> Conference Hearing <span class="nowrap">(CV-TCH)</span></label>
+                                <div class="invalid-feedback">
+                                    Please provide a conference type.
+                                </div>
                             </div>
                         </div>
                     </div>
