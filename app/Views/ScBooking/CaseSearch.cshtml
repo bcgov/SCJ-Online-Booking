@@ -22,7 +22,7 @@
 
             <div class="search-info">
                 <div class="row search-info-row">
-                    <div class="col-md-12 form-group conference-type-selection">
+                    <div class="col-lg-6 form-group conference-type-selection">
                         <label>Please pick conference type: </label>
                         <div class="btn-radio-group form-group">
                             <div class="form-check">
@@ -38,9 +38,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row search-info-row">
-                    <div class="col-md-6 form-group">
+                    <div class="col-lg-6 form-group">
                         <label for="ddlLocation">Pick the registry where the file was created.</label>
                         <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.RegistryOptions" required>
                             <option value="">-- Pick a registry --</option>
@@ -49,11 +47,31 @@
                             Please provide the registry the file was created at.
                         </div>
                     </div>
-                    <div class="col-md-6 form-group">
-                        <label for="txtCaseNumber">What is the court file number for the case?</label>
+                </div>
+                <div class="row search-info-row">
+                    <div class="col-lg-6 form-group">
+                        <label>Pick court class for the court file number.</label>
+                        <select class="form-control" id="courtClassDropdown" required>
+                            <option value="">-- Pick a class --</option>
+                            <option value="B">B – Bankruptcy</option>
+                            <option value="E">E – Family Law Proceedings (incl. Divorce Act)</option>
+                            <option value="H">H – Foreclosure</option>
+                            <option value="L">L – Legislated Statues/Enforcement Proceedings</option>
+                            <option value="M">M – Motor vehicle</option>
+                            <option value="N">N – Adoption</option>
+                            <option value="P">P – Probate &amp; Administration</option>
+                            <option value="S">S – Civil (General)/ICBC</option>
+                            <option value="V">V – Caveat</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a court class.
+                        </div>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <label for="caseNumberInput">What is the court file number for the case?</label>
                         <div class="align-tooltip">
                             <div>
-                                <input asp-for="CaseNumber" class="form-control caseNumber" required id="txtCaseNumber" />
+                                <input asp-for="CaseNumber" class="form-control caseNumber" required id="caseNumberInput" />
                                 <div class="invalid-feedback">
                                     Please provide a Court File Number.
                                 </div>

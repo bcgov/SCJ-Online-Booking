@@ -251,3 +251,12 @@ function validateCaseDate(containerId, bookingDate) {
     //submit the form to go to the next page
     $("#btnSearch").trigger("click");
 }
+
+
+//Pre-filling input field based on selection of court class on the Supreme Court side
+var caseNumberInput = document.getElementById('caseNumberInput');
+var courtClassDropdown = document.getElementById('courtClassDropdown');
+
+courtClassDropdown.onchange = function () {
+    caseNumberInput.value = this.value;
+}

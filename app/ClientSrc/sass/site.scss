@@ -347,9 +347,13 @@ p.intro {
     margin-bottom: 2rem;
 }
 
-.registryOptions {
-    width: auto;
-    min-width: 50%;
+#ddlLocation, #courtClassDropdown {
+    width: 100%;
+
+    @media (min-width: $breakpoint-sm) {
+        width: auto;
+        min-width: 50%;
+    }
 }
 
 .caseNumber {
@@ -725,17 +729,17 @@ select, input {
         width: 100%;
         position: relative;
 
-        @media (min-width: $breakpoint-md) {
-            margin-left: 8px;
-        }
-
         .form-check {
             position: initial;
+
+            input.form-check-input {
+                margin-top: 0.45rem;
+            }
 
             label {
                 font-weight: normal;
                 line-height: 2;
-                font-size: 0.9em;
+                font-size: 0.875rem;
             }
         }
 
