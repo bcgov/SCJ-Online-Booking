@@ -110,7 +110,8 @@ namespace SCJ.Booking.MVC.Services
                 HearingTypeId = model.HearingTypeId,
                 SelectedRegistryId = model.SelectedRegistryId,
                 CaseNumber = model.CaseNumber,
-                TimeSlotExpired = model.TimeSlotExpired
+                TimeSlotExpired = model.TimeSlotExpired,
+                SelectedCourtClass = model.SelectedCourtClass
             };
 
 
