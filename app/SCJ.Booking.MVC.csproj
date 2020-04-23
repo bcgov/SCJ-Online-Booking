@@ -42,10 +42,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Views\ScBooking\EmailText.cshtml">
+      <Content Update="Views\ScBooking\Email-TMC.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
-      <Content Update="Views\ScBooking\EmailHtml.cshtml">
+      <Content Update="Views\ScBooking\Email-CV-TCH.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
     </ItemGroup>

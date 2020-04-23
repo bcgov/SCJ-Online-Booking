@@ -416,8 +416,22 @@ namespace SCJ.Booking.MVC.Services
                 Time = booking.TimeSlotFriendlyName
             };
 
-            //Render the email template 
-            return await _viewRenderService.RenderToStringAsync("ScBooking/EmailText", viewModel);
+            //Render the email template
+            string template;
+
+            switch (booking.HearingTypeId)
+            {
+                case ScHearingType.TMC:
+                    template = "ScBooking/Email-TMC";
+                    break;
+                case ScHearingType.TCH:
+                    template = "ScBooking/Email-CV-TCH";
+                    break;
+                default:
+                    throw new ArgumentException("Invalid HearingTypeId");
+            }
+
+            return await _viewRenderService.RenderToStringAsync(template, viewModel);
         }
 
         /// <summary>
