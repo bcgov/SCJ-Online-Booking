@@ -6,11 +6,16 @@ namespace SCJ.Booking.MVC.Utils
     {
         public const int TMC = 9090;
         public const int TCH = 9103;
+        public const int AWS = 9104;
+        public const int PTC = 9543;
 
-        public static readonly Dictionary<int, string> HearingTypeNameMap = new Dictionary<int, string>
-        {
-            {TMC, "Trial Management Conference (TMC)" },
-            {TCH, "CV-Telephone Conference Hearing (CV-TCH)" }
-        };
+        public static readonly Dictionary<int, string> HearingTypeNameMap =
+            new Dictionary<int, string>
+            {
+                {TMC, "Trial Management Conference (TMC)"},
+                {TCH, "CV-Telephone Conference Hearing (CV-TCH)"},
+                {AWS, "CV-Application Written Submissions (CV-AWS)"},
+                {PTC, "CV-Pre-Trial Conference (CV-PTC)"}
+            };
     }
 }
