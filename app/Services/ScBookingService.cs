@@ -88,7 +88,8 @@ namespace SCJ.Booking.MVC.Services
             return new ScCaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locations.Select(x => new {Id = x.locationID, Value = x.locationName}),
+                    locations.Select(x => new {Id = x.locationID, Value = x.locationName})
+                        .Distinct(),
                     "Id", "Value")
             };
         }
@@ -105,7 +106,8 @@ namespace SCJ.Booking.MVC.Services
             var retval = new ScCaseSearchViewModel
             {
                 RegistryOptions = new SelectList(
-                    locations.Select(x => new { Id = x.locationID, Value = x.locationName }),
+                    locations.Select(x => new { Id = x.locationID, Value = x.locationName })
+                        .Distinct(),
                     "Id", "Value"),
                 HearingTypeId = model.HearingTypeId,
                 SelectedRegistryId = model.SelectedRegistryId,
