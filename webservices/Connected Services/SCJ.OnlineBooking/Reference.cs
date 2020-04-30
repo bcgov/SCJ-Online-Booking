@@ -13,16 +13,46 @@ namespace SCJ.OnlineBooking
     
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Location", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class Location : object
     {
+        
+        private int bookingHearingTypeIDField;
+        
+        private int bookingLocationIDField;
         
         private string locationCodeField;
         
         private int locationIDField;
         
         private string locationNameField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int bookingHearingTypeID
+        {
+            get
+            {
+                return this.bookingHearingTypeIDField;
+            }
+            set
+            {
+                this.bookingHearingTypeIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int bookingLocationID
+        {
+            get
+            {
+                return this.bookingLocationIDField;
+            }
+            set
+            {
+                this.bookingLocationIDField = value;
+            }
+        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string locationCode
@@ -65,7 +95,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AvailableDatesByLocation", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class AvailableDatesByLocation : object
     {
@@ -102,7 +132,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BookingDetail", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class BookingDetail : object
     {
@@ -139,7 +169,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ContainerInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class ContainerInfo : object
     {
@@ -176,7 +206,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BookHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class BookHearingInfo : object
     {
@@ -288,7 +318,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BookingHearingResult", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class BookingHearingResult : object
     {
@@ -310,7 +340,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="COACaseList", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class COACaseList : object
     {
@@ -347,7 +377,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAClassInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CoAClassInfo : object
     {
@@ -399,7 +429,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAAvailableDates", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CoAAvailableDates : object
     {
@@ -436,7 +466,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ShedulesInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class ShedulesInfo : object
     {
@@ -473,7 +503,7 @@ namespace SCJ.OnlineBooking
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoABookingHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class CoABookingHearingInfo : object
     {
@@ -614,7 +644,7 @@ namespace SCJ.OnlineBooking
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SCJ.OnlineBooking.IOnlineBooking")]
     public interface IOnlineBooking
     {
@@ -641,13 +671,13 @@ namespace SCJ.OnlineBooking
         System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> CoAQueueHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo);
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     public interface IOnlineBookingChannel : SCJ.OnlineBooking.IOnlineBooking, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     public partial class OnlineBookingClient : System.ServiceModel.ClientBase<SCJ.OnlineBooking.IOnlineBooking>, SCJ.OnlineBooking.IOnlineBooking
     {
         
