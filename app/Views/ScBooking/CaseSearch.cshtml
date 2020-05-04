@@ -205,38 +205,9 @@ else
             <!-- No available times for this hearing - next steps-->
             <div class="no-available-times">
                 <h2>There are currently no available times for this type of conference hearing in @Model.SelectedRegistryName.</h2>
-                <div class="row">
-                    <div class="col col-md-4 col-sm-12 col-12">
-                        <div class="card bg-light mb-3">
-                            <div class="card-header">[Next Step 1]</div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    [TBD]
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 col-sm-12 col-12">
-                        <div class="card bg-light mb-3">
-                            <div class="card-header">[Next Step 2]</div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    [TBD]
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col col-md-4 col-sm-12 col-12">
-                        <div class="card bg-light mb-3">
-                            <div class="card-header">[Next Step 3]</div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    [TBD]
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p>
+                    You can contact the registry for which your hearing is associated (indicated in your court filing documents); <br />to contact @Model.SelectedRegistryName please call @service.GetRegistryContactNumber(Model.SelectedRegistryId).
+                </p>
             </div>
             <!-- No available times for this hearing - next steps-->
         }
