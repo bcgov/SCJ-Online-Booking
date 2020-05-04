@@ -32,6 +32,10 @@
                             <div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TCH" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TCH">
                                 <label for="TCH" class="form-check-label"><span class="nowrap">CV-Telephone</span> Conference Hearing <span class="nowrap">(CV-TCH)</span></label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="AWS" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.AWS">
+                                <label for="AWS" class="form-check-label"><span class="nowrap">CV-Application</span> Written Submissions <span class="nowrap">(CV-AWS)</span></label>
                                 <div class="invalid-feedback">
                                     Please provide a conference type.
                                 </div>
