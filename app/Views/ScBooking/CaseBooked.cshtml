@@ -10,9 +10,8 @@
     <div class="col-md-12">
         @if (SessionService.ScBookingInfo.IsBooked)
         {
-            <h2 class="blue">The <span>TMC</span> has been scheduled for the date and time below.</h2>
-            <h2 class="blue">Please file a requisition to secure your @SessionService.ScBookingInfo.HearingTypeName date.</h2>
-            <p>The following details will be sent to you by email.</p>
+            <h2 class="blue">The <span>@SessionService.ScBookingInfo.HearingTypeName</span> has been scheduled for the date and time below.</h2>
+            <p>Instructions and the following details will be sent to you by email.</p>
         }
         else
         {
