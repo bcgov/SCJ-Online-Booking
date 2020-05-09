@@ -109,6 +109,16 @@
                         "name": "${NAME}-build:latest"
                     }
                 },
+				"resources": {
+                    "limits": {
+                        "cpu": "2",
+                        "memory": "8Gi"
+                    },
+                    "requests": {
+                        "cpu": "1",
+                        "memory": "4Gi"
+                    }
+                },
                 "triggers": [
                     {
                         "type": "GitHub",
