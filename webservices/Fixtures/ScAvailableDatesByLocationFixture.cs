@@ -3,7 +3,7 @@ using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
-    public static class AvailableDatesByLocationFixture
+    public static class ScAvailableDatesByLocationFixture
     {
         public static AvailableDatesByLocation AvailableDatesResult = new AvailableDatesByLocation
         {

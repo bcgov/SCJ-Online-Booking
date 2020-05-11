@@ -33,14 +33,14 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return AvailableDatesByLocationFixture.AvailableDatesResult;
+            return ScAvailableDatesByLocationFixture.AvailableDatesResult;
         }
 
         public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
         {
             await Task.Delay(100);
 
-            return BookingHearingResultFixture.Success;
+            return ScBookingHearingResultFixture.Success;
         }
 
         public async Task<SCJ.OnlineBooking.COACaseList> CoACaseNumberValidAsync(string caseNum)
@@ -90,7 +90,7 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return BookingHearingResultFixture.Success;
+            return ScBookingHearingResultFixture.Success;
         }
     }
 }

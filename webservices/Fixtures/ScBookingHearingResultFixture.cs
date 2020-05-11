@@ -2,7 +2,7 @@ using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
-    public static class BookingHearingResultFixture
+    public static class ScBookingHearingResultFixture
     {
         public static BookingHearingResult SupremeCourtFailure = new BookingHearingResult
         {
