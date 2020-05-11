@@ -11,12 +11,14 @@ $(document).ready(function () {
 
         if ($(this).val() === "9543") {
             $("#courtClassLabel").hide();
+            $("#caseNumberTooltip").hide();
             $courtClassDropdown.val('');
             $courtClassDropdown.hide();
             $courtClassDropdown.prop('required', false);
             $("#caseNumberInput").val('');
         } else {
             $("#courtClassLabel").show();
+            $("#caseNumberTooltip").show();
             $courtClassDropdown.show();
             $courtClassDropdown.prop('required', true);
         }
