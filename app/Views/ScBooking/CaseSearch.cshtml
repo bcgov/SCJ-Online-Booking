@@ -26,6 +26,10 @@
                         <label>Please pick conference type: </label>
                         <div class="btn-radio-group form-group">
                             <div class="form-check">
+                                <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="JMC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.JMC" required>
+                                <label for="JMC" class="form-check-label">Judicial Management Conference (JMC)</label>
+                            </div>
+                            <div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TMC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TMC" required>
                                 <label for="TMC" class="form-check-label">Trial Management Conference (TMC)</label>
                             </div>

@@ -435,6 +435,9 @@ namespace SCJ.Booking.MVC.Services
                 case ScHearingType.PTC:
                     template = "ScBooking/Email-CV-PTC";
                     break;
+                case ScHearingType.JMC:
+                    template = "ScBooking/Email-JMC";
+                    break;
                 default:
                     throw new ArgumentException("Invalid HearingTypeId");
             }
