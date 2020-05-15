@@ -423,20 +423,20 @@ namespace SCJ.Booking.MVC.Services
 
             switch (booking.HearingTypeId)
             {
-                case ScHearingType.TMC:
-                    template = "ScBooking/Email-TMC";
-                    break;
-                case ScHearingType.TCH:
-                    template = "ScBooking/Email-CV-TCH";
-                    break;
                 case ScHearingType.AWS:
                     template = "ScBooking/Email-CV-AWS";
+                    break;
+                case ScHearingType.JMC:
+                    template = "ScBooking/Email-JMC";
                     break;
                 case ScHearingType.PTC:
                     template = "ScBooking/Email-CV-PTC";
                     break;
-                case ScHearingType.JMC:
-                    template = "ScBooking/Email-JMC";
+                case ScHearingType.TCH:
+                    template = "ScBooking/Email-CV-TCH";
+                    break;
+                case ScHearingType.TMC:
+                    template = "ScBooking/Email-TMC";
                     break;
                 default:
                     throw new ArgumentException("Invalid HearingTypeId");

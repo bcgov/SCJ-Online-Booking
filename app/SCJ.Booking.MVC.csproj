@@ -42,10 +42,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Views\ScBooking\Email-TMC.cshtml">
+      <Content Update="Views\ScBooking\Email-CV-AWS.cshtml">
+        <Pack>$(IncludeRazorContentInPack)</Pack>
+      </Content>
+      <Content Update="Views\ScBooking\Email-JMC.cshtml">
+        <Pack>$(IncludeRazorContentInPack)</Pack>
+      </Content>
+      <Content Update="Views\ScBooking\Email-CV-PTC.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
       <Content Update="Views\ScBooking\Email-CV-TCH.cshtml">
+        <Pack>$(IncludeRazorContentInPack)</Pack>
+      </Content>
+      <Content Update="Views\ScBooking\Email-TMC.cshtml">
         <Pack>$(IncludeRazorContentInPack)</Pack>
       </Content>
     </ItemGroup>
