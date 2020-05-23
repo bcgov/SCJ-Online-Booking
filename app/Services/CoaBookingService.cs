@@ -110,8 +110,6 @@ namespace SCJ.Booking.MVC.Services
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
-                retval.HearingTypes = GetHearingTypes();
-
                 retval.CaseList = caseNumberResult.CaseList;
 
                 if (caseType == CoaCaseType.Civil)

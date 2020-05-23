@@ -554,5 +554,16 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 detailBookingLength = 30
             }
         };
+
+        public static AvailableDatesByLocation BlankResult = new AvailableDatesByLocation
+        {
+            AvailableDates = new ContainerInfo[] { },
+            BookingDetails = new BookingDetail
+            {
+                bookingNotes =
+            "Supreme Court Civil Rule 12-2 was amended on July 1, 2016 with new timelines for filing & serving trial briefs. Failure to comply will result in your trial & booking being removed from the court list, unless the court otherwise orders. \r\n\r\nPlease contact Scheduling at 604-660-2853 to book if you encounter issues with Online Booking.",
+                detailBookingLength = 30
+            }
+        };
     }
 }

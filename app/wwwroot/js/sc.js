@@ -1,8 +1,12 @@
 $(document).ready(function () {
 
     //Pre-filling input field based on selection of court class on the Supreme Court side
-    $('#courtClassDropdown').change(function() {
-        $('#caseNumberInput').val($(this).val());
+    $('#courtClassDropdown').change(function () {
+        var $caseNum = $('#caseNumberInput');
+        // don't clear the case number if it already starts with the selected class prefix
+        if ($caseNum.val().length === 0 || $caseNum.val().charAt(0) !== $(this).val()) {
+            $caseNum.val($(this).val());
+        }
     });
 
     // hide the hearing type dropdown for CV-PTC

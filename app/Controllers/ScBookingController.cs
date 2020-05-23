@@ -27,10 +27,9 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CaseSearch()
+        public IActionResult CaseSearch()
         {
-            //Populate dropdown list values
-            return View(await _scBookingService.LoadSearchForm());
+            return View(_scBookingService.LoadSearchForm());
         }
 
         [HttpPost]
@@ -75,7 +74,8 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseNumber = bookingInfo.CaseNumber,
                 Date = dt.ToString("dddd, MMMM dd, yyyy"),
                 Time = bookingInfo.TimeSlotFriendlyName,
-                LocationName = $"{bookingInfo.RegistryName} Law Courts",
+                CaseLocationName = $"{bookingInfo.CaseLocationName} Law Courts",
+                BookingLocationName = $"{bookingInfo.BookingLocationName} Law Courts",
                 HearingTypeName = bookingInfo.HearingTypeName,
                 ContainerId = bookingInfo.ContainerId,
                 LocationId = bookingInfo.LocationId,

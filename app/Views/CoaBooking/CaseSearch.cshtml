@@ -1,4 +1,5 @@
 @inject CoaBookingService service
+@inject SelectListService SelectListService
 @model CoaCaseSearchViewModel
 
 @{
@@ -216,7 +217,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="hearingType">What type of appeal hearing do you need to book?</label>
-                                    <select asp-for="HearingTypeId" class="form-control registryOptions" asp-items="@Model.HearingTypes" disabled="@showingDates">
+                                    <select asp-for="HearingTypeId" class="form-control registryOptions" asp-items="SelectListService.CoaHearingTypes" disabled="@showingDates">
                                         <option value="">--- Hearing Type ---</option>
                                     </select>
                                     @if (showingDates)

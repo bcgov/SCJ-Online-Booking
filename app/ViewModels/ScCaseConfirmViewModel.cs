@@ -12,7 +12,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string HearingTypeName { get; set; }
 
         //Location for the booking
-        public string LocationName { get; set; }
+        public string CaseLocationName { get; set; }
 
         //Date for the booking
         public string Date { get; set; }
@@ -44,5 +44,7 @@ namespace SCJ.Booking.MVC.ViewModels
         [Required(ErrorMessage = "Please provide a valid phone number.")]
         [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}", ErrorMessage = "Please provide a valid phone number.")]
         public string Phone { get; set; }
+
+        public string BookingLocationName { get; set; }
     }
 }

@@ -55,7 +55,7 @@ else
                     <div class="form-group">
                         <label class="font-weight-bold">Registry Name</label>
                         <div>
-                            <span>@SessionService.ScBookingInfo.RegistryName</span>
+                            <span>@SessionService.ScBookingInfo.CaseLocationName Law Courts</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -64,6 +64,15 @@ else
                             <span>@SessionService.ScBookingInfo.CaseNumber</span>
                         </div>
                     </div>
+                    @if (SessionService.ScBookingInfo.BookingLocationName != SessionService.ScBookingInfo.CaseLocationName)
+                    {
+                        <div class="form-group">
+                            <label class="font-weight-bold">Remote Location of Judge or Master</label>
+                            <div>
+                                <span>@SessionService.ScBookingInfo.BookingLocationName Law Courts</span>
+                            </div>
+                        </div>
+                    }
                     <div class="form-group">
                         <label class="font-weight-bold">Date and Time of Conference Hearing</label>
                         <div>

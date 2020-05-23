@@ -1,0 +1,9 @@
+@model ScCaseSearchViewModel
+
+@if (Model.CaseLocationName != Model.BookingLocationName)
+{
+    <div class="mb-3 alert alert-warning">
+        @Model.HearingTypeName bookings for @Model.CaseLocationName cases are currently
+        being handled by the @(Model.BookingLocationName) Law Courts.
+    </div>
+}

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Models;
@@ -17,7 +15,6 @@ using SCJ.OnlineBooking;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using Task = System.Threading.Tasks.Task;
 
 namespace SCJ.Booking.MVC.Services
 {
@@ -28,19 +25,18 @@ namespace SCJ.Booking.MVC.Services
 
         private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
-        private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
         private readonly HttpContext _httpContext;
-        private readonly Logger _logger;
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
         public readonly bool IsLocalDevEnvironment;
         private readonly MailService _mailService;
+        private readonly ScCacheService _cache;
 
         //Constructor
         public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
             IConfiguration configuration, SessionService sessionService,
-            IViewRenderService viewRenderService)
+            IViewRenderService viewRenderService, ScCacheService scCacheService)
         {
             // default log level is error (less verbose)
             var logLevel = LogEventLevel.Error;
@@ -60,38 +56,29 @@ namespace SCJ.Booking.MVC.Services
             }
 
             //setup error logger settings
-            _logger = new LoggerConfiguration()
+            Logger logger = new LoggerConfiguration()
                 .WriteTo.Console(logLevel)
                 .CreateLogger();
 
             _client = OnlineBookingClientFactory.GetClient(configuration);
-            _configuration = configuration;
             _dbContext = dbContext;
             _httpContext = httpAccessor.HttpContext;
             _session = sessionService;
             _viewRenderService = viewRenderService;
-            _mailService = new MailService("SC", _configuration, _logger);
+            _cache = scCacheService;
+            _mailService = new MailService("SC", configuration, logger);
         }
 
         /// <summary>
         ///     Populate the dropdown list for locations for the search
         /// </summary>
-        public async Task<ScCaseSearchViewModel> LoadSearchForm()
+        public ScCaseSearchViewModel LoadSearchForm()
         {
-            //Load locations from API
-            Location[] locations = await _client.getLocationsAsync();
-
             //clear booking info session
             _session.ScBookingInfo = null;
 
             //Model instance
-            return new ScCaseSearchViewModel
-            {
-                RegistryOptions = new SelectList(
-                    locations.Select(x => new {Id = x.locationID, Value = x.locationName})
-                        .Distinct(),
-                    "Id", "Value")
-            };
+            return new ScCaseSearchViewModel();
         }
 
 
@@ -100,15 +87,9 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<ScCaseSearchViewModel> GetSearchResults(ScCaseSearchViewModel model)
         {
-            // Load locations from API
-            Location[] locations = await _client.getLocationsAsync();
-
+            // Load locations from cache
             var retval = new ScCaseSearchViewModel
             {
-                RegistryOptions = new SelectList(
-                    locations.Select(x => new { Id = x.locationID, Value = x.locationName })
-                        .Distinct(),
-                    "Id", "Value"),
                 HearingTypeId = model.HearingTypeId,
                 SelectedRegistryId = model.SelectedRegistryId,
                 CaseNumber = model.CaseNumber,
@@ -123,15 +104,16 @@ namespace SCJ.Booking.MVC.Services
                 retval.HearingTypeName = ScHearingType.HearingTypeNameMap[retval.HearingTypeId];
             }
 
-            //set location name
-            SelectListItem selectedRegistry =
-                retval.RegistryOptions.FirstOrDefault(x =>
-                    x.Value == retval.SelectedRegistryId.ToString());
+            //set selected registry name
+            retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.SelectedRegistryId);
 
-            if (selectedRegistry != null)
-            {
-                retval.SelectedRegistryName = selectedRegistry.Text;
-            }
+            // set booking location information
+            retval.BookingRegistryId = await _cache.GetBookingLocationIdAsync(
+                retval.SelectedRegistryId,
+                retval.HearingTypeId
+            ) ?? retval.SelectedRegistryId;
+
+            retval.BookingLocationName = await _cache.GetLocationNameAsync(retval.BookingRegistryId);
 
             //search the current case number
             string caseNumber = await BuildCaseNumber(model.CaseNumber, model.SelectedRegistryId);
@@ -145,7 +127,7 @@ namespace SCJ.Booking.MVC.Services
                 //empty result set
                 retval.Results = new AvailableDatesByLocation();
 
-                //get contact infromation
+                //get contact information
                 retval.RegistryContactNumber = GetRegistryContactNumber(model.SelectedRegistryId);
             }
             else
@@ -153,9 +135,10 @@ namespace SCJ.Booking.MVC.Services
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
-                AvailableDatesByLocation schedule =
-                    await _client.AvailableDatesByLocationAsync(model.SelectedRegistryId,
-                        model.HearingTypeId);
+                AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+                    model.BookingRegistryId,
+                    model.HearingTypeId
+                );
 
                 int hearingLength = schedule.BookingDetails.detailBookingLength;
 
@@ -166,7 +149,7 @@ namespace SCJ.Booking.MVC.Services
                 //check for valid date
                 if (model.ContainerId > 0)
                 {
-                    if (!IsTimeStillAvailable(retval.Results, model.ContainerId))
+                    if (!IsTimeStillAvailable(schedule, model.ContainerId))
                     {
                         retval.TimeSlotExpired = true;
                     }
@@ -178,12 +161,9 @@ namespace SCJ.Booking.MVC.Services
                     retval.ContainerId = model.ContainerId;
                     retval.SelectedCaseDate = model.SelectedCaseDate;
 
-                    bookingTime = dt.Value.ToString("hh:mm tt") + " to " +
-                                         dt.Value.AddMinutes(hearingLength).ToString("hh:mm tt");
+                    bookingTime = $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(hearingLength):hh:mm tt}";
 
-                    retval.TimeSlotFriendlyName =
-                        dt.Value.ToString("MMMM dd") + " from " + bookingTime;
-
+                    retval.TimeSlotFriendlyName = $"{dt.Value:MMMM dd} from {bookingTime}";
                 }
 
                 _session.ScBookingInfo = new ScSessionBookingInfo
@@ -196,7 +176,9 @@ namespace SCJ.Booking.MVC.Services
                     HearingTypeName = retval.HearingTypeName,
                     HearingLengthMinutes = hearingLength,
                     LocationId = model.SelectedRegistryId,
-                    RegistryName = retval.SelectedRegistryName,
+                    CaseLocationName = retval.CaseLocationName,
+                    BookingRegistryId = retval.BookingRegistryId,
+                    BookingLocationName = retval.BookingLocationName,
                     TimeSlotFriendlyName = bookingTime,
                     SelectedCaseDate = model.SelectedCaseDate,
                     DateFriendlyName = dt?.ToString("dddd, MMMM dd, yyyy") ?? ""
@@ -221,15 +203,11 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<string> BuildCaseNumber(string caseId, int locationId)
         {
-            //load all locations
-            Location[] locations = await _client.getLocationsAsync();
-
             //fetch location prefix
-            string locationPrefix =
-                locations.FirstOrDefault(x => x.locationID == locationId)?.locationCode;
+            string prefix = (await _cache.GetLocationAsync(locationId)).locationCode ?? "";
 
             //return location prefix + case number
-            return locationPrefix + caseId;
+            return $"{prefix}{caseId}";
         }
 
         /// <summary>
@@ -248,7 +226,7 @@ namespace SCJ.Booking.MVC.Services
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
             AvailableDatesByLocation schedule =
-                await _client.AvailableDatesByLocationAsync(bookingInfo.LocationId,
+                await _client.AvailableDatesByLocationAsync(bookingInfo.BookingRegistryId,
                     bookingInfo.HearingTypeId);
 
             //ensure time slot is still available
@@ -412,7 +390,8 @@ namespace SCJ.Booking.MVC.Services
                 EmailAddress = user.Email,
                 Phone = user.Phone,
                 CourtFileNumber = _session.ScBookingInfo.CaseNumber,
-                RegistryName = booking.RegistryName,
+                CaseLocationName = booking.CaseLocationName,
+                BookingLocationName = booking.BookingLocationName,
                 TypeOfConference = booking.HearingTypeName,
                 Date = booking.DateFriendlyName,
                 Time = booking.TimeSlotFriendlyName

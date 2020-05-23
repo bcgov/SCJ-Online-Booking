@@ -25,7 +25,7 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return LocationFixture.All;
+            return ScLocationFixture.All;
         }
 
         public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID,

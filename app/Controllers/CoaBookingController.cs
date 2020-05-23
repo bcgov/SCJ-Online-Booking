@@ -65,8 +65,6 @@ namespace SCJ.Booking.MVC.Controllers
                 model.Results = await _coaBookingService.GetAvailableDates(model.IsFullDay ?? false);
             }
 
-            model.HearingTypes = CoaBookingService.GetHearingTypes();
-
             return View(model);
         }
 
@@ -125,7 +123,6 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (!ModelState.IsValid || model.CaseId == 0)
             {
-                model.HearingTypes = CoaBookingService.GetHearingTypes();
                 return View(model);
             }
 

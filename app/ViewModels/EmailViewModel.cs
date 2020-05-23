@@ -6,7 +6,8 @@ namespace SCJ.Booking.MVC.ViewModels
     {
         public string EmailAddress { get; set; }
         public string TypeOfConference { get; set; }
-        public string RegistryName { get; set; }
+        public string CaseLocationName { get; set; }
+        public string BookingLocationName { get; set; }
         public string CourtFileNumber { get; set; }
         public string Date { get; set; }
         public string Time { get; set; }

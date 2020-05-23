@@ -1,4 +1,5 @@
 @inject ScBookingService service
+@inject SelectListService SelectListService
 @model ScCaseSearchViewModel
 
 @{
@@ -45,18 +46,18 @@
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="PTC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.PTC">
                                 <label for="PTC" class="form-check-label"><span class="nowrap">CV-Pre-Trial</span> Conference <span class="nowrap">(CV-PTC)</span></label>
                                 <div class="invalid-feedback">
-                                    Please provide a conference type.
+                                    Please select a conference type.
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 form-group">
                         <label for="ddlLocation">Pick the registry where the file was created.</label>
-                        <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="@Model.RegistryOptions" required>
+                        <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="SelectListService.SupremeLocations" required>
                             <option value="">-- Pick a registry --</option>
                         </select>
                         <div class="invalid-feedback">
-                            Please provide the registry the file was created at.
+                            Please select the registry where the file was created.
                         </div>
                     </div>
                 </div>
@@ -168,7 +169,7 @@ else
                             <div class="card-header card-header-center">Is this a Supreme Family or Civil case?</div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    This online tool covers Family and Civil cases. If your case is not a Familiy or Civil case please contact @Model.SelectedRegistryName scheduling at @Model.RegistryContactNumber.
+                                    This online tool covers Family and Civil cases. If your case is not a Familiy or Civil case please contact @Model.CaseLocationName scheduling at @Model.RegistryContactNumber.
                                 </p>
                             </div>
                         </div>
@@ -178,7 +179,7 @@ else
                             <div class="card-header card-header-center">Need to contact your registry?</div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    You can contact the registry for which your hearing is associated (indicated in your court filing documents); <br />to contact @Model.SelectedRegistryName please call @Model.RegistryContactNumber.
+                                    You can contact the registry where your file was created (indicated in your court filing documents); <br />to contact @Model.CaseLocationName please call @Model.RegistryContactNumber.
                                 </p>
                             </div>
                         </div>
@@ -192,8 +193,9 @@ else
             <!-- Booking times-->
             <div class="row">
                 <div class="col col-md-12">
+                    <partial name="Partial/_CentralizationAlert" model="Model"/>
                     <div class="float-left">
-                        <h2>Available Times in @Model.SelectedRegistryName</h2>
+                        <h2>Available Times in @Model.BookingLocationName</h2>
                     </div>
                 </div>
             </div>
@@ -207,7 +209,7 @@ else
                 </div>
             </div>
             <div id="VueAvailableTimes" class="availableTimesContainer">
-                <availabletimes :location-id="@Model.SelectedRegistryId"
+                <availabletimes :location-id="@Model.BookingRegistryId"
                                 :hearing-type="@Model.HearingTypeId">
                 </availabletimes>
             </div>
@@ -217,9 +219,16 @@ else
         {
             <!-- No available times for this hearing - next steps-->
             <div class="no-available-times">
-                <h2>There are currently no available times for this type of conference hearing in @Model.SelectedRegistryName.</h2>
+                <partial name="Partial/_CentralizationAlert" model="Model"/>
+
+                <h2>
+                    There are currently no available times for this type of conference hearing in
+                    @Model.BookingLocationName.
+                </h2>
                 <p>
-                    You can contact the registry for which your hearing is associated (indicated in your court filing documents); <br />to contact @Model.SelectedRegistryName please call @service.GetRegistryContactNumber(Model.SelectedRegistryId).
+                    You can contact the registry where your file was created (indicated in your court
+                    filing documents); <br />to contact @Model.CaseLocationName please call
+                    @service.GetRegistryContactNumber(Model.SelectedRegistryId).
                 </p>
             </div>
             <!-- No available times for this hearing - next steps-->

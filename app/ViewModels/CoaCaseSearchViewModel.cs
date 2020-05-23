@@ -24,7 +24,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool? DateIsAgreed { get; set; }
         //public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
-        public SelectList HearingTypes { get; set; }
         public int? HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
         public Dictionary<DateTime, List<DateTime>> Results { get; set; }

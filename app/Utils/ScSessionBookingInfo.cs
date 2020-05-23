@@ -6,7 +6,9 @@ namespace SCJ.Booking.MVC.Utils
         public string CaseNumber { get; set; }
         public string FullCaseNumber { get; set; }
         public int LocationId { get; set; }
-        public string RegistryName { get; set; }
+        public string CaseLocationName { get; set; }
+        public int BookingRegistryId { get; set; }
+        public string BookingLocationName { get; set; }
         public int HearingLengthMinutes { get; set; }
         public int ContainerId { get; set; }
         public int HearingTypeId { get; set; }

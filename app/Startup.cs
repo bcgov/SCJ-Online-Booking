@@ -43,11 +43,12 @@ namespace SCJ.Booking.MVC
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<SessionService>();
+            services.AddSingleton<ScCacheService>();
 
             if (Configuration["TAG_NAME"] == "localdev")
             {
                 // Use memory cache for for sessions and caching on local development
-                services.AddMemoryCache();
+                services.AddDistributedMemoryCache();
             }
             else
             {
@@ -74,6 +75,7 @@ namespace SCJ.Booking.MVC
             //services
             services.AddTransient<ScBookingService>();
             services.AddTransient<CoaBookingService>();
+            services.AddTransient<SelectListService>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
         }
 
