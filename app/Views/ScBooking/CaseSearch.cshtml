@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-lg-6 form-group">
                         <label for="ddlLocation">Pick the registry where the file was created.</label>
-                        <select asp-for="SelectedRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="SelectListService.SupremeLocations" required>
+                        <select asp-for="CaseRegistryId" class="form-control registryOptions" id="ddlLocation" asp-items="SelectListService.SupremeLocations" required>
                             <option value="">-- Pick a registry --</option>
                         </select>
                         <div class="invalid-feedback">
@@ -228,7 +228,7 @@ else
                 <p>
                     You can contact the registry where your file was created (indicated in your court
                     filing documents); <br />to contact @Model.CaseLocationName please call
-                    @service.GetRegistryContactNumber(Model.SelectedRegistryId).
+                    @service.GetRegistryContactNumber(Model.CaseRegistryId).
                 </p>
             </div>
             <!-- No available times for this hearing - next steps-->

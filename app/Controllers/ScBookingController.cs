@@ -78,7 +78,8 @@ namespace SCJ.Booking.MVC.Controllers
                 BookingLocationName = $"{bookingInfo.BookingLocationName} Law Courts",
                 HearingTypeName = bookingInfo.HearingTypeName,
                 ContainerId = bookingInfo.ContainerId,
-                LocationId = bookingInfo.LocationId,
+                CaseRegistryId = bookingInfo.CaseRegistryId,
+                BookingRegistryId = bookingInfo.BookingRegistryId,
                 FullDate = dt,
                 EmailAddress =  user.Email,
                 Phone = user.Phone

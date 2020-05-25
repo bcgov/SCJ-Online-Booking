@@ -30,7 +30,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public int ContainerId { get; set; }
 
         //Location id
-        public int LocationId { get; set; }
+        public int CaseRegistryId { get; set; }
 
         //Full date for the booking
         public DateTime FullDate { get; set; }
@@ -46,5 +46,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public string Phone { get; set; }
 
         public string BookingLocationName { get; set; }
+        public int BookingRegistryId { get; set; }
     }
 }

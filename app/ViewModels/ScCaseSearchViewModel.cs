@@ -12,7 +12,7 @@ namespace SCJ.Booking.MVC.ViewModels
             IsValidCaseNumber = false;
             TimeSlotExpired = false;
             CaseLocationName = string.Empty;
-            SelectedRegistryId = -1;
+            CaseRegistryId = -1;
             BookingLocationName = string.Empty;
             BookingRegistryId = -1;
             ContainerId = -1;
@@ -38,7 +38,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         // Selected Registry ID
         [Required(ErrorMessage = "Please select the registry where the file was created.")]
-        public int SelectedRegistryId { get; set; }
+        public int CaseRegistryId { get; set; }
 
         // Selected Registry Name
         public string CaseLocationName { get; set; }

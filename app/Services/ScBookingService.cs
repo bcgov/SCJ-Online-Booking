@@ -91,7 +91,7 @@ namespace SCJ.Booking.MVC.Services
             var retval = new ScCaseSearchViewModel
             {
                 HearingTypeId = model.HearingTypeId,
-                SelectedRegistryId = model.SelectedRegistryId,
+                CaseRegistryId = model.CaseRegistryId,
                 CaseNumber = model.CaseNumber,
                 TimeSlotExpired = model.TimeSlotExpired,
                 SelectedCourtClass = model.SelectedCourtClass
@@ -105,18 +105,18 @@ namespace SCJ.Booking.MVC.Services
             }
 
             //set selected registry name
-            retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.SelectedRegistryId);
+            retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
 
             // set booking location information
             retval.BookingRegistryId = await _cache.GetBookingLocationIdAsync(
-                retval.SelectedRegistryId,
+                retval.CaseRegistryId,
                 retval.HearingTypeId
-            ) ?? retval.SelectedRegistryId;
+            ) ?? retval.CaseRegistryId;
 
             retval.BookingLocationName = await _cache.GetLocationNameAsync(retval.BookingRegistryId);
 
             //search the current case number
-            string caseNumber = await BuildCaseNumber(model.CaseNumber, model.SelectedRegistryId);
+            string caseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
             int caseId = await _client.caseNumberValidAsync(caseNumber);
 
             if (caseId == 0)
@@ -128,7 +128,7 @@ namespace SCJ.Booking.MVC.Services
                 retval.Results = new AvailableDatesByLocation();
 
                 //get contact information
-                retval.RegistryContactNumber = GetRegistryContactNumber(model.SelectedRegistryId);
+                retval.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
             }
             else
             {
@@ -175,7 +175,7 @@ namespace SCJ.Booking.MVC.Services
                     HearingTypeId = model.HearingTypeId,
                     HearingTypeName = retval.HearingTypeName,
                     HearingLengthMinutes = hearingLength,
-                    LocationId = model.SelectedRegistryId,
+                    CaseRegistryId = model.CaseRegistryId,
                     CaseLocationName = retval.CaseLocationName,
                     BookingRegistryId = retval.BookingRegistryId,
                     BookingLocationName = retval.BookingLocationName,
@@ -239,7 +239,7 @@ namespace SCJ.Booking.MVC.Services
                     containerID = bookingInfo.ContainerId,
                     dateTime = model.FullDate,
                     hearingLength = bookingInfo.HearingLengthMinutes,
-                    locationID = bookingInfo.LocationId,
+                    locationID = bookingInfo.BookingRegistryId,
                     requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                     hearingTypeId = bookingInfo.HearingTypeId
                 };

@@ -5,7 +5,7 @@ namespace SCJ.Booking.MVC.Utils
         public int CaseId { get; set; }
         public string CaseNumber { get; set; }
         public string FullCaseNumber { get; set; }
-        public int LocationId { get; set; }
+        public int CaseRegistryId { get; set; }
         public string CaseLocationName { get; set; }
         public int BookingRegistryId { get; set; }
         public string BookingLocationName { get; set; }
