@@ -136,7 +136,7 @@ namespace SCJ.Booking.MVC.Services
                 retval.IsValidCaseNumber = true;
 
                 AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
-                    model.BookingRegistryId,
+                    retval.BookingRegistryId,
                     model.HearingTypeId
                 );
 
