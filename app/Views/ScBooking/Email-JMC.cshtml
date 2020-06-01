@@ -19,6 +19,13 @@ REGISTRY NAME:
 COURT FILE NUMBER:
 @Model.CourtFileNumber
 
+@if (Model.CaseLocationName != Model.BookingLocationName)
+{
+    @Html.Raw("CENTRALIZED HEARING LOCATION: \n")
+    @Model.BookingLocationName
+    @Html.Raw(" Law Courts \n")
+}
+
 DATE AND TIME OF CONFERENCE OR HEARING:
 @Model.Date
 @Model.Time
