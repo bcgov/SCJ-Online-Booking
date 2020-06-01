@@ -1,5 +1,4 @@
 @model EmailViewModel
-
 The CV-Pre-Trial Conference (CV-PTC) has been scheduled for @Model.Date and @Model.Time. Please file a Requisition confirming the date, time and location of the CV-PTC.
 
 Please provide a copy of this email to opposing counsel.
@@ -33,12 +32,11 @@ REGISTRY NAME:
 
 COURT FILE NUMBER:
 @Model.CourtFileNumber
-
 @if (Model.CaseLocationName != Model.BookingLocationName)
 {
-    @Html.Raw("CENTRALIZED HEARING LOCATION: \n")
-    @Model.BookingLocationName
-    @Html.Raw(" Law Courts \n")
+@Html.Raw("CENTRALIZED HEARING LOCATION: \n")
+@Model.BookingLocationName
+@Html.Raw(" Law Courts \n\r\n")
 }
 DATE AND TIME OF CONFERENCE OR HEARING:
 @Model.Date
