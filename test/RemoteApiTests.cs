@@ -137,7 +137,7 @@ namespace SCJ.Booking.UnitTest
         {
             CoAAvailableDates result = _soapClient.COAAvailableDatesAsync().Result;
             Assert.NotNull(result);
-            Assert.True(result.AvailableDates.Length ==138);
+            Assert.True(result.AvailableDates.Length == 136);
         }
 
         [Fact]
