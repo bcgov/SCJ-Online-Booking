@@ -65,17 +65,17 @@ void build(OpenShiftDSL openshift, String buildConfigName, int waitTimeout = 10,
   echo "Builds complete ..."
 }
 
-void deploy(String appName, String appSuffix, String namespace, String envTag) {
+void deploy(String appName, String appSuffix, String imageName, String namespace, String envTag) {
   openshift.withCluster() {
     openshift.withProject() {
 
-      echo "Tagging ${appName} for deployment to ${envTag} ..."
+      echo "Tagging ${imageName} for deployment to ${envTag} ..."
 
       // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
       // Tag the images for deployment based on the image's hash
-      def IMAGE_HASH = getImageTagHash(openshift, "${appName}")
+      def IMAGE_HASH = getImageTagHash(openshift, "${imageName}")
       echo "IMAGE_HASH: ${IMAGE_HASH}"
-      openshift.tag("${appName}@${IMAGE_HASH}", "${appName}:${envTag}")
+      openshift.tag("${imageName}@${IMAGE_HASH}", "${imageName}:${envTag}")
     }
 
     echo "Watching rollout of ${appName}${appSuffix} in ${namespace}-${envTag} ..."
@@ -96,7 +96,8 @@ node {
   def waitTimeout = 30
   def pipeline_name = "create-runtime-and-deploy-to-dev"
   def buildApps = ['scj-booking-runtime']
-  def appName = 'scj-booking-runtime'
+  def appName = 'scj-booking'
+  def imageName = 'scj-booking-runtime'
   def namespace = 'bc7c5c'
   def destination = 'dev'
   def appSuffix = ''
@@ -147,6 +148,7 @@ node {
       echo "Deploy ${appName}${appSuffix} to ${namespace}-${destination} ..."
       deploy("${appName}",
             "${appSuffix}",
+            "${imageName}"
             "${namespace}",
             "${destination}")
     }
