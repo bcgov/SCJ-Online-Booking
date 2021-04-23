@@ -1,17 +1,23 @@
 // This Jenkins file uses a brute force method to promote the application images from TEST to PROD.
 // In other words all of the images that are currently deployed in TEST will be tagged for deployment to PROD.
-
-// Define these in the order they should be deployed.
-def APP_NAMES = ['scj-booking-runtime']
-def SOURCE_TAG = 'test'
-def DESTINATION_TAG = 'prod'
-
 node {
-  properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']]])
+  def source = 'test'
+  def destination = 'prod'
+  def namespace = 'bc7c5c'
+  def appSuffix = ''
+  // Define these in the order they should be deployed.
+  def apps = ['scj-booking-runtime']
 
-  APP_NAMES.each { appName ->
-    stage('Deploying ' + appName + ' to ' + DESTINATION_TAG) {
-      openshiftTag destStream: appName, verbose: 'true', destTag: DESTINATION_TAG, srcStream: appName, srcTag: SOURCE_TAG
+  apps.each { appName ->
+    stage("Deploying ${appName} to ${destination}") {
+      script {
+        openshift.withCluster() {
+          openshift.withProject() {
+            echo "Tagging ${appName}:${source} for deployment to ${destination} ..."
+            openshift.tag("${appName}:${source}", "${appName}:${destination}")
+          }
+        }
+      }
     }
   }
 }
