@@ -17,6 +17,28 @@ message: |-
 labels:
   template: scj-booking
 objects:
+
+  - kind: NetworkPolicy
+    apiVersion: networking.k8s.io/v1
+    metadata:
+      name: ${NAME}-allow-ingress
+      labels:
+        name: ${NAME}-allow-ingress
+        env: ${TAG_NAME}
+    spec:
+      description: |
+        Allow traffic from routes into the application container(s).
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchLabels:
+                  network.openshift.io/policy-group: ingress
+      podSelector:
+        matchLabels:
+          name: ${NAME}
+      policyTypes:
+        - Ingress
+
   - kind: NetworkPolicy
     apiVersion: networking.k8s.io/v1
     metadata:
@@ -81,6 +103,9 @@ objects:
       host: ${SITEMINDER_APPLICATION_DOMAIN}
       port:
         targetPort: web
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
       to:
         kind: Service
         name: ${NAME}
