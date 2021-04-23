@@ -1,0 +1,29 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/scj-booking/scj-booking-deploy.yaml
+#=========================================================
+# NAME=scj-booking
+# IMAGE_NAMESPACE=bc7c5c-tools
+TAG_NAME=test
+# MEMORY_LIMIT=128Mi
+# MEMORY_POSTGRESQL_LIMIT=128Mi
+# VOLUME_CAPACITY=256Mi
+# DATABASE_SERVICE_NAME=postgresql
+# DATABASE_USER=user[A-Z0-9]{3}
+# DATABASE_PASSWORD=[a-zA-Z0-9]{8}
+# DATABASE_NAME=scj_booking
+# POSTGRESQL_MAX_CONNECTIONS=100
+# POSTGRESQL_SHARED_BUFFERS=12MB
+# API_ENDPOINT=
+# API_USERNAME=
+# API_PASSWORD=
+# EXCHANGE_URL=https://mail.courts.gov.bc.ca/EWS/Exchange.asmx
+# SC_MAIL_USERNAME=
+# SC_MAIL_PASSWORD=
+# CA_MAIL_USERNAME=
+# CA_MAIL_PASSWORD=
+# MAIL_DOMAIN=
+SITEMINDER_APPLICATION_DOMAIN=
+# SITEMINDER_WHITE_LIST=
+# ASPNETCORE_ENVIRONMENT=

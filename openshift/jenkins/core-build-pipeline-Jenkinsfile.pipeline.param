@@ -1,0 +1,12 @@
+#=========================================================
+# OpenShift Jenkins pipeline template parameters for:
+# Jenkinsfile: ../openshift/jenkins/core-build-pipeline-Jenkinsfile
+# Template File: https://raw.githubusercontent.com/BCDevOps/openshift-tools/master/provisioning/pipeline/resources/pipeline-build.json
+#=========================================================
+NAME=core-build-pipeline
+# GITHUB_WEBHOOK_SECRET=[a-zA-Z0-9]{40}
+# GENERIC_WEBHOOK_SECRET=[a-zA-Z0-9]{40}
+SOURCE_REPOSITORY_URL=https://github.com/bcgov/SCJ-Online-Booking.git
+SOURCE_REPOSITORY_REF=master
+CONTEXT_DIR=./openshift/jenkins
+JENKINSFILE_PATH=core-build-pipeline-Jenkinsfile
