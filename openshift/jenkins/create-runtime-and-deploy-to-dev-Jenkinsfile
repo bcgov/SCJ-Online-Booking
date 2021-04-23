@@ -148,7 +148,7 @@ node {
       echo "Deploy ${appName}${appSuffix} to ${namespace}-${destination} ..."
       deploy("${appName}",
             "${appSuffix}",
-            "${imageName}"
+            "${imageName}",
             "${namespace}",
             "${destination}")
     }
