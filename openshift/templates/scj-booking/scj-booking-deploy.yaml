@@ -192,7 +192,7 @@ objects:
             from:
               kind: ImageStreamTag
               namespace: openshift
-              name: postgresql:9.5
+              name: postgresql:12
         - type: ConfigChange
       replicas: 1
       selector:
