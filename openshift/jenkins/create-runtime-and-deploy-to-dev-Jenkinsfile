@@ -97,7 +97,7 @@ node {
   def pipeline_name = "create-runtime-and-deploy-to-dev"
   def buildApps = ['scj-booking-runtime']
   def appName = 'scj-booking-runtime'
-  def namespace = bc7c5c
+  def namespace = 'bc7c5c'
   def destination = 'dev'
   def appSuffix = ''
 
