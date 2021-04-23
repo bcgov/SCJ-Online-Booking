@@ -1,0 +1,7 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/nsp/build.yaml
+#=========================================================
+NAMESPACE_NAME=bc7c5c
+ENV_NAME=tools
