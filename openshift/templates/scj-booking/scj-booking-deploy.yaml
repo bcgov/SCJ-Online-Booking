@@ -17,6 +17,32 @@ message: |-
 labels:
   template: scj-booking
 objects:
+  - kind: NetworkPolicy
+    apiVersion: networking.k8s.io/v1
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+        env: ${TAG_NAME}
+    spec:
+      description: |
+        Allow the application to access the database.
+      ingress:
+        - from:
+            - podSelector:
+                matchLabels:
+                  name: ${NAME}
+              namespaceSelector:
+                matchLabels:
+                  name: ${NAMESPACE_NAME}
+                  environment: ${TAG_NAME}
+          ports:
+            - protocol: TCP
+              port: 5432
+      podSelector:
+        matchLabels:
+          name: ${DATABASE_SERVICE_NAME}
+
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -27,6 +53,7 @@ objects:
       connect-string: Host=${DATABASE_SERVICE_NAME};Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}
       sc-mail-password: ${SC_MAIL_PASSWORD}
       ca-mail-password: ${CA_MAIL_PASSWORD}
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -41,6 +68,7 @@ objects:
           targetPort: 8080
       selector:
         name: ${NAME}
+
   - kind: Route
     apiVersion: v1
     metadata:
@@ -56,6 +84,7 @@ objects:
       to:
         kind: Service
         name: ${NAME}
+
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
@@ -94,7 +123,7 @@ objects:
         spec:
           containers:
             - name: scj-booking
-              image: ' '
+              image: " "
               ports:
                 - containerPort: 8080
               env:
@@ -151,6 +180,7 @@ objects:
                   scheme: HTTP
                 initialDelaySeconds: 30
                 timeoutSeconds: 120
+
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -161,6 +191,7 @@ objects:
       resources:
         requests:
           storage: ${VOLUME_CAPACITY}
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -174,6 +205,7 @@ objects:
           targetPort: 5432
       selector:
         name: ${DATABASE_SERVICE_NAME}
+
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
@@ -194,7 +226,7 @@ objects:
               namespace: openshift
               name: postgresql:12
         - type: ConfigChange
-      replicas: 1
+      replicas: 0
       selector:
         name: ${DATABASE_SERVICE_NAME}
       template:
@@ -209,7 +241,7 @@ objects:
                 claimName: ${DATABASE_SERVICE_NAME}
           containers:
             - name: postgresql
-              image: ' '
+              image: " "
               ports:
                 - containerPort: 5432
               readinessProbe:
@@ -246,17 +278,23 @@ objects:
               resources:
                 limits:
                   memory: ${MEMORY_POSTGRESQL_LIMIT}
+
 parameters:
   - name: NAME
     displayName: Name
     description: The name assigned to all of the frontend objects defined in this template.
     required: true
     value: scj-booking
+  - name: NAMESPACE_NAME
+    displayName: Namespace Name
+    description: The base namespace name for the project.
+    required: true
+    value: bc7c5c
   - name: IMAGE_NAMESPACE
     displayName: Image Namespace
     description: Namespace containing application images.
     required: true
-    value: 9xrnfn-tools
+    value: bc7c5c-tools
   - name: TAG_NAME
     displayName: Environment TAG name
     description: The TAG name for this environment, e.g., dev, test, prod.
@@ -288,7 +326,7 @@ parameters:
   - name: DATABASE_PASSWORD
     displayName: Database Password
     generate: expression
-    from: '[a-zA-Z0-9]{8}'
+    from: "[a-zA-Z0-9]{8}"
   - name: DATABASE_NAME
     required: true
     displayName: Database Name
@@ -349,6 +387,6 @@ parameters:
     required: false
   - name: ASPNETCORE_ENVIRONMENT
     displayName: Hosting Environment (ASPNETCORE_ENVIRONMENT)
-    description: '''Development'', ''Test'', or ''Production'''
+    description: "'Development', 'Test', or 'Production'"
     required: true
     value: ""
