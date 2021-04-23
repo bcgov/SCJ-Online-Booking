@@ -1,2 +1,9 @@
-# https://kernel.org/pub/software/scm/git/docs/gitattributes.html#_end_of_line_conversion
+# Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
+
+# Declare files that will always have LF line endings on checkout.
+*.sh text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.conf text eol=lf
