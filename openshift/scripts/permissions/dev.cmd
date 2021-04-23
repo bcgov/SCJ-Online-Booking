@@ -6,11 +6,11 @@
 :: This script assumes that you have ADMIN access to the tools project and the dev project
 ::
 
-oc project 9xrnfn-dev
+oc project bc7c5c-dev
 
-oc policy add-role-to-user system:image-puller system:serviceaccount:9xrnfn-dev:default -n 9xrnfn-tools
+oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-dev:default -n bc7c5c-tools
 
-oc policy add-role-to-user edit system:serviceaccount:9xrnfn-tools:default -n 9xrnfn-dev
+oc policy add-role-to-user edit system:serviceaccount:bc7c5c-tools:default -n bc7c5c-dev
 
 
 @echo off

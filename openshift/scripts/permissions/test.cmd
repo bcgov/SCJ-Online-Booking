@@ -6,11 +6,11 @@
 :: This script assumes that you have ADMIN access to the tools project and the test project
 ::
 
-oc project 9xrnfn-test
+oc project bc7c5c-test
 
-oc policy add-role-to-user system:image-puller system:serviceaccount:9xrnfn-test:default -n 9xrnfn-tools
+oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-test:default -n bc7c5c-tools
 
-oc policy add-role-to-user edit system:serviceaccount:9xrnfn-tools:default -n 9xrnfn-test
+oc policy add-role-to-user edit system:serviceaccount:bc7c5c-tools:default -n bc7c5c-test
 
 
 @echo off

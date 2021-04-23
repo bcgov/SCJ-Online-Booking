@@ -6,11 +6,11 @@
 :: This script assumes that you have ADMIN access to the tools project and the prod project
 ::
 
-oc project 9xrnfn-prod
+oc project bc7c5c-prod
 
-oc policy add-role-to-user system:image-puller system:serviceaccount:9xrnfn-prod:default -n 9xrnfn-tools
+oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-prod:default -n bc7c5c-tools
 
-oc policy add-role-to-user edit system:serviceaccount:9xrnfn-tools:default -n 9xrnfn-prod
+oc policy add-role-to-user edit system:serviceaccount:bc7c5c-tools:default -n bc7c5c-prod
 
 
 @echo off
