@@ -1,0 +1,21 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/scj-booking/scj-booking-build.yaml
+#=========================================================
+NAME=scj-booking
+DOTNET_RUNTIME_IMAGE_STREAM_TAG=dotnet-runtime:2.1
+DOTNET_BUILD_IMAGE_STREAM_TAG=dotnet:2.1
+NAMESPACE=openshift
+SOURCE_REPOSITORY_URL=https://github.com/bcgov/SCJ-Online-Booking.git
+SOURCE_REPOSITORY_REF=master
+CONTEXT_DIR=
+DOTNET_STARTUP_PROJECT=app
+DOTNET_SDK_VERSION=
+DOTNET_ASSEMBLY_NAME=
+DOTNET_TOOLS=
+DOTNET_NPM_TOOLS=
+DOTNET_TEST_PROJECTS=test
+DOTNET_CONFIGURATION=Release
+DOTNET_RESTORE_SOURCES=
+# GITHUB_WEBHOOK_SECRET=[a-zA-Z0-9]{40}
