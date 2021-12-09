@@ -47,7 +47,7 @@ namespace SCJ.Booking.MVC
 
             if (Configuration["TAG_NAME"] == "localdev")
             {
-                // Use memory cache for for sessions and caching on local development
+                // Use memory cache for sessions and caching on local development
                 services.AddDistributedMemoryCache();
             }
             else
