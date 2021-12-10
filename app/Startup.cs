@@ -3,11 +3,10 @@ using Community.Microsoft.Extensions.Caching.PostgreSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
 using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
 
@@ -25,6 +24,8 @@ namespace SCJ.Booking.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -47,7 +48,7 @@ namespace SCJ.Booking.MVC
 
             if (Configuration["TAG_NAME"] == "localdev")
             {
-                // Use memory cache for for sessions and caching on local development
+                // Use memory cache for sessions and caching on local development
                 services.AddDistributedMemoryCache();
             }
             else
@@ -65,12 +66,11 @@ namespace SCJ.Booking.MVC
             // this setting is needed because NTLM auth does not work by default on Unix 
             AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false);
 
-            services.AddMvc()
+            services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.Formatting = Formatting.Indented;
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                    options.JsonSerializerOptions.WriteIndented = true;
+                });
 
             //services
             services.AddTransient<ScBookingService>();
@@ -80,7 +80,7 @@ namespace SCJ.Booking.MVC
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UsePathBase("/scjob");
 
@@ -90,7 +90,6 @@ namespace SCJ.Booking.MVC
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
