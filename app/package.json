@@ -17,7 +17,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",
-        "axios": "^0.21.1",
+        "axios": "^0.21.2",
         "browserslist": "^4.16.5",
         "caniuse-lite": "^1.0.30001054",
         "es6-promise": "^4.2.8",
