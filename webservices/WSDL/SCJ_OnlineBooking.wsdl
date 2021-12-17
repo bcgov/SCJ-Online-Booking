@@ -1,1 +1,451 @@
-<?xml version="1.0" encoding="utf-8"?><wsdl:definitions name="OnlineBooking" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"><wsp:Policy wsu:Id="BasicHttpBinding_IOnlineBooking_policy"><wsp:ExactlyOne><wsp:All><sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"><wsp:Policy><sp:TransportToken><wsp:Policy><sp:HttpsToken RequireClientCertificate="false"/></wsp:Policy></sp:TransportToken><sp:AlgorithmSuite><wsp:Policy><sp:Basic256/></wsp:Policy></sp:AlgorithmSuite><sp:Layout><wsp:Policy><sp:Strict/></wsp:Policy></sp:Layout></wsp:Policy></sp:TransportBinding></wsp:All></wsp:ExactlyOne></wsp:Policy><wsdl:types><xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:import namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/><xs:import namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/><xs:element name="caseNumberValid"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="caseNum" nillable="true" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="caseNumberValidResponse"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="caseNumberValidResult" type="xs:int"/></xs:sequence></xs:complexType></xs:element><xs:element name="getLocations"><xs:complexType><xs:sequence/></xs:complexType></xs:element><xs:element name="getLocationsResponse"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="getLocationsResult" nillable="true" type="q1:ArrayOfLocation" xmlns:q1="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/></xs:sequence></xs:complexType></xs:element><xs:element name="AvailableDatesByLocation"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="locationID" type="xs:int"/><xs:element minOccurs="0" name="hearingTypeID" type="xs:int"/></xs:sequence></xs:complexType></xs:element><xs:element name="AvailableDatesByLocationResponse"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="AvailableDatesByLocationResult" nillable="true" type="q2:AvailableDatesByLocation" xmlns:q2="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/></xs:sequence></xs:complexType></xs:element><xs:element name="BookingHearing"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="bookInfo" nillable="true" type="q3:BookHearingInfo" xmlns:q3="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/></xs:sequence></xs:complexType></xs:element><xs:element name="BookingHearingResponse"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="BookingHearingResult" nillable="true" type="q4:BookingHearingResult" xmlns:q4="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/></xs:sequence></xs:complexType></xs:element><xs:element name="CoACaseNumberValid"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="caseNum" nillable="true" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="CoACaseNumberValidResponse"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="CoACaseNumberValidResult" nillable="true" type="q5:COACaseList" xmlns:q5="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/></xs:sequence></xs:complexType></xs:element><xs:element name="COAAvailableDates"><xs:complexType><xs:sequence/></xs:complexType></xs:element><xs:element name="COAAvailableDatesResponse"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="COAAvailableDatesResult" nillable="true" type="q6:CoAAvailableDates" xmlns:q6="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/></xs:sequence></xs:complexType></xs:element><xs:element name="CoAQueueHearing"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="bookingInfo" nillable="true" type="q7:CoABookingHearingInfo" xmlns:q7="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/></xs:sequence></xs:complexType></xs:element><xs:element name="CoAQueueHearingResponse"><xs:complexType><xs:sequence><xs:element minOccurs="0" name="CoAQueueHearingResult" nillable="true" type="q8:BookingHearingResult" xmlns:q8="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/></xs:sequence></xs:complexType></xs:element></xs:schema><xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/"><xs:element name="anyType" nillable="true" type="xs:anyType"/><xs:element name="anyURI" nillable="true" type="xs:anyURI"/><xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/><xs:element name="boolean" nillable="true" type="xs:boolean"/><xs:element name="byte" nillable="true" type="xs:byte"/><xs:element name="dateTime" nillable="true" type="xs:dateTime"/><xs:element name="decimal" nillable="true" type="xs:decimal"/><xs:element name="double" nillable="true" type="xs:double"/><xs:element name="float" nillable="true" type="xs:float"/><xs:element name="int" nillable="true" type="xs:int"/><xs:element name="long" nillable="true" type="xs:long"/><xs:element name="QName" nillable="true" type="xs:QName"/><xs:element name="short" nillable="true" type="xs:short"/><xs:element name="string" nillable="true" type="xs:string"/><xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/><xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/><xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/><xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/><xs:element name="char" nillable="true" type="tns:char"/><xs:simpleType name="char"><xs:restriction base="xs:int"/></xs:simpleType><xs:element name="duration" nillable="true" type="tns:duration"/><xs:simpleType name="duration"><xs:restriction base="xs:duration"><xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/><xs:minInclusive value="-P10675199DT2H48M5.4775808S"/><xs:maxInclusive value="P10675199DT2H48M5.4775807S"/></xs:restriction></xs:simpleType><xs:element name="guid" nillable="true" type="tns:guid"/><xs:simpleType name="guid"><xs:restriction base="xs:string"><xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/></xs:restriction></xs:simpleType><xs:attribute name="FactoryType" type="xs:QName"/><xs:attribute name="Id" type="xs:ID"/><xs:attribute name="Ref" type="xs:IDREF"/></xs:schema><xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"><xs:complexType name="ArrayOfLocation"><xs:sequence><xs:element minOccurs="0" maxOccurs="unbounded" name="Location" nillable="true" type="tns:Location"/></xs:sequence></xs:complexType><xs:element name="ArrayOfLocation" nillable="true" type="tns:ArrayOfLocation"/><xs:complexType name="Location"><xs:sequence><xs:element minOccurs="0" name="bookingHearingTypeID" type="xs:int"/><xs:element minOccurs="0" name="bookingLocationID" type="xs:int"/><xs:element minOccurs="0" name="locationCode" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="locationID" type="xs:int"/><xs:element minOccurs="0" name="locationName" nillable="true" type="xs:string"/></xs:sequence></xs:complexType><xs:element name="Location" nillable="true" type="tns:Location"/><xs:complexType name="AvailableDatesByLocation"><xs:sequence><xs:element minOccurs="0" name="AvailableDates" nillable="true" type="tns:ArrayOfContainerInfo"/><xs:element minOccurs="0" name="BookingDetails" nillable="true" type="tns:BookingDetail"/></xs:sequence></xs:complexType><xs:element name="AvailableDatesByLocation" nillable="true" type="tns:AvailableDatesByLocation"/><xs:complexType name="ArrayOfContainerInfo"><xs:sequence><xs:element minOccurs="0" maxOccurs="unbounded" name="ContainerInfo" nillable="true" type="tns:ContainerInfo"/></xs:sequence></xs:complexType><xs:element name="ArrayOfContainerInfo" nillable="true" type="tns:ArrayOfContainerInfo"/><xs:complexType name="ContainerInfo"><xs:sequence><xs:element minOccurs="0" name="ContainerID" type="xs:int"/><xs:element minOccurs="0" name="Date_Time" type="xs:dateTime"/></xs:sequence></xs:complexType><xs:element name="ContainerInfo" nillable="true" type="tns:ContainerInfo"/><xs:complexType name="BookingDetail"><xs:sequence><xs:element minOccurs="0" name="bookingNotes" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="detailBookingLength" type="xs:int"/></xs:sequence></xs:complexType><xs:element name="BookingDetail" nillable="true" type="tns:BookingDetail"/><xs:complexType name="COACaseList"><xs:sequence><xs:element minOccurs="0" name="CaseList" nillable="true" type="tns:ArrayOfCoAClassInfo"/><xs:element minOccurs="0" name="CaseType" nillable="true" type="xs:string"/></xs:sequence></xs:complexType><xs:element name="COACaseList" nillable="true" type="tns:COACaseList"/><xs:complexType name="ArrayOfCoAClassInfo"><xs:sequence><xs:element minOccurs="0" maxOccurs="unbounded" name="CoAClassInfo" nillable="true" type="tns:CoAClassInfo"/></xs:sequence></xs:complexType><xs:element name="ArrayOfCoAClassInfo" nillable="true" type="tns:ArrayOfCoAClassInfo"/><xs:complexType name="CoAClassInfo"><xs:sequence><xs:element minOccurs="0" name="CaseId" type="xs:int"/><xs:element minOccurs="0" name="Case_Num" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="Main" type="xs:boolean"/></xs:sequence></xs:complexType><xs:element name="CoAClassInfo" nillable="true" type="tns:CoAClassInfo"/><xs:complexType name="CoAAvailableDates"><xs:sequence><xs:element minOccurs="0" name="AvailableDates" nillable="true" type="tns:ArrayOfShedulesInfo"/><xs:element minOccurs="0" name="BookingNotes" nillable="true" type="xs:string"/></xs:sequence></xs:complexType><xs:element name="CoAAvailableDates" nillable="true" type="tns:CoAAvailableDates"/><xs:complexType name="ArrayOfShedulesInfo"><xs:sequence><xs:element minOccurs="0" maxOccurs="unbounded" name="ShedulesInfo" nillable="true" type="tns:ShedulesInfo"/></xs:sequence></xs:complexType><xs:element name="ArrayOfShedulesInfo" nillable="true" type="tns:ArrayOfShedulesInfo"/><xs:complexType name="ShedulesInfo"><xs:sequence><xs:element minOccurs="0" name="availability" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="scheduleDate" type="xs:dateTime"/></xs:sequence></xs:complexType><xs:element name="ShedulesInfo" nillable="true" type="tns:ShedulesInfo"/></xs:schema><xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"><xs:complexType name="BookHearingInfo"><xs:sequence><xs:element minOccurs="0" name="caseID" type="xs:int"/><xs:element minOccurs="0" name="containerID" type="xs:int"/><xs:element minOccurs="0" name="dateTime" type="xs:dateTime"/><xs:element minOccurs="0" name="hearingLength" type="xs:int"/><xs:element minOccurs="0" name="hearingTypeId" type="xs:int"/><xs:element minOccurs="0" name="locationID" type="xs:int"/><xs:element minOccurs="0" name="requestedBy" nillable="true" type="xs:string"/></xs:sequence></xs:complexType><xs:element name="BookHearingInfo" nillable="true" type="tns:BookHearingInfo"/><xs:complexType name="BookingHearingResult"><xs:sequence><xs:element minOccurs="0" name="bookingResult" nillable="true" type="xs:string"/></xs:sequence></xs:complexType><xs:element name="BookingHearingResult" nillable="true" type="tns:BookingHearingResult"/><xs:complexType name="CoABookingHearingInfo"><xs:sequence><xs:element minOccurs="0" name="MainCase" type="xs:boolean"/><xs:element minOccurs="0" name="RelatedCases" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="caseID" type="xs:int"/><xs:element minOccurs="0" name="email" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="hearingDate" type="xs:dateTime"/><xs:element minOccurs="0" name="hearingLength" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="hearingTypeId" type="xs:int"/><xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/><xs:element minOccurs="0" name="requestedBy" nillable="true" type="xs:string"/></xs:sequence></xs:complexType><xs:element name="CoABookingHearingInfo" nillable="true" type="tns:CoABookingHearingInfo"/></xs:schema></wsdl:types><wsdl:message name="IOnlineBooking_caseNumberValid_InputMessage"><wsdl:part name="parameters" element="tns:caseNumberValid"/></wsdl:message><wsdl:message name="IOnlineBooking_caseNumberValid_OutputMessage"><wsdl:part name="parameters" element="tns:caseNumberValidResponse"/></wsdl:message><wsdl:message name="IOnlineBooking_getLocations_InputMessage"><wsdl:part name="parameters" element="tns:getLocations"/></wsdl:message><wsdl:message name="IOnlineBooking_getLocations_OutputMessage"><wsdl:part name="parameters" element="tns:getLocationsResponse"/></wsdl:message><wsdl:message name="IOnlineBooking_AvailableDatesByLocation_InputMessage"><wsdl:part name="parameters" element="tns:AvailableDatesByLocation"/></wsdl:message><wsdl:message name="IOnlineBooking_AvailableDatesByLocation_OutputMessage"><wsdl:part name="parameters" element="tns:AvailableDatesByLocationResponse"/></wsdl:message><wsdl:message name="IOnlineBooking_BookingHearing_InputMessage"><wsdl:part name="parameters" element="tns:BookingHearing"/></wsdl:message><wsdl:message name="IOnlineBooking_BookingHearing_OutputMessage"><wsdl:part name="parameters" element="tns:BookingHearingResponse"/></wsdl:message><wsdl:message name="IOnlineBooking_CoACaseNumberValid_InputMessage"><wsdl:part name="parameters" element="tns:CoACaseNumberValid"/></wsdl:message><wsdl:message name="IOnlineBooking_CoACaseNumberValid_OutputMessage"><wsdl:part name="parameters" element="tns:CoACaseNumberValidResponse"/></wsdl:message><wsdl:message name="IOnlineBooking_COAAvailableDates_InputMessage"><wsdl:part name="parameters" element="tns:COAAvailableDates"/></wsdl:message><wsdl:message name="IOnlineBooking_COAAvailableDates_OutputMessage"><wsdl:part name="parameters" element="tns:COAAvailableDatesResponse"/></wsdl:message><wsdl:message name="IOnlineBooking_CoAQueueHearing_InputMessage"><wsdl:part name="parameters" element="tns:CoAQueueHearing"/></wsdl:message><wsdl:message name="IOnlineBooking_CoAQueueHearing_OutputMessage"><wsdl:part name="parameters" element="tns:CoAQueueHearingResponse"/></wsdl:message><wsdl:portType name="IOnlineBooking"><wsdl:operation name="caseNumberValid"><wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/caseNumberValid" message="tns:IOnlineBooking_caseNumberValid_InputMessage"/><wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/caseNumberValidResponse" message="tns:IOnlineBooking_caseNumberValid_OutputMessage"/></wsdl:operation><wsdl:operation name="getLocations"><wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/getLocations" message="tns:IOnlineBooking_getLocations_InputMessage"/><wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/getLocationsResponse" message="tns:IOnlineBooking_getLocations_OutputMessage"/></wsdl:operation><wsdl:operation name="AvailableDatesByLocation"><wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableDatesByLocation" message="tns:IOnlineBooking_AvailableDatesByLocation_InputMessage"/><wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableDatesByLocationResponse" message="tns:IOnlineBooking_AvailableDatesByLocation_OutputMessage"/></wsdl:operation><wsdl:operation name="BookingHearing"><wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/BookingHearing" message="tns:IOnlineBooking_BookingHearing_InputMessage"/><wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/BookingHearingResponse" message="tns:IOnlineBooking_BookingHearing_OutputMessage"/></wsdl:operation><wsdl:operation name="CoACaseNumberValid"><wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoACaseNumberValid" message="tns:IOnlineBooking_CoACaseNumberValid_InputMessage"/><wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoACaseNumberValidResponse" message="tns:IOnlineBooking_CoACaseNumberValid_OutputMessage"/></wsdl:operation><wsdl:operation name="COAAvailableDates"><wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/COAAvailableDates" message="tns:IOnlineBooking_COAAvailableDates_InputMessage"/><wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/COAAvailableDatesResponse" message="tns:IOnlineBooking_COAAvailableDates_OutputMessage"/></wsdl:operation><wsdl:operation name="CoAQueueHearing"><wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoAQueueHearing" message="tns:IOnlineBooking_CoAQueueHearing_InputMessage"/><wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoAQueueHearingResponse" message="tns:IOnlineBooking_CoAQueueHearing_OutputMessage"/></wsdl:operation></wsdl:portType><wsdl:binding name="BasicHttpBinding_IOnlineBooking" type="tns:IOnlineBooking"><wsp:PolicyReference URI="#BasicHttpBinding_IOnlineBooking_policy"/><soap:binding transport="http://schemas.xmlsoap.org/soap/http"/><wsdl:operation name="caseNumberValid"><soap:operation soapAction="http://tempuri.org/IOnlineBooking/caseNumberValid" style="document"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation><wsdl:operation name="getLocations"><soap:operation soapAction="http://tempuri.org/IOnlineBooking/getLocations" style="document"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation><wsdl:operation name="AvailableDatesByLocation"><soap:operation soapAction="http://tempuri.org/IOnlineBooking/AvailableDatesByLocation" style="document"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation><wsdl:operation name="BookingHearing"><soap:operation soapAction="http://tempuri.org/IOnlineBooking/BookingHearing" style="document"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation><wsdl:operation name="CoACaseNumberValid"><soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoACaseNumberValid" style="document"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation><wsdl:operation name="COAAvailableDates"><soap:operation soapAction="http://tempuri.org/IOnlineBooking/COAAvailableDates" style="document"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation><wsdl:operation name="CoAQueueHearing"><soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoAQueueHearing" style="document"/><wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output></wsdl:operation></wsdl:binding><wsdl:service name="OnlineBooking"><wsdl:port name="BasicHttpBinding_IOnlineBooking" binding="tns:BasicHttpBinding_IOnlineBooking"><soap:address location="https://localhost:8092/OnlineBooking.svc"/></wsdl:port></wsdl:service></wsdl:definitions>
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="OnlineBooking" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IOnlineBooking_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+      <xs:element name="caseNumberValid">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="caseNum" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="caseNumberValidResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="caseNumberValidResult" nillable="true" type="q1:ArrayOfCourtFile" xmlns:q1="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getLocations">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getLocationsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="getLocationsResult" nillable="true" type="q2:ArrayOfLocation" xmlns:q2="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AvailableDatesByLocation">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="locationID" type="xs:int"/>
+            <xs:element minOccurs="0" name="hearingTypeID" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AvailableDatesByLocationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="AvailableDatesByLocationResult" nillable="true" type="q3:AvailableDatesByLocation" xmlns:q3="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BookingHearing">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="bookInfo" nillable="true" type="q4:BookHearingInfo" xmlns:q4="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BookingHearingResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="BookingHearingResult" nillable="true" type="q5:BookingHearingResult" xmlns:q5="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoACaseNumberValid">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="caseNum" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoACaseNumberValidResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CoACaseNumberValidResult" nillable="true" type="q6:COACaseList" xmlns:q6="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="COAAvailableDates">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="COAAvailableDatesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="COAAvailableDatesResult" nillable="true" type="q7:CoAAvailableDates" xmlns:q7="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoAQueueHearing">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="bookingInfo" nillable="true" type="q8:CoABookingHearingInfo" xmlns:q8="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoAQueueHearingResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CoAQueueHearingResult" nillable="true" type="q9:BookingHearingResult" xmlns:q9="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+      <xs:element name="anyType" nillable="true" type="xs:anyType"/>
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+      <xs:element name="boolean" nillable="true" type="xs:boolean"/>
+      <xs:element name="byte" nillable="true" type="xs:byte"/>
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+      <xs:element name="decimal" nillable="true" type="xs:decimal"/>
+      <xs:element name="double" nillable="true" type="xs:double"/>
+      <xs:element name="float" nillable="true" type="xs:float"/>
+      <xs:element name="int" nillable="true" type="xs:int"/>
+      <xs:element name="long" nillable="true" type="xs:long"/>
+      <xs:element name="QName" nillable="true" type="xs:QName"/>
+      <xs:element name="short" nillable="true" type="xs:short"/>
+      <xs:element name="string" nillable="true" type="xs:string"/>
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+      <xs:element name="char" nillable="true" type="tns:char"/>
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int"/>
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration"/>
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid"/>
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName"/>
+      <xs:attribute name="Id" type="xs:ID"/>
+      <xs:attribute name="Ref" type="xs:IDREF"/>
+    </xs:schema>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects">
+      <xs:complexType name="ArrayOfCourtFile">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CourtFile" nillable="true" type="tns:CourtFile"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCourtFile" nillable="true" type="tns:ArrayOfCourtFile"/>
+      <xs:complexType name="CourtFile">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="courtClassCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="courtFileNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="courtLevelCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="locationId" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="physicalFileId" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="styleOfCause" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CourtFile" nillable="true" type="tns:CourtFile"/>
+      <xs:complexType name="ArrayOfLocation">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Location" nillable="true" type="tns:Location"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfLocation" nillable="true" type="tns:ArrayOfLocation"/>
+      <xs:complexType name="Location">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="bookingHearingTypeID" type="xs:int"/>
+          <xs:element minOccurs="0" name="bookingLocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="locationCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="locationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="locationName" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Location" nillable="true" type="tns:Location"/>
+      <xs:complexType name="AvailableDatesByLocation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AvailableDates" nillable="true" type="tns:ArrayOfContainerInfo"/>
+          <xs:element minOccurs="0" name="BookingDetails" nillable="true" type="tns:BookingDetail"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AvailableDatesByLocation" nillable="true" type="tns:AvailableDatesByLocation"/>
+      <xs:complexType name="ArrayOfContainerInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ContainerInfo" nillable="true" type="tns:ContainerInfo"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfContainerInfo" nillable="true" type="tns:ArrayOfContainerInfo"/>
+      <xs:complexType name="ContainerInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ContainerID" type="xs:int"/>
+          <xs:element minOccurs="0" name="Date_Time" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ContainerInfo" nillable="true" type="tns:ContainerInfo"/>
+      <xs:complexType name="BookingDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="bookingNotes" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="detailBookingLength" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BookingDetail" nillable="true" type="tns:BookingDetail"/>
+      <xs:complexType name="COACaseList">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CaseList" nillable="true" type="tns:ArrayOfCoAClassInfo"/>
+          <xs:element minOccurs="0" name="CaseType" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="COACaseList" nillable="true" type="tns:COACaseList"/>
+      <xs:complexType name="ArrayOfCoAClassInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CoAClassInfo" nillable="true" type="tns:CoAClassInfo"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCoAClassInfo" nillable="true" type="tns:ArrayOfCoAClassInfo"/>
+      <xs:complexType name="CoAClassInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CaseId" type="xs:int"/>
+          <xs:element minOccurs="0" name="Case_Num" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Main" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CoAClassInfo" nillable="true" type="tns:CoAClassInfo"/>
+      <xs:complexType name="CoAAvailableDates">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AvailableDates" nillable="true" type="tns:ArrayOfShedulesInfo"/>
+          <xs:element minOccurs="0" name="BookingNotes" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CoAAvailableDates" nillable="true" type="tns:CoAAvailableDates"/>
+      <xs:complexType name="ArrayOfShedulesInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ShedulesInfo" nillable="true" type="tns:ShedulesInfo"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfShedulesInfo" nillable="true" type="tns:ArrayOfShedulesInfo"/>
+      <xs:complexType name="ShedulesInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="availability" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="scheduleDate" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ShedulesInfo" nillable="true" type="tns:ShedulesInfo"/>
+    </xs:schema>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking">
+      <xs:complexType name="BookHearingInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CEIS_Physical_File_ID" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="containerID" type="xs:int"/>
+          <xs:element minOccurs="0" name="dateTime" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="hearingLength" type="xs:int"/>
+          <xs:element minOccurs="0" name="hearingTypeId" type="xs:int"/>
+          <xs:element minOccurs="0" name="locationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="requestedBy" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BookHearingInfo" nillable="true" type="tns:BookHearingInfo"/>
+      <xs:complexType name="BookingHearingResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="bookingResult" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BookingHearingResult" nillable="true" type="tns:BookingHearingResult"/>
+      <xs:complexType name="CoABookingHearingInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MainCase" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="RelatedCases" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="caseID" type="xs:int"/>
+          <xs:element minOccurs="0" name="email" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="hearingDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="hearingLength" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="hearingTypeId" type="xs:int"/>
+          <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="requestedBy" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CoABookingHearingInfo" nillable="true" type="tns:CoABookingHearingInfo"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IOnlineBooking_caseNumberValid_InputMessage">
+    <wsdl:part name="parameters" element="tns:caseNumberValid"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_caseNumberValid_OutputMessage">
+    <wsdl:part name="parameters" element="tns:caseNumberValidResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_getLocations_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLocations"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_getLocations_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLocationsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_AvailableDatesByLocation_InputMessage">
+    <wsdl:part name="parameters" element="tns:AvailableDatesByLocation"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_AvailableDatesByLocation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AvailableDatesByLocationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_BookingHearing_InputMessage">
+    <wsdl:part name="parameters" element="tns:BookingHearing"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_BookingHearing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BookingHearingResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoACaseNumberValid_InputMessage">
+    <wsdl:part name="parameters" element="tns:CoACaseNumberValid"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoACaseNumberValid_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CoACaseNumberValidResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_COAAvailableDates_InputMessage">
+    <wsdl:part name="parameters" element="tns:COAAvailableDates"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_COAAvailableDates_OutputMessage">
+    <wsdl:part name="parameters" element="tns:COAAvailableDatesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAQueueHearing_InputMessage">
+    <wsdl:part name="parameters" element="tns:CoAQueueHearing"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAQueueHearing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CoAQueueHearingResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="IOnlineBooking">
+    <wsdl:operation name="caseNumberValid">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/caseNumberValid" message="tns:IOnlineBooking_caseNumberValid_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/caseNumberValidResponse" message="tns:IOnlineBooking_caseNumberValid_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getLocations">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/getLocations" message="tns:IOnlineBooking_getLocations_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/getLocationsResponse" message="tns:IOnlineBooking_getLocations_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="AvailableDatesByLocation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableDatesByLocation" message="tns:IOnlineBooking_AvailableDatesByLocation_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableDatesByLocationResponse" message="tns:IOnlineBooking_AvailableDatesByLocation_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="BookingHearing">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/BookingHearing" message="tns:IOnlineBooking_BookingHearing_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/BookingHearingResponse" message="tns:IOnlineBooking_BookingHearing_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CoACaseNumberValid">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoACaseNumberValid" message="tns:IOnlineBooking_CoACaseNumberValid_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoACaseNumberValidResponse" message="tns:IOnlineBooking_CoACaseNumberValid_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="COAAvailableDates">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/COAAvailableDates" message="tns:IOnlineBooking_COAAvailableDates_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/COAAvailableDatesResponse" message="tns:IOnlineBooking_COAAvailableDates_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CoAQueueHearing">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoAQueueHearing" message="tns:IOnlineBooking_CoAQueueHearing_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoAQueueHearingResponse" message="tns:IOnlineBooking_CoAQueueHearing_OutputMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IOnlineBooking" type="tns:IOnlineBooking">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IOnlineBooking_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="caseNumberValid">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/caseNumberValid" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLocations">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/getLocations" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvailableDatesByLocation">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/AvailableDatesByLocation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookingHearing">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/BookingHearing" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CoACaseNumberValid">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoACaseNumberValid" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="COAAvailableDates">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/COAAvailableDates" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CoAQueueHearing">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoAQueueHearing" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OnlineBooking">
+    <wsdl:port name="BasicHttpBinding_IOnlineBooking" binding="tns:BasicHttpBinding_IOnlineBooking">
+      <soap:address location="https://localhost:8092/OnlineBooking.svc"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
