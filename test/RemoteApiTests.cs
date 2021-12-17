@@ -10,6 +10,15 @@ namespace SCJ.Booking.UnitTest
         public RemoteApiTests()
         {
             _soapClient = new FakeOnlineBookingClient();
+
+            // To connect these tests to the real API:
+            //  1. Comment out the line above that creates a FakeOnlineBookingClient
+            //  2. Uncomment the 2 lines below
+            //  3. Add 3 system environment variables API_ENDPOINT, API_USERNAME, API_PASSWORD
+            //  4. Restart visual studio
+
+            // IConfiguration configuration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
+            // _soapClient = OnlineBookingClientFactory.GetClient(configuration);
         }
 
         private readonly IOnlineBooking _soapClient;
@@ -43,7 +52,7 @@ namespace SCJ.Booking.UnitTest
 
             var booking = new BookHearingInfo
             {
-                caseID = 234076,
+                CEIS_Physical_File_ID = 3879m,
                 containerID = 305291,
                 dateTime = new DateTime(2019, 1, 22, 11, 45, 0),
                 hearingLength = 30,
@@ -64,7 +73,7 @@ namespace SCJ.Booking.UnitTest
 
             var booking = new BookHearingInfo
             {
-                caseID = 234076,
+                CEIS_Physical_File_ID = 3879m,
                 containerID = 305273,
                 dateTime = new DateTime(2019, 2, 25, 11, 45, 0),
                 hearingLength = 30,
@@ -81,19 +90,18 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CaseNumberInvalid()
         {
-            // VAM is not a valid location
-            int result = _soapClient.caseNumberValidAsync("VAM14761").Result;
+            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("VAM14761").Result;
 
             // If no case is found then 0 is returned
-            Assert.True(result == 0);
+            Assert.True(searchResults.Length == 0);
         }
 
         [Fact]
         public void CaseNumberValid()
         {
-            int result = _soapClient.caseNumberValidAsync("VAM147619").Result;
+            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("CR23222").Result;
 
-            Assert.True(result == 234076);
+            Assert.True(searchResults.Length > 0);
         }
 
         [Fact]
@@ -170,7 +178,7 @@ namespace SCJ.Booking.UnitTest
                 requestedBy = "Mike Olund"
             };
 
-            BookingHearingResult result = _soapClient.CoAQueueHearingAsync(booking).Result;
+            _ = _soapClient.CoAQueueHearingAsync(booking).Result;
         }
     }
 }

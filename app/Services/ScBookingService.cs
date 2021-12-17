@@ -117,9 +117,9 @@ namespace SCJ.Booking.MVC.Services
 
             //search the current case number
             string caseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
-            int caseId = await _client.caseNumberValidAsync(caseNumber);
+            var courtFiles = await _client.caseNumberValidAsync(caseNumber);
 
-            if (caseId == 0)
+            if ((courtFiles?.Length ?? 0) == 0)
             {
                 //case could not be found
                 retval.IsValidCaseNumber = false;
@@ -171,7 +171,7 @@ namespace SCJ.Booking.MVC.Services
                     ContainerId = model.ContainerId,
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
                     FullCaseNumber = caseNumber,
-                    CaseId = caseId,
+                    CaseId = (int)courtFiles[0].physicalFileId, 
                     HearingTypeId = model.HearingTypeId,
                     HearingTypeName = retval.HearingTypeName,
                     HearingLengthMinutes = hearingLength,
@@ -235,7 +235,7 @@ namespace SCJ.Booking.MVC.Services
                 //build object to send to the API
                 var bookInfo = new BookHearingInfo
                 {
-                    caseID = bookingInfo.CaseId,
+                    CEIS_Physical_File_ID = bookingInfo.CaseId,
                     containerID = bookingInfo.ContainerId,
                     dateTime = model.FullDate,
                     hearingLength = bookingInfo.HearingLengthMinutes,
@@ -370,7 +370,7 @@ namespace SCJ.Booking.MVC.Services
                             b.Timestamp.Month == today.Month &&
                             b.Timestamp.Year == today.Year).ToList();
 
-            return MaxHearingsPerDay - hearingsBookedForToday.Count();
+            return MaxHearingsPerDay - hearingsBookedForToday.Count;
         }
 
         /// <summary>
@@ -398,29 +398,15 @@ namespace SCJ.Booking.MVC.Services
             };
 
             //Render the email template
-            string template;
-
-            switch (booking.HearingTypeId)
+            string template = booking.HearingTypeId switch
             {
-                case ScHearingType.AWS:
-                    template = "ScBooking/Email-CV-AWS";
-                    break;
-                case ScHearingType.JMC:
-                    template = "ScBooking/Email-JMC";
-                    break;
-                case ScHearingType.PTC:
-                    template = "ScBooking/Email-CV-PTC";
-                    break;
-                case ScHearingType.TCH:
-                    template = "ScBooking/Email-CV-TCH";
-                    break;
-                case ScHearingType.TMC:
-                    template = "ScBooking/Email-TMC";
-                    break;
-                default:
-                    throw new ArgumentException("Invalid HearingTypeId");
-            }
-
+                ScHearingType.AWS => "ScBooking/Email-CV-AWS",
+                ScHearingType.JMC => "ScBooking/Email-JMC",
+                ScHearingType.PTC => "ScBooking/Email-CV-PTC",
+                ScHearingType.TCH => "ScBooking/Email-CV-TCH",
+                ScHearingType.TMC => "ScBooking/Email-TMC",
+                _ => throw new ArgumentException("Invalid HearingTypeId"),
+            };
             return await _viewRenderService.RenderToStringAsync(template, viewModel);
         }
 

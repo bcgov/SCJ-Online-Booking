@@ -14,6 +14,103 @@ namespace SCJ.OnlineBooking
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CourtFile", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class CourtFile : object
+    {
+        
+        private string courtClassCodeField;
+        
+        private string courtFileNumberField;
+        
+        private string courtLevelCodeField;
+        
+        private System.Nullable<decimal> locationIdField;
+        
+        private System.Nullable<decimal> physicalFileIdField;
+        
+        private string styleOfCauseField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string courtClassCode
+        {
+            get
+            {
+                return this.courtClassCodeField;
+            }
+            set
+            {
+                this.courtClassCodeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string courtFileNumber
+        {
+            get
+            {
+                return this.courtFileNumberField;
+            }
+            set
+            {
+                this.courtFileNumberField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string courtLevelCode
+        {
+            get
+            {
+                return this.courtLevelCodeField;
+            }
+            set
+            {
+                this.courtLevelCodeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<decimal> locationId
+        {
+            get
+            {
+                return this.locationIdField;
+            }
+            set
+            {
+                this.locationIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<decimal> physicalFileId
+        {
+            get
+            {
+                return this.physicalFileIdField;
+            }
+            set
+            {
+                this.physicalFileIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string styleOfCause
+        {
+            get
+            {
+                return this.styleOfCauseField;
+            }
+            set
+            {
+                this.styleOfCauseField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Location", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class Location : object
     {
@@ -211,7 +308,7 @@ namespace SCJ.OnlineBooking
     public partial class BookHearingInfo : object
     {
         
-        private int caseIDField;
+        private decimal CEIS_Physical_File_IDField;
         
         private int containerIDField;
         
@@ -226,15 +323,15 @@ namespace SCJ.OnlineBooking
         private string requestedByField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int caseID
+        public decimal CEIS_Physical_File_ID
         {
             get
             {
-                return this.caseIDField;
+                return this.CEIS_Physical_File_IDField;
             }
             set
             {
-                this.caseIDField = value;
+                this.CEIS_Physical_File_IDField = value;
             }
         }
         
@@ -650,7 +747,7 @@ namespace SCJ.OnlineBooking
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/caseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/caseNumberValidResponse")]
-        System.Threading.Tasks.Task<int> caseNumberValidAsync(string caseNum);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.CourtFile[]> caseNumberValidAsync(string caseNum);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/getLocations", ReplyAction="http://tempuri.org/IOnlineBooking/getLocationsResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> getLocationsAsync();
@@ -721,7 +818,7 @@ namespace SCJ.OnlineBooking
         {
         }
         
-        public System.Threading.Tasks.Task<int> caseNumberValidAsync(string caseNum)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CourtFile[]> caseNumberValidAsync(string caseNum)
         {
             return base.Channel.caseNumberValidAsync(caseNum);
         }

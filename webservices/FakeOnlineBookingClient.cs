@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using SCJ.Booking.RemoteAPIs.Fixtures;
 
@@ -9,16 +10,54 @@ namespace SCJ.OnlineBooking
     /// </summary>
     public class FakeOnlineBookingClient : IOnlineBooking
     {
-        public async Task<int> caseNumberValidAsync(string caseNum)
+        public async Task<CourtFile[]> caseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
 
-            if (caseNum == "VAM147619")
+            //CRE23222 -- Campbell River (CR) / Family Court / #23222
+            if (caseNum == "CRE23222" || caseNum == "CR23222")
             {
-                return 234076; // returns the CaseID
+                return new[]
+                {
+                    new CourtFile
+                    {
+                        courtClassCode = "E",
+                        courtFileNumber = "23222",
+                        courtLevelCode = "S",
+                        locationId = 9067.0001m,
+                        physicalFileId = 3879m,
+                        styleOfCause = "DOE, Jane v TESTING, John"
+                    }
+                };
             }
 
-            return 0;
+            //KE111 -- Kelowna (KE) / Any Court (empty string) / #111
+            if (caseNum == "KE111" || caseNum == "KEM111" || caseNum == "KEG111")
+            {
+                return new[]
+                {
+                    new CourtFile
+                    {
+                        courtClassCode = "M",
+                        courtFileNumber = "111",
+                        courtLevelCode = "S",
+                        locationId = 83.0001m,
+                        physicalFileId = 2109m,
+                        styleOfCause = null
+                    },
+                    new CourtFile
+                    {
+                        courtClassCode = "G",
+                        courtFileNumber = "111",
+                        courtLevelCode = "S",
+                        locationId = 83.0001m,
+                        physicalFileId = 1063m,
+                        styleOfCause = "GILLESPIE, JANET"
+                    }
+                };
+            }
+
+            return Array.Empty<CourtFile>();
         }
 
         public async Task<Location[]> getLocationsAsync()
