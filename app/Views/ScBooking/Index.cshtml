@@ -173,13 +173,21 @@
                 <ol class="px-0">
                     @foreach (var courtCase in courtCases)
                     {
+                        var selectedCaseId = (int)courtCase.physicalFileId;
                         @*var isChecked = courtCase.physicalFileId == Model.SelectedCaseId;*@
                         var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
                         <li style="list-style-type: none;">
                             <table class="table table-bordered">
                                 <tr>
                                     <td class="align-middle border-right-0" style="width: 30px;">
-                                        @Html.RadioButtonFor(model => model.SelectedCaseId, (int)courtCase.physicalFileId)
+                                        @if (cases == 1)
+                                        {
+                                            @Html.RadioButtonFor(model => model.SelectedCaseId, selectedCaseId)
+                                        } else
+                                        {
+                                            <input type="radio" name="SelectedCaseId" id="SelectedCaseId"
+                                                value="@selectedCaseId" />
+                                        }
                                         @*@Html.RadioButton("SelectedCaseId", courtCase.physicalFileId, isChecked)*@
                                         @*<input type="radio" asp-for="SelectedFileNumber" value="@fileNumber" />*@
                                     </td>
