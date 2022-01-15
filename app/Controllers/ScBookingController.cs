@@ -2,8 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using SCJ.Booking.MVC.Data;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
@@ -24,6 +22,79 @@ namespace SCJ.Booking.MVC.Controllers
         {
             _session = sessionService;
             _scBookingService = scBookingService;
+        }
+
+        [HttpGet]
+        [Route("~/booking/sc")]
+        [Route("~/booking/sc/Index")]
+        public IActionResult Index(bool s = true)
+        {
+            var model = s ?
+                _scBookingService.LoadSearchForm() :
+                _scBookingService.LoadSearchForm2();
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("~/booking/sc")]
+        [Route("~/booking/sc/Index")]
+        public async Task<IActionResult> Index(ScCaseSearchViewModel model)
+        {
+            if (model.CaseRegistryId == -1)
+            {
+                ModelState.AddModelError("CaseRegistryId", "Please select the registry where the file was created");
+            }
+
+            if (string.IsNullOrWhiteSpace(model.CaseNumber))
+            {
+                ModelState.AddModelError("CaseNumber", "Please provide a Court File Number");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            model = await _scBookingService.GetSearchResults2(model);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("~/booking/sc/case-selected")]
+        public IActionResult CaseSelected(ScCaseSearchViewModel model)
+        {
+            model.IsConfirmingCase = true;
+
+            if (model.SelectedCaseId == 0)
+            {
+                ModelState.AddModelError("SelectedCaseId", "Please choose a case.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            _scBookingService.SaveScBookingInfo(model); 
+
+            return RedirectToAction("ConferenceType");
+        }
+
+        [HttpGet]
+        [Route("~/booking/sc/conference-type")]
+        public IActionResult ConferenceType()
+        {
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+            var model = new ScCaseSearchViewModel
+            {
+                CaseNumber = bookingInfo.CaseNumber,
+                CaseRegistryId = bookingInfo.CaseRegistryId,
+                CaseLocationName = bookingInfo.CaseLocationName,
+                SelectedCaseId = bookingInfo.CaseId,
+                CourtFiles = bookingInfo.CourtFiles
+            };
+            return View(model);
         }
 
         [HttpGet]

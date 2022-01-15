@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using SCJ.OnlineBooking;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
@@ -63,5 +65,34 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Contact person number for registry
         public string RegistryContactNumber { get; set; }
+
+        public bool IsConfirmingCase = false;
+        public int SelectedCaseId { get; set; }
+        public CourtFile[] CourtFiles { get; set; }
+        public List<CourtFile> Cases
+        {
+            get
+            {
+                return CourtFiles?.Where(x =>
+                    string.IsNullOrWhiteSpace(SelectedCourtClass) ||
+                    x.courtClassCode == SelectedCourtClass).ToList();
+            }
+        }
+
+        public string GetCourtClass(string value)
+        {
+            switch (value)
+            {
+                case "B":
+                    return "Bankruptcy";
+                case "E":
+                    return "Family Law Proceedings (incl. Divorce Act)";
+                case "H":
+                    return "Foreclosure";
+                case "M":
+                    return "Motor vehicle";
+            }
+            return $"Unknown Court Class for {value}?";
+        }
     }
 }

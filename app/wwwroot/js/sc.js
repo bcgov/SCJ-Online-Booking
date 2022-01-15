@@ -28,6 +28,9 @@ $(document).ready(function () {
         }
     });
 
+    $("#SearchForCase").click(function () {
+        $("input:radio").attr("checked", false);
+    });
 });
 
 // Called by Vue when a time-slot is selected

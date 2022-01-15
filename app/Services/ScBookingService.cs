@@ -81,6 +81,20 @@ namespace SCJ.Booking.MVC.Services
             return new ScCaseSearchViewModel();
         }
 
+        public ScCaseSearchViewModel LoadSearchForm2()
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            //Model instance
+            return new ScCaseSearchViewModel {
+                CaseRegistryId = bookingInfo.CaseRegistryId,
+                CaseLocationName = bookingInfo.CaseLocationName,
+                SelectedCaseId = bookingInfo.CaseId,
+                CaseNumber = bookingInfo.CaseNumber,
+                CourtFiles = bookingInfo.CourtFiles,
+                SelectedCourtClass = bookingInfo.SelectedCourtClass,
+            };
+        }
 
         /// <summary>
         ///     Search for available times
@@ -97,7 +111,6 @@ namespace SCJ.Booking.MVC.Services
                 SelectedCourtClass = model.SelectedCourtClass
             };
 
-
             //set hearing type name
             if (retval.HearingTypeId > 0 && ScHearingType.HearingTypeNameMap.ContainsKey(retval.HearingTypeId))
             {
@@ -111,7 +124,7 @@ namespace SCJ.Booking.MVC.Services
             retval.BookingRegistryId = await _cache.GetBookingLocationIdAsync(
                 retval.CaseRegistryId,
                 retval.HearingTypeId
-            ) ?? retval.CaseRegistryId;
+                ) ?? retval.CaseRegistryId;
 
             retval.BookingLocationName = await _cache.GetLocationNameAsync(retval.BookingRegistryId);
 
@@ -188,6 +201,59 @@ namespace SCJ.Booking.MVC.Services
             return retval;
         }
 
+        public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
+        {
+            // Load locations from cache
+            var retval = new ScCaseSearchViewModel
+            {
+                CaseRegistryId = model.CaseRegistryId,
+                CaseNumber = model.CaseNumber,
+                SelectedCourtClass = model.SelectedCourtClass
+            };
+
+            //set selected registry name
+            retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
+
+            //search the current case number
+            string caseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
+            retval.CourtFiles = await _client.caseNumberValidAsync(caseNumber);
+
+            if ((retval.CourtFiles?.Length ?? 0) == 0)
+            {
+                //case could not be found
+                retval.IsValidCaseNumber = false;
+
+                //empty result set
+                retval.Results = new AvailableDatesByLocation();
+
+                //get contact information
+                retval.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
+            }
+            else
+            {
+                //valid case number
+                retval.IsValidCaseNumber = true;
+
+                _session.ScBookingInfo = new ScSessionBookingInfo
+                {
+                    CaseNumber = model.CaseNumber.ToUpper().Trim(),
+                    FullCaseNumber = caseNumber,
+                    CourtFiles = retval.CourtFiles,
+                    CaseRegistryId = model.CaseRegistryId,
+                    CaseLocationName = retval.CaseLocationName,
+                };
+            }
+
+            return retval;
+        }
+
+        public void SaveScBookingInfo(ScCaseSearchViewModel model)
+        {
+            var bookingInfo = _session.ScBookingInfo;
+            bookingInfo.CaseId = model.SelectedCaseId;
+            bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
+            _session.ScBookingInfo = bookingInfo;
+        }
 
         /// <summary>
         ///     Check if a time slot is still available for a court booking

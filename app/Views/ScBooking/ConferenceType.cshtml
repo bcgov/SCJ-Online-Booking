@@ -1,0 +1,56 @@
+@model ScCaseSearchViewModel
+
+@{
+    ViewData["Title"] = "ConferenceType";
+    var courtFile = Model.CourtFiles?.Where(
+        x => x.physicalFileId == Model.SelectedCaseId).FirstOrDefault();
+}
+
+<div class="my-3">
+    <a asp-action="index" asp-route-s="false">Step 1: Find the Case for Your Hearing</a>
+    @*<a href='javascript:history.go(-1)'>Step 1: Find the Case for Your Hearing</a>*@
+    @*<a href="##" onClick="history.go(-1); return false;">Step 1: Find the Case for Your Hearing</a>*@
+</div>
+
+<h5>4 steps to complete your booking</h5>
+<h1>Step 2: Choose a Conference Type</h1>
+
+<div class="my-4">
+    <b>@(courtFile?.styleOfCause ?? "No Style of Cause?")</b>
+    <div>@Model.GetCourtClass(courtFile?.courtClassCode)</div>
+    <div>File Number: @courtFile?.courtClassCode@Model.CaseNumber</div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 form-group conference-type-selection bg-light">
+        <b>Choose a conference type</b>
+        <div class="btn-radio-group form-group">
+            <div class="form-check">
+                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                id="CPC" name="HearingTypeId"
+                value="@SCJ.Booking.MVC.Utils.ScHearingType.CPC" required>
+                <label for="CPC" class="form-check-label">Case Planning Conference (CPC)</label>
+            </div>
+            <div class="form-check">
+                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                id="JCC" name="HearingTypeId"
+                value="@SCJ.Booking.MVC.Utils.ScHearingType.JCC" required>
+                <label for="JCC" class="form-check-label">Judicial Case Conference (JCC)</label>
+            </div>
+            <div class="form-check">
+                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                id="TMC" name="HearingTypeId"
+                value="@SCJ.Booking.MVC.Utils.ScHearingType.TMC" required>
+                <label for="TMC" class="form-check-label">Trial Management Conference (TMC)</label>
+            </div>
+        </div>
+        <div>
+            <a href="#" target="_blank">
+                Contact the applicable Supreme Court scheduling office
+            </a> by telephone for conference types not listed.
+        </div>
+    </div>
+</div>
+
+<button asp-action="available-times" asp-controller="booking/sc"
+        class="btn btn-primary mb-5">Show Available Times</button>

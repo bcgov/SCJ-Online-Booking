@@ -1,3 +1,5 @@
+using SCJ.OnlineBooking;
+
 namespace SCJ.Booking.MVC.Utils
 {
     public class ScSessionBookingInfo
@@ -22,5 +24,8 @@ namespace SCJ.Booking.MVC.Utils
         public bool IsBooked { get; set; }
 
         public string DateFriendlyName { get; set; }
+
+        public CourtFile[] CourtFiles { get; set; }
+        public string SelectedCourtClass { get; set; }
     }
 }
