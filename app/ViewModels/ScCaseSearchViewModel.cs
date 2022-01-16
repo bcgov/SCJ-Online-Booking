@@ -67,6 +67,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string RegistryContactNumber { get; set; }
 
         public bool IsConfirmingCase = false;
+        public string FullCaseNumber { get; set; }
         public int SelectedCaseId { get; set; }
         public CourtFile[] CourtFiles { get; set; }
         public List<CourtFile> Cases

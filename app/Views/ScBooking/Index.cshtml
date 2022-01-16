@@ -173,7 +173,7 @@
                 <ol class="px-0">
                     @foreach (var courtCase in courtCases)
                     {
-                        var selectedCaseId = (int)courtCase.physicalFileId;
+                        var caseId = (int)courtCase.physicalFileId;
                         @*var isChecked = courtCase.physicalFileId == Model.SelectedCaseId;*@
                         var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
                         <li style="list-style-type: none;">
@@ -182,11 +182,11 @@
                                     <td class="align-middle border-right-0" style="width: 30px;">
                                         @if (cases == 1)
                                         {
-                                            @Html.RadioButtonFor(model => model.SelectedCaseId, selectedCaseId)
+                                            @Html.RadioButtonFor(model => model.SelectedCaseId, caseId)
                                         } else
                                         {
                                             <input type="radio" name="SelectedCaseId" id="SelectedCaseId"
-                                                value="@selectedCaseId" />
+                                                value="@caseId" />
                                         }
                                         @*@Html.RadioButton("SelectedCaseId", courtCase.physicalFileId, isChecked)*@
                                         @*<input type="radio" asp-for="SelectedFileNumber" value="@fileNumber" />*@
@@ -194,7 +194,13 @@
                                     <td class="border-left-0">
                                         <b>@(courtCase.styleOfCause ?? "No Style of Cause?")</b>
                                         <div>@Model.GetCourtClass(courtCase.courtClassCode)</div>
-                                        <div>File Number: @fileNumber (@courtCase.physicalFileId)</div>
+                                        <div>
+                                            File Number:
+                                            @Html.DisplayFor(m => m.FullCaseNumber) @*@Model.FullCaseNumber*@
+                                            or @fileNumber ?
+                                            @*(@courtCase.physicalFileId)*@
+                                        </div>
+                                        @Html.HiddenFor(m => m.FullCaseNumber)
                                     </td>
                                 </tr>
                             </table>

@@ -92,6 +92,7 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseRegistryId = bookingInfo.CaseRegistryId,
                 CaseLocationName = bookingInfo.CaseLocationName,
                 SelectedCaseId = bookingInfo.CaseId,
+                FullCaseNumber = bookingInfo.FullCaseNumber,
                 CourtFiles = bookingInfo.CourtFiles
             };
             return View(model);

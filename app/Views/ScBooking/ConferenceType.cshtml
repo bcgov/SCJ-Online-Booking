@@ -4,6 +4,8 @@
     ViewData["Title"] = "ConferenceType";
     var courtFile = Model.CourtFiles?.Where(
         x => x.physicalFileId == Model.SelectedCaseId).FirstOrDefault();
+
+    var fileNumber = courtFile?.courtClassCode + courtFile?.courtFileNumber;
 }
 
 <div class="my-3">
@@ -18,7 +20,7 @@
 <div class="my-4">
     <b>@(courtFile?.styleOfCause ?? "No Style of Cause?")</b>
     <div>@Model.GetCourtClass(courtFile?.courtClassCode)</div>
-    <div>File Number: @courtFile?.courtClassCode@Model.CaseNumber</div>
+    <div>File Number: @Model.FullCaseNumber or @fileNumber?</div>
 </div>
 
 <div class="row">

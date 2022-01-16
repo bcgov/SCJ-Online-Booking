@@ -93,6 +93,7 @@ namespace SCJ.Booking.MVC.Services
                 CaseNumber = bookingInfo.CaseNumber,
                 CourtFiles = bookingInfo.CourtFiles,
                 SelectedCourtClass = bookingInfo.SelectedCourtClass,
+                FullCaseNumber = bookingInfo.FullCaseNumber
             };
         }
 
@@ -215,8 +216,8 @@ namespace SCJ.Booking.MVC.Services
             retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
 
             //search the current case number
-            string caseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
-            retval.CourtFiles = await _client.caseNumberValidAsync(caseNumber);
+            retval.FullCaseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
+            retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
 
             if ((retval.CourtFiles?.Length ?? 0) == 0)
             {
@@ -237,7 +238,7 @@ namespace SCJ.Booking.MVC.Services
                 _session.ScBookingInfo = new ScSessionBookingInfo
                 {
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                    FullCaseNumber = caseNumber,
+                    FullCaseNumber = retval.FullCaseNumber,
                     CourtFiles = retval.CourtFiles,
                     CaseRegistryId = model.CaseRegistryId,
                     CaseLocationName = retval.CaseLocationName,
