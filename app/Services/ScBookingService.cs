@@ -93,7 +93,12 @@ namespace SCJ.Booking.MVC.Services
                 CaseNumber = bookingInfo.CaseNumber,
                 CourtFiles = bookingInfo.CourtFiles,
                 SelectedCourtClass = bookingInfo.SelectedCourtClass,
-                FullCaseNumber = bookingInfo.FullCaseNumber
+                FullCaseNumber = bookingInfo.FullCaseNumber,
+                HearingTypeId = bookingInfo.HearingTypeId,
+                HearingTypeName = bookingInfo.HearingTypeName,
+                Results = bookingInfo.Results,
+                BookingLocationName = bookingInfo.BookingLocationName,
+                BookingRegistryId = bookingInfo.BookingRegistryId,
             };
         }
 
@@ -149,21 +154,18 @@ namespace SCJ.Booking.MVC.Services
                 //valid case number
                 retval.IsValidCaseNumber = true;
 
-                AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+                retval.Results = await _client.AvailableDatesByLocationAsync(
                     retval.BookingRegistryId,
                     model.HearingTypeId
                 );
 
-                int hearingLength = schedule.BookingDetails.detailBookingLength;
-
-                retval.Results = schedule;
                 string bookingTime = "";
                 DateTime? dt = null;
 
                 //check for valid date
                 if (model.ContainerId > 0)
                 {
-                    if (!IsTimeStillAvailable(schedule, model.ContainerId))
+                    if (!IsTimeStillAvailable(retval.Results, model.ContainerId))
                     {
                         retval.TimeSlotExpired = true;
                     }
@@ -175,7 +177,7 @@ namespace SCJ.Booking.MVC.Services
                     retval.ContainerId = model.ContainerId;
                     retval.SelectedCaseDate = model.SelectedCaseDate;
 
-                    bookingTime = $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(hearingLength):hh:mm tt}";
+                    bookingTime = $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(retval.HearingLengthMinutes):hh:mm tt}";
 
                     retval.TimeSlotFriendlyName = $"{dt.Value:MMMM dd} from {bookingTime}";
                 }
@@ -188,7 +190,7 @@ namespace SCJ.Booking.MVC.Services
                     CaseId = (int)courtFiles[0].physicalFileId, 
                     HearingTypeId = model.HearingTypeId,
                     HearingTypeName = retval.HearingTypeName,
-                    HearingLengthMinutes = hearingLength,
+                    Results = retval.Results,
                     CaseRegistryId = model.CaseRegistryId,
                     CaseLocationName = retval.CaseLocationName,
                     BookingRegistryId = retval.BookingRegistryId,
@@ -219,7 +221,7 @@ namespace SCJ.Booking.MVC.Services
             retval.FullCaseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
             retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
 
-            if ((retval.CourtFiles?.Length ?? 0) == 0)
+            if (!retval.HasCourtFiles)
             {
                 //case could not be found
                 retval.IsValidCaseNumber = false;
@@ -248,11 +250,33 @@ namespace SCJ.Booking.MVC.Services
             return retval;
         }
 
-        public void SaveScBookingInfo(ScCaseSearchViewModel model)
+        public async Task SaveScBookingInfoAsync(ScCaseSearchViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
             bookingInfo.CaseId = model.SelectedCaseId;
             bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
+
+            //set hearing type name
+            if (model.HearingTypeId > 0 &&
+                ScHearingType.HearingTypeNameMap.ContainsKey(model.HearingTypeId) &&
+                bookingInfo.HearingTypeId != model.HearingTypeId)
+            {
+                bookingInfo.HearingTypeId = model.HearingTypeId;
+                bookingInfo.HearingTypeName = ScHearingType.HearingTypeNameMap[model.HearingTypeId];
+
+                bookingInfo.BookingRegistryId = await _cache.GetBookingLocationIdAsync(
+                    bookingInfo.CaseRegistryId,
+                    bookingInfo.HearingTypeId
+                    ) ?? bookingInfo.CaseRegistryId;
+
+                bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
+                    bookingInfo.BookingRegistryId);
+
+                bookingInfo.Results = await _client.AvailableDatesByLocationAsync(
+                    bookingInfo.BookingRegistryId,
+                    bookingInfo.HearingTypeId);
+            }
+
             _session.ScBookingInfo = bookingInfo;
         }
 

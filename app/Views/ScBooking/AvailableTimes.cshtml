@@ -1,0 +1,145 @@
+@model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
+
+@{
+    ViewData["Title"] = "AvailableTimes";
+
+    var courtFile = Model.CourtFiles?.Where(
+        x => x.physicalFileId == Model.SelectedCaseId).FirstOrDefault();
+
+    var fileNumber = courtFile?.courtClassCode + courtFile?.courtFileNumber;
+}
+
+<div class="my-5">
+    <div class="my-3">
+        <a asp-action="ConferenceType">Step 2: Choose Conference Type</a>
+    </div>
+    <h5>4 steps to complete your booking</h5>
+    <h1>Step 3: Book Your Hearing</h1>
+
+    <form method="post">
+        <div class="my-4">
+            <b>@(courtFile?.styleOfCause ?? "[No Style of Cause?]")</b>
+            <div>@Model.GetCourtClass(courtFile?.courtClassCode)</div>
+            <div>File Number: @Model.FullCaseNumber or @fileNumber?</div>
+        </div>
+
+        <h4>Available Times in @Model.BookingLocationName</h4>
+        <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.</p>
+        <p>@ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for @Model.HearingLengthMinutes minutes only.</p>
+
+        <div id="VueAvailableTimes" class="availableTimesContainer">
+            <availabletimes :location-id="@Model.BookingRegistryId"
+                            :hearing-type="@Model.HearingTypeId">
+            </availabletimes>
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+                Choose Time
+        </button>
+    </form>
+
+@*    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CaseNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CaseNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HearingTypeId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HearingTypeId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HearingTypeName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HearingTypeName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsValidCaseNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsValidCaseNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeSlotExpired)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TimeSlotExpired)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CaseRegistryId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CaseRegistryId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CaseLocationName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CaseLocationName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BookingRegistryId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BookingRegistryId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BookingLocationName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BookingLocationName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeSlotFriendlyName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TimeSlotFriendlyName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ContainerId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ContainerId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SelectedCaseDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SelectedCaseDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SelectedCourtClass)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SelectedCourtClass)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RegistryContactNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RegistryContactNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FullCaseNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FullCaseNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SelectedCaseId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SelectedCaseId)
+        </dd>
+    </dl>*@
+</div>
+
+@section Scripts {
+    <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
+    <script src="/scjob/dist/vue/booking-casesearch.js" asp-append-version="true"></script>
+}

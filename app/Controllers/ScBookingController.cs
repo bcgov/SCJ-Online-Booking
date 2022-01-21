@@ -62,7 +62,7 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpPost]
         [Route("~/booking/sc/case-selected")]
-        public IActionResult CaseSelected(ScCaseSearchViewModel model)
+        public async Task<IActionResult> CaseSelectedAsync(ScCaseSearchViewModel model)
         {
             model.IsConfirmingCase = true;
 
@@ -76,7 +76,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View("Index", model);
             }
 
-            _scBookingService.SaveScBookingInfo(model); 
+            await _scBookingService.SaveScBookingInfoAsync(model); 
 
             return RedirectToAction("ConferenceType");
         }
@@ -85,16 +85,34 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/conference-type")]
         public IActionResult ConferenceType()
         {
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
-            var model = new ScCaseSearchViewModel
+            var model = _scBookingService.LoadSearchForm2();
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("~/booking/sc/conference-type")]
+        public async Task<IActionResult> ConferenceType(ScCaseSearchViewModel model)
+        {
+            if (model.HearingTypeId == -1)
             {
-                CaseNumber = bookingInfo.CaseNumber,
-                CaseRegistryId = bookingInfo.CaseRegistryId,
-                CaseLocationName = bookingInfo.CaseLocationName,
-                SelectedCaseId = bookingInfo.CaseId,
-                FullCaseNumber = bookingInfo.FullCaseNumber,
-                CourtFiles = bookingInfo.CourtFiles
-            };
+                ModelState.AddModelError("HearingTypeId", "Please choose a conference type.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _scBookingService.SaveScBookingInfoAsync(model);
+
+            return RedirectToAction("AvailableTimes");
+        }
+
+        [HttpGet]
+        [Route("~/booking/sc/available-times")]
+        public IActionResult AvailableTimes()
+        {
+            var model = _scBookingService.LoadSearchForm2();
             return View(model);
         }
 

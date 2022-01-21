@@ -31,6 +31,13 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Available dates
         public AvailableDatesByLocation Results { get; set; }
+        public int HearingLengthMinutes 
+        {
+            get
+            {
+                return Results?.BookingDetails?.detailBookingLength ?? 0;
+            }
+        }
 
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber { get; set; }
@@ -70,6 +77,13 @@ namespace SCJ.Booking.MVC.ViewModels
         public string FullCaseNumber { get; set; }
         public int SelectedCaseId { get; set; }
         public CourtFile[] CourtFiles { get; set; }
+        public bool HasCourtFiles
+        {
+            get
+            {
+                return (CourtFiles?.Length ?? 0) > 0;
+            }
+        }
         public List<CourtFile> Cases
         {
             get
@@ -93,7 +107,7 @@ namespace SCJ.Booking.MVC.ViewModels
                 case "M":
                     return "Motor vehicle";
             }
-            return $"Unknown Court Class for {value}?";
+            return $"[Unknown Court Class for {value}?]";
         }
     }
 }

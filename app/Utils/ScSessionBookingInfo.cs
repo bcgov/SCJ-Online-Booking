@@ -11,7 +11,13 @@ namespace SCJ.Booking.MVC.Utils
         public string CaseLocationName { get; set; }
         public int BookingRegistryId { get; set; }
         public string BookingLocationName { get; set; }
-        public int HearingLengthMinutes { get; set; }
+        public int HearingLengthMinutes 
+        {
+            get
+            {
+                return Results?.BookingDetails?.detailBookingLength ?? 0;
+            }
+        }
         public int ContainerId { get; set; }
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
@@ -27,5 +33,6 @@ namespace SCJ.Booking.MVC.Utils
 
         public CourtFile[] CourtFiles { get; set; }
         public string SelectedCourtClass { get; set; }
+        public AvailableDatesByLocation Results { get; set; }
     }
 }
