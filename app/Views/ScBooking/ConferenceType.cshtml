@@ -23,6 +23,10 @@
         @Html.HiddenFor(m => m.FullCaseNumber)
         @Html.HiddenFor(m => m.SelectedCaseId)
         @Html.HiddenFor(m => m.SelectedCourtClass)
+        @for (int i = 0; i < Model.AvailableConferenceTypeIds?.Count; i++)
+        {
+            @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
+        }
         @for (int i = 0; i < Model.CourtFiles?.Length; i++)
         {
             @Html.HiddenFor(m => m.CourtFiles[i].courtClassCode)
@@ -33,7 +37,7 @@
         }
 
         <div class="my-4">
-            <b>@(courtFile?.styleOfCause ?? "[No Style of Cause?]")</b>
+            <b>@(courtFile?.styleOfCause ?? "No Style of Cause?")</b>
             <div>@Model.GetCourtClass(courtFile?.courtClassCode)</div>
             <div>File Number: @Model.FullCaseNumber or @fileNumber?</div>
         </div>
@@ -42,24 +46,36 @@
             <div class="col-lg-6 form-group conference-type-selection bg-light">
                 <b>Choose a conference type</b>
                 <div class="btn-radio-group form-group">
-                    <div class="form-check">
-                        <input asp-for="HearingTypeId" class="form-check-input" type="radio"
-                        id="CPC" name="HearingTypeId"
-                        value="@SCJ.Booking.MVC.Utils.ScHearingType.CPC">
-                        <label for="CPC" class="form-check-label">Case Planning Conference (CPC)</label>
-                    </div>
-                    <div class="form-check">
-                        <input asp-for="HearingTypeId" class="form-check-input" type="radio"
-                        id="JCC" name="HearingTypeId"
-                        value="@SCJ.Booking.MVC.Utils.ScHearingType.JCC">
-                        <label for="JCC" class="form-check-label">Judicial Case Conference (JCC)</label>
-                    </div>
-                    <div class="form-check">
-                        <input asp-for="HearingTypeId" class="form-check-input" type="radio"
-                        id="TMC" name="HearingTypeId"
-                        value="@SCJ.Booking.MVC.Utils.ScHearingType.TMC">
-                        <label for="TMC" class="form-check-label">Trial Management Conference (TMC)</label>
-                    </div>
+                    @foreach (var hearingTypeId in Model.AvailableConferenceTypeIds)
+                    {
+                        if (hearingTypeId == ScHearingType.CPC)
+                        {
+                            <div class="form-check">
+                                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                                id="CPC" name="HearingTypeId"
+                                value="@ScHearingType.CPC">
+                                <label for="CPC" class="form-check-label">Case Planning Conference (CPC)</label>
+                            </div>
+                        }
+                        else if (hearingTypeId == ScHearingType.JCC)
+                        {
+                            <div class="form-check">
+                                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                                    id="JCC" name="HearingTypeId"
+                                    value="@ScHearingType.JCC">
+                                <label for="JCC" class="form-check-label">Judicial Case Conference (JCC)</label>
+                            </div>
+                        }
+                        else if (hearingTypeId == ScHearingType.TMC)
+                        {
+                            <div class="form-check">
+                                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                                    id="TMC" name="HearingTypeId"
+                                    value="@ScHearingType.TMC">
+                                <label for="TMC" class="form-check-label">Trial Management Conference (TMC)</label>
+                            </div>                            
+                        }
+                    }
                 </div>
                 <div>
                     <a href="#" target="_blank">

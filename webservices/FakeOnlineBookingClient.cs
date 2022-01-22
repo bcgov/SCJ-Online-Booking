@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using SCJ.Booking.RemoteAPIs.Fixtures;
 
@@ -14,10 +15,12 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
+            var result = Array.Empty<CourtFile>();
+
             //CRE23222 -- Campbell River (CR) / Family Court / #23222
             if (caseNum == "CRE23222" || caseNum == "CR23222")
             {
-                return new[]
+                result = new[]
                 {
                     new CourtFile
                     {
@@ -34,7 +37,7 @@ namespace SCJ.OnlineBooking
             //KE111 -- Kelowna (KE) / Any Court (empty string) / #111
             if (caseNum == "KE111" || caseNum == "KEM111" || caseNum == "KEG111")
             {
-                return new[]
+                result = new[]
                 {
                     new CourtFile
                     {
@@ -56,8 +59,8 @@ namespace SCJ.OnlineBooking
                     }
                 };
             }
-
-            return Array.Empty<CourtFile>();
+            
+            return result.ToList().OrderBy(x => x.styleOfCause).ToArray(); 
         }
 
         public async Task<Location[]> getLocationsAsync()

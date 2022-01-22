@@ -11,7 +11,6 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             //Default values
             Results = new AvailableDatesByLocation();
-            IsValidCaseNumber = false;
             TimeSlotExpired = false;
             CaseLocationName = string.Empty;
             CaseRegistryId = -1;
@@ -40,7 +39,13 @@ namespace SCJ.Booking.MVC.ViewModels
         }
 
         //Indicates if the case number is valid or not
-        public bool IsValidCaseNumber { get; set; }
+        public bool IsValidCaseNumber
+        {
+            get
+            {
+                return (CourtFiles?.Length ?? 0) > 0;
+            }
+        }
 
         //Indicates if the time slot expired
         public bool TimeSlotExpired { get; set; }
@@ -77,13 +82,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public string FullCaseNumber { get; set; }
         public int SelectedCaseId { get; set; }
         public CourtFile[] CourtFiles { get; set; }
-        public bool HasCourtFiles
-        {
-            get
-            {
-                return (CourtFiles?.Length ?? 0) > 0;
-            }
-        }
         public List<CourtFile> Cases
         {
             get
@@ -93,7 +91,7 @@ namespace SCJ.Booking.MVC.ViewModels
                     x.courtClassCode == SelectedCourtClass).ToList();
             }
         }
-
+        public List<int> AvailableConferenceTypeIds { get; set; }    
         public string GetCourtClass(string value)
         {
             switch (value)
@@ -107,7 +105,7 @@ namespace SCJ.Booking.MVC.ViewModels
                 case "M":
                     return "Motor vehicle";
             }
-            return $"[Unknown Court Class for {value}?]";
+            return $"Unknown Court Class for {value}?";
         }
     }
 }

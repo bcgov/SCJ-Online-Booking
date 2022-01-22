@@ -83,9 +83,10 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         [Route("~/booking/sc/conference-type")]
-        public IActionResult ConferenceType()
+        public async Task<IActionResult> ConferenceType()
         {
             var model = _scBookingService.LoadSearchForm2();
+            model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypesAsync(model.CaseLocationName);
             return View(model);
         }
 

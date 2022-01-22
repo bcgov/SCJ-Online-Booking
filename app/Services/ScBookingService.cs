@@ -102,6 +102,23 @@ namespace SCJ.Booking.MVC.Services
             };
         }
 
+        public async Task<List<int>> GetConferenceTypesAsync(string caseLocationName)
+        {
+            var result = new List<int>();
+
+            if (!string.IsNullOrWhiteSpace(caseLocationName))
+            {
+                var locations = await _cache.GetLocationsAsync();
+                result = locations.Where(x => x.locationName == caseLocationName)
+                    .Select(x => x.bookingHearingTypeID).Distinct().ToList();
+            }
+
+            // The following is for testing only
+            result.AddRange(new[] { ScHearingType.JCC, ScHearingType.CPC });
+
+            return result;
+        }
+
         /// <summary>
         ///     Search for available times
         /// </summary>
@@ -136,13 +153,10 @@ namespace SCJ.Booking.MVC.Services
 
             //search the current case number
             string caseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
-            var courtFiles = await _client.caseNumberValidAsync(caseNumber);
+            retval.CourtFiles = await _client.caseNumberValidAsync(caseNumber);
 
-            if ((courtFiles?.Length ?? 0) == 0)
+            if (!retval.IsValidCaseNumber)
             {
-                //case could not be found
-                retval.IsValidCaseNumber = false;
-
                 //empty result set
                 retval.Results = new AvailableDatesByLocation();
 
@@ -151,9 +165,6 @@ namespace SCJ.Booking.MVC.Services
             }
             else
             {
-                //valid case number
-                retval.IsValidCaseNumber = true;
-
                 retval.Results = await _client.AvailableDatesByLocationAsync(
                     retval.BookingRegistryId,
                     model.HearingTypeId
@@ -187,7 +198,7 @@ namespace SCJ.Booking.MVC.Services
                     ContainerId = model.ContainerId,
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
                     FullCaseNumber = caseNumber,
-                    CaseId = (int)courtFiles[0].physicalFileId, 
+                    CaseId = (int)retval.CourtFiles[0].physicalFileId, 
                     HearingTypeId = model.HearingTypeId,
                     HearingTypeName = retval.HearingTypeName,
                     Results = retval.Results,
@@ -221,11 +232,8 @@ namespace SCJ.Booking.MVC.Services
             retval.FullCaseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
             retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
 
-            if (!retval.HasCourtFiles)
+            if (!retval.IsValidCaseNumber)
             {
-                //case could not be found
-                retval.IsValidCaseNumber = false;
-
                 //empty result set
                 retval.Results = new AvailableDatesByLocation();
 
@@ -234,9 +242,6 @@ namespace SCJ.Booking.MVC.Services
             }
             else
             {
-                //valid case number
-                retval.IsValidCaseNumber = true;
-
                 _session.ScBookingInfo = new ScSessionBookingInfo
                 {
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
