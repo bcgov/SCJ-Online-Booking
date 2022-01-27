@@ -42,9 +42,8 @@ objects:
         type: Source
         sourceStrategy:
           from:
-            kind: ImageStreamTag
-            namespace: ${NAMESPACE}
-            name: ${DOTNET_BUILD_IMAGE_STREAM_TAG}
+            kind: DockerImage
+            name: ${DOTNET_BUILD_DOCKER_IMAGE}
           env:
             - name: DOTNET_STARTUP_PROJECT
               value: ${DOTNET_STARTUP_PROJECT}
@@ -89,7 +88,7 @@ objects:
     spec:
       source:
         dockerfile: |-
-          FROM ${DOTNET_RUNTIME_IMAGE_STREAM_TAG}
+          FROM ${DOTNET_RUNTIME_DOCKER_IMAGE}
           ADD app.tar.gz .
         images:
           - from:
@@ -102,9 +101,8 @@ objects:
         type: Docker
         dockerStrategy:
           from:
-            kind: ImageStreamTag
-            namespace: ${NAMESPACE}
-            name: ${DOTNET_RUNTIME_IMAGE_STREAM_TAG}
+            kind: DockerImage
+            name: ${DOTNET_RUNTIME_DOCKER_IMAGE}
       output:
         to:
           kind: ImageStreamTag
@@ -230,16 +228,16 @@ parameters:
     description: The name assigned to all of the frontend objects defined in this template.
     required: true
     value: scj-booking
-  - name: DOTNET_RUNTIME_IMAGE_STREAM_TAG
+  - name: DOTNET_RUNTIME_DOCKER_IMAGE
     displayName: .NET Runtime Imagestream Tag
-    description: The image stream tag which is used to run the application.
+    description: The docker image which is used to run the application.
     required: true
-    value: dotnet-runtime:2.1
-  - name: DOTNET_BUILD_IMAGE_STREAM_TAG
+    value: registry.access.redhat.com/ubi8/dotnet-60-runtime:latest
+  - name: DOTNET_BUILD_DOCKER_IMAGE
     displayName: .NET builder
     required: true
-    description: The image stream tag which is used to build the application.
-    value: dotnet:2.1
+    description: The docker image which is used to build the application.
+    value: registry.access.redhat.com/ubi8/dotnet-60:latest
   - name: NAMESPACE
     displayName: Namespace
     required: true
