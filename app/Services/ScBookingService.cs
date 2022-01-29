@@ -94,6 +94,7 @@ namespace SCJ.Booking.MVC.Services
                 CourtFiles = bookingInfo.CourtFiles,
                 SelectedCourtClass = bookingInfo.SelectedCourtClass,
                 FullCaseNumber = bookingInfo.FullCaseNumber,
+                LocationPrefix = bookingInfo.LocationPrefix,
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,
                 Results = bookingInfo.Results,
@@ -152,14 +153,11 @@ namespace SCJ.Booking.MVC.Services
             retval.BookingLocationName = await _cache.GetLocationNameAsync(retval.BookingRegistryId);
 
             //search the current case number
-            string caseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
-            retval.CourtFiles = await _client.caseNumberValidAsync(caseNumber);
+            (retval.FullCaseNumber, retval.LocationPrefix) = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
+            retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
 
             if (!retval.IsValidCaseNumber)
             {
-                //empty result set
-                retval.Results = new AvailableDatesByLocation();
-
                 //get contact information
                 retval.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
             }
@@ -170,9 +168,6 @@ namespace SCJ.Booking.MVC.Services
                     model.HearingTypeId
                 );
 
-                string bookingTime = "";
-                DateTime? dt = null;
-
                 //check for valid date
                 if (model.ContainerId > 0)
                 {
@@ -182,13 +177,13 @@ namespace SCJ.Booking.MVC.Services
                     }
 
                     //convert JS ticks to .Net date
-                    dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
+                    DateTime? dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
 
                     //set date properties
                     retval.ContainerId = model.ContainerId;
                     retval.SelectedCaseDate = model.SelectedCaseDate;
 
-                    bookingTime = $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(retval.HearingLengthMinutes):hh:mm tt}";
+                    string bookingTime = $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(retval.HearingLengthMinutes):hh:mm tt}";
 
                     retval.TimeSlotFriendlyName = $"{dt.Value:MMMM dd} from {bookingTime}";
                 }
@@ -197,7 +192,7 @@ namespace SCJ.Booking.MVC.Services
                 {
                     ContainerId = model.ContainerId,
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                    FullCaseNumber = caseNumber,
+                    FullCaseNumber = retval.FullCaseNumber,
                     CaseId = (int)retval.CourtFiles[0].physicalFileId, 
                     HearingTypeId = model.HearingTypeId,
                     HearingTypeName = retval.HearingTypeName,
@@ -206,9 +201,7 @@ namespace SCJ.Booking.MVC.Services
                     CaseLocationName = retval.CaseLocationName,
                     BookingRegistryId = retval.BookingRegistryId,
                     BookingLocationName = retval.BookingLocationName,
-                    TimeSlotFriendlyName = bookingTime,
                     SelectedCaseDate = model.SelectedCaseDate,
-                    DateFriendlyName = dt?.ToString("dddd, MMMM dd, yyyy") ?? ""
                 };
             }
 
@@ -229,14 +222,11 @@ namespace SCJ.Booking.MVC.Services
             retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
 
             //search the current case number
-            retval.FullCaseNumber = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
+            (retval.FullCaseNumber, retval.LocationPrefix) = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
             retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
 
             if (!retval.IsValidCaseNumber)
             {
-                //empty result set
-                retval.Results = new AvailableDatesByLocation();
-
                 //get contact information
                 retval.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
             }
@@ -246,6 +236,7 @@ namespace SCJ.Booking.MVC.Services
                 {
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
                     FullCaseNumber = retval.FullCaseNumber,
+                    LocationPrefix = retval.LocationPrefix,
                     CourtFiles = retval.CourtFiles,
                     CaseRegistryId = model.CaseRegistryId,
                     CaseLocationName = retval.CaseLocationName,
@@ -258,8 +249,26 @@ namespace SCJ.Booking.MVC.Services
         public async Task SaveScBookingInfoAsync(ScCaseSearchViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
-            bookingInfo.CaseId = model.SelectedCaseId;
-            bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
+
+            if (bookingInfo.CaseId != model.SelectedCaseId)
+                bookingInfo.CaseId = model.SelectedCaseId;
+
+            if (!string.IsNullOrWhiteSpace(model.SelectedCourtClass) &&
+                bookingInfo.SelectedCourtClass != model.SelectedCourtClass)
+            {
+                bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.FileNumber) &&
+                bookingInfo.FileNumber != model.FileNumber)
+            {
+                bookingInfo.FileNumber = model.FileNumber;
+            }
+
+            if (bookingInfo.SelectedCourtClassName != model.SelectedCourtClassName)
+                bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
+
+            bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
 
             //set hearing type name
             if (model.HearingTypeId > 0 &&
@@ -282,6 +291,26 @@ namespace SCJ.Booking.MVC.Services
                     bookingInfo.HearingTypeId);
             }
 
+            if (model.ContainerId > 0)
+            {
+                if (!string.IsNullOrWhiteSpace(model.SelectedCaseDate) &&
+                    bookingInfo.SelectedCaseDate != model.SelectedCaseDate)
+                {
+                    bookingInfo.SelectedCaseDate = model.SelectedCaseDate;
+                }
+
+                if (!IsTimeStillAvailable(bookingInfo.Results, model.ContainerId))
+                {
+                    model.TimeSlotExpired = true;
+                }
+
+                if (bookingInfo.ContainerId != model.ContainerId)
+                    bookingInfo.ContainerId = model.ContainerId;
+
+                if (bookingInfo.FullDate != model.FullDate)
+                    bookingInfo.FullDate = model.FullDate;
+            }
+
             _session.ScBookingInfo = bookingInfo;
         }
 
@@ -297,13 +326,13 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Fetch location-code for specific case ID
         /// </summary>
-        public async Task<string> BuildCaseNumber(string caseId, int locationId)
+        public async Task<(string, string)> BuildCaseNumber(string caseId, int locationId)
         {
             //fetch location prefix
             string prefix = (await _cache.GetLocationAsync(locationId)).locationCode ?? "";
 
             //return location prefix + case number
-            return $"{prefix}{caseId}";
+            return ($"{prefix}{caseId}", prefix);
         }
 
         /// <summary>
@@ -501,6 +530,8 @@ namespace SCJ.Booking.MVC.Services
                 ScHearingType.PTC => "ScBooking/Email-CV-PTC",
                 ScHearingType.TCH => "ScBooking/Email-CV-TCH",
                 ScHearingType.TMC => "ScBooking/Email-TMC",
+                ScHearingType.CPC => "ScBooking/Email-TMC",
+                ScHearingType.JCC => "ScBooking/Email-TMC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
             };
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

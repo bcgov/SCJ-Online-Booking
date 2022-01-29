@@ -12,16 +12,23 @@
                         </div>
                         <div class="custom-slide-times text-center">
                             <div v-for="container in entry.times">
-                                <a class="custom-slide-time"
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-light"
+                                            @click="selectTime(container.containerId, container.startDateTime)"
+                                            :class="{'selected': container.containerId === selectedContainerId}">
+                                        {{ container.start }} - {{ container.end }}
+                                    </button>
+                                </div>
+                                <!--<a class="custom-slide-time"
                                    @click="selectTime(container.containerId, container.startDateTime)"
                                    @keyup.enter="selectTime(container.containerId, container.startDateTime)"
                                    :class="{'selected': container.containerId === selectedContainerId}"
                                    tabindex="0" style="background-color: lightgray;">
-                                    <!--<span class="sr-text">{{ entry.weekday }} {{ entry.formattedDate }}</span>-->
+                                    <span class="sr-text">{{ entry.weekday }} {{ entry.formattedDate }}</span>
                                     {{ container.start }} - {{ container.end }}
-                                </a>
+                                </a>-->
                             </div>
-                        </div>
+                            </div>
                     </div>
                 </swiper-slide>
             </swiper>

@@ -36,13 +36,14 @@ namespace SCJ.Booking.MVC.ViewModels
         public DateTime FullDate { get; set; }
 
         //User email address
-        [Required(ErrorMessage = "Please provide a valid email address.")]
+        [Required(ErrorMessage = "Please provide your email address.")]
         [EmailAddress(ErrorMessage = "Please provide a valid email address.")]
         public string EmailAddress { get; set; }
 
         //Phone number
-        [Required(ErrorMessage = "Please provide a valid phone number.")]
-        [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}", ErrorMessage = "Please provide a valid phone number.")]
+        [Required(ErrorMessage = "Please provide your phone number.")]
+        [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}",
+            ErrorMessage = "Please provide a valid phone number.")]
         public string Phone { get; set; }
 
         public string BookingLocationName { get; set; }

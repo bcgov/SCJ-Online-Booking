@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using SCJ.OnlineBooking;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
@@ -29,7 +30,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string HearingTypeName { get; set; }
 
         //Available dates
-        public AvailableDatesByLocation Results { get; set; }
+        public AvailableDatesByLocation Results { get; set; } 
         public int HearingLengthMinutes 
         {
             get
@@ -72,6 +73,21 @@ namespace SCJ.Booking.MVC.ViewModels
         //Date selected in the swiper control
         public string SelectedCaseDate { get; set; }
 
+        //Full date for the booking
+        public DateTime FullDate
+        {
+            get
+            {
+                var result = DateTime.MinValue;
+                if (!string.IsNullOrWhiteSpace(SelectedCaseDate) &&
+                    long.TryParse(SelectedCaseDate, out long ticks))
+                {
+                    result = new DateTime(ticks);
+                }
+                return result;
+            }
+        }
+
         //Selected court class in dropdown
         public string SelectedCourtClass { get; set; }
 
@@ -80,6 +96,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         public bool IsConfirmingCase = false;
         public string FullCaseNumber { get; set; }
+        public string LocationPrefix { get; set; }
         public int SelectedCaseId { get; set; }
         public CourtFile[] CourtFiles { get; set; }
         public List<CourtFile> Cases
@@ -89,6 +106,34 @@ namespace SCJ.Booking.MVC.ViewModels
                 return CourtFiles?.Where(x =>
                     string.IsNullOrWhiteSpace(SelectedCourtClass) ||
                     x.courtClassCode == SelectedCourtClass).ToList();
+            }
+        }
+        public CourtFile SelectedCourtFile
+        {
+            get
+            {
+                return CourtFiles?.Where(x => x.physicalFileId == SelectedCaseId).FirstOrDefault();
+            }
+        }
+        public string SelectedFileNumber
+        {
+            get
+            {
+                return SelectedCourtFile?.courtClassCode + SelectedCourtFile?.courtFileNumber;
+            }
+        }
+        public string SelectedCourtClassName
+        {
+            get
+            {
+                return GetCourtClass(SelectedCourtFile?.courtClassCode);
+            }
+        }
+        public string FileNumber
+        {
+            get
+            {
+                return LocationPrefix + " " + SelectedFileNumber;
             }
         }
         public List<int> AvailableConferenceTypeIds { get; set; }    

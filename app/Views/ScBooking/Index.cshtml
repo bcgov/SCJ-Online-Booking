@@ -76,7 +76,8 @@
                 <div class="form-group">
                     @*<input type="submit" value="Search for Case" class="btn btn-primary" />*@
                     <button type="submit" id="SearchForCase"
-                        class="btn btn-primary"> @* asp-action="" asp-controller="booking/sc" *@
+                        asp-action="" asp-controller="booking/sc"
+                        class="btn btn-primary"> 
                         Search for Case
                     </button>
                 </div>
@@ -196,10 +197,7 @@
                                             <b>@(courtCase?.styleOfCause ?? "No Style of Cause?")</b>
                                             <div>@Model.GetCourtClass(courtCase.courtClassCode)</div>
                                             <div>
-                                                File Number:
-                                                @Html.DisplayFor(m => m.FullCaseNumber) @*@Model.FullCaseNumber*@
-                                                or @fileNumber ?
-                                                @*(@courtCase.physicalFileId)*@
+                                                File Number: @Html.DisplayFor(m => m.LocationPrefix) @fileNumber
                                             </div>
                                             @Html.HiddenFor(m => m.FullCaseNumber)
                                         </td>

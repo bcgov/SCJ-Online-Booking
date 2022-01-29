@@ -1,90 +1,121 @@
+@inject SessionService SessionService
 @model ScCaseConfirmViewModel
 
 @{
-    ViewData["Title"] = "Complete Your Booking";
+    ViewData["Title"] = "Step 4: Complete Your Booking";
 }
 
-<div class="row screen-intro">
-    <div class="col-md-12 paragraph">
-        <h1>@ViewData["Title"]</h1>
-        <p>The following time is reserved for your conference hearing.</p>
-        <p>Check that the following information is accurate before confirming your booking.</p>
-    </div>
-</div>
+<div class="my-3">
+    <div class="row screen-intro mb-2">
+        <div class="col-lg-8 paragraph">
+            <div class="my-3">
+                <a asp-action="AvailableTimes">Step 3: Book Your Hearing</a>
+            </div>
+            <h5>4 steps to complete your booking</h5>
 
-<div class="row booking-confirmation">
-    <div class="content col-lg-6">
-        <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
-            <input type="hidden" asp-for="HearingTypeName" />
-            <input type="hidden" asp-for="CaseLocationName" />
-            <input type="hidden" asp-for="CaseNumber" />
-            <input type="hidden" asp-for="Date" />
-            <input type="hidden" asp-for="Time" />
-            <input type="hidden" asp-for="FullDate" />
-            <div class="form-group">
-                <label>Type of Conference Hearing</label>
-                <div>
-                    <span>@Model.HearingTypeName</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Registry Name</label>
-                <div>
-                    <span>@Model.CaseLocationName</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Court File Number</label>
-                <div>
-                    <span>@Model.CaseNumber</span>
-                </div>
-            </div>
-            @if (Model.BookingLocationName != Model.CaseLocationName)
-            {
+            <h2>@ViewData["Title"]</h2>
+            <p>
+                Please review that the following information is accurate before confirming your booking.
+                Once you confirm your booking, the time will be reserved for your conference hearing.
+            </p>
+            <h3>Review Booking Details</h3>
+            @*<p>The following time is reserved for your conference hearing.</p>
+            <p>Check that the following information is accurate before confirming your booking.</p>*@
+        </div>
+    </div>
+
+    <div class="row booking-confirmation">
+        <div class="content col-lg-8">
+            <form method="post" class="form-horizontal needs-validation" role="form"
+                  novalidate autocomplete="off">
+                <input type="hidden" asp-for="HearingTypeName" />
+                <input type="hidden" asp-for="CaseLocationName" />
+                <input type="hidden" asp-for="CaseNumber" />
+                <input type="hidden" asp-for="Date" />
+                <input type="hidden" asp-for="Time" />
+                <input type="hidden" asp-for="FullDate" />
+                @Html.HiddenFor(m => m.BookingLocationName)
+                @Html.HiddenFor(m => m.BookingRegistryId)
+                @Html.HiddenFor(m => m.CaseRegistryId)
+                @Html.HiddenFor(m => m.ContainerId)
+
                 <div class="form-group">
-                    <label>Centralized Hearing Location</label>
+                    <h4>@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</h4>
                     <div>
-                        <span>@Model.BookingLocationName</span>
+                        @SessionService.ScBookingInfo.SelectedCourtClassName @*@Model.GetCourtClass(courtFile?.courtClassCode)*@
+                    </div>
+                    <div>File Number: @SessionService.ScBookingInfo.FileNumber</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="h4">Hearing Date</label>
+                    <div>
+                        <span>@Model.HearingTypeName</span>
+                    </div>
+                    <div>
+                        <span>@Model.Date</span>
+                    </div>
+                    <div>
+                        <span>@Model.Time</span>
                     </div>
                 </div>
-            }
-            <div class="form-group">
-                <label>Date and Time of Conference Hearing</label>
-                <div>
-                    <span>@Model.Date</span>
-                </div>
-                <div>
-                    <span>@Model.Time</span>
-                </div>
-            </div>
-            <div class="form-group contact-information">
-                <h2>Your Contact Information</h2>
-                <p>We will contact you regarding this booking. Please provide the following contact information.</p>
-                <label class="font-weight-bold" asp-for="EmailAddress">E-mail address:</label>
-                <input type="email" asp-for="EmailAddress" required class="form-control" />
-                <div class="invalid-feedback">
-                    Please provide a valid email address.
-                </div>
-                <div class="invalid-field-message">
-                    @Html.ValidationMessageFor(model => model.EmailAddress)
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="font-weight-bold">Phone number (format: xxx-xxx-xxxx):</label>
-                <input type="tel" asp-for="Phone" required class="form-control phone-input" pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
-                <div class="invalid-feedback">
-                    Please provide a valid phone number.
-                </div>
-                <div class="invalid-field-message">
-                    @Html.ValidationMessageFor(model => model.Phone)
-                </div>
-            </div>
 
-            <div class="form-group booking-submit">
-                <button type="submit" class="btn btn-primary btn-lg progress-spinner" id="btnSearch">Confirm Booking</button>
-                <a class="btn btn-secondary btn-lg" href="/scjob/booking/sc/CaseSearch">Cancel</a>
-            </div>
+                @*<div class="form-group">
+                    <label>Registry Name</label>
+                    <div>
+                        <span>@Model.CaseLocationName</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Court File Number</label>
+                    <div>
+                        <span>@Model.CaseNumber</span>
+                    </div>
+                </div>
+                @if (Model.BookingLocationName != Model.CaseLocationName)
+                {
+                    <div class="form-group">
+                        <label>Centralized Hearing Location</label>
+                        <div>
+                            <span>@Model.BookingLocationName</span>
+                        </div>
+                    </div>
+                }*@
 
-        </form>
+                <div class="form-group contact-information">
+                    <h2>Provide Your Contact Information</h2>
+                    <p>
+                        We will contact you regarding this booking. Please provide the following
+                        contact information.
+                    </p>
+                    <label class="font-weight-bold" asp-for="EmailAddress">Email address:</label>
+                    <input type="email" asp-for="EmailAddress" required class="form-control" />
+                    <div class="invalid-feedback">
+                        Please provide your email address.
+                    </div>
+                    <div class="invalid-field-message">
+                        @Html.ValidationMessageFor(model => model.EmailAddress)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone" class="font-weight-bold">Phone number (format: xxx-xxx-xxxx):</label>
+                    <input type="tel" asp-for="Phone" required class="form-control phone-input"
+                        pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
+                    <div class="invalid-feedback">
+                        Please provide your phone number.
+                    </div>
+                    <div class="invalid-field-message">
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+
+                <div class="form-group booking-submit">
+                    <button type="submit" class="btn btn-primary btn-lg progress-spinner" id="btnSearch">
+                        Confirm Booking
+                    </button>
+                    <a class="btn btn-secondary btn-lg" href="/scjob/booking/sc">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

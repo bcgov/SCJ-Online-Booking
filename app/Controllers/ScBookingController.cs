@@ -117,6 +117,27 @@ namespace SCJ.Booking.MVC.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [Route("~/booking/sc/available-times")]
+        public async Task<IActionResult> AvailableTimes(ScCaseSearchViewModel model)
+        {
+            if (model.ContainerId == -1)
+            {
+                ModelState.AddModelError("ContainerId", "Please choose from one of the available times.");
+            }
+
+            model.Results = _session.ScBookingInfo.Results;
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _scBookingService.SaveScBookingInfoAsync(model);
+
+            return RedirectToAction("CaseConfirm");
+        }
+
         [HttpGet]
         public IActionResult CaseSearch()
         {
@@ -150,11 +171,8 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect("/scjob/booking/sc/CaseSearch");
+                return Redirect("/scjob/booking/sc");
             }
-
-            //convert JS ticks to .Net date
-            var dt = new DateTime(Convert.ToInt64(bookingInfo.SelectedCaseDate));
 
             //user information
             var user = _session.GetUserInformation();
@@ -163,7 +181,7 @@ namespace SCJ.Booking.MVC.Controllers
             var model = new ScCaseConfirmViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
-                Date = dt.ToString("dddd, MMMM dd, yyyy"),
+                Date = bookingInfo.DateFriendlyName, 
                 Time = bookingInfo.TimeSlotFriendlyName,
                 CaseLocationName = $"{bookingInfo.CaseLocationName} Law Courts",
                 BookingLocationName = $"{bookingInfo.BookingLocationName} Law Courts",
@@ -171,7 +189,7 @@ namespace SCJ.Booking.MVC.Controllers
                 ContainerId = bookingInfo.ContainerId,
                 CaseRegistryId = bookingInfo.CaseRegistryId,
                 BookingRegistryId = bookingInfo.BookingRegistryId,
-                FullDate = dt,
+                FullDate = bookingInfo.FullDate, 
                 EmailAddress =  user.Email,
                 Phone = user.Phone
             };
@@ -210,8 +228,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             //make booking
-            var result = 
-                await _scBookingService.BookCourtCase(model, userGuid, userDisplayName);
+            var result = await _scBookingService.BookCourtCase(model, userGuid, userDisplayName);
 
             return Redirect(
                 $"/scjob/booking/sc/CaseBooked?booked={(result.IsBooked ? "true" : "false")}");
@@ -224,7 +241,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect("/scjob/booking/sc/CaseSearch");
+                return Redirect("/scjob/booking/sc");
             }
 
             return View();

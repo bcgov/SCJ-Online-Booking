@@ -2,11 +2,6 @@
 
 @{
     ViewData["Title"] = "AvailableTimes";
-
-    var courtFile = Model.CourtFiles?.Where(
-        x => x.physicalFileId == Model.SelectedCaseId).FirstOrDefault();
-
-    var fileNumber = courtFile?.courtClassCode + courtFile?.courtFileNumber;
 }
 
 <div class="my-5">
@@ -18,19 +13,43 @@
 
     <form method="post">
         <div class="my-4">
-            <b>@(courtFile?.styleOfCause ?? "No Style of Cause?")</b>
-            <div>@Model.GetCourtClass(courtFile?.courtClassCode)</div>
-            <div>File Number: @Model.FullCaseNumber or @fileNumber?</div>
+            <b>@(Model.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
+            <div>
+                @Model.SelectedCourtClassName 
+            </div>
+            <div>File Number: @Model.FileNumber</div>
         </div>
 
         <h4>Available Times in @Model.BookingLocationName</h4>
         <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.</p>
-        <p>@ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for @Model.HearingLengthMinutes minutes only.</p>
+        <p>
+            @ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for
+            @Model.HearingLengthMinutes minutes only.
+        </p>
 
         <div id="VueAvailableTimes" class="availableTimesContainer">
             <availabletimes :location-id="@Model.BookingRegistryId"
                             :hearing-type="@Model.HearingTypeId">
             </availabletimes>
+        </div>
+
+        @for (int i = 0; i < Model.CourtFiles?.Length; i++)
+        {
+            @Html.HiddenFor(m => m.CourtFiles[i].courtClassCode)
+            @Html.HiddenFor(m => m.CourtFiles[i].courtFileNumber)
+            @Html.HiddenFor(m => m.CourtFiles[i].styleOfCause)
+            @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
+            @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
+        }
+        @Html.HiddenFor(m => m.SelectedCaseId)
+        @Html.HiddenFor(m => m.LocationPrefix)
+        @Html.HiddenFor(m => m.HearingTypeName)
+        @Html.HiddenFor(m => m.BookingLocationName)
+        <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
+        <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
+        <div class="text-danger pb-3">@* hidden*@
+            @*Please choose from one of the available times.*@
+            <span asp-validation-for="ContainerId" class="text-danger"></span>
         </div>
 
         <button type="submit"
