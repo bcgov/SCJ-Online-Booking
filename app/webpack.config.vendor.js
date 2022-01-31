@@ -1,9 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -14,23 +13,37 @@ module.exports = (env) => {
             },
             stats: {
                 modules: false,
-                entrypoints: false
+                entrypoints: false,
+                children: false
             },
             resolve: {
                 extensions: [".js"]
             },
             optimization: {
-                minimize: isDevBuild
+                minimize: true,
+                minimizer: [
+                    new CssMinimizerPlugin(),
+                ],
             },
             module: {
                 rules: [
                     {
                         test: /\.(jpg|jpeg|gif|png)$/,
-                        loader: "file-loader?name=images/[name].[ext]"
+                        use: {
+                            loader: "file-loader",
+                            options: {
+                                name: 'images/[name].[ext]',
+                            }
+                        }
                     },
                     {
                         test: /\.(woff|woff2|eot|ttf|svg)$/,
-                        loader: "file-loader?name=webfonts/[name].[ext]"
+                        use: {
+                            loader: "file-loader",
+                            options: {
+                                name: 'fonts/[name].[ext]',
+                            }
+                        }
                     },
                     {
                         test: /\.css(\?|$)/,
@@ -57,23 +70,17 @@ module.exports = (env) => {
             },
             output: {
                 path: path.join(__dirname, "wwwroot", "dist"),
-                publicPath: "/scjob/dist/",
+                publicPath: "/dist/",
                 filename: "[name].js",
-                library: "[name]_[hash]",
+                library: "[name]_[fullhash]",
             },
             plugins: [
                 new MiniCssExtractPlugin({
                     filename: "css/vendor.min.css"
                 }),
-                // Compress extracted CSS.
-                new OptimizeCSSPlugin({
-                    cssProcessorOptions: {
-                        safe: true
-                    }
-                }),
                 new webpack.DllPlugin({
                     path: path.join(__dirname, "wwwroot", "dist", "[name]-manifest.json"),
-                    name: "[name]_[hash]"
+                    name: "[name]_[fullhash]"
                 }),
                 new webpack.ProvidePlugin({
                     $: "jquery",
@@ -82,7 +89,8 @@ module.exports = (env) => {
                     "window.jQuery": "jquery",
                     "Popper": "popper.js"
                 }),
-                new CopyWebpackPlugin([
+                new CopyWebpackPlugin({
+                    patterns: [
                     {
                         from: "node_modules/jquery/dist/jquery+(.min|).js",
                         to: "lib/[name].js",
@@ -108,8 +116,7 @@ module.exports = (env) => {
                     },
                     {
                         from: "node_modules/select2/dist/js/select2+(.full|)+(.min|).js",
-                        to: "lib/[name].js",
-                        type: "template"
+                        to: "lib/[name].js"
                     },
                     {
                         // the min version is packaged above (vendor.min.css)
@@ -146,7 +153,7 @@ module.exports = (env) => {
                         to: "lib/spin.min.js",
                         toType: "file"
                     },
-                ]),
+                ]}),
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
                 })
