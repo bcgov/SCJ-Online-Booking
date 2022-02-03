@@ -1,9 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
 const fs = require("fs");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const RemovePlugin = require('remove-files-webpack-plugin');
 const bundleOutputDir = "./wwwroot/dist";
-const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 
 var appBasePath = "./ClientSrc/";
 
@@ -20,7 +21,7 @@ fs.readdirSync(appBasePath + "vue/").forEach(function(name) {
 // a css file with the same name
 fs.readdirSync(appBasePath + "sass/").forEach(function (file) {
     if (!file.startsWith("_")) {
-        var cssFile = file.replace(".scss", ".css");
+        var cssFile = file.replace(".scss", "");
         entries["/css/" + cssFile] = appBasePath + "sass/" + file;
     }
 });
@@ -37,7 +38,10 @@ module.exports = (env) => {
             entrypoints: false
         },
         optimization: {
-            minimize: !isDevBuild
+            minimize: !isDevBuild,
+            minimizer: [
+                new CssMinimizerPlugin(),
+            ],            
         },
         resolve: {
             extensions: ['.js', '.vue', ',scss'],
@@ -60,25 +64,34 @@ module.exports = (env) => {
                     options: { loaders: { js: { loader: 'babel-loader', options: { presets: 'es2015' } } } }
                 },
                 { test: /\.js$/, include: /ClientSrc/, use: "babel-loader?presets=es2015" },
-                { test: /\.scss/, use: ExtractTextPlugin.extract(['css-loader', 'sass-loader']) }
+                {
+                    test: /\.scss/,
+                    use: [
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                        },
+                        'css-loader',
+                        'sass-loader'
+                    ] 
+                }
             ]
         },
         plugins: [
-            new webpack.DllReferencePlugin({
-                context: __dirname,
-                manifest: require("./wwwroot/dist/vendor-manifest.json")
-            }),
-            new ExtractTextPlugin({
-                filename: "[name]"
-            }),
-            new CssoWebpackPlugin({
-                 pluginOutputPostfix: 'min'
+            new MiniCssExtractPlugin(),
+            new RemovePlugin({
+                after: {
+                    root: './wwwroot/dist/css',
+                    include: [],
+                    test: [
+                        {
+                            folder: './',
+                            method: (absoluteItemPath) => {
+                                return !(new RegExp(/\.css$/, 'm').test(absoluteItemPath));
+                            }
+                        }
+                    ],
+                }
             })
-        ].concat(isDevBuild ? [
-            // Plugins that apply in development builds only
-        ] : [
-                // Plugins that apply in production builds only
-                new ExtractTextPlugin("site.css")
-            ])
+        ]
     }];
 };
