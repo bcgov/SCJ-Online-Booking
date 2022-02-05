@@ -9,6 +9,12 @@ $(document).ready(function () {
         }
     });
 
+    //$("input:radio[name=SelectedCaseId]").change(function () {
+    //    //if ($('#ChooseACase').length) {
+    //    //    $("#ChooseACase").hide();
+    //    //}
+    //});
+
     // hide the hearing type dropdown for CV-PTC
     $("input[name=HearingTypeId]").change(function () {
         var $courtClassDropdown = $("#courtClassDropdown");
@@ -28,9 +34,14 @@ $(document).ready(function () {
         }
     });
 
-    $("#SearchForCase").click(function () {
-        $("input:radio").attr("checked", false);
-    });
+    //$("#SearchForCase").click(function () {
+    //    //if ($("input:radio").length) {
+    //    //    $("input:radio").attr("checked", false);
+    //    //}
+    //    //if ($('#ChooseACase').length) {
+    //    //    $("#ChooseACase").show();
+    //    //}
+    //});
 });
 
 // Called by Vue when a time-slot is selected

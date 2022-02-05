@@ -67,7 +67,7 @@ namespace SCJ.Booking.MVC.ViewModels
         //Used when the time slot expired eg. January 7 from 2:45pm to 3:15pm
         public string TimeSlotFriendlyName { get; set; }
 
-        //Date properties
+        //[Required(ErrorMessage = "Please choose from one of the available times")]
         public int ContainerId { get; set; }
 
         //Date selected in the swiper control
@@ -97,6 +97,8 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool IsConfirmingCase = false;
         public string FullCaseNumber { get; set; }
         public string LocationPrefix { get; set; }
+
+        //[Required(ErrorMessage = "Please choose a case")]
         public int SelectedCaseId { get; set; }
         public CourtFile[] CourtFiles { get; set; }
         public List<CourtFile> Cases
@@ -144,11 +146,25 @@ namespace SCJ.Booking.MVC.ViewModels
                 case "B":
                     return "Bankruptcy";
                 case "E":
-                    return "Family Law Proceedings (incl. Divorce Act)";
+                    return "Family Law Proceedings";
                 case "H":
                     return "Foreclosure";
+                case "L":
+                    return "Enforcement/Legislated Statute";
                 case "M":
-                    return "Motor vehicle";
+                    return "Motor Vehicle Accidents";
+                case "N":
+                    return "Adoption";
+                case "P":
+                    return "Probate";
+                case "S":
+                    return "Supreme Civil (General)";
+                case "V":
+                    return "Caveat";
+                case "D":
+                    return "Divorce";
+                case "C":
+                    return "Small Claims";
             }
             return $"Unknown Court Class for {value}?";
         }

@@ -110,12 +110,16 @@ namespace SCJ.Booking.MVC.Services
             if (!string.IsNullOrWhiteSpace(caseLocationName))
             {
                 var locations = await _cache.GetLocationsAsync();
-                result = locations.Where(x => x.locationName == caseLocationName)
+                result = locations.Where(
+                    x => x.locationName == caseLocationName && (
+                    x.bookingHearingTypeID == ScHearingType.TMC ||
+                    x.bookingHearingTypeID == ScHearingType.CPC ||
+                    x.bookingHearingTypeID == ScHearingType.JCC))
                     .Select(x => x.bookingHearingTypeID).Distinct().ToList();
             }
 
             // The following is for testing only
-            result.AddRange(new[] { ScHearingType.JCC, ScHearingType.CPC });
+            //result.AddRange(new[] { ScHearingType.JCC, ScHearingType.CPC });
 
             return result;
         }
@@ -171,10 +175,7 @@ namespace SCJ.Booking.MVC.Services
                 //check for valid date
                 if (model.ContainerId > 0)
                 {
-                    if (!IsTimeStillAvailable(retval.Results, model.ContainerId))
-                    {
-                        retval.TimeSlotExpired = true;
-                    }
+                    retval.TimeSlotExpired = !IsTimeStillAvailable(retval.Results, model.ContainerId);
 
                     //convert JS ticks to .Net date
                     DateTime? dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
@@ -211,7 +212,7 @@ namespace SCJ.Booking.MVC.Services
         public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
         {
             // Load locations from cache
-            var retval = new ScCaseSearchViewModel
+            var result = new ScCaseSearchViewModel
             {
                 CaseRegistryId = model.CaseRegistryId,
                 CaseNumber = model.CaseNumber,
@@ -219,31 +220,31 @@ namespace SCJ.Booking.MVC.Services
             };
 
             //set selected registry name
-            retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
+            result.CaseLocationName = await _cache.GetLocationNameAsync(result.CaseRegistryId);
 
             //search the current case number
-            (retval.FullCaseNumber, retval.LocationPrefix) = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
-            retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
+            (result.FullCaseNumber, result.LocationPrefix) = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
+            result.CourtFiles = await _client.caseNumberValidAsync(result.FullCaseNumber);
 
-            if (!retval.IsValidCaseNumber)
+            if (!result.IsValidCaseNumber)
             {
                 //get contact information
-                retval.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
+                result.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
             }
             else
             {
                 _session.ScBookingInfo = new ScSessionBookingInfo
                 {
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                    FullCaseNumber = retval.FullCaseNumber,
-                    LocationPrefix = retval.LocationPrefix,
-                    CourtFiles = retval.CourtFiles,
+                    FullCaseNumber = result.FullCaseNumber,
+                    LocationPrefix = result.LocationPrefix,
+                    CourtFiles = result.CourtFiles,
                     CaseRegistryId = model.CaseRegistryId,
-                    CaseLocationName = retval.CaseLocationName,
+                    CaseLocationName = result.CaseLocationName,
                 };
             }
 
-            return retval;
+            return result;
         }
 
         public async Task SaveScBookingInfoAsync(ScCaseSearchViewModel model)
@@ -251,7 +252,9 @@ namespace SCJ.Booking.MVC.Services
             var bookingInfo = _session.ScBookingInfo;
 
             if (bookingInfo.CaseId != model.SelectedCaseId)
+            {
                 bookingInfo.CaseId = model.SelectedCaseId;
+            }
 
             if (!string.IsNullOrWhiteSpace(model.SelectedCourtClass) &&
                 bookingInfo.SelectedCourtClass != model.SelectedCourtClass)
@@ -266,7 +269,9 @@ namespace SCJ.Booking.MVC.Services
             }
 
             if (bookingInfo.SelectedCourtClassName != model.SelectedCourtClassName)
+            {
                 bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
+            }
 
             bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
 
@@ -299,16 +304,17 @@ namespace SCJ.Booking.MVC.Services
                     bookingInfo.SelectedCaseDate = model.SelectedCaseDate;
                 }
 
-                if (!IsTimeStillAvailable(bookingInfo.Results, model.ContainerId))
-                {
-                    model.TimeSlotExpired = true;
-                }
+                model.TimeSlotExpired = !IsTimeStillAvailable(bookingInfo.Results, model.ContainerId);
 
                 if (bookingInfo.ContainerId != model.ContainerId)
+                {
                     bookingInfo.ContainerId = model.ContainerId;
+                }
 
                 if (bookingInfo.FullDate != model.FullDate)
+                {
                     bookingInfo.FullDate = model.FullDate;
+                }
             }
 
             _session.ScBookingInfo = bookingInfo;

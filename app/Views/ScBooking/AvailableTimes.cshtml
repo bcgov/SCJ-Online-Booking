@@ -4,15 +4,15 @@
     ViewData["Title"] = "AvailableTimes";
 }
 
-<div class="my-5">
+<div>
     <div class="my-3">
         <a asp-action="ConferenceType">Step 2: Choose Conference Type</a>
     </div>
     <h5>4 steps to complete your booking</h5>
-    <h1>Step 3: Book Your Hearing</h1>
+    <h1 class="mb-1">Step 3: Book Your Hearing</h1>
 
     <form method="post">
-        <div class="my-4">
+        <div class="my-3">
             <b>@(Model.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
             <div>
                 @Model.SelectedCourtClassName 
@@ -20,7 +20,7 @@
             <div>File Number: @Model.FileNumber</div>
         </div>
 
-        <h4>Available Times in @Model.BookingLocationName</h4>
+        <p class="font-weight-bold">Available Times in @Model.BookingLocationName</p>
         <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.</p>
         <p>
             @ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for

@@ -70,12 +70,14 @@ namespace SCJ.OnlineBooking
             return ScLocationFixture.All;
         }
 
-        public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID,
-            int hearingTypeID)
+        public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(
+            int locationID, int hearingTypeID)
         {
             await Task.Delay(100);
-
-            return ScAvailableDatesByLocationFixture.AvailableDatesResult;
+            var result = ScAvailableDatesByLocationFixture.AvailableDatesResult;
+            result.AvailableDates = result.AvailableDates.Where(
+                x => x.Date_Time > DateTime.Now).ToArray();
+            return result;
         }
 
         public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)

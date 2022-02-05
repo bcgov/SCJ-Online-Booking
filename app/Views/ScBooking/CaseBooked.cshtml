@@ -6,7 +6,7 @@
     ViewData["Title"] = "Your Booking is Confirmed";
 }
 
-<div class="my-3">
+<div>
     <div class="row screen-intro">
         <div class="col-md-12">
             @if (SessionService.ScBookingInfo.IsBooked)
@@ -17,8 +17,9 @@
                     has been scheduled for the date and time below.*@
                 </h2>
                 <p>
-                    Your ? has been scheduled for the date and time below. Please file a requisition to
-                    secure ? date.
+                    Your @ScHearingType.GetHearingType(SessionService.ScBookingInfo.HearingTypeId)
+                    has been scheduled for the date and time below. Please file a requisition to secure
+                    @ScHearingType.GetHearingType(SessionService.ScBookingInfo.HearingTypeId) date.
                 </p>
                 <p>The following information will be sent to you by email.</p>
             }
@@ -40,7 +41,7 @@
     else
     {
         <div class="row booking-confirmation">
-            <div class="content col-md-6">
+            <div class="col-md-6">
                 @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
                 {
                     <div class="row">
@@ -55,7 +56,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group">
+@*                        <div class="form-group">
                             <label class="font-weight-bold">Type of Conference Hearing</label>
                             <div>
                                 <span>@SessionService.ScBookingInfo.HearingTypeName</span>
@@ -81,23 +82,28 @@
                                     <span>@SessionService.ScBookingInfo.BookingLocationName Law Courts</span>
                                 </div>
                             </div>
-                        }
+                        }*@
                         <div class="form-group">
-                            <label class="font-weight-bold">Date and Time of Conference Hearing</label>
+                            <b>@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
                             <div>
-                                <span>@SessionService.ScBookingInfo.DateFriendlyName</span>
+                                @SessionService.ScBookingInfo.SelectedCourtClassName
+                            </div>
+                            <div>File Number: @SessionService.ScBookingInfo.FileNumber</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold mb-0">Hearing Date</label>
+                            <div>
+                                @SessionService.ScBookingInfo.DateFriendlyName
                             </div>
                             <div>
                                 <span>@SessionService.ScBookingInfo.TimeSlotFriendlyName</span>
                             </div>
                         </div>
-                        <div class="form-group contact-information">
-                            <h2>Contact Information</h2>
+                        <div class="form-group">
+                            <label class="mb-0">Contact Information</label>
                             <div>
                                 <span>@SessionService.UserInfo.Email</span>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <div>
                                 <span>@SessionService.UserInfo.Phone</span>
                             </div>

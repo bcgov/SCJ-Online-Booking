@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +15,8 @@ namespace SCJ.Booking.MVC.Controllers
 
         // Strongly typed session
         private readonly SessionService _session;
+
+        private readonly string step1Url = "/scjob/booking/sc";
 
         //Constructor
         public ScBookingController(SessionService sessionService, ScBookingService scBookingService)
@@ -86,7 +87,14 @@ namespace SCJ.Booking.MVC.Controllers
         public async Task<IActionResult> ConferenceType()
         {
             var model = _scBookingService.LoadSearchForm2();
-            model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypesAsync(model.CaseLocationName);
+
+            if (string.IsNullOrEmpty(model.CaseNumber))
+            {
+                return Redirect(step1Url);
+            }
+
+            model.AvailableConferenceTypeIds =
+                await _scBookingService.GetConferenceTypesAsync(model.CaseLocationName);
             return View(model);
         }
 
@@ -114,6 +122,12 @@ namespace SCJ.Booking.MVC.Controllers
         public IActionResult AvailableTimes()
         {
             var model = _scBookingService.LoadSearchForm2();
+
+            if (string.IsNullOrEmpty(model.CaseNumber))
+            {
+                return Redirect(step1Url);
+            }
+
             return View(model);
         }
 
@@ -126,13 +140,12 @@ namespace SCJ.Booking.MVC.Controllers
                 ModelState.AddModelError("ContainerId", "Please choose from one of the available times.");
             }
 
-            model.Results = _session.ScBookingInfo.Results;
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
+            model.Results = _session.ScBookingInfo.Results;
             await _scBookingService.SaveScBookingInfoAsync(model);
 
             return RedirectToAction("CaseConfirm");
@@ -171,7 +184,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect("/scjob/booking/sc");
+                return Redirect(step1Url);
             }
 
             //user information
@@ -231,7 +244,7 @@ namespace SCJ.Booking.MVC.Controllers
             var result = await _scBookingService.BookCourtCase(model, userGuid, userDisplayName);
 
             return Redirect(
-                $"/scjob/booking/sc/CaseBooked?booked={(result.IsBooked ? "true" : "false")}");
+                $"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
         }
 
         [HttpGet]
@@ -241,7 +254,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect("/scjob/booking/sc");
+                return Redirect(step1Url);
             }
 
             return View();

@@ -37,7 +37,7 @@ namespace SCJ.Booking.MVC.Services
             if (b == null)
             {
                 // ReSharper disable once RedundantTypeSpecificationInDefaultExpression
-                return default(T);
+                return default;
             }
 
             return JsonConvert.DeserializeObject<T>(Encoding.Unicode.GetString(b));

@@ -2,9 +2,14 @@
 
 @{
     ViewData["Title"] = "ConferenceType";
+
+    if (Model.AvailableConferenceTypeIds.Count == 1)
+    {
+        Model.HearingTypeId = Model.AvailableConferenceTypeIds.First();
+    }
 }
 
-<div class="my-5">
+<div>
     <div class="my-3">
         <a asp-action="index" asp-route-s="false">Step 1: Find the Case for Your Hearing</a>
         @*<a href='javascript:history.go(-1)'>Step 1: Find the Case for Your Hearing</a>*@

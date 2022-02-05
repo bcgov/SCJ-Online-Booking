@@ -5,7 +5,7 @@
     ViewData["Title"] = "Step 4: Complete Your Booking";
 }
 
-<div class="my-3">
+<div>
     <div class="row screen-intro mb-2">
         <div class="col-lg-8 paragraph">
             <div class="my-3">
@@ -13,19 +13,19 @@
             </div>
             <h5>4 steps to complete your booking</h5>
 
-            <h2>@ViewData["Title"]</h2>
+            <h1>@ViewData["Title"]</h1>
             <p>
                 Please review that the following information is accurate before confirming your booking.
                 Once you confirm your booking, the time will be reserved for your conference hearing.
             </p>
-            <h3>Review Booking Details</h3>
+            <h2>Review Booking Details</h2>
             @*<p>The following time is reserved for your conference hearing.</p>
             <p>Check that the following information is accurate before confirming your booking.</p>*@
         </div>
     </div>
 
     <div class="row booking-confirmation">
-        <div class="content col-lg-8">
+        <div class="col-lg-8">
             <form method="post" class="form-horizontal needs-validation" role="form"
                   novalidate autocomplete="off">
                 <input type="hidden" asp-for="HearingTypeName" />
@@ -40,7 +40,7 @@
                 @Html.HiddenFor(m => m.ContainerId)
 
                 <div class="form-group">
-                    <h4>@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</h4>
+                    <b>@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
                     <div>
                         @SessionService.ScBookingInfo.SelectedCourtClassName @*@Model.GetCourtClass(courtFile?.courtClassCode)*@
                     </div>
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="h4">Hearing Date</label>
+                    <label class="font-weight-bold mb-0">Hearing Date</label>
                     <div>
                         <span>@Model.HearingTypeName</span>
                     </div>
