@@ -357,7 +357,8 @@ namespace SCJ.Booking.MVC.Services
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
             AvailableDatesByLocation schedule =
-                await _client.AvailableDatesByLocationAsync(bookingInfo.BookingRegistryId,
+                await _client.AvailableDatesByLocationAsync(
+                    bookingInfo.BookingRegistryId,
                     bookingInfo.HearingTypeId);
 
             //ensure time slot is still available

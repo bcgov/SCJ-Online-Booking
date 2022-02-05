@@ -87,7 +87,7 @@ namespace SCJ.OnlineBooking
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<SCJ.OnlineBooking.COACaseList> CoACaseNumberValidAsync(string caseNum)
+        public async Task<COACaseList> CoACaseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
 
