@@ -36,12 +36,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"
-                            id="courtClassLabel">
+                    <label id="courtClassLabel">
                         Choose the court class - Optional
-                    </label>
-                    <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown"
-                            style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")">
+                    </label>@* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
+                    <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown">
+                            @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
                         <option value="">-- Pick a class --</option>
                         <option value="B">B – Bankruptcy</option>
                         <option value="E">E – Family Law Proceedings</option>
@@ -71,8 +70,8 @@
                         <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
                                 id="caseNumberTooltip"
                                 title="<p>@caseNoTooltip</p>"
-                                aria-label="@caseNoTooltip"
-                                style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")">
+                                aria-label="@caseNoTooltip">
+                                @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
                             <i class="fas fa-question-circle"></i>
                         </span>
                     </div>

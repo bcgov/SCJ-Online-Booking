@@ -13,10 +13,10 @@ namespace SCJ.Booking.MVC.Controllers
         //Services
         private readonly ScBookingService _scBookingService;
 
+        //private readonly string step1Url = "/scjob/booking/sc";
+
         // Strongly typed session
         private readonly SessionService _session;
-
-        private readonly string step1Url = "/scjob/booking/sc";
 
         //Constructor
         public ScBookingController(SessionService sessionService, ScBookingService scBookingService)
@@ -28,9 +28,9 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpGet]
         [Route("~/booking/sc")]
         [Route("~/booking/sc/Index")]
-        public IActionResult Index(bool s = true)
+        public IActionResult Index(bool isNewSession = true)
         {
-            var model = s ?
+            var model = isNewSession ?
                 _scBookingService.LoadSearchForm() :
                 _scBookingService.LoadSearchForm2();
             return View(model);
@@ -90,7 +90,8 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(model.CaseNumber))
             {
-                return Redirect(step1Url);
+                //return Redirect(step1Url);
+                return RedirectToAction("Index");
             }
 
             model.AvailableConferenceTypeIds =
@@ -125,7 +126,8 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(model.CaseNumber))
             {
-                return Redirect(step1Url);
+                //return Redirect(step1Url);
+                return RedirectToAction("Index");
             }
 
             return View(model);
@@ -184,7 +186,8 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect(step1Url);
+                //return Redirect(step1Url);
+                return RedirectToAction("Index");
             }
 
             //user information
@@ -254,7 +257,8 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect(step1Url);
+                //return Redirect(step1Url);
+                return RedirectToAction("Index");
             }
 
             return View();

@@ -3,7 +3,7 @@
 @if (Model.CaseLocationName != Model.BookingLocationName)
 {
     <div class="mb-3 alert alert-warning">
-        @if (Model.HearingTypeId == SCJ.Booking.MVC.Utils.ScHearingType.TCH)
+        @*@if (Model.HearingTypeId == SCJ.Booking.MVC.Utils.ScHearingType.TCH)
         {
             // remove the word "Hearing" from the name so we don't say it twice
             <text>CV-Telephone Conference (CV-TCH) </text>
@@ -11,8 +11,8 @@
         else
         {
             @($"{Model.HearingTypeName} ")
-        }
-
+        }*@
+        @($"{Model.HearingTypeName} ")
         hearings for @Model.CaseLocationName court file numbers are currently
         being booked in the @Model.BookingLocationName Law Courts.
     </div>

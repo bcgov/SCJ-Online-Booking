@@ -26,29 +26,29 @@
                     <div class="col-lg-6 form-group conference-type-selection">
                         <label>Please pick conference type: </label>
                         <div class="btn-radio-group form-group">
-                            <div class="form-check">
+                            @*<div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="JMC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.JMC" required>
                                 <label for="JMC" class="form-check-label">Judicial Management Conference (JMC)</label>
-                            </div>
+                            </div>*@
                             <div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TMC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TMC" required>
                                 <label for="TMC" class="form-check-label">Trial Management Conference (TMC)</label>
                             </div>
-                            <div class="form-check">
+                            @*<div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="TCH" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.TCH">
                                 <label for="TCH" class="form-check-label"><span class="nowrap">CV-Telephone</span> Conference Hearing <span class="nowrap">(CV-TCH)</span></label>
-                            </div>
-                            <div class="form-check">
+                            </div>*@
+                            @*<div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="AWS" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.AWS">
                                 <label for="AWS" class="form-check-label"><span class="nowrap">CV-Application</span> Written Submissions <span class="nowrap">(CV-AWS)</span></label>
-                            </div>
-                            <div class="form-check">
+                            </div>*@
+                            @*<div class="form-check">
                                 <input asp-for="HearingTypeId" class="form-check-input" type="radio" id="PTC" name="HearingTypeId" value="@SCJ.Booking.MVC.Utils.ScHearingType.PTC">
                                 <label for="PTC" class="form-check-label"><span class="nowrap">CV-Pre-Trial</span> Conference <span class="nowrap">(CV-PTC)</span></label>
                                 <div class="invalid-feedback">
                                     Please select a conference type.
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                     <div class="col-lg-6 form-group">
@@ -63,10 +63,12 @@
                 </div>
                 <div class="row search-info-row">
                     <div class="col-lg-6 form-group">
-                        <label style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")" id="courtClassLabel">Pick court class for the court file number.</label>
-                        <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown"
-                                style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"
-                                required="@(Model.HearingTypeId != ScHearingType.PTC)">
+                        <label id="courtClassLabel">
+                            Pick court class for the court file number.
+                        </label>@* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
+                        <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" required>
+                                @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"
+                                required="@(Model.HearingTypeId != ScHearingType.PTC)"*@
                             <option value="">-- Pick a class --</option>
                             <option value="B">B – Bankruptcy</option>
                             <option value="E">E – Family Law Proceedings (incl. Divorce Act)</option>
@@ -94,7 +96,7 @@
                             <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" id="caseNumberTooltip"
                                   title="<p>Your court file number should not include any special characters. If using a CSO file number, ensure that the class number is prepended to the file number without a hyphen and exclude the first four characters (ex. VLC-S-M-12345 would be M12345)</p>"
                                   aria-label="Your court file number should not include any special characters. If using a CSO file number, ensure that the class number is prepended to the file number without a hyphen and exclude the first four characters (ex. VLC-S-M-12345 would be M12345)"
-                                  style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")">
+                                  > @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
                                 <i class="fas fa-question-circle"></i>
                             </span>
                         </div>
