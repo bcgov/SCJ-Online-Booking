@@ -264,3 +264,7 @@ paket-files/
 __pycache__/
 *.pyc
 app/wwwroot/dist/
+
+# Sqlite database
+app/scj-booking.sqlite
+app/scj-booking.sqlite*

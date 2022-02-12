@@ -41,7 +41,7 @@ module.exports = (env) => {
                         use: {
                             loader: "file-loader",
                             options: {
-                                name: 'fonts/[name].[ext]',
+                                name: 'webfonts/[name].[ext]',
                             }
                         }
                     },
