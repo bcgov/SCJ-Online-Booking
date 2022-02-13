@@ -100,6 +100,7 @@ namespace SCJ.Booking.MVC.Services
                 Results = bookingInfo.Results,
                 BookingLocationName = bookingInfo.BookingLocationName,
                 BookingRegistryId = bookingInfo.BookingRegistryId,
+                AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
             };
         }
 
@@ -209,6 +210,14 @@ namespace SCJ.Booking.MVC.Services
             return retval;
         }
 
+        public async Task<List<int>> GetConferenceTypeIds(ScCaseSearchViewModel model)
+        {
+            //set selected registry name
+            model.CaseLocationName = await _cache.GetLocationNameAsync(model.CaseRegistryId);
+
+            return await GetConferenceTypesAsync(model.CaseLocationName);
+        }
+
         public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
         {
             // Load locations from cache
@@ -216,11 +225,10 @@ namespace SCJ.Booking.MVC.Services
             {
                 CaseRegistryId = model.CaseRegistryId,
                 CaseNumber = model.CaseNumber,
-                SelectedCourtClass = model.SelectedCourtClass
+                SelectedCourtClass = model.SelectedCourtClass,
+                CaseLocationName = model.CaseLocationName,
+                AvailableConferenceTypeIds = model.AvailableConferenceTypeIds,  
             };
-
-            //set selected registry name
-            result.CaseLocationName = await _cache.GetLocationNameAsync(result.CaseRegistryId);
 
             //search the current case number
             (result.FullCaseNumber, result.LocationPrefix) = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
@@ -274,6 +282,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
+            bookingInfo.AvailableConferenceTypeIds = model.AvailableConferenceTypeIds;
 
             //set hearing type name
             if (model.HearingTypeId > 0 &&

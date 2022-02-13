@@ -9,6 +9,18 @@ $(document).ready(function () {
         }
     });
 
+    $('#CaseRegistryId').change(function () {
+        //$('.showMsgClass').hide();
+        //$('.showMsgClass').attr("hidden", true);
+        if (!$('.showMsgClass').is(":hidden")) {
+            $('.showMsgClass').prop("hidden", true);
+        }
+
+        if ($('.hideMsgClass').is(":hidden")) {
+            $('.hideMsgClass').removeAttr('hidden');
+        }
+    });
+
     //$("input:radio[name=SelectedCaseId]").change(function () {
     //    //if ($('#ChooseACase').length) {
     //    //    $("#ChooseACase").hide();

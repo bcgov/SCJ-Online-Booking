@@ -51,6 +51,12 @@ namespace SCJ.Booking.MVC.Controllers
                 ModelState.AddModelError("CaseNumber", "Please provide a Court File Number");
             }
 
+            // ToDo: the following check is just for testing and will be removed later
+            //if (model.CaseRegistryId != 6) 
+            model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypeIds(model);
+            //else
+            //    model.AvailableConferenceTypeIds = null;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -84,18 +90,15 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         [Route("~/booking/sc/conference-type")]
-        public async Task<IActionResult> ConferenceType()
+        public IActionResult ConferenceType()
         {
             var model = _scBookingService.LoadSearchForm2();
 
             if (string.IsNullOrEmpty(model.CaseNumber))
             {
-                //return Redirect(step1Url);
                 return RedirectToAction("Index");
             }
 
-            model.AvailableConferenceTypeIds =
-                await _scBookingService.GetConferenceTypesAsync(model.CaseLocationName);
             return View(model);
         }
 

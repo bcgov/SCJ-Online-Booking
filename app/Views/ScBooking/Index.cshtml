@@ -14,6 +14,10 @@
         Model.SelectedCaseId = (int)courtCases.First().physicalFileId;
     }
 
+    var haveConferenceTypeIds = (Model.AvailableConferenceTypeIds?.Count ?? 0) > 0;
+    var showMsg = Model.CaseRegistryId > 0 && !haveConferenceTypeIds;
+    var showMsgClass = showMsg ? "" : " hidden";
+    var hideMsgClass = !showMsg ? "" : " hidden";
     var caseNoTooltip = "Your Court File Number should not include any special characters. If using a CSO file number, ensure that the class number is prepended to the file number without a hyphen and exclude the first four characters (ex. VLC-S-M-12345 would be M12345)";
 }
 
@@ -24,59 +28,70 @@
     <hr />
 
     <form method="post">
-        <div class="row mb-3">
-            <div class="col-md-6 bg-light">
+        <div class="row">
+            <div class="col-md-6 bg-light mb-3">
                 <div class="form-group">
-                    <label for="ddlLocation">Choose the registry where the file was created</label>
-                    <select asp-for="CaseRegistryId" class="form-control registryOptions"
-                            id="ddlLocation" asp-items="SelectListService.SupremeLocations" required>
+                    <label for="CaseRegistryId">Choose the registry where the file was created</label>
+                    <select asp-for="CaseRegistryId" class="form-control registryOptions mb-2"
+                            asp-items="SelectListService.SupremeLocations" required>
                         <option value="">-- Pick a registry --</option>
                     </select>
                     <span asp-validation-for="CaseRegistryId" class="text-danger"></span>
-                </div>
 
-                <div class="form-group">
-                    <label id="courtClassLabel">
-                        Choose the court class - Optional
-                    </label>@* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
-                    <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown">
-                            @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
-                        <option value="">-- Pick a class --</option>
-                        <option value="B">B – Bankruptcy</option>
-                        <option value="E">E – Family Law Proceedings</option>
-                        <option value="H">H – Foreclosure</option>
-                        <option value="L">L – Enforcement/Legislated Statute</option>
-                        <option value="M">M – Motor Vehicle Accidents</option>
-                        <option value="N">N – Adoption</option>
-                        <option value="P">P – Probate</option>
-                        <option value="S">S – Supreme Civil (General)</option>
-                        <option value="V">V – Caveat</option>
-                        <option value="D">D – Divorce</option>
-                        <option value="C">C – Small Claims</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="caseNoInput">What is the Court File Number for the case?</label>
-                    <div class="align-tooltip">
-                        <div style="display: inline-flex;">
-                            <input class="form-control caseNumber mr-2" style="width: 40px;"
-                                   asp-for="SelectedCourtClass" id="caseNumberInput" readonly />
-                            <input asp-for="CaseNumber" class="form-control caseNumber"
-                                    required id="caseNoInput" type="number" />
-                            <span asp-validation-for="CaseNumber"
-                                class="text-danger align-self-center ml-1"></span>
-                        </div>
-                        <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
-                                id="caseNumberTooltip"
-                                title="<p>@caseNoTooltip</p>"
-                                aria-label="@caseNoTooltip">
-                                @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
-                            <i class="fas fa-question-circle"></i>
-                        </span>
+                    <div class="text-danger showMsgClass" @showMsgClass>
+                            <div class="mb-1">Online booking is not available at this registry.</div>
+                            <div>
+                                <a href="https://www.bccourts.ca/supreme_court/scheduling/"
+                                   target="_blank" class="text-danger">
+                                    Contact the Supreme Court scheduling office
+                                </a>
+                                by telephone to book your hearing.
+                            </div>
                     </div>
                 </div>
-
+            <div class="form-group hideMsgClass" @hideMsgClass>
+                <label id="courtClassLabel">
+                    Choose the court class
+                </label> - Optional @* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
+                <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown">
+                    <option value="">-- Pick a class --</option>
+                    <option value="B">B – Bankruptcy</option>
+                    <option value="E">E – Family Law Proceedings</option>
+                    <option value="H">H – Foreclosure</option>
+                    <option value="L">L – Enforcement/Legislated Statute</option>
+                    <option value="M">M – Motor Vehicle Accidents</option>
+                    <option value="N">N – Adoption</option>
+                    <option value="P">P – Probate</option>
+                    <option value="S">S – Supreme Civil (General)</option>
+                    <option value="V">V – Caveat</option>
+                    <option value="D">D – Divorce</option>
+                    <option value="C">C – Small Claims</option>
+                </select>
+            </div>
+            <div class="form-group hideMsgClass" @hideMsgClass>
+                <label for="caseNoInput">What is the Court File Number for the case?</label>
+                <div class="align-tooltip">
+                    <div style="display: inline-flex;">
+                        <input class="form-control caseNumber mr-2" style="width: 40px;"
+                            asp-for="SelectedCourtClass" id="caseNumberInput" readonly />
+                        <input asp-for="CaseNumber" class="form-control caseNumber"
+                            required id="caseNoInput" type="number" />
+                        <span asp-validation-for="CaseNumber"
+                        class="text-danger align-self-center ml-1"></span>
+                    </div>
+                    <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
+                        id="caseNumberTooltip"
+                        title="<p>@caseNoTooltip</p>"
+                        aria-label="@caseNoTooltip">
+                        @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="row hideMsgClass" @hideMsgClass>
+            <div class="col-md-6">
                 <div class="form-group">
                     @*<input type="submit" value="Search for Case" class="btn btn-primary" />*@
                     <button type="submit" id="SearchForCase"
@@ -87,7 +102,6 @@
                 </div>
             </div>
         </div>
-
         @*<div class="row my-3">
             <div class="col-md-5">
                 <form asp-action="Index" method="post">
@@ -168,79 +182,82 @@
                 </form>
             </div>
         </div>*@
-
-        @if (cases > 0)
-        {
-            <h2 class="mb-1">Search Results: Choose Your Case</h2>
-            <h6>@cases @results found</h6>
-
-            <div class="col-md-6 p-1">
-                <div class="form-group">
-                    <ol class="px-0">
-                        @foreach (var courtCase in courtCases)
-                        {
-                            var caseId = (int)courtCase.physicalFileId;
-                            @*var isChecked = courtCase.physicalFileId == Model.SelectedCaseId;*@
-                            var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
-                            <li style="list-style-type: none;">
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td class="align-middle border-right-0" style="width: 30px;">
-                                            @if (cases == 1)
-                                            {
-                                                @Html.RadioButtonFor(model => model.SelectedCaseId, caseId)
-                                            } else
-                                            {
-                                                <input type="radio" name="SelectedCaseId"
-                                                    id="SelectedCaseId" value="@caseId" />
-                                            }
-                                            @*@Html.RadioButton("SelectedCaseId", courtCase.physicalFileId, isChecked)*@
-                                            @*<input type="radio" asp-for="SelectedFileNumber" value="@fileNumber" />*@
-                                        </td>
-                                        <td class="border-left-0">
-                                            <b>@(courtCase?.styleOfCause ?? "No Style of Cause?")</b>
-                                            <div>@Model.GetCourtClass(courtCase.courtClassCode)</div>
-                                            <div>
-                                                File Number: @Html.DisplayFor(m => m.LocationPrefix) @fileNumber
-                                            </div>
-                                            @Html.HiddenFor(m => m.FullCaseNumber)
-                                        </td>
-                                    </tr>
-                                </table>
-                            </li>
-                        }
-                    </ol>
-            
-                    @if (Model.IsConfirmingCase && Model.SelectedCaseId == 0)
-                    {
-                        <span asp-validation-for="SelectedCaseId" id="ChooseACase"
-                            class="text-danger"></span>
-                    }
-                </div>
-            </div>
-
-            @*@Html.AntiForgeryToken()*@
-            @for (int i = 0; i < Model.CourtFiles.Length; i++)
+        @Html.HiddenFor(m => m.FullCaseNumber)
+        @if (haveConferenceTypeIds) {
+            @for (int i = 0; i < Model.AvailableConferenceTypeIds.Count; i++)
             {
-                @Html.HiddenFor(m => m.CourtFiles[i].courtClassCode)
-                @Html.HiddenFor(m => m.CourtFiles[i].courtFileNumber)
-                @Html.HiddenFor(m => m.CourtFiles[i].styleOfCause)
-                @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
-                @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
+                @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
             }
+            if (cases > 0)
+            {
+                @for (int i = 0; i < Model.CourtFiles.Length; i++)
+                {
+                    @Html.HiddenFor(m => m.CourtFiles[i].courtClassCode)
+                    @Html.HiddenFor(m => m.CourtFiles[i].courtFileNumber)
+                    @Html.HiddenFor(m => m.CourtFiles[i].styleOfCause)
+                    @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
+                    @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
+                }
+                <h2 class="mb-1">Search Results: Choose Your Case</h2>
+                <h6>@cases @results found</h6>
 
-            <button asp-action="case-selected" asp-controller="booking/sc"
-                    class="btn btn-primary mb-5">
-                Confirm Case
-            </button> 
-            @*<button type="submit" class="btn btn-primary mb-5"
-                    formaction="@action">
-                Confirm Case
-            </button>*@
-        }
-        else if (Model.CaseRegistryId > 0)
-        {
-            <h5 class="mb-5 text-danger">No record found</h5>
+                <div class="col-md-6 p-1">
+                    <div class="form-group">
+                        <ol class="px-0">
+                            @foreach (var courtCase in courtCases)
+                            {
+                                var caseId = (int)courtCase.physicalFileId;
+                                @*var isChecked = courtCase.physicalFileId == Model.SelectedCaseId;*@
+                                var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
+                                <li style="list-style-type: none;">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td class="align-middle border-right-0" style="width: 30px;">
+                                                @if (cases == 1)
+                                                {
+                                                    @Html.RadioButtonFor(model => model.SelectedCaseId, caseId)
+                                                } else
+                                                {
+                                                    <input type="radio" name="SelectedCaseId"
+                                                        id="SelectedCaseId" value="@caseId" />
+                                                }
+                                                @*@Html.RadioButton("SelectedCaseId", courtCase.physicalFileId, isChecked)*@
+                                                @*<input type="radio" asp-for="SelectedFileNumber" value="@fileNumber" />*@
+                                            </td>
+                                            <td class="border-left-0">
+                                                <b>@(courtCase?.styleOfCause ?? "No Style of Cause?")</b>
+                                                <div>@Model.GetCourtClass(courtCase.courtClassCode)</div>
+                                                <div>
+                                                    File Number: @Html.DisplayFor(m => m.LocationPrefix) @fileNumber
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            }
+                        </ol>
+            
+                        @if (Model.IsConfirmingCase && Model.SelectedCaseId == 0)
+                        {
+                            <span asp-validation-for="SelectedCaseId" id="ChooseACase"
+                                class="text-danger"></span>
+                        }
+                    </div>
+                </div>
+
+                @*@Html.AntiForgeryToken()*@
+                <button asp-action="case-selected" asp-controller="booking/sc" class="btn btn-primary mb-5">
+                    Confirm Case
+                </button> 
+                @*<button type="submit" class="btn btn-primary mb-5"
+                        formaction="@action">
+                    Confirm Case
+                </button>*@
+            }
+            else if (Model.CaseRegistryId > 0)
+            {
+                <h5 class="mb-5 text-danger">No record found</h5>
+            }
         }
     </form>
 </div>

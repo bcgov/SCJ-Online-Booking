@@ -1,5 +1,6 @@
 using SCJ.OnlineBooking;
 using System;
+using System.Collections.Generic;
 
 namespace SCJ.Booking.MVC.Utils
 {
@@ -31,6 +32,8 @@ namespace SCJ.Booking.MVC.Utils
         public CourtFile SelectedCourtFile { get; set; }
         public string SelectedCourtClassName { get; set; }
         public AvailableDatesByLocation Results { get; set; }
+        public List<int> AvailableConferenceTypeIds { get; set; }
+
         public int HearingLengthMinutes
         {
             get
