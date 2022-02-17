@@ -7,14 +7,13 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="/scjob/dist/css/bootstrap.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="/scjob/dist/css/site.css" asp-append-version="true"/>
         <link rel="stylesheet" href="/scjob/dist/css/fontawesome.css" asp-append-version="true"/>
         <link rel="stylesheet" href="/scjob/dist/css/swiper.css" asp-append-version="true"/>
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="/scjob/dist/css/vendor.min.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="/scjob/dist/css/site.min.css" asp-append-version="true"/>
     </environment>
+    <link rel="stylesheet" href="/scjob/dist/css/site.css" asp-append-version="true"/>
     <link rel="icon" href="/scjob/favicon.ico" type="image/x-icon" />
     @RenderSection("Styles", false)
 </head>

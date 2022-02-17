@@ -60,8 +60,6 @@ module.exports = (env) => {
             entry: {
                 vendor: [
                     "bootstrap/dist/css/bootstrap.css",
-                    "select2/dist/css/select2.css",
-                    "select2-bootstrap-theme/dist/select2-bootstrap.css",
                     "vue",
                     "@fortawesome/fontawesome-free/css/fontawesome.css",
                     "@fortawesome/fontawesome-free/css/regular.css",
@@ -113,25 +111,6 @@ module.exports = (env) => {
                         // Just copy the regular version for Development
                         from: "node_modules/bootstrap/dist/css/bootstrap.css",
                         to: "css/bootstrap.css",
-                        toType: "file"
-                    },
-                    {
-                        from: "node_modules/select2/dist/js/select2+(.full|)+(.min|).js",
-                        to: "lib/[name].js"
-                    },
-                    {
-                        // the min version is packaged above (vendor.min.css)
-                        // Just copy the regular version for Development
-                        from: "node_modules/select2/dist/css/select2.css",
-                        to: "css/select2.css",
-                        toType: "file"
-                    },
-                    {
-                        // the min version is packaged above (vendor.min.css) 
-                        // Just copy the regular version for Development
-                        from:
-                            "node_modules/select2-bootstrap-theme/dist/select2-bootstrap.css",
-                        to: "css/select2-bootstrap.css",
                         toType: "file"
                     },
                     {
