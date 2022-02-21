@@ -52,10 +52,10 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             // ToDo: the following check is just for testing and will be removed later
-            //if (model.CaseRegistryId != 6) 
-            model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypeIds(model);
-            //else
-            //    model.AvailableConferenceTypeIds = null;
+            if (model.CaseRegistryId != 6)
+                model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypeIds(model);
+            else
+                model.AvailableConferenceTypeIds = null;
 
             if (!ModelState.IsValid)
             {
