@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const RemovePlugin = require('remove-files-webpack-plugin');
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -156,6 +157,20 @@ module.exports = (env) => {
                 ]}),
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
+                }),
+                new RemovePlugin({
+                    after: {
+                        root: './wwwroot/dist',
+                        include: [],
+                        test: [
+                            {
+                                folder: './',
+                                method: (absoluteItemPath) => {
+                                    return (new RegExp(/\.(eot|svg|ttf|woff|woff2)$/, 'm').test(absoluteItemPath));
+                                }
+                            }
+                        ],
+                    }
                 })
             ]
         }
