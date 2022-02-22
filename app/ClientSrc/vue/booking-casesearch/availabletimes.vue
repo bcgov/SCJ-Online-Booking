@@ -13,26 +13,31 @@
                         <div class="custom-slide-times text-center">
                             <div v-for="container in entry.times">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-light"
+                                    <button type="button" class="btn btn-secondary"
                                             @click="selectTime(container.containerId, container.startDateTime)"
                                             :class="{'selected': container.containerId === selectedContainerId}">
                                         {{ container.start }} - {{ container.end }}
                                     </button>
                                 </div>
                                 <!--<a class="custom-slide-time"
-                                   @click="selectTime(container.containerId, container.startDateTime)"
-                                   @keyup.enter="selectTime(container.containerId, container.startDateTime)"
-                                   :class="{'selected': container.containerId === selectedContainerId}"
-                                   tabindex="0" style="background-color: lightgray;">
-                                    <span class="sr-text">{{ entry.weekday }} {{ entry.formattedDate }}</span>
-                                    {{ container.start }} - {{ container.end }}
-                                </a>-->
+                           @click="selectTime(container.containerId, container.startDateTime)"
+                           @keyup.enter="selectTime(container.containerId, container.startDateTime)"
+                           :class="{'selected': container.containerId === selectedContainerId}"
+                           tabindex="0" style="background-color: lightgray;">
+                            <span class="sr-text">{{ entry.weekday }} {{ entry.formattedDate }}</span>
+                            {{ container.start }} - {{ container.end }}
+                        </a>-->
                             </div>
-                            </div>
+                        </div>
                     </div>
                 </swiper-slide>
             </swiper>
             <div class="swiper-button-next" slot="button-next"></div>
+            <input type="hidden" id="selectedDate" /> 
+            <button type="button" class="btn btn-primary" id="slideBtn" hidden
+                    @click="toSlide()"> 
+                Slide to selected date
+            </button>
         </div>
     </div>
 </template>
@@ -94,6 +99,10 @@
             }
         },
         methods: {
+            toSlide() {
+                const i = $('#selectedDate').val();
+                this.$refs.mySwiper.swiper.slideTo(i, 0);
+            },
             selectTime(containerId, bookingTime) {
                 this.selectedContainerId = containerId;
                 this.selectedBookingTime = bookingTime;
@@ -119,6 +128,7 @@
             let self = this;
             axios.get(`/scjob/booking/api/sc-available-dates-by-location/${this.locationId}/${this.hearingType}`)
                 .then(response => {
+                    //console.log("response.data: " + response.data[0]);
                     self.availabletimes = response.data;
                 });
         }

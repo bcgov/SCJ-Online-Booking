@@ -27,6 +27,27 @@
             @Model.HearingLengthMinutes minutes only.
         </p>
 
+        <div class="">
+            <div class="input-group date mx-auto" style="width: 236px;"> 
+                @Html.TextBox("SelectedDate", Model.SelectedDate, new {
+                    @class = "form-control",
+                    @id = "datepicker",
+                    @type = "text",
+                    placeholder = "Jump to a specific date",
+                    autocomplete = "off" })
+                <div class="input-group-append">
+                    @*<span class="input-group-text"><i class="fa fa-th"></i></span>*@
+                    <button class="btn btn-outline-secondary" type="button" id="dateBtn">
+                        <i class="fa fa-th"></i>
+                    </button>
+                </div>
+            </div>
+            @*<input type="text" class="form-control w-25 mx-auto"
+                   onfocus="(this.type='date')"
+                   onblur="(this.type='text')"
+                   placeholder="Jump to a specific date" />*@
+        </div>
+
         <div id="VueAvailableTimes" class="availableTimesContainer">
             <availabletimes :location-id="@Model.BookingRegistryId"
                             :hearing-type="@Model.HearingTypeId">
@@ -41,6 +62,10 @@
             @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
             @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
         }
+        @for (int i = 0; i < Model.AvailableConferenceTypeIds?.Count; i++)
+        {
+            @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
+        }
         @Html.HiddenFor(m => m.SelectedCaseId)
         @Html.HiddenFor(m => m.LocationPrefix)
         @Html.HiddenFor(m => m.HearingTypeName)
@@ -52,9 +77,8 @@
             <span asp-validation-for="ContainerId" class="text-danger"></span>
         </div>
 
-        <button type="submit"
-                class="btn btn-primary">
-                Choose Time
+        <button type="submit" class="btn btn-primary">
+            Choose Time
         </button>
     </form>
 
@@ -161,4 +185,32 @@
 @section Scripts {
     <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
     <script src="/scjob/dist/vue/booking-casesearch.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        var today = new Date();
+        var month = today.getMonth();
+        //alert(`${currMonth} ${today.getDate()}`);
+        $('#datepicker').datepicker({
+            beforeShowDay: function(d) {
+                return d.getMonth() === month;
+            },
+            format: 'yyyy-mm-dd',
+            weekStart: 0,
+            autoclose: true,
+            todayHighlight: true,
+            startDate: today,
+            endDate: @Json.Serialize(Model.LastAvailableDate),
+            datesDisabled: @Json.Serialize(Model.DisabledDates) // ['2022-02-21', '2022-02-24'] 
+        }).on('changeMonth', function(e) {
+          //console.log("I've just changed month to " + e.date.getMonth());
+          month = e.date.getMonth();
+        }).on('changeDate', function() {
+            //alert($('#datepicker').datepicker('getFormattedDate'));
+            var selectedDate = $('#datepicker').val();
+            var dates = @Json.Serialize(Model.AvailableDates);
+            var i = dates.toString().split(',').indexOf(selectedDate);
+            $('#selectedDate').val(i);
+            $("#slideBtn").click();
+        });
+    </script>
 }
