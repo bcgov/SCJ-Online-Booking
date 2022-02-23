@@ -188,6 +188,7 @@
             {
                 @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
             }
+
             if (cases > 0)
             {
                 @for (int i = 0; i < Model.CourtFiles.Length; i++)
@@ -256,10 +257,58 @@
             }
             else if (Model.CaseRegistryId > 0)
             {
-                <h5 class="mb-5 text-danger">No record found</h5>
+                @*<h5 class="mb-5 text-danger">No record found</h5>*@
+                <!-- No search results for case number-->
+                <div class="no-search-results">
+                    <div class="row">
+                        <div class="col col-md-12">
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                We could not find the case for @Model.CaseNumber<span>.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row options-nextStep">
+                        <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
+                            <div class="card bg-light">
+                                <div class="card-header card-header-center">Is it the right Court File Number or Registry?</div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        If this is not the correct Court File Number or Registry, you can change it and try again for available times. <br/> Ensure that your Court File Number does not contain any special characters.<br /> If using a CSO file number, exclude the first 4 characters (ex. VLC-S-M-12345 would be M12345).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
+                            <div class="card bg-light">
+                                <div class="card-header card-header-center">Is this a Supreme Family or Civil case?</div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        This online tool covers Family and Civil cases. If your case is not a Familiy or Civil case please contact @Model.CaseLocationName scheduling at @Model.RegistryContactNumber.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
+                            <div class="card bg-light">
+                                <div class="card-header card-header-center">Need to contact your registry?</div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        You can contact the registry where your file was created (indicated in your court filing documents); <br />to contact @Model.CaseLocationName please call @Model.RegistryContactNumber.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- No search results for case number-->
             }
         }
     </form>
+
+    @*if (Context.Request.Method == "POST") {
+
+    }*@
 </div>
 
 @section Scripts {

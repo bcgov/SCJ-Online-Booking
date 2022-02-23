@@ -46,14 +46,17 @@ $(document).ready(function () {
         }
     });
 
-    //$("#SearchForCase").click(function () {
-    //    //if ($("input:radio").length) {
-    //    //    $("input:radio").attr("checked", false);
-    //    //}
-    //    //if ($('#ChooseACase').length) {
-    //    //    $("#ChooseACase").show();
-    //    //}
-    //});
+    $("#dateBtn").click(function () {
+        $('#datepicker').datepicker().focus();
+
+        //$("#datepickerInputGroup").click();
+        //if ($("input:radio").length) {
+        //    $("input:radio").attr("checked", false);
+        //}
+        //if ($('#ChooseACase').length) {
+        //    $("#ChooseACase").show();
+        //}
+    });
 });
 
 // Called by Vue when a time-slot is selected

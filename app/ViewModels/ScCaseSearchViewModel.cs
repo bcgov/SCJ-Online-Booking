@@ -38,6 +38,64 @@ namespace SCJ.Booking.MVC.ViewModels
                 return Results?.BookingDetails?.detailBookingLength ?? 0;
             }
         }
+        public int GetSelectedDateIndex(string selectedDate)
+        {
+            return AvailableDates != null ? AvailableDates.ToList().IndexOf(selectedDate) : 0;
+        }
+        public string[] AvailableDates
+        {
+            get
+            {
+                var result = Results?.AvailableDates?.Select(
+                    x => x.Date_Time.ToString("yyyy-MM-dd")
+                    ).Distinct().ToArray();
+                return result; 
+            }
+        }
+        public string LastAvailableDate
+        {
+            get
+            {
+                var result = DateTime.Now.ToString("yyyy-MM-dd");
+                if (Results?.AvailableDates != null)
+                {
+                    result = Results.AvailableDates
+                        .Select(x => x.Date_Time.Date)
+                        .OrderBy(x => x)
+                        .LastOrDefault().ToString("yyyy-MM-dd");
+                }
+                return result;
+            }
+        }
+        private (int, int)[] AvailableYearsAndMonths
+        {
+            get
+            {
+                var result = Results?.AvailableDates?.Select(
+                    x => (x.Date_Time.Year, x.Date_Time.Month)
+                    ).Distinct().ToArray();
+                return result;
+            }
+        }
+        public List<string> DisabledDates
+        {
+            get
+            {
+                var result = new List<string>();
+                if (AvailableYearsAndMonths != null && AvailableYearsAndMonths.Length > 0)
+                {
+                    foreach (var yearAndMonth in AvailableYearsAndMonths)
+                    {
+                        result.AddRange(Enumerable.Range(1, DateTime.DaysInMonth(
+                            yearAndMonth.Item1, yearAndMonth.Item2))
+                            .Select(day => new DateTime(yearAndMonth.Item1, yearAndMonth.Item2, day)
+                            .ToString("yyyy-MM-dd")));
+                    }
+                    result = result.Where(x => !AvailableDates.Contains(x)).ToList();
+                }
+                return result; 
+            }
+        }
 
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber
@@ -72,6 +130,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Date selected in the swiper control
         public string SelectedCaseDate { get; set; }
+        public DateTime? SelectedDate { get; set; }
 
         //Full date for the booking
         public DateTime FullDate
