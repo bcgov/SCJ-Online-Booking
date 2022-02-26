@@ -1,8 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.Utils;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using Serilog;
+using EmailAddress = Microsoft.Exchange.WebServices.Data.EmailAddress;
 using Task = System.Threading.Tasks.Task;
 
 namespace SCJ.Booking.MVC.Services
@@ -53,6 +57,19 @@ namespace SCJ.Booking.MVC.Services
 
                 await message.SendAndSaveCopy();
             }
+        }
+
+        public async Task<Response> SendEmail(
+            string fromEmail, string toEmail, string subject, string body)
+        {
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            var client = new SendGridClient(apiKey);
+            var from = new SendGrid.Helpers.Mail.EmailAddress(fromEmail);
+            var to = new SendGrid.Helpers.Mail.EmailAddress(toEmail);
+            var plainTextContent = "";
+            var htmlContent = body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            return await client.SendEmailAsync(msg);
         }
 
         /// <summary>

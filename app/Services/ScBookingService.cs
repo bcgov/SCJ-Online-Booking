@@ -405,7 +405,7 @@ namespace SCJ.Booking.MVC.Services
                     });
 
                     //save to DB
-                    _dbContext.SaveChanges();
+                    await _dbContext.SaveChangesAsync();
 
                     //update model
                     model.IsBooked = true;
@@ -421,11 +421,13 @@ namespace SCJ.Booking.MVC.Services
 
                     _session.UserInfo = userInfo;
 
+                    var emailBody = await GetEmailBody();
                     //send email
                     await _mailService.SendEmail(
+                        "cello.liu@oxd.com",
                         model.EmailAddress,
                         EmailSubject,
-                        await GetEmailBody());
+                        emailBody);
 
                     //clear booking info session
                     _session.ScBookingInfo = null;
@@ -545,9 +547,9 @@ namespace SCJ.Booking.MVC.Services
                 //ScHearingType.JMC => "ScBooking/Email-JMC",
                 //ScHearingType.PTC => "ScBooking/Email-CV-PTC",
                 //ScHearingType.TCH => "ScBooking/Email-CV-TCH",
-                ScHearingType.TMC => "ScBooking/Email-TMC",
-                ScHearingType.CPC => "ScBooking/Email-TMC",
-                ScHearingType.JCC => "ScBooking/Email-TMC",
+                ScHearingType.TMC => "ScBooking/Email-TMC", 
+                ScHearingType.CPC => "ScBooking/Email-CPC",
+                ScHearingType.JCC => "ScBooking/Email-JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
             };
             return await _viewRenderService.RenderToStringAsync(template, viewModel);
