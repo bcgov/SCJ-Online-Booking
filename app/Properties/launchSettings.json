@@ -23,7 +23,7 @@
                 "CA_MAIL_PASSWORD": "fake_password",
                 "CA_MAIL_USERNAME": "fake_user",
                 "EXCHANGE_DOMAIN": "FAKE",
-                "SENDGRID_API_KEY": "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",
+                "SENDGRID_API_KEY": "FAKE SENDGRID API KEY",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
