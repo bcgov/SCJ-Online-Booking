@@ -424,7 +424,7 @@ namespace SCJ.Booking.MVC.Services
                     var emailBody = await GetEmailBody();
                     //send email
                     await _mailService.SendEmail(
-                        "cello.liu@oxd.com",
+                        //"cello.liu@oxd.com",
                         model.EmailAddress,
                         EmailSubject,
                         emailBody);
