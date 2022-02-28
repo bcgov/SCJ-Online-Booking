@@ -192,26 +192,36 @@
         var month = today.getMonth();
         //alert(`${currMonth} ${today.getDate()}`);
         $('#datepicker').datepicker({
-            beforeShowDay: function(d) {
-                return d.getMonth() === month;
-            },
+            //beforeShowDay: function(d) {
+            //    console.log('before show day: ' + d.getMonth() + ' ' + month);
+            //    return d.getMonth() === month;
+            //},
+            //beforeShowMonth: function(m) {
+            //    console.log('before show month: '+m.getMonth());
+            //    return m.getMonth() === month;
+            //},
             format: 'yyyy-mm-dd',
             weekStart: 0,
             autoclose: true,
             todayHighlight: true,
             startDate: today,
+            clearBtn: true,
+            //updateViewDate: false,
+            //immediateUpdates: true,
             endDate: @Json.Serialize(Model.LastAvailableDate),
             datesDisabled: @Json.Serialize(Model.DisabledDates) // ['2022-02-21', '2022-02-24'] 
-        }).on('changeMonth', function(e) {
-          //console.log("I've just changed month to " + e.date.getMonth());
-          month = e.date.getMonth();
+        //}).on('changeMonth', function(e) {
+        //  console.log("I've just changed month to " + e.date.getMonth());
+        //  month = e.date.getMonth();
         }).on('changeDate', function() {
-            //alert($('#datepicker').datepicker('getFormattedDate'));
+            //console.log($('#datepicker').datepicker('getFormattedDate'));
             var selectedDate = $('#datepicker').val();
             var dates = @Json.Serialize(Model.AvailableDates);
-            var i = dates.toString().split(',').indexOf(selectedDate);
-            $('#selectedDate').val(i);
-            $("#slideBtn").click();
+            if (dates) {
+                var i = dates.toString().split(',').indexOf(selectedDate);
+                $('#selectedDate').val(i);
+                $("#slideBtn").click();
+            }
         });
     </script>
 }

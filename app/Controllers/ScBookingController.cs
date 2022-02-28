@@ -140,6 +140,8 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/available-times")]
         public async Task<IActionResult> AvailableTimes(ScCaseSearchViewModel model)
         {
+            model.Results = _session.ScBookingInfo.Results;
+
             if (model.ContainerId == -1)
             {
                 ModelState.AddModelError("ContainerId", "Please choose from one of the available times.");
@@ -150,7 +152,6 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            model.Results = _session.ScBookingInfo.Results;
             await _scBookingService.SaveScBookingInfoAsync(model);
 
             return RedirectToAction("CaseConfirm");
