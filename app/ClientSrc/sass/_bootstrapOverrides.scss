@@ -49,6 +49,12 @@ a {
     }
 }
 
+.btn-block {
+    @include breakpoint(sm) {
+        width: auto;
+    }
+}
+
 .card {
     margin-bottom: 30px;
 }

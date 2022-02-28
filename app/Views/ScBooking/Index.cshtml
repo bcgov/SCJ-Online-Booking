@@ -22,14 +22,13 @@
 }
 
 <div>
-    <h5>4 steps to complete your booking</h5>
-    <h1>Step 1: Find the Case for Your Hearing</h1>
-    <h5>Before you can book your hearing, please find the case that you would like to bring to court.</h5>
-    <hr />
+    <h3>4 steps to complete your booking</h3>
+    <h1 class="my-2">Step 1: Find the Case for Your Hearing</h1>
+    <h3>Before you can book your hearing, please find the case that you would like to bring to court.</h3>
 
     <form method="post">
-        <div class="row">
-            <div class="col-md-6 bg-light mb-3">
+        <div class="row my-4 mx-0">
+            <div class="col-md-6 bg-light p-3 p-sm-4">
                 <div class="form-group">
                     <label for="CaseRegistryId">Choose the registry where the file was created</label>
                     <select asp-for="CaseRegistryId" class="form-control registryOptions mb-2"
@@ -69,34 +68,44 @@
                 </select>
             </div>
             <div class="form-group hideMsgClass" @hideMsgClass>
+            <div class="align-tooltip">
                 <label for="caseNoInput">What is the Court File Number for the case?</label>
-                <div class="align-tooltip">
-                    <div style="display: inline-flex;">
-                        <input class="form-control caseNumber mr-2" style="width: 40px;"
-                            asp-for="SelectedCourtClass" id="caseNumberInput" readonly />
-                        <input asp-for="CaseNumber" class="form-control caseNumber"
-                            required id="caseNoInput" type="number" />
-                        <span asp-validation-for="CaseNumber"
-                        class="text-danger align-self-center ml-1"></span>
-                    </div>
-                    <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
-                        id="caseNumberTooltip"
-                        title="<p>@caseNoTooltip</p>"
-                        aria-label="@caseNoTooltip">
-                        @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
-                        <i class="fas fa-question-circle"></i>
-                    </span>
+                <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
+                    id="caseNumberTooltip"
+                    title="<p>@caseNoTooltip</p>"
+                    aria-label="@caseNoTooltip">
+                    @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
+                    <i class="fas fa-question-circle"></i>
+                </span>
+            </div>
+            <div class="d-inline-flex">
+                <div class="small-label-field">
+                    <label for="caseNumberInput" class="mb-0">
+                        <small class="text-muted">Class</small>
+                    </label>
+                    <input class="form-control caseNumber mr-2" style="width: 40px;"
+                        asp-for="SelectedCourtClass" id="caseNumberInput" readonly />
+                </div>
+                <div class="small-label-field">
+                    <label for="caseNoInput" class="mb-0">
+                        <small class="text-muted">Number</small>
+                    </label>
+                    <input asp-for="CaseNumber" class="form-control caseNumber"
+                        required id="caseNoInput" type="number" />
+                    <span asp-validation-for="CaseNumber"
+                    class="text-danger align-self-center ml-1"></span>
+                </div>
                 </div>
             </div>
             </div>
         </div>
         <div class="row hideMsgClass" @hideMsgClass>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group mb-0">
                     @*<input type="submit" value="Search for Case" class="btn btn-primary" />*@
                     <button type="submit" id="SearchForCase"
                         asp-action="Index" asp-controller="ScBooking"
-                        class="btn btn-primary"> 
+                        class="btn btn-primary btn-block mb-0"> 
                         Search for Case
                     </button>
                 </div>
@@ -188,6 +197,7 @@
             {
                 @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
             }
+
             if (cases > 0)
             {
                 @for (int i = 0; i < Model.CourtFiles.Length; i++)
@@ -198,7 +208,7 @@
                     @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
                     @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
                 }
-                <h2 class="mb-1">Search Results: Choose Your Case</h2>
+                <h2 class="mt-5 mb-2">Search Results: Choose Your Case</h2>
                 <h6>@cases @results found</h6>
 
                 <div class="col-md-6 p-1">
@@ -210,7 +220,7 @@
                                 @*var isChecked = courtCase.physicalFileId == Model.SelectedCaseId;*@
                                 var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
                                 <li style="list-style-type: none;">
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered table-hover">
                                         <tr>
                                             <td class="align-middle border-right-0" style="width: 30px;">
                                                 @if (cases == 1)
@@ -246,20 +256,68 @@
                 </div>
 
                 @*@Html.AntiForgeryToken()*@
-                <button formaction="case-selected" class="btn btn-primary mb-5">
+                <button formaction="case-selected" class="btn btn-primary btn-block mb-0">
                     Confirm Case
                 </button> 
-                @*<button type="submit" class="btn btn-primary mb-5"
+                @*<button type="submit" class="btn btn-primary btn-block mb-0"
                         formaction="@action">
                     Confirm Case
                 </button>*@
             }
             else if (Model.CaseRegistryId > 0)
             {
-                <h5 class="mb-5 text-danger">No record found</h5>
+                @*<h3 class="mb-5 text-danger">No record found</h3>*@
+                <!-- No search results for case number-->
+                <div class="no-search-results">
+                    <div class="row options-nextStep">
+                        <div class="col col-md-12">
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                We could not find the case for @Model.CaseNumber<span>.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row options-nextStep">
+                        <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
+                            <div class="card bg-light">
+                                <div class="card-header card-header-center">Is it the right Court File Number or Registry?</div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        If this is not the correct Court File Number or Registry, you can change it and try again for available times. <br/> Ensure that your Court File Number does not contain any special characters.<br /> If using a CSO file number, exclude the first 4 characters (ex. VLC-S-M-12345 would be M12345).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
+                            <div class="card bg-light">
+                                <div class="card-header card-header-center">Is this a Supreme Family or Civil case?</div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        This online tool covers Family and Civil cases. If your case is not a Familiy or Civil case please contact @Model.CaseLocationName scheduling at @Model.RegistryContactNumber.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-4 col-sm-12 col-12 booking-same-height-item">
+                            <div class="card bg-light">
+                                <div class="card-header card-header-center">Need to contact your registry?</div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        You can contact the registry where your file was created (indicated in your court filing documents); <br />to contact @Model.CaseLocationName please call @Model.RegistryContactNumber.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- No search results for case number-->
             }
         }
     </form>
+
+    @*if (Context.Request.Method == "POST") {
+
+    }*@
 </div>
 
 @section Scripts {
