@@ -99,7 +99,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CaseNumberValid()
         {
-            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("CR23222").Result;
+            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("VA23222").Result;
 
             Assert.True(searchResults.Length > 0);
         }
