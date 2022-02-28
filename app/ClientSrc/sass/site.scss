@@ -85,6 +85,10 @@ div.invalid-field-message {
     color: #dc3545;
 }
 
+.small-label-field {
+    display: grid;
+}
+
 .header-logo-div {
     .container {
         @include breakpoint(sm) {
@@ -338,8 +342,12 @@ p.intro {
 }
 
 #btnSearch {
-    width: 275px;
-    max-width: 100%;
+    margin-bottom: 1rem;
+    margin-right: 0;
+    @include breakpoint(sm) {
+        margin-bottom: 0;
+        margin-right: 1rem;
+    }
 }
 
 .results-linebreak {
@@ -478,6 +486,11 @@ a.custom-slide-time {
     align-items: center;
     display: flex;
     height: 65px;
+    padding: 1rem;
+}
+
+.card-body {
+    padding: 1rem;
 }
 
 @include breakpoint(mobile) {

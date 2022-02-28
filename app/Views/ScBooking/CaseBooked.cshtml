@@ -13,11 +13,11 @@
         <div class="col-md-8">
             @if (SessionService.ScBookingInfo.IsBooked)
             {
-                <h2 class="blue">
+                <h1 class="blue">
                     @ViewData["Title"]
                     @*The <span>@SessionService.ScBookingInfo.HearingTypeName</span>
                     has been scheduled for the date and time below.*@
-                </h2>
+                </h1>
                 <p>
                     Your @hearingType has been scheduled for the date and time below. 
                 </p>
@@ -31,20 +31,20 @@
                     <span>
                         Consult the
                         <a href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/" target="_blank">Supreme Court Rules</a>
-                        for additional details.
+                        <i class="fa fa-external-link-alt"></i> for additional details.
                     </span>
                     <b>
                         Please ensure to provide all email addresses and phone numbers for counsel or
                         self-represented parties in your filed document.
                     </b>
                 </p>
-                <p>The following information will be sent to you by email.</p>
+                <p class="mb-0">The following information will be sent to you by email.</p>
             }
             else
             {
                 <h1>Error</h1>
                 <p>There was an error confirming your booking.</p>
-                <p>The following message was returned by the scheduling system.</p>
+                <p class="mb-0">The following message was returned by the scheduling system.</p>
             }
         </div>
     </div>
@@ -57,7 +57,7 @@
     }
     else
     {
-        <div class="row booking-confirmation">
+        <div class="row booking-confirmation my-4">
             <div class="col-md-6">
                 @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
                 {
@@ -132,17 +132,17 @@
     }
 
     <div class="row booking-new">
-        <div class="content col-lg-6">
-            <a href="/scjob/booking/sc" class="btn btn-primary btn-lg">Book Another Hearing</a>
+        <div class="col">
+            <button href="/scjob/booking/sc" class="btn btn-primary btn-block mb-0">Book Another Hearing</button>
         </div>
     </div>
-    <div class="row booking-logout">
-        <div class="content col-md-12">
+    <div class="row booking-logout mt-4">
+        <div class="col">
             <label>Finished booking?</label>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col">
             <a href="@Configuration["AppSettings:LogoutUrl"]">Log out of the BC Courts Booking System</a>
         </div>
     </div>

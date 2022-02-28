@@ -5,14 +5,15 @@
 }
 
 <div>
-    <div class="my-3">
+    <div class="mb-5">
+        <i class="fas fa-arrow-left"></i>
         <a asp-action="ConferenceType">Step 2: Choose Conference Type</a>
     </div>
-    <h5>4 steps to complete your booking</h5>
-    <h1 class="mb-1">Step 3: Book Your Hearing</h1>
+    <h3>4 steps to complete your booking</h3>
+    <h1 class="my-2">Step 3: Book Your Hearing</h1>
 
     <form method="post">
-        <div class="my-3">
+        <div class="my-4">
             <b>@(Model.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
             <div>
                 @Model.SelectedCourtClassName 
@@ -20,14 +21,14 @@
             <div>File Number: @Model.FileNumber</div>
         </div>
 
-        <p class="font-weight-bold">Available Times in @Model.BookingLocationName</p>
-        <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.</p>
+        <h2 class="font-weight-bold">Available Times in @Model.BookingLocationName</h2>
+        <p class="mb-1">Please choose a time below for your <b>@Model.HearingTypeName</b>.</p>
         <p>
             @ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for
             @Model.HearingLengthMinutes minutes only.
         </p>
 
-        <div class="">
+        <div class="mt-4">
             <div class="input-group date mx-auto" style="width: 236px;"> 
                 @Html.TextBox("SelectedDate", Model.SelectedDate, new {
                     @class = "form-control",
@@ -37,7 +38,7 @@
                     autocomplete = "off" })
                 <div class="input-group-append">
                     @*<span class="input-group-text"><i class="fa fa-th"></i></span>*@
-                    <button class="btn btn-outline-secondary" type="button" id="dateBtn">
+                    <button class="btn btn-outline-secondary mb-0" type="button" id="dateBtn">
                         <i class="fa fa-th"></i>
                     </button>
                 </div>
@@ -72,12 +73,12 @@
         @Html.HiddenFor(m => m.BookingLocationName)
         <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
         <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
-        <div class="text-danger pb-3">@* hidden*@
+        <div class="text-danger">@* hidden*@
             @*Please choose from one of the available times.*@
             <span asp-validation-for="ContainerId" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary btn-block mt-4 mb-0">
             Choose Time
         </button>
     </form>

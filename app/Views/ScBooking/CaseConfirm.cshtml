@@ -6,19 +6,19 @@
 }
 
 <div>
-    <div class="row screen-intro mb-2">
+    <div class="row screen-intro">
         <div class="col-lg-8 paragraph">
-            <div class="my-3">
+            <div class="mb-5">
+                <i class="fas fa-arrow-left"></i>
                 <a asp-action="AvailableTimes">Step 3: Book Your Hearing</a>
             </div>
-            <h5>4 steps to complete your booking</h5>
-
-            <h1>@ViewData["Title"]</h1>
+            <h3>4 steps to complete your booking</h3>
+            <h1 class="my-2">@ViewData["Title"]</h1>
             <p>
                 Please review that the following information is accurate before confirming your booking.
                 Once you confirm your booking, the time will be reserved for your conference hearing.
             </p>
-            <h2>Review Booking Details</h2>
+            <h2 class="mt-5 mb-4">Review Booking Details</h2>
             @*<p>The following time is reserved for your conference hearing.</p>
             <p>Check that the following information is accurate before confirming your booking.</p>*@
         </div>
@@ -82,8 +82,8 @@
                     </div>
                 }*@
 
-                <div class="form-group contact-information">
-                    <h2>Provide Your Contact Information</h2>
+                <div class="form-group">
+                    <h2 class="mt-5 mb-4">Provide Your Contact Information</h2>
                     <p>
                         We will contact you regarding this booking. Please provide the following
                         contact information.
@@ -109,11 +109,11 @@
                     </div>
                 </div>
 
-                <div class="form-group booking-submit">
-                    <button type="submit" class="btn btn-primary btn-lg progress-spinner" id="btnSearch">
+                <div class="form-group d-flex align-items-baseline flex-wrap flex-sm-nowrap mt-4 mb-0">
+                    <button type="submit" class="btn btn-primary btn-block progress-spinner" id="btnSearch">
                         Confirm Booking
                     </button>
-                    <a class="btn btn-secondary btn-lg" href="/scjob/booking/sc">Cancel</a>
+                    <a href="/scjob/booking/sc">Cancel</a>
                 </div>
             </form>
         </div>
