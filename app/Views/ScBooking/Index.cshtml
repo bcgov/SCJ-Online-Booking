@@ -28,7 +28,7 @@
 
     <form method="post">
         <div class="row my-4 mx-0">
-            <div class="col-md-6 bg-light p-3 p-sm-4">
+            <div class="col-md-6 bg-light rounded p-3 p-sm-4">
                 <div class="form-group">
                     <label for="CaseRegistryId">Choose the registry where the file was created</label>
                     <select asp-for="CaseRegistryId" class="form-control registryOptions mb-2"
@@ -67,7 +67,7 @@
                     <option value="C">C – Small Claims</option>
                 </select>
             </div>
-            <div class="form-group hideMsgClass" @hideMsgClass>
+            <div class="form-group hideMsgClass mb-0" @hideMsgClass>
             <div class="align-tooltip">
                 <label for="caseNoInput">What is the Court File Number for the case?</label>
                 <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
@@ -79,21 +79,21 @@
                 </span>
             </div>
             <div class="d-inline-flex">
-                <div class="small-label-field">
+                <div>
                     <label for="caseNumberInput" class="mb-0">
                         <small class="text-muted">Class</small>
                     </label>
                     <input class="form-control caseNumber mr-2" style="width: 40px;"
                         asp-for="SelectedCourtClass" id="caseNumberInput" readonly />
                 </div>
-                <div class="small-label-field">
+                <div>
                     <label for="caseNoInput" class="mb-0">
                         <small class="text-muted">Number</small>
                     </label>
                     <input asp-for="CaseNumber" class="form-control caseNumber"
                         required id="caseNoInput" type="number" />
                     <span asp-validation-for="CaseNumber"
-                    class="text-danger align-self-center ml-1"></span>
+                    class="text-danger align-self-center"></span>
                 </div>
                 </div>
             </div>
@@ -211,7 +211,7 @@
                 <h2 class="mt-5 mb-2">Search Results: Choose Your Case</h2>
                 <h6>@cases @results found</h6>
 
-                <div class="col-md-6 p-1">
+                <div class="col-md-6 p-0">
                     <div class="form-group">
                         <ol class="px-0">
                             @foreach (var courtCase in courtCases)
@@ -220,6 +220,32 @@
                                 @*var isChecked = courtCase.physicalFileId == Model.SelectedCaseId;*@
                                 var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
                                 <li style="list-style-type: none;">
+
+                                    <!-- The new search results with label -->
+                                    <div class="search-results-case border mt-3">
+                                        @if (cases == 1)
+                                        {
+                                            @Html.RadioButtonFor(model => model.SelectedCaseId, caseId)
+                                        } else
+                                        {
+                                            <input type="radio" name="SelectedCaseId"
+                                                id="SelectedCaseId-@caseId" value="@caseId" />
+                                        }
+                                        @*@Html.RadioButton("SelectedCaseId", courtCase.physicalFileId, isChecked)*@
+                                        @*<input type="radio" asp-for="SelectedFileNumber" value="@fileNumber" />*@
+
+
+                                        <label for="SelectedCaseId-@caseId">
+                                            <b>@(courtCase?.styleOfCause ?? "No Style of Cause?")</b>
+                                            <div>@Model.GetCourtClass(courtCase.courtClassCode)</div>
+                                            <div>
+                                                File Number: @Html.DisplayFor(m => m.LocationPrefix) @fileNumber
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- The previous search results with table -->
+                                    <!-- 
                                     <table class="table table-bordered table-hover">
                                         <tr>
                                             <td class="align-middle border-right-0" style="width: 30px;">
@@ -243,6 +269,7 @@
                                             </td>
                                         </tr>
                                     </table>
+                                    -->
                                 </li>
                             }
                         </ol>
@@ -256,7 +283,7 @@
                 </div>
 
                 @*@Html.AntiForgeryToken()*@
-                <button formaction="case-selected" class="btn btn-primary btn-block mb-0">
+                <button formaction="case-selected" class="btn btn-primary btn-block mt-4 mb-0">
                     Confirm Case
                 </button> 
                 @*<button type="submit" class="btn btn-primary btn-block mb-0"

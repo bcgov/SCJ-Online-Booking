@@ -78,15 +78,15 @@ body {
     padding-right: calc(1.5em + 0.75rem);
 }
 
+.form-control#caseNumberInput {
+    background-color: rgba($component-grey-dark, 0.1);
+}
+
 div.invalid-field-message {
     width: 100%;
     margin-top: 0.25rem;
     font-size: 80%;
     color: #dc3545;
-}
-
-.small-label-field {
-    display: grid;
 }
 
 .header-logo-div {
@@ -259,7 +259,7 @@ p.intro {
     }
 
     .court-option-box {
-        background: $blue-light;
+        background-color: rgba($component-blue-dark, 0.08);
         width: 100%;
         margin-bottom: 30px;
         padding: 40px 40px 120px;
@@ -301,6 +301,37 @@ p.intro {
                 margin-left: 20px;
             }
         }
+    }
+}
+
+/*Search results*/
+.search-results-case {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 0.25rem;
+    input, label {
+        cursor: pointer;
+    }
+    input {
+        position: absolute;
+        top: calc(50% - 6px);
+        left: 16px;
+    }
+    label {
+        width: 100%;
+        font-weight: 400;
+        background-color: $component-grey-light;
+        border-radius: 0.25rem;
+        margin-bottom: 0;
+        padding: 16px;
+        padding-left: 44px;
+        &:hover {
+            box-shadow: 0 0 0 0.1rem $primary-blue;
+        }
+    }
+    input:checked + label {
+        box-shadow: 0 0 0 0.2rem $component-blue-light;
     }
 }
 
@@ -398,7 +429,7 @@ select#CaseRegistryId {
     border-radius: 0.3rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
     height: 335px;
-    padding: 5px;
+    padding: 10px 5px;
 }
 
 a.custom-slide-time {
