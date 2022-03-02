@@ -64,7 +64,8 @@ module.exports = (env) => {
                     "@fortawesome/fontawesome-free/css/fontawesome.css",
                     "@fortawesome/fontawesome-free/css/regular.css",
                     "@fortawesome/fontawesome-free/css/solid.css",
-                    "swiper/dist/css/swiper.css"
+                    "swiper/dist/css/swiper.css",
+                    "bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css"
                 ]
             },
             output: {
@@ -129,8 +130,20 @@ module.exports = (env) => {
                         toType: "file"
                     },
                     {
+                        // the min version is packaged above (vendor.min.css) 
+                        // Just copy the regular version for Development
+                        from: "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css",
+                        to: "css/bootstrap-datepicker3.standalone.css",
+                        toType: "file"
+                    },
+                    {
                         from: "node_modules/spin/dist/spin.min.js",
                         to: "lib/spin.min.js",
+                        toType: "file"
+                    },
+                    {
+                        from: "node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js",
+                        to: "lib/bootstrap-datepicker.js",
                         toType: "file"
                     },
                 ]}),
