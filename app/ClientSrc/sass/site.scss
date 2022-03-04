@@ -184,7 +184,7 @@ div.invalid-field-message {
 
             li {
                 float: left;
-
+                margin: 2px;
                 a {
                     display: block;
                     text-align: center;
@@ -196,7 +196,7 @@ div.invalid-field-message {
                     }
 
                     @include breakpoint(lg) {
-                        padding: 16px;
+                        padding: 14px;
                     }
                 }
             }
@@ -409,6 +409,9 @@ select#CaseRegistryId {
 
 .options-nextStep {
     margin-top: 20px;
+    .card {
+        border: none;
+    }
 }
 
 .information-tooltip {
@@ -461,9 +464,14 @@ a.custom-slide-time {
 }
 
 /*Booking Confirmation*/
-.booking-confirmation > .content {
-    margin-top: 30px;
-}
+.booking-confirmation {
+    & > .content {
+        margin-top: 30px;
+    }
+    .invalid-feedback {
+        font-size: 100%;
+    }
+} 
 
 .booking-submit {
 
@@ -517,11 +525,12 @@ a.custom-slide-time {
     align-items: center;
     display: flex;
     height: 65px;
-    padding: 1rem;
-}
-
-.card-body {
-    padding: 1rem;
+    @media (min-width: $breakpoint-md) {
+        height: 95px;
+    }
+    @media (min-width: $breakpoint-lg) {
+        height: 75px;
+    }
 }
 
 @include breakpoint(mobile) {
