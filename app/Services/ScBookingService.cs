@@ -32,6 +32,7 @@ namespace SCJ.Booking.MVC.Services
         public readonly bool IsLocalDevEnvironment;
         private readonly MailService _mailService;
         private readonly ScCacheService _cache;
+        private readonly IConfiguration _configuration;
 
         //Constructor
         public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
@@ -60,6 +61,7 @@ namespace SCJ.Booking.MVC.Services
                 .WriteTo.Console(logLevel)
                 .CreateLogger();
 
+            _configuration = configuration;
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _dbContext = dbContext;
             _httpContext = httpAccessor.HttpContext;
@@ -422,12 +424,24 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     var emailBody = await GetEmailBody();
+                    var fromEmail = _configuration["FROM_EMAIL"];
+
                     //send email
-                    await _mailService.SendEmail(
-                        //"cello.liu@oxd.com",
-                        model.EmailAddress,
-                        EmailSubject,
-                        emailBody);
+                    if (string.IsNullOrEmpty(fromEmail))
+                    {
+                        await _mailService.SendEmail(
+                            model.EmailAddress,
+                            EmailSubject,
+                            emailBody);
+                    }
+                    else
+                    {
+                        await _mailService.SendEmail(
+                            fromEmail,
+                            model.EmailAddress,
+                            EmailSubject,
+                            emailBody);
+                    }
 
                     //clear booking info session
                     _session.ScBookingInfo = null;

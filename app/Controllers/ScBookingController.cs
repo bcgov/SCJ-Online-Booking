@@ -28,9 +28,9 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpGet]
         [Route("~/booking/sc")]
         [Route("~/booking/sc/Index")]
-        public IActionResult Index(bool isNewSession = true)
+        public IActionResult Index(bool s = true)
         {
-            var model = isNewSession ?
+            var model = s ?
                 _scBookingService.LoadSearchForm() :
                 _scBookingService.LoadSearchForm2();
             return View(model);

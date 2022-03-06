@@ -49,7 +49,7 @@ namespace SCJ.Booking.MVC.Utils
         {
             get
             {
-                return $"{FullDate:hh:mm tt} - {FullDate.AddMinutes(HearingLengthMinutes):hh:mm tt}";
+                return $"{FullDate:h:mm tt} - {FullDate.AddMinutes(HearingLengthMinutes):h:mm tt}".ToLower();
             }
         }
         public string DateFriendlyName

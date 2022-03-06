@@ -19,14 +19,6 @@
                                         {{ container.start }} - {{ container.end }}
                                     </button>
                                 </div>
-                                <!--<a class="custom-slide-time"
-                           @click="selectTime(container.containerId, container.startDateTime)"
-                           @keyup.enter="selectTime(container.containerId, container.startDateTime)"
-                           :class="{'selected': container.containerId === selectedContainerId}"
-                           tabindex="0" style="background-color: lightgray;">
-                            <span class="sr-text">{{ entry.weekday }} {{ entry.formattedDate }}</span>
-                            {{ container.start }} - {{ container.end }}
-                        </a>-->
                             </div>
                         </div>
                     </div>
@@ -128,7 +120,6 @@
             let self = this;
             axios.get(`/scjob/booking/api/sc-available-dates-by-location/${this.locationId}/${this.hearingType}`)
                 .then(response => {
-                    //console.log("response.data: " + response.data[0]);
                     self.availabletimes = response.data;
                 });
         }

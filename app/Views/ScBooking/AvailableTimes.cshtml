@@ -37,16 +37,11 @@
                     placeholder = "Jump to a specific date",
                     autocomplete = "off" })
                 <div class="input-group-append">
-                    @*<span class="input-group-text"><i class="fa fa-th"></i></span>*@
                     <button class="btn btn-outline-secondary mb-0" type="button" id="dateBtn">
                         <i class="fa fa-th"></i>
                     </button>
                 </div>
             </div>
-            @*<input type="text" class="form-control w-25 mx-auto"
-                   onfocus="(this.type='date')"
-                   onblur="(this.type='text')"
-                   placeholder="Jump to a specific date" />*@
         </div>
 
         <div id="VueAvailableTimes" class="availableTimesContainer">
@@ -73,8 +68,7 @@
         @Html.HiddenFor(m => m.BookingLocationName)
         <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
         <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
-        <div class="text-danger">@* hidden*@
-            @*Please choose from one of the available times.*@
+        <div class="text-danger">
             <span asp-validation-for="ContainerId" class="text-danger"></span>
         </div>
 
@@ -82,105 +76,6 @@
             Choose Time
         </button>
     </form>
-
-@*    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaseNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaseNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HearingTypeId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HearingTypeId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HearingTypeName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HearingTypeName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsValidCaseNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsValidCaseNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TimeSlotExpired)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TimeSlotExpired)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaseRegistryId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaseRegistryId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaseLocationName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaseLocationName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookingRegistryId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookingRegistryId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookingLocationName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookingLocationName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TimeSlotFriendlyName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TimeSlotFriendlyName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContainerId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContainerId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SelectedCaseDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SelectedCaseDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SelectedCourtClass)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SelectedCourtClass)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistryContactNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RegistryContactNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullCaseNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullCaseNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SelectedCaseId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SelectedCaseId)
-        </dd>
-    </dl>*@
 </div>
 
 @section Scripts {
@@ -188,33 +83,16 @@
     <script src="/scjob/dist/vue/booking-casesearch.js" asp-append-version="true"></script>
     <script src="/scjob/dist/lib/bootstrap-datepicker.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        var today = new Date();
-        var month = today.getMonth();
-        //alert(`${currMonth} ${today.getDate()}`);
         $('#datepicker').datepicker({
-            //beforeShowDay: function(d) {
-            //    console.log('before show day: ' + d.getMonth() + ' ' + month);
-            //    return d.getMonth() === month;
-            //},
-            //beforeShowMonth: function(m) {
-            //    console.log('before show month: '+m.getMonth());
-            //    return m.getMonth() === month;
-            //},
             format: 'yyyy-mm-dd',
             weekStart: 0,
             autoclose: true,
             todayHighlight: true,
-            startDate: today,
+            startDate: @Json.Serialize(Model.FirstAvailableDate),
             clearBtn: true,
-            //updateViewDate: false,
-            //immediateUpdates: true,
             endDate: @Json.Serialize(Model.LastAvailableDate),
             datesDisabled: @Json.Serialize(Model.DisabledDates) // ['2022-02-21', '2022-02-24'] 
-        //}).on('changeMonth', function(e) {
-        //  console.log("I've just changed month to " + e.date.getMonth());
-        //  month = e.date.getMonth();
         }).on('changeDate', function() {
-            //console.log($('#datepicker').datepicker('getFormattedDate'));
             var selectedDate = $('#datepicker').val();
             var dates = @Json.Serialize(Model.AvailableDates);
             if (dates) {

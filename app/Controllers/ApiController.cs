@@ -76,9 +76,9 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     ContainerId = item.ContainerID,
                     StartDateTime = item.Date_Time,
-                    Start = item.Date_Time.ToString("hh:mmtt").ToLower(),
+                    Start = item.Date_Time.ToString("h:mm tt").ToLower(),
                     End = item.Date_Time.AddMinutes(soapResult.BookingDetails.detailBookingLength)
-                        .ToString("hh:mmtt").ToLower()
+                        .ToString("h:mm tt").ToLower()
                 });
 
                 lastDate = date;

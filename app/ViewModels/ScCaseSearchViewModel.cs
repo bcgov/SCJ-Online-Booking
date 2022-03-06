@@ -8,6 +8,7 @@ namespace SCJ.Booking.MVC.ViewModels
 {
     public class ScCaseSearchViewModel
     {
+        private readonly string format = "yyyy-MM-dd";
         public ScCaseSearchViewModel()
         {
             //Default values
@@ -47,22 +48,37 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 var result = Results?.AvailableDates?.Select(
-                    x => x.Date_Time.ToString("yyyy-MM-dd")
+                    x => x.Date_Time.ToString(format)
                     ).Distinct().ToArray();
                 return result; 
+            }
+        }
+        public string FirstAvailableDate
+        {
+            get
+            {
+                var result = DateTime.Now.ToString(format);
+                if (Results?.AvailableDates != null)
+                {
+                    result = Results.AvailableDates
+                        .Select(x => x.Date_Time.Date)
+                        .OrderBy(x => x)
+                        .FirstOrDefault().ToString(format);
+                }
+                return result;
             }
         }
         public string LastAvailableDate
         {
             get
             {
-                var result = DateTime.Now.ToString("yyyy-MM-dd");
+                var result = DateTime.Now.ToString(format);
                 if (Results?.AvailableDates != null)
                 {
                     result = Results.AvailableDates
                         .Select(x => x.Date_Time.Date)
                         .OrderBy(x => x)
-                        .LastOrDefault().ToString("yyyy-MM-dd");
+                        .LastOrDefault().ToString(format);
                 }
                 return result;
             }
@@ -89,7 +105,7 @@ namespace SCJ.Booking.MVC.ViewModels
                         result.AddRange(Enumerable.Range(1, DateTime.DaysInMonth(
                             yearAndMonth.Item1, yearAndMonth.Item2))
                             .Select(day => new DateTime(yearAndMonth.Item1, yearAndMonth.Item2, day)
-                            .ToString("yyyy-MM-dd")));
+                            .ToString(format)));
                     }
                     result = result.Where(x => !AvailableDates.Contains(x)).ToList();
                 }
