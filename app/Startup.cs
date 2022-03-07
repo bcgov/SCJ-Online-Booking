@@ -87,6 +87,8 @@ namespace SCJ.Booking.MVC
             // run migrations
             UpdateDatabase(app);
 
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
