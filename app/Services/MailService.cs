@@ -66,7 +66,7 @@ namespace SCJ.Booking.MVC.Services
             var client = new SendGridClient(apiKey);
             var from = new SendGrid.Helpers.Mail.EmailAddress(fromEmail);
             var to = new SendGrid.Helpers.Mail.EmailAddress(toEmail);
-            var plainTextContent = "";
+            var plainTextContent = body;
             var htmlContent = body;
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             return await client.SendEmailAsync(msg);

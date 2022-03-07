@@ -2,33 +2,22 @@
 
 @model EmailViewModel
 
-<p>Thank you.</p>
+Thank you.
 
-<p>Your JCC has been scheduled for the date and time below.</p>
+Your JCC has been scheduled for the date and time below.
 
-<p>Please file a Notice of JCC to secure the date.</p>
+Please file a Notice of JCC to secure the date. Consult the Supreme Court Rules for additional details.
 
-<hr />
+Please ensure to provide all email addresses and phone numbers for counsel or self-represented parties in your filed document.
 
-<div style="margin-top: 10px;">
-    <b>@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
-</div>
-<div>@SessionService.ScBookingInfo.SelectedCourtClassName</div>
-@*@if (Model.CaseLocationName != Model.BookingLocationName)
-{
-    @Html.Raw("CENTRALIZED HEARING LOCATION: ")
-    @Model.BookingLocationName
-    @Html.Raw(" Law Courts")
-} else
-{
-    <div>@Model.CaseLocationName</div>
-}*@
-<div>File Number: @SessionService.ScBookingInfo.FileNumber</div>
+@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause
+@SessionService.ScBookingInfo.SelectedCourtClassName
+File Number: @SessionService.ScBookingInfo.FileNumber
 
-<div style="margin-top: 10px;"><b>Hearing Date</b></div>
-<div>@Model.Date</div>
-<div>@Model.Time</div>
+Hearing Date
+@Model.Date
+@Model.Time
 
-<div style="margin-top: 10px;"><b>Contact Information</b></div>
-<div>@Model.EmailAddress</div>
-<div>@Model.Phone</div>
+Contact Information
+@Model.EmailAddress
+@Model.Phone
