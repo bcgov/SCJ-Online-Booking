@@ -66,6 +66,9 @@
         @Html.HiddenFor(m => m.LocationPrefix)
         @Html.HiddenFor(m => m.HearingTypeName)
         @Html.HiddenFor(m => m.BookingLocationName)
+        @Html.HiddenFor(m => m.BookingRegistryId)
+        @Html.HiddenFor(m => m.CaseRegistryId)
+        @Html.HiddenFor(m => m.HearingTypeId)
         <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
         <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
         <div class="text-danger">
