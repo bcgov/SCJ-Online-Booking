@@ -19,8 +19,6 @@
                 Once you confirm your booking, the time will be reserved for your conference hearing.
             </p>
             <h2 class="mt-5 mb-4">Review Booking Details</h2>
-            @*<p>The following time is reserved for your conference hearing.</p>
-            <p>Check that the following information is accurate before confirming your booking.</p>*@
         </div>
     </div>
 
@@ -42,7 +40,7 @@
                 <div class="form-group">
                     <b>@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
                     <div>
-                        @SessionService.ScBookingInfo.SelectedCourtClassName @*@Model.GetCourtClass(courtFile?.courtClassCode)*@
+                        @SessionService.ScBookingInfo.SelectedCourtClassName 
                     </div>
                     <div>File Number: @SessionService.ScBookingInfo.FileNumber</div>
                 </div>
