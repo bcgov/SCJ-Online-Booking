@@ -52,7 +52,7 @@
                 <label id="courtClassLabel">
                     Choose the court class
                 </label> - Optional @* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
-                <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown">
+                <select asp-for="SelectedCourtClass" class="form-control mb-2" id="courtClassDropdown">
                     <option value="">-- Pick a class --</option>
                     <option value="B">B – Bankruptcy</option>
                     <option value="E">E – Family Law Proceedings</option>
@@ -83,14 +83,14 @@
                     <label for="caseNumberInput" class="mb-0">
                         <small class="text-muted">Class</small>
                     </label>
-                    <input class="form-control caseNumber mr-2" style="width: 40px;"
+                    <input class="form-control caseNumber mr-2 mb-2" style="width: 40px;"
                         asp-for="SelectedCourtClass" id="caseNumberInput" readonly />
                 </div>
                 <div>
                     <label for="caseNoInput" class="mb-0">
                         <small class="text-muted">Number</small>
                     </label>
-                    <input asp-for="CaseNumber" class="form-control caseNumber"
+                    <input asp-for="CaseNumber" class="form-control caseNumber mb-2"
                         required id="caseNoInput" type="number" min="0" />
                     <span asp-validation-for="CaseNumber"
                     class="text-danger align-self-center"></span>
