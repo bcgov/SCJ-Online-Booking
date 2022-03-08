@@ -75,7 +75,6 @@ body {
 
 .form-control.input-validation-error {
     border-color: #dc3545;
-    padding-right: calc(1.5em + 0.75rem);
 }
 
 .form-control#caseNumberInput {
@@ -328,10 +327,16 @@ p.intro {
         padding-left: 44px;
         &:hover {
             box-shadow: 0 0 0 0.1rem $primary-blue;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            -webkit-box-shadow: 0 0 0 0.1rem $primary-blue;
         }
     }
     input:checked + label {
         box-shadow: 0 0 0 0.2rem $component-blue-light;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
     }
 }
 
@@ -470,6 +475,7 @@ a.custom-slide-time {
     }
     .invalid-feedback {
         font-size: 100%;
+        margin-top: 0;
     }
 } 
 
@@ -754,6 +760,14 @@ span.nowrap {
 
 .alert--preliminary_question, .alert--related-cases {
     display: none;
+}
+
+select {
+    background: url("data:image/svg+xml,<svg height='10px' width='10px' viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") no-repeat;
+    background-position: calc(100% - 0.75rem) center;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
 }
 
 select, input {

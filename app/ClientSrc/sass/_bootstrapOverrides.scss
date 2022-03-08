@@ -42,17 +42,26 @@ a {
 }
 
 .btn-primary, .btn-secondary {
-    &:hover, &:focus {
+    &:hover, &:focus, &:active {
         opacity: 0.8;
     }
     &:focus {
         box-shadow: 0 0 0 0.2rem $component-blue-light;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
     } 
-    &:not(:disabled):not(.disabled):active {
-        opacity: 0.8;
+    &:active {
+        box-shadow: 0 0 0 0.2rem $component-blue-light;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
     }
     &:not(:disabled):not(.disabled):active:focus {
         box-shadow: 0 0 0 0.2rem $component-blue-light;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
     }
 }
 
