@@ -403,7 +403,7 @@ namespace SCJ.Booking.MVC.Services
                     {
                         ContainerId = bookingInfo.ContainerId,
                         SmGovUserGuid = userGuid,
-                        Timestamp = DateTime.Now
+                        Timestamp = DateTime.UtcNow
                     });
 
                     //save to DB
