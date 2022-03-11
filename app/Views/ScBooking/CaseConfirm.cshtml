@@ -38,7 +38,7 @@
                 @Html.HiddenFor(m => m.ContainerId)
 
                 <div class="form-group">
-                    <b>@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
+                    <b>@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</b>
                     <div>
                         @SessionService.ScBookingInfo.SelectedCourtClassName 
                     </div>
@@ -66,9 +66,6 @@
                     </p>
                     <label class="font-weight-bold" asp-for="EmailAddress">Email address:</label>
                     <input type="email" asp-for="EmailAddress" required class="form-control mb-2" />
-                    <div class="invalid-feedback">
-                        Please provide your email address.
-                    </div>
                     <div class="invalid-field-message">
                         @Html.ValidationMessageFor(model => model.EmailAddress)
                     </div>
@@ -76,10 +73,8 @@
                 <div class="form-group">
                     <label asp-for="Phone" class="font-weight-bold">Phone number (format: xxx-xxx-xxxx):</label>
                     <input type="tel" asp-for="Phone" required class="form-control phone-input mb-2"
-                        pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
-                    <div class="invalid-feedback">
-                        Please provide your phone number.
-                    </div>
+                        onkeypress="return isValidKey(event);"
+                        pattern="\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}" />
                     <div class="invalid-field-message">
                         @Html.ValidationMessageFor(model => model.Phone)
                     </div>
@@ -95,3 +90,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

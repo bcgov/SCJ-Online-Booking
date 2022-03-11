@@ -145,7 +145,7 @@
                                             id="SelectedCaseId-@caseId" value="@caseId" />
 
                                         <label for="SelectedCaseId-@caseId">
-                                            <b>@(courtCase?.styleOfCause ?? "No Style of Cause?")</b>
+                                            <b>@courtCase?.styleOfCause</b>
                                             <div>@Model.GetCourtClass(courtCase.courtClassCode)</div>
                                             <div>
                                                 File Number: @Html.DisplayFor(m => m.LocationPrefix) @fileNumber

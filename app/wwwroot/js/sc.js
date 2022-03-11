@@ -10,8 +10,6 @@ $(document).ready(function () {
     });
 
     $('#CaseRegistryId').change(function () {
-        //$('.showMsgClass').hide();
-        //$('.showMsgClass').attr("hidden", true);
         if (!$('.showMsgClass').is(":hidden")) {
             $('.showMsgClass').prop("hidden", true);
         }
@@ -20,12 +18,6 @@ $(document).ready(function () {
             $('.hideMsgClass').removeAttr('hidden');
         }
     });
-
-    //$("input:radio[name=SelectedCaseId]").change(function () {
-    //    //if ($('#ChooseACase').length) {
-    //    //    $("#ChooseACase").hide();
-    //    //}
-    //});
 
     // hide the hearing type dropdown for CV-PTC
     $("input[name=HearingTypeId]").change(function () {
@@ -48,14 +40,6 @@ $(document).ready(function () {
 
     $("#dateBtn").click(function () {
         $('#datepicker').datepicker().focus();
-
-        //$("#datepickerInputGroup").click();
-        //if ($("input:radio").length) {
-        //    $("input:radio").attr("checked", false);
-        //}
-        //if ($('#ChooseACase').length) {
-        //    $("#ChooseACase").show();
-        //}
     });
 });
 
@@ -67,4 +51,10 @@ function validateCaseDate(containerId, bookingDate) {
 
     //submit the form to go to the next page
     $("#btnSearch").trigger("click");
+}
+
+function isValidKey(evt) {
+    let charCode = (evt.which) ? evt.which : event.keyCode;
+    return !(charCode !== 46 && charCode !== 45 &&
+        charCode > 31 && (charCode < 48 || charCode > 57));
 }
