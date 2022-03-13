@@ -146,7 +146,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Date selected in the swiper control
         public string SelectedCaseDate { get; set; }
-        public DateTime? SelectedDate { get; set; }
+        public string SelectedDate { get; set; }
 
         //Full date for the booking
         public DateTime FullDate

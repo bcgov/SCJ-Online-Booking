@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "AvailableTimes";
+    var availableDates = Json.Serialize(Model.AvailableDates);
+    Model.SelectedDate = Model.FirstAvailableDate;
 }
 
 <div>
@@ -47,6 +49,7 @@
 
         <div id="VueAvailableTimes" class="availableTimesContainer">
             <availabletimes :location-id="@Model.BookingRegistryId"
+                            :available-dates="@availableDates.ToString()"
                             :hearing-type="@Model.HearingTypeId">
             </availabletimes>
         </div>
@@ -99,7 +102,7 @@
             datesDisabled: @Json.Serialize(Model.DisabledDates) // ['2022-02-21', '2022-02-24'] 
         }).on('changeDate', function() {
             var selectedDate = $('#datepicker').val();
-            var dates = @Json.Serialize(Model.AvailableDates);
+            var dates = @availableDates;
             if (dates) {
                 var i = dates.toString().split(',').indexOf(selectedDate);
                 $('#selectedDate').val(i);

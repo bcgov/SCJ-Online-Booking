@@ -49,6 +49,7 @@
         },
         props: {
             locationId: Number,
+            availableDates: [],
             hearingType: Number
         },
         data() {
@@ -122,6 +123,12 @@
                 .then(response => {
                     self.availabletimes = response.data;
                 });
+        },
+        mounted() {
+            let self = this;
+            this.$refs.mySwiper.swiper.on('slideChange', function () {
+                $('#datepicker').val(self.availableDates[this.activeIndex]);
+            });
         }
     }
 </script>

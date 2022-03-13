@@ -22,7 +22,7 @@
         "axios": "^0.21.4",
         "bootstrap-datepicker": "^1.9.0",
         "browserslist": "^4.20.0",
-        "caniuse-lite": "^1.0.30001314",
+        "caniuse-lite": "^1.0.30001315",
         "es6-promise": "^4.2.8",
         "spin": "0.0.1",
         "vue": "^2.6.14",
