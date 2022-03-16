@@ -1,5 +1,23 @@
-$white: #ffffff;
-$black: #212529;
+// font
+@font-face {
+    font-family: 'BCSans';
+    font-style: normal;
+    src: url("../fonts/BCSans-Regular.woff2") format("woff2"),
+         url("../fonts/BCSans-Regular.woff") format("woff"),
+         url("../fonts/BCSans-Regular.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'BCSans';
+    font-weight: 700;
+    src: url("../fonts/BCSans-Bold.woff2") format("woff2"),
+         url("../fonts/BCSans-Bold.woff") format("woff"),
+         url("../fonts/BCSans-Bold.ttf") format("truetype");
+}
+$font-stack: 'BCSans', 'Noto Sans', Verdana, Arial, sans-serif;
+// $font-stack: Helvetica, Arial, sans-serif;
+
+
+// old colour palette
 $blue: #1a5a96;
 $blue-active: #0073ff;
 $blue-active-lighter: #edf4fc;
@@ -10,21 +28,23 @@ $grey-dark: #333333;
 $grey-text: #494949;
 $grey-disabled: #e9ecef;
 
-// bcgov colour palette
-// https://developer.gov.bc.ca/Design-System/Colour-Palette
-$primary-blue: #003366;
-$primary-gold: #fcba19;
-$text-grey: #313132;
-$text-blue: #1a5a96;
-$component-blue-dark: #38598a;
-$component-blue-light: #3b99fc;
-$component-grey-dark: #606060;
-$component-grey-light: #f2f2f2;
-$semantic-red: #d8292f;
-$semantic-green: #2e8540;
+// new colour palette
+$blue-dark: #002f59;
+$blue-medium: #00488f;
+$blue-light: #0a5288;
+$blue-link: #1a5a96;
+$green-dark: #2a773d;
+$green-medium: #3aa555;
+$green-light: rgba($green-dark, .1);
+$grey-border: #606060;
+$grey-dark: #565656;
+$grey-medium: #c5c5c5;
+$grey-light: #f2f2f2;
+$black: #313132;
+$white: #ffffff;
 
-$font-stack: Helvetica, Arial, sans-serif;
 
+// breakpoint
 $breakpoint-xs: 320px;
 $breakpoint-sm: 480px;
 $breakpoint-md: 768px;

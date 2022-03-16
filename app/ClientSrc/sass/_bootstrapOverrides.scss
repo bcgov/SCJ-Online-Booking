@@ -1,107 +1,248 @@
 /*
 * Styles to override bootstrap elements' styles
 */
+/** Base typographic rules **/
 
-// font
-h1 {
-    font-size: 2rem;
+// font * 1rem = 16px *
+h1, h2, h3, h4, h5, h6, label, .text-link {
     font-weight: 700;
-    margin-bottom: 1.875rem;
-    line-height: 1.4;
+}
+
+h1 {
+    font-size: 4rem;
+    line-height: 5.4rem;
+    margin-bottom: 24px;
 }
 
 h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1.25rem;
+    font-size: 3.3rem;
+    line-height: 4.5rem;
+    margin-bottom: 18px;
 }
 
 h3 {
-    font-size: 1.125rem;
+    font-size: 2.8rem;
+    line-height: 3.8rem;
+    margin-top: 48px;
+    margin-bottom: 18px;
+}
+
+h4 {
+    font-size: 2.3rem;
+    line-height: 3rem;
+    margin-bottom: 18px;
+}
+
+h5 {
+    font-size: 1.9rem;
+    line-height: 2.6rem;
+    margin-bottom: 12px;
+}
+
+h6, p, %p {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+}
+
+h6, %h6 {
+    margin-bottom: 0;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+small {
+    display: block;
+    color: $grey-border;
+    font-size: 1.4rem;
+    line-height: 2.2rem;
+}
+
+label {
+    @extend %p;
+    white-space: wrap;
+    margin-top: 24px;
+    margin-bottom: 8px;
+
+    @include breakpoint(sm) {
+        white-space: nowrap;
+    }
+}
+
+.uppercase-md {
+    font-size: 1.4rem;
+    line-height: 2.4rem;
+    letter-spacing: 0.02em;  
+}
+
+.uppercase-sm {
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+    letter-spacing: 0.08em;
+}
+
+.text-danger {
+    font-size: 1.2rem;
+    > span {
+        display: block;
+        margin-top: 8px;
+    }
+}
+
+.text-link {
+    font-size: 1.4rem;
+    line-height: 2.4rem;
+    margin-top: 32px;
+
+    span {
+        display: flex;
+        i {
+            color: $blue-link;
+            margin-top: 5px;
+        }
+    }
 }
 
 a {
-    color: $blue;
+    color: $blue-link;
     text-decoration: underline;
-
     &:hover, &:focus {
-        color: $blue-darker;
+        color: $blue-dark;
     }
+}
+
+hr {
+    border-color: $grey-border;
+    margin-top: 0;
+    margin-bottom: 18px;
 }
 
 // button
 .btn {
-    margin-bottom: 20px;
-    font-size: 1rem;
+    display: flex;
+    color: $white;
     font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 2.4rem;
     text-decoration: none;
+    border: none;
+    margin-top: 32px;
+    padding: 9px 12px;
 
-    &-lg {
-        padding: 0.75em 2em;
+    &:hover, &:focus, &:active {
+        color: $white !important;
+    }
+
+    &:focus, &:not(:disabled):not(.disabled):active:focus {
+        box-shadow: none;
     }
 }
 
-.btn-primary, .btn-secondary {
-    &:hover, &:focus, &:active {
-        opacity: 0.8;
-    }
-    &:focus {
-        box-shadow: 0 0 0 0.2rem $component-blue-light;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
-    } 
-    &:active {
-        box-shadow: 0 0 0 0.2rem $component-blue-light;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
-    }
-    &:not(:disabled):not(.disabled):active:focus {
-        box-shadow: 0 0 0 0.2rem $component-blue-light;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
-    }
+.btn-group {
+    width: 100%;
 }
 
 .btn-primary {
-    background-color: $primary-blue;
-    border: none;
-
-    &:hover, &:focus {
-        background-color: $primary-blue;
+    background-color: $blue-dark;
+    &:hover, &:focus, &:not(:disabled):not(.disabled):active {
+        background-color: $blue-medium;
     }
-    &:not(:disabled):not(.disabled):active {
-        background-color: $primary-blue;
+    &::after {
+        display: inline-block;
+        font-family: "Font Awesome 5 Free"; 
+        content: "\f30b";
+        margin-left: auto;
+    }
+    &#SearchForCase {
+        &::after {
+            content: "\f002";
+        }
     }
 }
 
 .btn-secondary {
-    background-color: $component-grey-dark;
-    border: none;
-
-    &:hover, &:focus {
-        background-color: $component-grey-dark;
+    background-color:  $green-dark;
+    &:hover, &:focus, &:not(:disabled):not(.disabled):active {
+        background-color: $green-medium;
     }
-    &:not(:disabled):not(.disabled):active {
-        background-color: $component-grey-dark;
+    &::after {
+        display: inline-block;
+        font-family: "Font Awesome 5 Free"; 
+        content: "\f00c";
+        margin-left: auto;
     }
 }
 
-.btn-block {
-    @include breakpoint(sm) {
-        width: auto;
+.btn-tertiary {
+    display: block;
+    font-size: 1rem;
+    text-align: center;
+    background-color: $black;
+    margin-top: 0px;
+    margin-bottom: 8px;
+    &:hover {
+        background-color: $grey-dark;
+    }
+    &:focus, &:not(:disabled):not(.disabled):active {
+        background-color: $green-dark;
+    }
+}
+
+.btn-quaternary {
+    color: $blue-light;
+    background-color: transparent;
+    border: 1px solid $blue-light;
+    padding: 7px 10px;
+    &:hover, &:focus {
+        background-color: $blue-light;
+        border: 2px solid $blue-light;
+    }
+    &:not(:disabled):not(.disabled):active {
+        background-color: $blue-light;
+        border: 2px solid $blue-light;
+    }
+    &::after {
+        display: inline-block;
+        font-family: "Font Awesome 5 Free"; 
+        content: "\f073";
+        margin-left: auto;
+    }
+}
+
+
+// form
+.form-group {
+    margin-bottom: 0;
+
+    .form-control {
+        @extend %p;
+        height: 44px;
+        margin-bottom: 0;
+
+        &#caseNumberInput {
+            width: 48px;
+        }
+        &#caseNoInput{
+            width: 268px;
+        }
+    }
+
+    .small-label {
+        margin-top: 0;
+        margin-bottom: 6px;
     }
 }
 
 // card
 .card {
-    margin-bottom: 30px;
+    margin-top: 24px;
+    @include breakpoint(md) {
+        margin-top: 0;
+    }
 }
 
 .card-header {
-    font-weight: 700;
     color: white;
     background: #4b5e73;
     border-bottom: none;
@@ -143,7 +284,13 @@ a {
     border-color: rgba(255, 255, 255, 0.6);
 }
 
-// bg
-.bg-light {
-    background-color: $component-grey-light !important;
+// layout
+.container {
+    max-width: 100%;
+    @include breakpoint(lg) {
+        max-width: 960px;
+    }
+    @include breakpoint(xl) {
+        max-width: 1140px;
+    }
 }

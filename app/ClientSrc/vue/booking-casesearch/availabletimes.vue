@@ -1,6 +1,6 @@
 <template>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row no-gutters">
+        <div class="col">
             <div class="swiper-button-prev" slot="button-prev"></div>
             <swiper ref="mySwiper" :options="swiperOption" id="swipe-container">
                 <swiper-slide v-for="entry in availabletimes" :key="entry.date">
@@ -13,7 +13,7 @@
                         <div class="custom-slide-times text-center">
                             <div v-for="container in entry.times">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-secondary"
+                                    <button type="button" class="btn btn-tertiary btn-block"
                                             @click="selectTime(container.containerId, container.startDateTime)"
                                             :class="{'selected': container.containerId === selectedContainerId}">
                                         {{ container.start }} - {{ container.end }}
@@ -57,9 +57,9 @@
                 selectedContainerId: null,
                 selectedBookingTime: null,
                 swiperOption: {
-                    slidesPerView: 5,
+                    slidesPerView: 4,
                     centeredSlides: false,
-                    spaceBetween: 20,
+                    spaceBetween: 16,
                     grabCursor: true,
                     pagination: {
                         el: '.swiper-pagination',
@@ -72,19 +72,19 @@
                     breakpoints: {
                         1200: {
                             slidesPerView: 4,
-                            spaceBetween: 18
+                            spaceBetween: 16
                         },
                         1000: {
-                            slidesPerView: 3,
+                            slidesPerView: 4,
                             spaceBetween: 16
                         },
                         780: {
-                            slidesPerView: 2,
-                            spaceBetween: 14
+                            slidesPerView: 3,
+                            spaceBetween: 16
                         },
                         420: {
                             slidesPerView: 1,
-                            spaceBetween: 12
+                            spaceBetween: 16
                         }
                     }
                 }

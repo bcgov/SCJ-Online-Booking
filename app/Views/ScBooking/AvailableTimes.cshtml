@@ -4,31 +4,31 @@
     ViewData["Title"] = "AvailableTimes";
 }
 
-<div>
-    <div class="mb-5">
-        <i class="fas fa-arrow-left"></i>
-        <a asp-action="ConferenceType">Step 2: Choose Conference Type</a>
+<div class="body-content--inner">
+    <div class="d-flex justify-content-between steps-link">
+        <h5>4 steps to complete your booking</h5>
+        <h6><a href="/scjob/booking/sc">Cancel</a></h6>
     </div>
-    <h3>4 steps to complete your booking</h3>
-    <h1 class="my-2">Step 3: Book Your Hearing</h1>
+    <hr />
+    <h6>Step 3</h6>
+    <h2>Book Your Hearing</h2>
 
     <form method="post">
-        <div class="my-4">
-            <b>@(Model.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</b>
-            <div>
-                @Model.SelectedCourtClassName 
-            </div>
-            <div>File Number: @Model.FileNumber</div>
+        <div style="margin-bottom: 30px">
+            <div class="uppercase-sm">File Number: @Model.FileNumber</div>
+            <h5>@(Model.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</h5>
+            <p>@Model.SelectedCourtClassName</p>
         </div>
 
-        <h2 class="font-weight-bold">Available Times in @Model.BookingLocationName</h2>
-        <p class="mb-1">Please choose a time below for your <b>@Model.HearingTypeName</b>.</p>
-        <p>
+        <h6>Available Times in @Model.BookingLocationName</h6>
+        <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.
+        <br/>
             @ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for
             @Model.HearingLengthMinutes minutes only.
         </p>
 
-        <div class="mt-4">
+        <!-- Previous calendar button -->
+        <div>
             <div class="input-group date mx-auto" style="width: 236px;"> 
                 @Html.TextBox("SelectedDate", Model.SelectedDate, new {
                     @class = "form-control",
@@ -44,6 +44,16 @@
                 </div>
             </div>
         </div>
+
+        <!-- New calendar button -->
+        <div class="row no-gutters">
+            <div class="col-8 col-md-4 mx-auto">
+                <button type="button" id="dateBtn" class="btn btn-quaternary btn-block">
+                    Choose a date range
+                </button>
+            </div>
+        </div>
+
 
         <div id="VueAvailableTimes" class="availableTimesContainer">
             <availabletimes :location-id="@Model.BookingRegistryId"
@@ -73,12 +83,22 @@
         <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
         <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
         <div class="text-danger">
-            <span asp-validation-for="ContainerId" class="text-danger"></span>
+            <span asp-validation-for="ContainerId"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block mt-4 mb-0">
-            Choose Time
-        </button>
+        <div class="row no-gutters">
+            <div class="col-6 col-md-8 d-flex align-items-center text-link">
+                <span>
+                    <i class="fas fa-long-arrow-alt-left"></i>
+                    <a asp-action="ConferenceType">Step 2: Choose Conference Type</a>
+                </span>
+            </div>
+            <div class="col-6 col-md-4"> 
+                <button type="submit" class="btn btn-secondary btn-block">
+                    Confirm Time
+                </button>
+            </div>
+        </div>
     </form>
 </div>
 
