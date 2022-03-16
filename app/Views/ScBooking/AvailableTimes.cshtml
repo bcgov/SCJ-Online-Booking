@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "AvailableTimes";
+    var availableDates = Json.Serialize(Model.AvailableDates);
+    Model.SelectedDate = Model.FirstAvailableDate;
 }
 
 <div class="body-content--inner">
@@ -16,10 +18,9 @@
     <form method="post">
         <div style="margin-bottom: 30px">
             <div class="uppercase-sm">File Number: @Model.FileNumber</div>
-            <h5>@(Model.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</h5>
+            <h5>@Model.SelectedCourtFile?.styleOfCause</h5>
             <p>@Model.SelectedCourtClassName</p>
         </div>
-
         <h6>Available Times in @Model.BookingLocationName</h6>
         <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.
         <br/>
@@ -57,6 +58,7 @@
 
         <div id="VueAvailableTimes" class="availableTimesContainer">
             <availabletimes :location-id="@Model.BookingRegistryId"
+                            :available-dates="@availableDates.ToString()"
                             :hearing-type="@Model.HearingTypeId">
             </availabletimes>
         </div>
@@ -119,7 +121,7 @@
             datesDisabled: @Json.Serialize(Model.DisabledDates) // ['2022-02-21', '2022-02-24'] 
         }).on('changeDate', function() {
             var selectedDate = $('#datepicker').val();
-            var dates = @Json.Serialize(Model.AvailableDates);
+            var dates = @availableDates;
             if (dates) {
                 var i = dates.toString().split(',').indexOf(selectedDate);
                 $('#selectedDate').val(i);

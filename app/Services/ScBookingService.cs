@@ -413,16 +413,6 @@ namespace SCJ.Booking.MVC.Services
                     model.IsBooked = true;
                     bookingInfo.IsBooked = true;
 
-                    //store user info in session for next booking
-                    var userInfo = new SessionUserInfo
-                    {
-                        Phone = model.Phone,
-                        Email = model.EmailAddress,
-                        ContactName = $"{userDisplayName}"
-                    };
-
-                    _session.UserInfo = userInfo;
-
                     var emailBody = await GetEmailBody();
                     var fromEmail = _configuration["FROM_EMAIL"];
 
@@ -451,6 +441,16 @@ namespace SCJ.Booking.MVC.Services
                     model.IsBooked = false;
                     bookingInfo.IsBooked = false;
                 }
+
+                //store user info in session for next booking
+                var userInfo = new SessionUserInfo
+                {
+                    Phone = model.Phone,
+                    Email = model.EmailAddress,
+                    ContactName = $"{userDisplayName}"
+                };
+
+                _session.UserInfo = userInfo;
             }
             else
             {

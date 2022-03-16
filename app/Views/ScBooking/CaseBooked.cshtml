@@ -37,9 +37,18 @@
             }
             else
             {
-                <h2>Error</h2>
-                <p>There was an error confirming your booking.</p>
-                <p class="mb-0">The following message was returned by the scheduling system.</p>
+                <h2>Booking Could Not Be Completed</h2>
+                <div class="alert alert-danger font-weight-bold">
+                    <i class="fas fa-exclamation-circle"></i>
+                    There was an error confirming your booking.
+                </div>
+                <p>
+                    Please contact the applicable
+                    <a href="https://www.bccourts.ca/supreme_court/scheduling/" target="_blank">
+                        Supreme Court scheduling office by telephone
+                    </a> for next steps.
+                </p>
+                <p>For your reference, here is the information for the booking that was not completed.</p>
             }
         </div>
     </div>
@@ -70,7 +79,7 @@
                     <div class="col">
                         <div class="form-group" style="margin-bottom: 8px">
                             <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
-                            <h5 style="margin-bottom: 4px">@(SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause ?? "No Style of Cause?")</h5>
+                            <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</h5>
                             <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
                         </div>
                         <div class="form-group" style="margin-bottom: 8px">
@@ -88,7 +97,6 @@
             </div>
         </div>
     }
-
     <div class="row no-gutters">
         <div class="col-6 col-md-8 text-link">
             <h6>Finished booking?</h6>
