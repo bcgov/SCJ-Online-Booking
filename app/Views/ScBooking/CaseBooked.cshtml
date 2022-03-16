@@ -7,15 +7,12 @@
 
     var hearingType = ScHearingType.GetHearingType(SessionService.ScBookingInfo.HearingTypeId);
 }
-
-<div>
-    <div class="row screen-intro">
-        <div class="col-md-8">
+<div class="body-content--inner">
+    <div class="row no-gutters">
+        <div class="col">
             @if (SessionService.ScBookingInfo.IsBooked)
             {
-                <h1 class="blue">
-                    @ViewData["Title"]
-                </h1>
+                <h2>@ViewData["Title"]</h2>
                 <p>
                     Your @hearingType has been scheduled for the date and time below. 
                 </p>
@@ -40,7 +37,7 @@
             }
             else
             {
-                <h1>Booking Could Not Be Completed</h1>
+                <h2>Booking Could Not Be Completed</h2>
                 <div class="alert alert-danger font-weight-bold">
                     <i class="fas fa-exclamation-circle"></i>
                     There was an error confirming your booking.
@@ -56,12 +53,20 @@
         </div>
     </div>
 
-        <div class="row booking-confirmation my-4">
+    @if (!SessionService.ScBookingInfo.IsBooked)
+    {
+        <div class="alert alert-danger">
+            @SessionService.ScBookingInfo.RawResult
+        </div>
+    }
+    else
+    {
+        <div class="row no-gutters booking-confirmation">
             <div class="col-md-6">
                 @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
                 {
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div class="row no-gutters">
+                        <div class="col">
                             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 Please logout and login again, your session was lost. 
@@ -70,54 +75,39 @@
                     </div>
                 }
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <b>@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</b>
-                            <div>
-                                @SessionService.ScBookingInfo.SelectedCourtClassName
-                            </div>
-                            <div>File Number: @SessionService.ScBookingInfo.FileNumber</div>
+                <div class="row no-gutters">
+                    <div class="col">
+                        <div class="form-group" style="margin-bottom: 8px">
+                            <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
+                            <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</h5>
+                            <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 8px">
+                            <h6>Hearing Date</h6>
+                            <p>@SessionService.ScBookingInfo.DateFriendlyName</p>
+                            <p>@SessionService.ScBookingInfo.TimeSlotFriendlyName</p>
                         </div>
                         <div class="form-group">
-                            <label class="font-weight-bold mb-0">Hearing Date</label>
-                            <div>
-                                @SessionService.ScBookingInfo.DateFriendlyName
-                            </div>
-                            <div>
-                                <span>@SessionService.ScBookingInfo.TimeSlotFriendlyName</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="mb-0">Contact Information</label>
-                            <div>
-                                <span>@SessionService.UserInfo.Email</span>
-                            </div>
-                            <div>
-                                <span>@SessionService.UserInfo.Phone</span>
-                            </div>
+                            <h6>Contact Information</h6>
+                            <p>@SessionService.UserInfo.Email</p>
+                            <p>@SessionService.UserInfo.Phone</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    <div class="row booking-new">
-        <div class="col">
-            <a class="btn btn-primary mb-0"
-               href="/scjob/booking/sc" role="button">
-               Book Another Hearing
+    }
+    <div class="row no-gutters">
+        <div class="col-6 col-md-8 text-link">
+            <h6>Finished booking?</h6>
+            <a href="@Configuration["AppSettings:LogoutUrl"]">
+                <p>Log out of the BC Courts Booking System</p>
             </a>
         </div>
-    </div>
-    <div class="row booking-logout mt-4">
-        <div class="col">
-            <label>Finished booking?</label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <a href="@Configuration["AppSettings:LogoutUrl"]">Log out of the BC Courts Booking System</a>
+        <div class="col-6 col-md-4"> 
+            <a class="btn btn-primary btn-block" href="/scjob/booking/sc" role="button">
+                Book Another Hearing
+            </a>
         </div>
     </div>
 </div>

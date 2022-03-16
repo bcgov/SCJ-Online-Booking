@@ -7,11 +7,20 @@
 @import 'bootstrapOverrides';
 @import 'accessibility';
 
+// DELETE
+// div {
+//     border: 1px solid tomato;
+// }
+
 html, body {
     height: 100%;
 }
 
+// Set base size to 10px so 1 rem == 10px
+// Using rem's helps with accessibility
+// Having the base size equal 10 makes it easier to figure out
 html {
+    font-size: 62.5%;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -19,9 +28,10 @@ body {
     display: flex;
     flex-direction: column;
     font-family: $font-stack;
-    font-size: 1rem;
+    font-size: 1.6rem;
     font-weight: 400;
-    background: #ccc url("https://www.courts.gov.bc.ca/images/body-bkg.png") repeat-x;
+    color: $black;
+    background-color: $grey-medium;
 }
 
 .main {
@@ -41,35 +51,42 @@ body {
 }
 
 .body-content {
-    padding-top: 60px;
-    padding-bottom: 60px;
-    background-color: $white;
+    padding-top: 24px;
+    padding-bottom: 48px;
+    background-color: $grey-light;
     min-height: calc(100vh - 192px);
 
-    @media (max-width: $breakpoint-md) {
-        height: calc(100% - 80px);
+    &--inner {
+        max-width: 732px;
+        margin: 0 auto;
+
+        .steps-link {
+            h6 {
+                margin-top: 2px;
+            }
+            a {
+                color: $black;
+            }         
+        }
     }
 }
 
-.fas {
-    margin-right: 10px;
+/*FontAwesome Icon*/
+.fas, .far {
+    margin-right: 8px;
 }
 
 /*Header*/
 .header-nav, .footer-nav {
     
     a {
-        color: $black;
+        color: $white;
         font-weight: 700;
         text-decoration: none;
 
         &:hover, &:focus {
             text-decoration: underline;
         }
-    }
-
-    .navbar-collapse .nav {
-        font-size: 1rem;
     }
 }
 
@@ -78,13 +95,12 @@ body {
 }
 
 .form-control#caseNumberInput {
-    background-color: rgba($component-grey-dark, 0.1);
+    background-color: $white;
 }
 
 div.invalid-field-message {
     width: 100%;
-    margin-top: 0.25rem;
-    font-size: 80%;
+    font-size: 1.2rem;
     color: #dc3545;
 }
 
@@ -92,10 +108,10 @@ div.invalid-field-message {
     .container {
         @include breakpoint(sm) {
             background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top no-repeat;
-            background-color: $grey-dark;
+            background-color: $black;
         }
 
-        background-color: $grey-dark;
+        background-color: $black;
         margin-right: auto;
         padding-left: 0;
         padding-right: 0;
@@ -108,7 +124,6 @@ div.invalid-field-message {
 
 .header-nav {
     padding: 0;
-    font-size: 1rem;
 
     .container {
         background-color: $black;
@@ -123,6 +138,10 @@ div.invalid-field-message {
         .app-name {
             font-weight: 700;
             margin-right: auto;
+            max-width: 300px;
+            @include breakpoint(sm) {
+                max-width: unset;
+            }
         }
     }
 
@@ -158,9 +177,8 @@ div.invalid-field-message {
         flex-direction: column;
         align-items: flex-start;
         padding: 5px 15px;
-        background-color: $white;
-        border-top: 1px solid $grey-light;
-        border-bottom: 7px solid $black;
+        color: $white;
+        background-color: $black;
 
         @include breakpoint(lg) {
             flex-direction: row;
@@ -187,7 +205,7 @@ div.invalid-field-message {
                 a {
                     display: block;
                     text-align: center;
-                    font-size: 0.875rem;
+                    font-size: 1.4rem;
                     text-decoration: none;
 
                     &:hover {
@@ -203,103 +221,28 @@ div.invalid-field-message {
     }
 
     .copyright {
-        font-size: 0.875rem;
-        padding: 5px 0;
-
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+        
         @include breakpoint(lg) {
             margin-left: auto;
+            margin-bottom: 0;
+            padding: 14px;
         }
     }
-}
-
-p.intro {
-    font-size: 1.125rem;
-    font-weight: 400;
-    margin-bottom: 1.5rem;
 }
 
 /*Homepage*/
-.home-intro {
-    text-align: center;
-}
-
-.home-intro {
-    p.intro {
-        font-size: 1.25rem;
-    }
-}
-
-.home-description {
-    padding-top: 0px;
-    padding-bottom: 0px;
-
-    hr {
-        margin-bottom: 30px;
-    }
-}
-
-.home-login {
-    text-align: center;
-
-    .login-question{
-        font-weight: 700;
-        margin-top: 20px;
-    }
-}
-
 .home-court-options {
-    margin-left: 0;
-    margin-right: 0;
-
-    @media (min-width: $breakpoint-lg) {
-        margin-left: 60px;
-        margin-right: 60px;
-        margin-top: 20px;
-    }
+    margin: 32px 0;
 
     .court-option-box {
-        background-color: rgba($component-blue-dark, 0.08);
         width: 100%;
-        margin-bottom: 30px;
-        padding: 40px 40px 120px;
-        position: relative;
-        border-radius: 0.3rem;
-
-        p {
-            text-align: left;
-        }
-
-        .btn {
-            margin-bottom: 0;
-            position: absolute;
-            bottom: 40px;
-            left: 0;
-            right: 0;
-            margin-left: 40px;
-            margin-right: 40px;
-
-            @media (min-width: $breakpoint-xl) {
-                margin-left: 100px;
-                margin-right: 100px;
-            }
-        }
-
-        @media (min-width: $breakpoint-lg) {
-            width: calc(50% - 40px);
-        }
-
-        &:first-of-type {
-
-            @media (min-width: $breakpoint-lg) {
-                margin-right: 40px;
-            }
-        }
-
-        &:last-of-type {
-            @media (min-width: $breakpoint-lg) {
-                margin-left: 20px;
-            }
-        }
+        display: flex;
+        flex-wrap: wrap;
+        align-content: space-between;
+        justify-content: center;
+        padding: 32px;
     }
 }
 
@@ -320,23 +263,27 @@ p.intro {
     label {
         width: 100%;
         font-weight: 400;
-        background-color: $component-grey-light;
+        border: solid 1px $grey-border;
         border-radius: 0.25rem;
+        margin-top: 0;
         margin-bottom: 0;
         padding: 16px;
         padding-left: 44px;
         &:hover {
-            box-shadow: 0 0 0 0.1rem $primary-blue;
-            -moz-appearance: none;
-            -webkit-appearance: none;
-            -webkit-box-shadow: 0 0 0 0.1rem $primary-blue;
+            background-color: rgba($green-dark, 0.03);
+            border-color: $green-dark;
+        }
+        h5 {
+            margin-bottom: 4px;
         }
     }
     input:checked + label {
-        box-shadow: 0 0 0 0.2rem $component-blue-light;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        -webkit-box-shadow: 0 0 0 0.2rem $component-blue-light;
+        background-color: $green-light;
+        border-color: $green-dark;
+    }
+
+    & + .search-results-case {
+        margin-top: 14px;
     }
 }
 
@@ -390,7 +337,7 @@ p.intro {
     margin-bottom: 2rem;
 }
 
-#ddlLocation, #courtClassDropdown {
+#ddlLocation {
     width: 100%;
 
     @media (min-width: $breakpoint-sm) {
@@ -399,17 +346,9 @@ p.intro {
     }
 }
 
-.caseNumber {
-    width: calc(10ch + 3.75rem);
-}
-
 .availableTimesContainer{
     height: 400px;
     margin-top: 30px;
-}
-
-select#CaseRegistryId {
-    max-width: 250px;
 }
 
 .options-nextStep {
@@ -427,6 +366,27 @@ select#CaseRegistryId {
 }
 
 /*Available Times slider*/
+.swiper-container {
+    width: calc(100% - 60px);
+    @include breakpoint(lg) { 
+        width: 100% !important;
+    }
+}
+
+.swiper-button-prev {
+    left: 0;
+    @include breakpoint(lg) { 
+        left: -30px;
+    }
+}
+
+.swiper-button-next {
+    right: 0;
+    @include breakpoint(lg) { 
+        right: -30px;
+    }
+}
+
 .custom-slide-header {
     margin-bottom: 10px;
     font-weight: bold;
@@ -464,17 +424,26 @@ a.custom-slide-time {
     }
 }
 
-.swiper-container {
-    width: calc(100% - 60px);
-}
-
 /*Booking Confirmation*/
 .booking-confirmation {
+    margin-top: 24px;
     & > .content {
         margin-top: 30px;
     }
+    &--details {
+        border: 1px solid $grey-border;
+        border-radius: 0.4rem;
+        margin-bottom: 24px;
+        padding: 16px;
+
+        small {
+            color: $black;
+            & + small {
+                margin-top: 4px;
+            }
+        }
+    }
     .invalid-feedback {
-        font-size: 100%;
         margin-top: 0;
     }
 } 
@@ -783,7 +752,7 @@ select, input {
 
 /* Supreme Court side */
 .conference-type-selection {
-
+    margin-top: 16px;
     label {
         @media (min-width: $breakpoint-md) {
             white-space: nowrap;
@@ -793,18 +762,20 @@ select, input {
     .btn-radio-group {
         width: 100%;
         position: relative;
+        margin: 8px 0 18px;
 
         .form-check {
             position: initial;
 
             input.form-check-input {
-                margin-top: 0.45rem;
+                margin-top: 0.6rem;
             }
 
             label {
-                font-weight: normal;
-                line-height: 2;
-                font-size: 0.875rem;
+                font-weight: 400;
+                font-size: 1.4rem;
+                margin-top: 0;
+                margin-left: 8px;
             }
         }
 

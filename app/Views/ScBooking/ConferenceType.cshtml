@@ -9,14 +9,14 @@
     }
 }
 
-<div>
-    <div class="mb-5">
-        <i class="fas fa-arrow-left"></i>
-        <a asp-action="index" asp-route-s="false">Step 1: Find the Case for Your Hearing</a>
+<div class="body-content--inner">
+    <div class="d-flex justify-content-between steps-link">
+        <h5>4 steps to complete your booking</h5>
+        <h6><a href="/scjob/booking/sc">Cancel</a></h6>
     </div>
-
-    <h3>4 steps to complete your booking</h3>
-    <h1 class="my-2">Step 2: Choose a Conference Type</h1>
+    <hr />
+    <h6>Step 2</h6>
+    <h2>Choose a Conference Type</h2>
 
     <form method="post">
         @Html.HiddenFor(m => m.FullCaseNumber)
@@ -36,17 +36,15 @@
             @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
         }
 
-        <div class="my-4">
-            <b>@Model.SelectedCourtFile?.styleOfCause</b>
-            <div>
-                @Model.SelectedCourtClassName 
-            </div>
-            <div>File Number: @Model.FileNumber</div>
+        <div>
+            <div class="uppercase-sm">File Number: @Model.FileNumber</div>
+            <h5 style="margin-bottom: 4px">@Model.SelectedCourtFile?.styleOfCause</h5>
+            <p>@Model.SelectedCourtClassName</p>
         </div>
 
-        <div class="row my-4 mx-0">
-            <div class="col-md-6 form-group conference-type-selection bg-light rounded mb-0 p-3 p-sm-4">
-                <b>Choose a conference type</b>
+        <div class="row no-gutters">
+            <div class="form-group conference-type-selection bg-white rounded p-3 p-sm-4">
+                <h6>Choose a conference type</h6>
                 <div class="btn-radio-group form-group">
                     @foreach (var hearingTypeId in Model.AvailableConferenceTypeIds)
                     {
@@ -79,23 +77,33 @@
                         }
                     }
                 </div>
-                <div>
+                <p>
                     <a href="https://www.bccourts.ca/supreme_court/scheduling" target="_blank">Contact the applicable Supreme Court scheduling office</a>
                     <i class="fa fa-external-link-alt"></i> by telephone for conference types not listed.
-                </div>
+                </p>
             </div>
         </div>
 
         @if (Model.HearingTypeId == -1)
         {
-            <div class="row px-3 pb-3 pt-0">
+            <div class="row no-gutters px-3 pb-3 pt-0">
                 <span asp-validation-for="HearingTypeId" class="text-danger"></span>
             </div>
         }
 
-        <button type="submit"
-                class="btn btn-primary btn-block mb-0">
-                Show Available Times
-        </button>
+        <div class="row no-gutters">
+            <div class="col-6 col-md-8 d-flex align-items-center text-link">
+                <span>
+                    <i class="fas fa-long-arrow-alt-left"></i>
+                    <a asp-action="index" asp-route-s="false">Step 1: Find the Case for Your Hearing</a>
+                </span>
+            </div>
+            <div class="col-6 col-md-4"> 
+                <button type="submit" class="btn btn-primary btn-block">
+                    Show Available Times
+                </button>
+            </div>
+        </div>
+
     </form>
 </div>

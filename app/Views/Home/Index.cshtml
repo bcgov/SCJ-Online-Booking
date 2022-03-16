@@ -11,10 +11,10 @@
     </div>
 }
 
-<div class="row home-intro">
-    <div class="offset-lg-3 col-lg-6 col-md-12">
+<div class="row no-gutters text-center">
+    <div class="col-12 col-lg-8 mx-auto">
         <h1>Book Your Hearing Online</h1>
-        <p class="intro">
+        <p>
             A routine booking should be quick and simple. This online tool allows you to book
             certain hearings with the <b>Supreme Court</b> and <b>Court of Appeal</b> at your
             convenience without waiting in a queue on the phone.
@@ -22,28 +22,32 @@
     </div>
 </div>
 
-<div class="row home-court-options">
-    <div class="court-option-box text-center">
-        <h2>Court of Appeal</h2>
-        <p>For civil and criminal cases you can book your Appeal Hearing for up to one day of hearing time.</p>
-        <a class="btn btn-primary btn-lg" href="/scjob/booking/coa/CaseSearch">Log in with BCeID</a>
-    </div>
-    <div class="court-option-box text-center">
-        <h2>Supreme Court</h2>
-        <p>You can book select conference hearings online.</p>
-        <p>
-            Please check the
-            <a href="https://www.bccourts.ca/supreme_court/scheduling/" target="_blank">Supreme Court Scheduling website</a>
-            <i class="fa fa-external-link-alt"></i> for specific available conference types.
-        </p>
-        <a class="btn btn-primary btn-lg" href="/scjob/booking/sc">Log in with BCeID</a>
+<div class="row no-gutters home-court-options">
+    <div class="col-12 col-md-10 mx-auto">
+        <div class="row no-gutters justify-content-around">
+            <div class="col-12 col-lg-5 court-option-box bg-white rounded">
+                <h2 class="text-center">Court of Appeal</h2>
+                <p>For civil and criminal cases you can book your Appeal Hearing for up to one day of hearing time.</p>
+                <a class="btn btn-primary btn-block" href="/scjob/booking/coa/CaseSearch">Log in with BCeID</a>
+            </div>
+            <div class="col-12 col-lg-5 court-option-box bg-white rounded mt-4 mt-lg-0">
+                <h2 class="text-center">Supreme Court</h2>
+                <p>You can book select conference hearings online.
+                <br/>
+                    Please check the
+                    <a href="https://www.bccourts.ca/supreme_court/scheduling/" target="_blank">Supreme Court Scheduling website</a>
+                    <i class="fa fa-external-link-alt"></i> for specific available conference types.
+                </p>
+                <a class="btn btn-primary btn-block" href="/scjob/booking/sc">Log in with BCeID</a>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="home-login">
-    <div class="offset-lg-3 col-lg-6 col-md-12">
+<div class="row no-gutters">
+    <div class="col-12 col-lg-6 text-center mx-auto">
         <hr />
-        <p class="login-question">Don't have a BCeID?</p>
-        <a href="@Configuration["AppSettings:RegisterUrl"]">Register for a BCeID</a>
+        <h6 style="margin-bottom: 8px;">Don't have a BCeID?</h6>
+        <a href="@Configuration["AppSettings:RegisterUrl"]"><p>Register for a BCeID</p></a>
     </div>
 </div>
