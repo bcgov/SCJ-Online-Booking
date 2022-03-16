@@ -414,19 +414,19 @@ namespace SCJ.Booking.MVC.Services
                     bookingInfo.IsBooked = true;
 
                     var emailBody = await GetEmailBody();
-                    var fromEmail = _configuration["FROM_EMAIL"];
 
                     //send email
-                    if (string.IsNullOrEmpty(fromEmail))
+                    if (_configuration["TAG_NAME"] != "localdev")
                     {
-                        await _mailService.SendEmail(
+                        await _mailService.ExchangeSendEmail(
                             model.EmailAddress,
                             EmailSubject,
                             emailBody);
                     }
                     else
                     {
-                        await _mailService.SendEmail(
+                        var fromEmail = _configuration["FROM_EMAIL"];
+                        await _mailService.SendGridSendEmail(
                             fromEmail,
                             model.EmailAddress,
                             EmailSubject,

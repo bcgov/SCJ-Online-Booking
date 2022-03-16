@@ -27,7 +27,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Sends a confirmation email using an Exchange server
         /// </summary>
-        public async Task SendEmail(string to, string subject, string body)
+        public async Task ExchangeSendEmail(string to, string subject, string body)
         {
             string exchangeUrl = _configuration["EXCHANGE_URL"] ?? "";
 
@@ -59,9 +59,18 @@ namespace SCJ.Booking.MVC.Services
             }
         }
 
-        public async Task<Response> SendEmail(
+        /// <summary>
+        ///     Sends a confirmation email using SendGrid
+        /// </summary>
+        /// <remarks>
+        ///     For local development purposes only
+        /// </remarks>
+        public async Task<Response> SendGridSendEmail(
             string fromEmail, string toEmail, string subject, string body)
         {
+            // log the settings the the console
+            _logger.Information($"Sending email with SendGrid");
+
             var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
             var client = new SendGridClient(apiKey);
             var from = new SendGrid.Helpers.Mail.EmailAddress(fromEmail);
