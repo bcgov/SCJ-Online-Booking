@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.MVC", "app\SCJ.Booking.MVC.csproj", "{9C011224-85D0-4A6D-934A-E0F6B10F967A}"
 EndProject
@@ -13,8 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "openshift", "openshift", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{1AC25311-40B4-4AC6-A8FB-5793D5A11C6F}"
 	ProjectSection(SolutionItems) = preProject
-		openshift\templates\scj-booking-build.json = openshift\templates\scj-booking-build.json
-		openshift\templates\scj-booking-deploy.json = openshift\templates\scj-booking-deploy.json
+		openshift\templates\scj-booking\scj-booking-build.yaml = openshift\templates\scj-booking\scj-booking-build.yaml
+		openshift\templates\scj-booking\scj-booking-deploy.yaml = openshift\templates\scj-booking\scj-booking-deploy.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{C72FC6E5-6989-4BA7-98C4-3ABB29C5C8EE}"
