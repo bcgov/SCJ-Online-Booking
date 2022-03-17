@@ -21,7 +21,10 @@ namespace SCJ.Booking.MVC.Services
         {
             _configuration = configuration;
             _logger = logger;
-            _emailCredentials = SetExchangeCredentials(courtLevel);
+            if (_configuration["TAG_NAME"] != "localdev")
+            {
+                _emailCredentials = SetExchangeCredentials(courtLevel);
+            }
         }
 
         /// <summary>

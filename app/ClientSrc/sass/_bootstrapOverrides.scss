@@ -73,13 +73,15 @@ label {
 .uppercase-md {
     font-size: 1.4rem;
     line-height: 2.4rem;
-    letter-spacing: 0.02em;  
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 
 .uppercase-sm {
     font-size: 1.1rem;
     line-height: 1.8rem;
     letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .text-danger {
@@ -176,11 +178,12 @@ hr {
 
 .btn-tertiary {
     display: block;
-    font-size: 1rem;
+    font-size: 1.4rem;
     text-align: center;
     background-color: $black;
     margin-top: 0px;
     margin-bottom: 8px;
+    padding: 8px 4px;
     &:hover {
         background-color: $grey-dark;
     }
@@ -303,14 +306,12 @@ hr {
 
         table {
             border-collapse: inherit;
-            
+
             tr td {
                 margin: 1px;
                 padding: 0;
-                &.disabled {
-                    &.today {
-                        background-color: $white !important;
-                    }
+                &.today {
+                    background-color: $white;
                 }
                 &:not(.disabled) {
                     border-radius: 50%;

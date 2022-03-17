@@ -54,7 +54,7 @@ body {
     padding-top: 24px;
     padding-bottom: 48px;
     background-color: $grey-light;
-    min-height: calc(100vh - 192px);
+    min-height: calc(100vh - 200px);
 
     &--inner {
         max-width: 732px;
@@ -112,6 +112,7 @@ div.invalid-field-message {
         }
 
         background-color: $black;
+        border-top: 10px solid #000;
         margin-right: auto;
         padding-left: 0;
         padding-right: 0;
@@ -126,10 +127,10 @@ div.invalid-field-message {
     padding: 0;
 
     .container {
-        background-color: $black;
-        padding: 10px 15px;
         display: flex;
         color: $white;
+        background-color: #1f1f1f;
+        padding: 10px 15px;
 
         a {
             color: $white;

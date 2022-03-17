@@ -79,7 +79,7 @@
                             slidesPerView: 4,
                             spaceBetween: 16
                         },
-                        780: {
+                        765: {
                             slidesPerView: 3,
                             spaceBetween: 16
                         },
