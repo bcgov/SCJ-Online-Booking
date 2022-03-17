@@ -83,7 +83,10 @@ namespace SCJ.OnlineBooking
         public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
         {
             await Task.Delay(100);
-
+            //return new BookingHearingResult
+            //{
+            //    bookingResult = "Failed - Hearing Booked test"
+            //};
             return ScBookingHearingResultFixture.Success;
         }
 

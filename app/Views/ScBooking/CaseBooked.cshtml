@@ -40,41 +40,27 @@
                 <h2>Booking Could Not Be Completed</h2>
                 <div class="alert alert-danger font-weight-bold">
                     <i class="fas fa-exclamation-circle"></i>
-                    There was an error confirming your booking.
+                    @SessionService.ScBookingInfo.RawResult
                 </div>
-                <p>
-                    Please contact the applicable
-                    <a href="https://www.bccourts.ca/supreme_court/scheduling/" target="_blank">
-                        Supreme Court scheduling office by telephone
-                    </a> for next steps.
-                </p>
                 <p>For your reference, here is the information for the booking that was not completed.</p>
             }
         </div>
     </div>
 
-    @if (!SessionService.ScBookingInfo.IsBooked)
-    {
-        <div class="alert alert-danger">
-            @SessionService.ScBookingInfo.RawResult
-        </div>
-    }
-    else
-    {
-        <div class="row no-gutters booking-confirmation">
-            <div class="col-md-6">
-                @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
-                {
-                    <div class="row no-gutters">
-                        <div class="col">
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                Please logout and login again, your session was lost. 
-                            </div>
+    <div class="row no-gutters booking-confirmation">
+        <div class="col-md-6">
+            @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
+            {
+                <div class="row no-gutters">
+                    <div class="col">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Please logout and login again, your session was lost. 
                         </div>
                     </div>
-                }
-
+                </div>
+            }
+            else {
                 <div class="row no-gutters">
                     <div class="col">
                         <div class="form-group" style="margin-bottom: 8px">
@@ -94,9 +80,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
-    }
+    </div>
+
     <div class="row no-gutters">
         <div class="col-6 col-md-8 text-link">
             <h6>Finished booking?</h6>

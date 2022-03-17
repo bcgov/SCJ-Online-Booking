@@ -28,33 +28,20 @@
             @Model.HearingLengthMinutes minutes only.
         </p>
 
-        <!-- Previous calendar button -->
-        <!-- <div>
-            <div class="input-group date mx-auto mt-4" style="width: 236px;"> 
-                @Html.TextBox("SelectedDate", Model.SelectedDate, new {
-                    @class = "form-control",
-                    @id = "datepicker",
-                    @type = "text",
-                    @readonly = "readonly",
-                    placeholder = "Jump to a specific date",
-                    autocomplete = "off" })
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary mb-0" type="button" id="dateBtn">
-                        <i class="fa fa-th"></i>
-                    </button>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- New calendar button -->
         <div class="row no-gutters">
-            <div class="col-8 col-md-4 mx-auto">
-                <button type="button" id="datepicker" class="btn btn-quaternary btn-block">
-                    Choose a date range
+            <div class="col-8 col-md-4 mx-auto"> 
+                <button type="button" id="dateBtn" class="btn btn-quaternary btn-block">
+                    @Html.TextBox("SelectedDate", Model.SelectedDate, new {
+                        @class = "border-0 bg-transparent",
+                        @id = "datepicker",
+                        @type = "text",
+                        @readonly = "readonly",
+                        @style="outline: none;",
+                        placeholder = "Jump to a specific date",
+                        autocomplete = "off" })
                 </button>
             </div>
         </div>
-
 
         <div id="VueAvailableTimes" class="availableTimesContainer">
             <availabletimes :location-id="@Model.BookingRegistryId"
