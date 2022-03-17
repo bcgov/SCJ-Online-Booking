@@ -294,3 +294,36 @@ hr {
         max-width: 1140px;
     }
 }
+
+// datepicker
+.datepicker {
+    &.dropdown-menu {
+        font-size: 1.2rem;
+        line-height: 2.5rem;
+
+        table {
+            border-collapse: inherit;
+            
+            tr td {
+                margin: 1px;
+                padding: 0;
+                &.disabled {
+                    &.today {
+                        background-color: $white !important;
+                    }
+                }
+                &:not(.disabled) {
+                    border-radius: 50%;
+                    border: 1px solid $blue-calendar;
+                    &:hover {
+                        background-color: rgba($blue-calendar, 0.2)
+                    }
+                    &.active {
+                        color: $white;
+                        background-color: $blue-calendar
+                    }
+                }
+            }
+        }
+    }
+}
