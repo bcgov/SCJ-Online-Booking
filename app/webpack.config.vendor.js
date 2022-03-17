@@ -38,11 +38,20 @@ module.exports = (env) => {
                         }
                     },
                     {
-                        test: /\.(woff|woff2|eot|ttf|svg)$/,
+                        test: /@fortawesome([^\x]+).(woff|woff2|eot|ttf|svg)$/,
                         use: {
                             loader: "file-loader",
                             options: {
                                 name: 'webfonts/[name].[ext]',
+                            }
+                        }
+                    },
+                    {
+                        test: /@bcgov([^\x]+).(woff)$/,
+                        use: {
+                            loader: "file-loader",
+                            options: {
+                                name: 'fonts/[name].[ext]',
                             }
                         }
                     },
@@ -64,6 +73,7 @@ module.exports = (env) => {
                     "@fortawesome/fontawesome-free/css/fontawesome.css",
                     "@fortawesome/fontawesome-free/css/regular.css",
                     "@fortawesome/fontawesome-free/css/solid.css",
+                    "@bcgov/bc-sans/css/BCSans.css",
                     "swiper/dist/css/swiper.css",
                     "bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css"
                 ]
@@ -119,6 +129,13 @@ module.exports = (env) => {
                         // Just copy the regular version for Development
                         from: "node_modules/@fortawesome/fontawesome-free/css/all.css",
                         to: "css/fontawesome.css",
+                        toType: "file"
+                    },
+                    {
+                        // the min version is packaged above (vendor.min.css) 
+                        // Just copy the regular version for Development
+                        from: "node_modules/@bcgov/bc-sans/css/BCSans.css",
+                        to: "css/BCSans.css",
                         toType: "file"
                     },
                     {

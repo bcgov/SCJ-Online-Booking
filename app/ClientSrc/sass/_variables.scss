@@ -1,18 +1,3 @@
-// font
-@font-face {
-    font-family: 'BCSans';
-    font-style: normal;
-    src: url("../../wwwroot/fonts/BCSans-Regular.woff2") format("woff2"),
-         url("../../wwwroot/fonts/BCSans-Regular.woff") format("woff"),
-         url("../../wwwroot/fonts/BCSans-Regular.ttf") format("truetype");
-}
-@font-face {
-    font-family: 'BCSans';
-    font-weight: 700;
-    src: url("../../wwwroot/fonts/BCSans-Bold.woff2") format("woff2"),
-         url("../../wwwroot/fonts/BCSans-Bold.woff") format("woff"),
-         url("../../wwwroot/fonts/BCSans-Bold.ttf") format("truetype");
-}
 $font-stack: 'BCSans', 'Noto Sans', Verdana, Arial, sans-serif;
 // $font-stack: Helvetica, Arial, sans-serif;
 
