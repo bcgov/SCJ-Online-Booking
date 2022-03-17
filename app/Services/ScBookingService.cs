@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,7 @@ namespace SCJ.Booking.MVC.Services
         private readonly MailService _mailService;
         private readonly ScCacheService _cache;
         private readonly IConfiguration _configuration;
+        private readonly Logger _logger;
 
         //Constructor
         public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
@@ -57,7 +59,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             //setup error logger settings
-            Logger logger = new LoggerConfiguration()
+            Logger _logger = new LoggerConfiguration()
                 .WriteTo.Console(logLevel)
                 .CreateLogger();
 
@@ -68,7 +70,7 @@ namespace SCJ.Booking.MVC.Services
             _session = sessionService;
             _viewRenderService = viewRenderService;
             _cache = scCacheService;
-            _mailService = new MailService("SC", configuration, logger);
+            _mailService = new MailService("SC", configuration, _logger);
         }
 
         /// <summary>
@@ -386,6 +388,9 @@ namespace SCJ.Booking.MVC.Services
                     requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                     hearingTypeId = bookingInfo.HearingTypeId
                 };
+
+                _logger.Information("BOOKING SUPREME COURT => BookingHearingAsync(bookInfo)");
+                _logger.Information(JsonSerializer.Serialize(bookInfo));
 
                 //submit booking
                 BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -227,6 +228,9 @@ namespace SCJ.Booking.MVC.Services
                     hearingTypeId = bookingInfo.HearingTypeId,
                     requestedBy = $"{userDisplayName}"
                 };
+
+                _logger.Information("BOOKING COURT OF APPEAL => CoAQueueHearingAsync(bookInfo)");
+                _logger.Information(JsonSerializer.Serialize(bookInfo));
 
                 //submit booking
                 BookingHearingResult result = await _client.CoAQueueHearingAsync(bookInfo);
