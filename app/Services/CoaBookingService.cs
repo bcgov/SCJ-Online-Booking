@@ -21,42 +21,28 @@ namespace SCJ.Booking.MVC.Services
 {
     public class CoaBookingService
     {
+        public readonly bool IsLocalDevEnvironment;
         private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
-        private readonly Logger _logger;
+        private readonly ILogger _logger;
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
-        public readonly bool IsLocalDevEnvironment;
         private readonly MailService _mailService;
 
         //Constructor
         public CoaBookingService(ApplicationDbContext dbContext, IConfiguration configuration,
             SessionService sessionService, IViewRenderService viewRenderService)
         {
-            // default log level is error (less verbose)
-            var logLevel = LogEventLevel.Error;
-
             //check if this is running on a developer workstation (outside OpenShift)
             string tagName = configuration["TAG_NAME"] ?? "";
             if (tagName.ToLower().Equals("localdev"))
             {
                 IsLocalDevEnvironment = true;
-                logLevel = LogEventLevel.Debug;
             }
 
-            // check if this is the OpenShift development environment
-            if (tagName.ToLower().Equals("dev"))
-            {
-                logLevel = LogEventLevel.Information;
-            }
-
-            //setup error logger settings
-            _logger = new LoggerConfiguration()
-                .WriteTo.Console(logLevel)
-                .CreateLogger();
-
+            _logger = LogHelper.GetLogger(configuration);
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _configuration = configuration;
             _dbContext = dbContext;

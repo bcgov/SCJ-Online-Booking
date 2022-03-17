@@ -22,7 +22,8 @@ namespace SCJ.Booking.MVC.Services
     public class ScBookingService
     {
         // todo: this is usually 10.  It was changed to int.MaxValue on 4/20/2020 to quickly disable the limit.
-        public const int MaxHearingsPerDay = int.MaxValue; 
+        public const int MaxHearingsPerDay = int.MaxValue;
+        public readonly bool IsLocalDevEnvironment;
 
         private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
@@ -30,39 +31,24 @@ namespace SCJ.Booking.MVC.Services
         private readonly HttpContext _httpContext;
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
-        public readonly bool IsLocalDevEnvironment;
         private readonly MailService _mailService;
         private readonly ScCacheService _cache;
         private readonly IConfiguration _configuration;
-        private readonly Logger _logger;
+        private readonly ILogger _logger;
 
         //Constructor
         public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
             IConfiguration configuration, SessionService sessionService,
             IViewRenderService viewRenderService, ScCacheService scCacheService)
         {
-            // default log level is error (less verbose)
-            var logLevel = LogEventLevel.Error;
-
             //check if this is running on a developer workstation (outside OpenShift)
             string tagName = configuration["TAG_NAME"] ?? "";
             if (tagName.ToLower().Equals("localdev"))
             {
                 IsLocalDevEnvironment = true;
-                logLevel = LogEventLevel.Debug;
             }
 
-            // check if this is the OpenShift development environment
-            if (tagName.ToLower().Equals("dev"))
-            {
-                logLevel = LogEventLevel.Information;
-            }
-
-            //setup error logger settings
-            _logger = new LoggerConfiguration()
-                .WriteTo.Console(logLevel)
-                .CreateLogger();
-
+            _logger = LogHelper.GetLogger(configuration);
             _configuration = configuration;
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _dbContext = dbContext;
