@@ -59,7 +59,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             //setup error logger settings
-            Logger _logger = new LoggerConfiguration()
+            _logger = new LoggerConfiguration()
                 .WriteTo.Console(logLevel)
                 .CreateLogger();
 
