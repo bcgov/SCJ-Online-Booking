@@ -59,10 +59,7 @@
                             <small>Email address:</small>
                         </label>
                         <input type="email" asp-for="EmailAddress" required class="form-control" />
-                        <div class="invalid-feedback text-danger">
-                            <span>Please provide your email address.</span>
-                        </div>
-                        <div class="invalid-field-message">
+                        <div class="invalid-field-message text-danger">
                             @Html.ValidationMessageFor(model => model.EmailAddress)
                         </div>
                     </div>
@@ -73,10 +70,7 @@
                         </label>
                         <input type="tel" asp-for="Phone" required class="form-control phone-input"
                             pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
-                        <div class="invalid-feedback text-danger">
-                            <span>Please provide your phone number.</span>
-                        </div>
-                        <div class="invalid-field-message">
+                        <div class="invalid-field-message text-danger">
                             @Html.ValidationMessageFor(model => model.Phone)
                         </div>
                     </div>

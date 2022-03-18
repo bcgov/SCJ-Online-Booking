@@ -94,10 +94,6 @@ body {
     border-color: #dc3545;
 }
 
-.form-control#caseNumberInput {
-    background-color: $white;
-}
-
 div.invalid-field-message {
     width: 100%;
     font-size: 1.2rem;
@@ -397,8 +393,9 @@ div.invalid-field-message {
 .custom-slide-times {
     border-radius: 0.3rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    height: 335px;
-    padding: 10px 5px;
+    height: 350px;
+    overflow: scroll;
+    padding: 10px;
 }
 
 a.custom-slide-time {
