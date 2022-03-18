@@ -407,7 +407,8 @@ namespace SCJ.Booking.MVC.Services
                     //send email
                     if (_configuration["TAG_NAME"] != "localdev")
                     {
-                        await _mailService.ExchangeSendEmail(
+                        // await _mailService.ExchangeSendEmail(
+                        await _mailService.SmtpSendEmail(
                             model.EmailAddress,
                             EmailSubject,
                             emailBody);

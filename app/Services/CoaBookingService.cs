@@ -255,7 +255,8 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await _mailService.ExchangeSendEmail(
+                    // await _mailService.ExchangeSendEmail(
+                    await _mailService.SmtpSendEmail(
                         model.EmailAddress,
                         EmailSubject,
                         await GetEmailBody());
