@@ -265,6 +265,7 @@ namespace SCJ.Booking.MVC.Services
                 }
                 else
                 {
+                    _logger.Information($"API Response: {result.bookingResult}");
                     model.IsBooked = false;
                     bookingInfo.IsBooked = false;
                 }
