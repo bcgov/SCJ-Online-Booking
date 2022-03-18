@@ -14,8 +14,6 @@ using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
 
 namespace SCJ.Booking.MVC.Services
 {
@@ -429,6 +427,7 @@ namespace SCJ.Booking.MVC.Services
                 }
                 else
                 {
+                    _logger.Information($"API Response: {result.bookingResult}");
                     model.IsBooked = false;
                     bookingInfo.IsBooked = false;
                 }
