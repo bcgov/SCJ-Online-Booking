@@ -60,5 +60,12 @@ namespace SCJ.Booking.MVC.Utils
             }
         }
 
+        public string FriendlyError
+        {
+            get
+            {
+                return this.RawResult.Replace("Fail - ", "");
+            }
+        }
     }
 }

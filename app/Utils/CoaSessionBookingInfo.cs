@@ -17,7 +17,6 @@ namespace SCJ.Booking.MVC.Utils
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
         public DateTime? SelectedDate { get; set; }
-
         public string FullCaseNumber { get; set; }
         public int LocationId { get; set; }
         public string RegistryName { get; set; }
@@ -33,5 +32,12 @@ namespace SCJ.Booking.MVC.Utils
         public List<string> SelectedCases { get; set; }
         public List<string> RelatedCaseList { get; set; }
 
+        public string FriendlyError
+        {
+            get
+            {
+                return this.RawResult.Replace("Fail - ", "");
+            }
+        }
     }
 }
