@@ -73,17 +73,17 @@
                     breakpoints: {
                         1200: {
                             slidesPerView: 4,
-                            spaceBetween: 16
+                            spaceBetween: 8
                         },
                         1000: {
                             slidesPerView: 4,
-                            spaceBetween: 16
+                            spaceBetween: 8
                         },
                         765: {
                             slidesPerView: 3,
-                            spaceBetween: 16
+                            spaceBetween: 10
                         },
-                        420: {
+                        610: {
                             slidesPerView: 1,
                             spaceBetween: 16
                         }
