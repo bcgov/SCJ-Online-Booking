@@ -101,16 +101,16 @@ namespace SCJ.Booking.MVC.Services
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse("mike.olund@gov.bc.ca");
             email.To.Add(MailboxAddress.Parse(toEmail));
-            var builder = new BodyBuilder();
-            builder.TextBody = body;
+            var builder = new BodyBuilder
+            {
+                TextBody = body
+            };
             email.Body = builder.ToMessageBody();
 
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect("apps.smtp.gov.bc.ca", 587, SecureSocketOptions.StartTls);
-                await smtp.SendAsync(email);
-                smtp.Disconnect(true);
-            }
+            using var smtp = new SmtpClient();
+            await smtp.ConnectAsync("apps.smtp.gov.bc.ca", 25, SecureSocketOptions.None);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
         }
 
         /// <summary>
