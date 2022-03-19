@@ -99,8 +99,11 @@ namespace SCJ.Booking.MVC.Services
             _logger.Information($"Sending email with SMTP");
 
             var email = new MimeMessage();
+
             email.Sender = MailboxAddress.Parse("mike.olund@gov.bc.ca");
             email.To.Add(MailboxAddress.Parse(toEmail));
+            email.From.Add(email.Sender);
+
             var builder = new BodyBuilder
             {
                 TextBody = body
