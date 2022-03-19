@@ -64,6 +64,10 @@ namespace SCJ.Booking.MVC.Utils
         {
             get
             {
+                if (this.RawResult == null)
+                {
+                    return string.Empty;
+                }
                 return this.RawResult.Replace("Fail - ", "");
             }
         }
