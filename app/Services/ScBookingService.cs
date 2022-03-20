@@ -398,6 +398,16 @@ namespace SCJ.Booking.MVC.Services
                     //save to DB
                     await _dbContext.SaveChangesAsync();
 
+                    //store user info in session for next booking
+                    var userInfo = new SessionUserInfo
+                    {
+                        Phone = model.Phone,
+                        Email = model.EmailAddress,
+                        ContactName = $"{userDisplayName}"
+                    };
+
+                    _session.UserInfo = userInfo;
+
                     //update model
                     model.IsBooked = true;
                     bookingInfo.IsBooked = true;
@@ -432,16 +442,6 @@ namespace SCJ.Booking.MVC.Services
                     model.IsBooked = false;
                     bookingInfo.IsBooked = false;
                 }
-
-                //store user info in session for next booking
-                var userInfo = new SessionUserInfo
-                {
-                    Phone = model.Phone,
-                    Email = model.EmailAddress,
-                    ContactName = $"{userDisplayName}"
-                };
-
-                _session.UserInfo = userInfo;
             }
             else
             {

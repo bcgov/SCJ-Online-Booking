@@ -109,6 +109,7 @@ namespace SCJ.Booking.MVC.Services
                 TextBody = body
             };
             email.Body = builder.ToMessageBody();
+            email.Subject = subject;
 
             using var smtp = new SmtpClient();
             await smtp.ConnectAsync("apps.smtp.gov.bc.ca", 25, SecureSocketOptions.None);
