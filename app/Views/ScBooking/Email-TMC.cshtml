@@ -1,7 +1,4 @@
-@inject SessionService SessionService
-
 @model EmailViewModel
-
 Thank you.
 
 Your TMC has been scheduled for the date and time below.
@@ -10,14 +7,28 @@ Please file a requisition to secure TMC date. Consult the Supreme Court Rules fo
 
 Please ensure to provide all email addresses and phone numbers for counsel or self-represented parties in your filed document.
 
-@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause
-@SessionService.ScBookingInfo.SelectedCourtClassName
-File Number: @SessionService.ScBookingInfo.FileNumber
+----
+TYPE OF CONFERENCE OR HEARING:
+Trial Management Conference (TMC)
 
-Hearing Date
+REGISTRY NAME:
+@Model.CaseLocationName
+
+COURT FILE NUMBER:
+@Model.CourtFileNumber
+
+@if (Model.CaseLocationName != Model.BookingLocationName)
+{
+@Html.Raw("CENTRALIZED HEARING LOCATION: \n")
+@Model.BookingLocationName
+@Html.Raw(" Law Courts \n\n")
+}
+DATE AND TIME OF CONFERENCE OR HEARING:
 @Model.Date
 @Model.Time
 
-Contact Information
+YOUR EMAIL ADDRESS:
 @Model.EmailAddress
+
+YOUR PHONE NUMBER:
 @Model.Phone
