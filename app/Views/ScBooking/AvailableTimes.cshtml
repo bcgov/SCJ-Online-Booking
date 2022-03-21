@@ -30,19 +30,8 @@
 
         <div class="row no-gutters">
             <div class="col-8 col-md-4 mx-auto">
-                <!-- <button type="button" id="dateBtn" class="btn btn-quaternary btn-block">
-                    @Html.TextBox("SelectedDate", Model.SelectedDate, new {
-                        @class = "border-0 bg-transparent",
-                        @id = "datepicker",
-                        @type = "text",
-                        @readonly = "readonly",
-                        @style="outline: none;",
-                        placeholder = "Jump to a specific date",
-                        autocomplete = "off" })
-                </button> -->
-
                 <button type="button" id="datepicker" class="btn btn-quaternary btn-block">
-                    Choose a date range
+                    Choose a date
                 </button>
             </div>
         </div>
@@ -110,8 +99,9 @@
             clearBtn: true,
             endDate: @Json.Serialize(Model.LastAvailableDate),
             datesDisabled: @Json.Serialize(Model.DisabledDates) // ['2022-02-21', '2022-02-24'] 
-        }).on('changeDate', function() {
-            var selectedDate = $('#datepicker').val();
+        }).on('changeDate', function(event) {
+            var selectedDate = event.format();
+            $("#datepicker").data('val', selectedDate);
             var dates = @availableDates;
             if (dates) {
                 var i = dates.toString().split(',').indexOf(selectedDate);

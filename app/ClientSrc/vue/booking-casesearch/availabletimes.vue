@@ -127,7 +127,7 @@
         mounted() {
             let self = this;
             this.$refs.mySwiper.swiper.on('slideChange', function () {
-                $('#datepicker').val(self.availableDates[this.activeIndex]);
+                $("#datepicker").datepicker("setDate", self.availableDates[this.activeIndex])
             });
         }
     }
