@@ -382,6 +382,15 @@ namespace SCJ.Booking.MVC.Services
                 //get the raw result
                 bookingInfo.RawResult = result.bookingResult;
 
+                //store user info in session for next booking
+                var userInfo = new SessionUserInfo
+                {
+                    Phone = model.Phone,
+                    Email = model.EmailAddress,
+                    ContactName = $"{userDisplayName}"
+                };
+                _session.UserInfo = userInfo;
+
                 //test to see if the booking was successful
                 if (result.bookingResult.ToLower().StartsWith("success"))
                 {
@@ -397,16 +406,6 @@ namespace SCJ.Booking.MVC.Services
 
                     //save to DB
                     await _dbContext.SaveChangesAsync();
-
-                    //store user info in session for next booking
-                    var userInfo = new SessionUserInfo
-                    {
-                        Phone = model.Phone,
-                        Email = model.EmailAddress,
-                        ContactName = $"{userDisplayName}"
-                    };
-
-                    _session.UserInfo = userInfo;
 
                     //update model
                     model.IsBooked = true;
