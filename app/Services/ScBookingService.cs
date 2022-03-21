@@ -537,7 +537,8 @@ namespace SCJ.Booking.MVC.Services
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
-                CourtFileNumber = _session.ScBookingInfo.CaseNumber,
+                CourtFileNumber = booking.FullCaseNumber,
+                StyleOfCause = booking.SelectedCourtFile.styleOfCause,
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
                 TypeOfConference = booking.HearingTypeName,

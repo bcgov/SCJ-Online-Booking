@@ -20,8 +20,10 @@ CV-Telephone Conference Hearing (CV-TCH)
 REGISTRY NAME:
 @Model.CaseLocationName
 
-COURT FILE NUMBER:
+COURT FILE:
 @Model.CourtFileNumber
+@Model.StyleOfCause
+
 @if (Model.CaseLocationName != Model.BookingLocationName)
 {
 @Html.Raw("CENTRALIZED HEARING LOCATION: \n")
