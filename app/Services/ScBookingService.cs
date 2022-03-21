@@ -14,8 +14,6 @@ using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
 
 namespace SCJ.Booking.MVC.Services
 {
@@ -400,6 +398,16 @@ namespace SCJ.Booking.MVC.Services
                     //save to DB
                     await _dbContext.SaveChangesAsync();
 
+                    //store user info in session for next booking
+                    var userInfo = new SessionUserInfo
+                    {
+                        Phone = model.Phone,
+                        Email = model.EmailAddress,
+                        ContactName = $"{userDisplayName}"
+                    };
+
+                    _session.UserInfo = userInfo;
+
                     //update model
                     model.IsBooked = true;
                     bookingInfo.IsBooked = true;
@@ -409,7 +417,8 @@ namespace SCJ.Booking.MVC.Services
                     //send email
                     if (_configuration["TAG_NAME"] != "localdev")
                     {
-                        await _mailService.ExchangeSendEmail(
+                        // await _mailService.ExchangeSendEmail(
+                        await _mailService.SmtpSendEmail(
                             model.EmailAddress,
                             EmailSubject,
                             emailBody);
@@ -429,19 +438,10 @@ namespace SCJ.Booking.MVC.Services
                 }
                 else
                 {
+                    _logger.Information($"API Response: {result.bookingResult}");
                     model.IsBooked = false;
                     bookingInfo.IsBooked = false;
                 }
-
-                //store user info in session for next booking
-                var userInfo = new SessionUserInfo
-                {
-                    Phone = model.Phone,
-                    Email = model.EmailAddress,
-                    ContactName = $"{userDisplayName}"
-                };
-
-                _session.UserInfo = userInfo;
             }
             else
             {
@@ -537,7 +537,8 @@ namespace SCJ.Booking.MVC.Services
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
-                CourtFileNumber = _session.ScBookingInfo.CaseNumber,
+                CourtFileNumber = booking.FileNumber,
+                StyleOfCause = booking.SelectedCourtFile.styleOfCause,
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
                 TypeOfConference = booking.HearingTypeName,

@@ -19,9 +19,9 @@ CV-Application Written Submissions (CV-AWS)
 REGISTRY NAME:
 @Model.CaseLocationName
 
-COURT FILE NUMBER:
+COURT FILE:
 @Model.CourtFileNumber
-
+@Model.StyleOfCause
 @if (Model.CaseLocationName != Model.BookingLocationName)
 {
 @Html.Raw("CENTRALIZED HEARING LOCATION: \n")

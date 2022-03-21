@@ -26,7 +26,7 @@
 @if (!SessionService.CoaBookingInfo.IsBooked)
 {
     <div class="alert alert-danger">
-        @SessionService.CoaBookingInfo.RawResult
+        @SessionService.CoaBookingInfo.FriendlyError
     </div>
 }
 else

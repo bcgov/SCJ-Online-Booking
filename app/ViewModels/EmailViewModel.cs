@@ -18,5 +18,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public string CaseType { get; internal set; }
         public List<string> RelatedCaseList { get; set; }
         public string RelatedCasesString { get; set; }
+        public string StyleOfCause { get; internal set; }
     }
 }
