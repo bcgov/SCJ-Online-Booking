@@ -169,45 +169,26 @@
             else if (Model.CaseRegistryId > 0)
             {
                 <!-- No search results for case number-->
-                <div class="no-search-results">
-                    <div class="row no-gutters options-nextStep">
-                        <div class="col">
-                            <div class="alert alert-warning alert-dismissible fade show m-0" role="alert">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                We could not find the case for @Model.CaseNumber<span>.</span>
-                            </div>
+                <div class="row no-gutters no-search-results">
+                    <div class="col-12 col-lg-10">
+                        <h3>No results found for @Model.CaseNumber</h3>
+                        <div class="options-nextStep">
+                            <h6>Is it the right Court File Number or Registry?</h6>
+                            <p>
+                                If this is not the correct Court File Number or Registry, you can change it and try again for available times. Ensure that your Court File Number does not contain any special characters. If using a CSO file number, exclude the first 4 characters (ex. VLC-S-M-12345 would be M12345).
+                            </p>
                         </div>
-                    </div>
-                    <div class="row no-gutters options-nextStep">
-                        <div class="col-12 col-md-4 booking-same-height-item pr-0 pr-md-2">
-                            <div class="card bg-white">
-                                <h6 class="card-header card-header-center">Is it the right Court File Number or Registry?</h6>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        If this is not the correct Court File Number or Registry, you can change it and try again for available times. <br/> Ensure that your Court File Number does not contain any special characters.<br /> If using a CSO file number, exclude the first 4 characters (ex. VLC-S-M-12345 would be M12345).
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="options-nextStep">
+                            <h6>Is this a Supreme Family or Civil case?</h6>
+                            <p>
+                                This online tool covers Family and Civil cases. If your case is not a Familiy or Civil case please contact @Model.CaseLocationName scheduling at @Model.RegistryContactNumber.
+                            </p>
                         </div>
-                        <div class="col-12 col-md-4 booking-same-height-item px-0 px-md-1">
-                            <div class="card bg-white">
-                                <h6 class="card-header card-header-center">Is this a Supreme Family or Civil case?</h6>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        This online tool covers Family and Civil cases. If your case is not a Familiy or Civil case please contact @Model.CaseLocationName scheduling at @Model.RegistryContactNumber.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4 booking-same-height-item pl-0 pl-md-2">
-                            <div class="card bg-white">
-                                <h6 class="card-header card-header-center">Need to contact your registry?</h6>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        You can contact the registry where your file was created (indicated in your court filing documents); <br />to contact @Model.CaseLocationName please call @Model.RegistryContactNumber.
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="options-nextStep">
+                            <h6>Need to contact your registry?</h6>
+                            <p>
+                                You can contact the registry where your file was created (indicated in your court filing documents); to contact @Model.CaseLocationName please call @Model.RegistryContactNumber.
+                            </p>
                         </div>
                     </div>
                 </div>
