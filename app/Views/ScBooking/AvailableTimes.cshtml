@@ -98,10 +98,10 @@
             defaultViewDate: @Json.Serialize(Model.FirstAvailableDate),
             clearBtn: true,
             endDate: @Json.Serialize(Model.LastAvailableDate),
-            datesDisabled: @Json.Serialize(Model.DisabledDates) // ['2022-02-21', '2022-02-24'] 
+            datesDisabled: @Json.Serialize(Model.DisabledDates) 
         }).on('changeDate', function(event) {
             var selectedDate = event.format();
-            $("#datepicker").data('val', selectedDate);
+            $("#datepicker").html(selectedDate);
             var dates = @availableDates;
             if (dates) {
                 var i = dates.toString().split(',').indexOf(selectedDate);
