@@ -101,13 +101,13 @@
             datesDisabled: @Json.Serialize(Model.DisabledDates) 
         }).on('changeDate', function(event) {
             var selectedDate = event.format();
-            $("#datepicker").html(selectedDate);
             var dates = @availableDates;
             if (dates) {
                 var i = dates.toString().split(',').indexOf(selectedDate);
                 $('#selectedDate').val(i);
                 $("#slideBtn").click();
             }
+            $("#datepicker").html(selectedDate);
         });
     </script>
 }
