@@ -7,11 +7,6 @@
 @import 'bootstrapOverrides';
 @import 'accessibility';
 
-// DELETE
-// div {
-//     border: 1px solid tomato;
-// }
-
 html, body {
     height: 100%;
 }
@@ -286,7 +281,7 @@ div.invalid-field-message {
 
 /*Book Your Hearing*/
 .search-info {
-    background-color: $blue-light;
+    background-color: #eff2f5;
     padding: 20px 10px;
     margin-right: 0;
     margin-left: 0;
@@ -418,7 +413,7 @@ a.custom-slide-time {
     text-decoration: none;
     color: $blue;
     background-color:$blue-active-lighter;
-    border: 1px solid darken($blue-light, 10%);
+    border: 1px solid darken(#eff2f5, 10%);
     font-weight: 700;
 
     &.selected, &:focus {
@@ -459,13 +454,6 @@ a.custom-slide-time {
 .booking-submit {
 
     padding-top: 12px;
-
-    @media (min-width: $breakpoint-sm) {
-        .btn-secondary {
-            margin-left: 20px;
-        }
-    }
-    
 }
 
 .booking-new > .content {
@@ -572,7 +560,7 @@ div#progress-overlay {
     width: 60px;
     height: 60px;
     border-radius: 30px;
-    border: 3px solid darken($blue-light, 10%);
+    border: 3px solid darken(#eff2f5, 10%);
     cursor: pointer;
     transition: all 0.1s ease-in-out;
 
@@ -588,7 +576,7 @@ div#progress-overlay {
     }
 
     &:active, &.active {
-        border: 3px solid darken($blue-light, 20%);
+        border: 3px solid darken(#eff2f5, 20%);
     }
 
     &.disabled {
@@ -640,6 +628,7 @@ span.nowrap {
             a.availableDate {
                 width: 240px;
                 min-width: 240px;
+                display: inline-block;
                 text-align: center;
                 border-radius: 0.5rem;
                 padding: 20px 10px;
@@ -648,7 +637,7 @@ span.nowrap {
                 text-align: center;
                 text-decoration: none;
                 background-color: $blue-active-lighter;
-                border: 1px solid darken($blue-light, 10%);
+                border: 1px solid darken(#eff2f5, 10%);
 
                 &:hover, &:active, &:focus {
                     background-color: $blue-active;
@@ -657,6 +646,10 @@ span.nowrap {
                     p {
                         color: $white;
                     }
+                }
+
+                &::after {
+                    display: none;
                 }
 
                 @media(min-width: 568px) {
@@ -732,6 +725,8 @@ span.nowrap {
 }
 
 #btnShowMore {
+    color:  $blue-active;
+    border: 1px solid $blue-active;
     margin-bottom: 60px;
 }
 
@@ -792,5 +787,14 @@ select, input {
             width: 100%;
             left: 0;
         }
+    }
+}
+
+/* Court of Appeal side */
+.preliminary_questions__radio, #Civil_IsFullDay {
+    .btn {
+        display: inline-block;
+        margin-top: 0;
+        margin-bottom: 20px
     }
 }

@@ -59,7 +59,7 @@ small {
     line-height: 2.2rem;
 }
 
-label {
+label:not(.btn) {
     @extend %p;
     white-space: wrap;
     margin-top: 18px;
