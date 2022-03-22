@@ -348,10 +348,15 @@ div.invalid-field-message {
     margin-top: 30px;
 }
 
-.options-nextStep {
-    margin-top: 20px;
-    .card {
-        border: none;
+.no-search-results {
+    h3 {
+        margin-bottom: 0;
+    }
+    .options-nextStep {
+        margin-top: 24px;
+        &:first-of-type {
+            margin-top: 18px;
+        }
     }
 }
 
@@ -393,7 +398,7 @@ div.invalid-field-message {
 .custom-slide-times {
     border-radius: 0.3rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    height: 350px;
+    height: 342px;
     overflow: auto;
     padding: 10px 8px;
 
