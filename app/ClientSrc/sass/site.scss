@@ -243,7 +243,7 @@ div.invalid-field-message {
     display: flex;
     align-items: center;
     position: relative;
-    border-radius: 0.25rem;
+    border-radius: 0.6rem;
     input, label {
         cursor: pointer;
     }
@@ -256,7 +256,7 @@ div.invalid-field-message {
         width: 100%;
         font-weight: 400;
         border: solid 1px $grey-border;
-        border-radius: 0.25rem;
+        border-radius: 0.6rem;
         margin-top: 0;
         margin-bottom: 0;
         padding: 16px;
@@ -275,7 +275,7 @@ div.invalid-field-message {
     }
 
     & + .search-results-case {
-        margin-top: 14px;
+        margin-top: 16px;
     }
 }
 
@@ -367,6 +367,12 @@ div.invalid-field-message {
     width: calc(100% - 60px);
     @include breakpoint(lg) { 
         width: 100% !important;
+    }
+
+    .swiper-slide-active {
+        .custom-slide-header {
+            color: $blue-calendar;
+        }
     }
 }
 
@@ -765,10 +771,11 @@ select, input {
     .btn-radio-group {
         width: 100%;
         position: relative;
-        margin: 8px 0 18px;
+        margin: 8px 0 12px;
 
         .form-check {
             position: initial;
+            margin-top: 8px;
 
             input.form-check-input {
                 margin-top: 0.6rem;
@@ -776,7 +783,7 @@ select, input {
 
             label {
                 font-weight: 400;
-                font-size: 1.4rem;
+                font-size: 1.6rem;
                 margin-top: 0;
                 margin-left: 8px;
             }
