@@ -29,7 +29,7 @@
     <!-- Search filter-->
     <div class="row search-container">
         <div class="col col-md-12">
-            <div class="search-info">
+            <div class="search-info border">
                 <div class="row search-info-row">
                     <div class="col-md-6 form-group">
                         <label for="hearingLocation">Where will the hearing occur.</label>
@@ -235,14 +235,14 @@
             @if (Model.Results == null)
             {
                 <div class="row">
-                    <div class="col col-md-12">
+                    <div class="col-6 col-md-4 col-lg-3">
                         @if (!Model.Step1Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-lg">Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block mt-2">Next</button>
                         }
                         else
                         {
-                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-lg">Show Available Dates</button>
+                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-block mt-2" style='display: flex;'>Show Available Dates</button>
                         }
                     </div>
                 </div>
@@ -263,7 +263,7 @@
 @if (showingDates)
 {
     <hr class="results-linebreak" />
-    <h2>Available Dates for @Model.HearingTypeName</h2>
+    <h5>Available Dates for @Model.HearingTypeName</h5>
     <p>Choose the date that works best for you. Each hearing is @((Model.IsFullDay ?? false) ? "full day" : "half day") long.</p>
 
     <div class="availableDates">
@@ -274,7 +274,7 @@
             {
                 var days = month.Value;
                 <div class="availableDates__month @monthIndex @((monthIndex == 0 || monthIndex == 1) ? "" : "hidden")">
-                    <h3 class="h3--month">@month.Key.ToString("MMMM yyyy")</h3>
+                    <h6 class="h3--month">@month.Key.ToString("MMMM yyyy")</h6>
                     <div class="availableDates__month__days">
                         @foreach (var day in days)
                         {
@@ -295,7 +295,7 @@
     <button id="btnShowMore" class="btn btn-outline-primary btn-lg">Show More Dates</button>
 }
 
-<div class="row">
+<div class="row mt-2">
     <div class="col col-md-12">
         <a href="/scjob/booking/coa/Restart">Restart Search</a>
     </div>
