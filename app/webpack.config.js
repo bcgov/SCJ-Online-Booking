@@ -29,6 +29,7 @@ fs.readdirSync(appBasePath + "sass/").forEach(function (file) {
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     return [{
+        target: ['web', 'es5'],
         mode: (isDevBuild ? "development" : "production"),
         performance: {
             hints: false

@@ -66,11 +66,7 @@ namespace SCJ.Booking.MVC
             // this setting is needed because NTLM auth does not work by default on Unix 
             AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false);
 
-            services.AddMvc(options => options.EnableEndpointRouting = false)
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.WriteIndented = true;
-                });
+            services.AddMvc(options => options.EnableEndpointRouting = false);
 
             //services
             services.AddTransient<ScBookingService>();
