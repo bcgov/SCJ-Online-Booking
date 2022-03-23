@@ -73,8 +73,7 @@ objects:
       database-password: ${DATABASE_PASSWORD}
       api-password: ${API_PASSWORD}
       connect-string: Host=${DATABASE_SERVICE_NAME};Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}
-      sc-mail-password: ${SC_MAIL_PASSWORD}
-      ca-mail-password: ${CA_MAIL_PASSWORD}
+      exchange-client-secret: ${EXCHANGE_CLIENT_SECRET}
 
   - kind: Service
     apiVersion: v1
@@ -168,24 +167,19 @@ objects:
                     secretKeyRef:
                       name: ${NAME}
                       key: api-password
-                - name: EXCHANGE_URL
-                  value: ${EXCHANGE_URL}
-                - name: SC_MAIL_USERNAME
-                  value: ${SC_MAIL_USERNAME}
-                - name: CA_MAIL_USERNAME
-                  value: ${CA_MAIL_USERNAME}
-                - name: MAIL_DOMAIN
-                  value: ${MAIL_DOMAIN}
-                - name: SC_MAIL_PASSWORD
+                - name: SC_EMAIL
+                  value: ${SC_EMAIL}
+                - name: CA_EMAIL
+                  value: ${CA_EMAIL}
+                - name: EXCHANGE_TENANT_ID
+                  value: ${EXCHANGE_TENANT_ID}
+                - name: EXCHANGE_CLIENT_ID
+                  value: ${EXCHANGE_CLIENT_ID}
+                - name: EXCHANGE_CLIENT_SECRET
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}
-                      key: sc-mail-password
-                - name: CA_MAIL_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}
-                      key: ca-mail-password
+                      key: exchange-client-secret
                 - name: ASPNETCORE_ENVIRONMENT
                   value: ${ASPNETCORE_ENVIRONMENT}
               resources:
@@ -374,32 +368,24 @@ parameters:
     displayName: API Password
     description: Basic auth password for the SCSS SOAP API
     required: true
-  - name: EXCHANGE_URL
-    displayName: Exchange Server EWS URL
-    description: Path to the .asmx file
+  - name: SC_EMAIL
+    displayName: Supreme Court Sender Email Address
     required: true
-    value: https://mail.courts.gov.bc.ca/EWS/Exchange.asmx
-  - name: SC_MAIL_USERNAME
-    displayName: Supreme Court Exchange Username
-    description: Username for the Exchange Server
+    value: noreply_BCSC_Booking@bccourts.ca
+  - name: CA_EMAIL
+    displayName: Court of Appeal Sender Email Address
     required: true
-    value: ""
-  - name: SC_MAIL_PASSWORD
-    displayName: Supreme Court Exchange Password
-    description: Password for the Exchange Server
-    required: true
-  - name: CA_MAIL_USERNAME
-    displayName: Court of Appeal Exchange Username
-    description: Username for the Exchange Server
+    value: noreply_BCCA_Booking@bccourts.ca
+  - name: EXCHANGE_TENANT_ID
+    displayName: Office 365 Tenant Id
     required: true
     value: ""
-  - name: CA_MAIL_PASSWORD
-    displayName: Court of Appeal Exchange Password
-    description: Password for the Exchange Server
+  - name: EXCHANGE_CLIENT_ID
+    displayName: Office 365 Client Id
     required: true
-  - name: MAIL_DOMAIN
-    displayName: Exchange ActiveDirectory Domain
-    description: Domain for the Exchange Users
+    value: ""
+  - name: EXCHANGE_CLIENT_SECRET
+    displayName: Office 365 Client Secret
     required: true
     value: ""
   - name: SITEMINDER_APPLICATION_DOMAIN

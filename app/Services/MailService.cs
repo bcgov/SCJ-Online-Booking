@@ -109,36 +109,6 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Sends an email using SMTP
-        /// </summary>
-        /// <remarks>
-        ///     Temporary workaround until Office365 Graph API is supported
-        /// </remarks>
-        public async Task SmtpSendEmail(string toEmail, string subject, string body)
-        {
-            // log the settings the the console
-            _logger.Information($"Sending email with SMTP");
-
-            var email = new MimeMessage();
-
-            email.Sender = MailboxAddress.Parse("mike.olund@gov.bc.ca");
-            email.To.Add(MailboxAddress.Parse(toEmail));
-            email.From.Add(email.Sender);
-
-            var builder = new BodyBuilder
-            {
-                TextBody = body
-            };
-            email.Body = builder.ToMessageBody();
-            email.Subject = subject;
-
-            using var smtp = new SmtpClient();
-            await smtp.ConnectAsync("apps.smtp.gov.bc.ca", 25, SecureSocketOptions.None);
-            await smtp.SendAsync(email);
-            await smtp.DisconnectAsync(true);
-        }
-
-        /// <summary>
         ///     Sets the exchange credentials
         /// </summary>
         private ClientSecretCredential SetExchangeCredentials(string courtLevel)
