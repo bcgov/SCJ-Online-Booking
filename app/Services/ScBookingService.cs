@@ -414,10 +414,9 @@ namespace SCJ.Booking.MVC.Services
                     var emailBody = await GetEmailBody();
 
                     //send email
-                    if (_configuration["TAG_NAME"] != "localdev")
+                    if (!IsLocalDevEnvironment)
                     {
-                        // await _mailService.ExchangeSendEmail(
-                        await _mailService.SmtpSendEmail(
+                        await _mailService.ExchangeSendEmail(
                             model.EmailAddress,
                             EmailSubject,
                             emailBody);
