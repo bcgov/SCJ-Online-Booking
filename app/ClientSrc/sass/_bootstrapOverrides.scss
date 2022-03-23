@@ -197,14 +197,14 @@ hr {
     color: $blue-light;
     background-color: transparent;
     border: 1px solid $blue-light;
-    padding: 7px 10px;
+    padding: 8px 11px;
     &:hover, &:focus {
         background-color: $blue-light;
-        border: 2px solid $blue-light;
+        border: 1px solid $blue-light;
     }
     &:not(:disabled):not(.disabled):active {
         background-color: $blue-light;
-        border: 2px solid $blue-light;
+        border: 1px solid $blue-light;
     }
     &::after {
         display: inline-block;
@@ -258,6 +258,7 @@ hr {
 }
 
 .tooltip-inner {
+    font-family: $font-stack;
     background-color: $blue;
     padding: 1rem;
     text-align: left;
