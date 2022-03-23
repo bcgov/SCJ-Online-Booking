@@ -43,7 +43,7 @@
                             <div class="mb-1">Online booking is not available at this registry.</div>
                             <div>
                                 <a href="https://www.bccourts.ca/supreme_court/scheduling/"
-                                   target="_blank" class="text-danger">
+                                   target="_blank" class="text-danger" rel="noopener">
                                     Contact the Supreme Court scheduling office
                                 </a>
                                 by telephone to book your hearing.
@@ -75,7 +75,8 @@
                 <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
                     id="caseNumberTooltip"
                     title="<p>@caseNoTooltip</p>"
-                    aria-label="@caseNoTooltip">
+                    aria-label="@caseNoTooltip"
+                    role="tooltip">
                     @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
                     <i class="fas fa-question-circle"></i>
                 </span>
