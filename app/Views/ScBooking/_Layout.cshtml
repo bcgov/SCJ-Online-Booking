@@ -15,9 +15,9 @@
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
             @RenderSection("BookingsLeft", false)
-            <div class="bookingsLeft">
+            <li class="bookingsLeft">
                 <span>@Service.GetHearingsRemaining()</span>
-            </div>
+            </li>
             <li class="nav-item ml-5">
                 <a href="@Configuration["AppSettings:LogoutUrl"]">LOGOUT</a>
             </li>
