@@ -1,15 +1,15 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Azure.Identity;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
 using MimeKit;
-using SCJ.Booking.MVC.Utils;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Serilog;
-using EmailAddress = Microsoft.Exchange.WebServices.Data.EmailAddress;
 using Task = System.Threading.Tasks.Task;
 
 namespace SCJ.Booking.MVC.Services
@@ -17,8 +17,9 @@ namespace SCJ.Booking.MVC.Services
     public class MailService
     {
         private readonly IConfiguration _configuration;
-        private readonly WebCredentials _emailCredentials;
+        private readonly ClientSecretCredential _emailCredentials;
         private readonly ILogger _logger;
+        private readonly string _senderEmail;
 
         public MailService(string courtLevel, IConfiguration configuration, ILogger logger)
         {
@@ -26,6 +27,7 @@ namespace SCJ.Booking.MVC.Services
             _logger = logger;
             if (_configuration["TAG_NAME"] != "localdev")
             {
+                _senderEmail = configuration[$"{courtLevel}_EMAIL"] ?? "";
                 _emailCredentials = SetExchangeCredentials(courtLevel);
             }
         }
@@ -35,33 +37,47 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task ExchangeSendEmail(string to, string subject, string body)
         {
-            string exchangeUrl = _configuration["EXCHANGE_URL"] ?? "";
-
             // log the settings the the console
-            _logger.Information($"EXCHANGE_URL={exchangeUrl}");
+            _logger.Information($"Sending email with Exchange");
 
             //Do NULL checks to ensure we received all the settings
-            if (!string.IsNullOrEmpty(exchangeUrl) && _emailCredentials != null)
+            if (_emailCredentials != null)
             {
-                var exchangeService = new ExchangeService
-                {
-                    Credentials = _emailCredentials,
-                    Url = new Uri(exchangeUrl),
-                    UseDefaultCredentials = false,
-                    TraceEnabled = true,
-                    TraceFlags = TraceFlags.All,
-                    TraceListener = new ExchangeTraceListener(_logger)
-                };
+                GraphServiceClient graphClient = new GraphServiceClient(_emailCredentials);
 
-                var message = new EmailMessage(exchangeService)
+                var message = new Message
                 {
+                    From = new Recipient
+                    {
+                        EmailAddress = new Microsoft.Graph.EmailAddress
+                        {
+                            Address = _senderEmail
+                        }
+                    },
                     Subject = subject,
-                    Body = new MessageBody(BodyType.Text, body)
+                    Body = new ItemBody
+                    {
+                        ContentType = BodyType.Text,
+                        Content = body
+                    },
+                    ToRecipients = new System.Collections.Generic.List<Recipient>()
+                    {
+                        new Recipient
+                        {
+                            EmailAddress = new Microsoft.Graph.EmailAddress
+                            {
+                                Address = to
+                            }
+                        }
+                    }
                 };
 
-                message.ToRecipients.Add(new EmailAddress(to));
+                var saveToSentItems = true;
 
-                await message.SendAndSaveCopy();
+                await graphClient.Users[_senderEmail]
+                    .SendMail(message, saveToSentItems)
+                    .Request()
+                    .PostAsync();
             }
         }
 
@@ -88,65 +104,40 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
-        ///     Sends an email using SMTP
-        /// </summary>
-        /// <remarks>
-        ///     Temporary workaround until Office365 Graph API is supported
-        /// </remarks>
-        public async Task SmtpSendEmail(string toEmail, string subject, string body)
-        {
-            // log the settings the the console
-            _logger.Information($"Sending email with SMTP");
-
-            var email = new MimeMessage();
-
-            email.Sender = MailboxAddress.Parse("mike.olund@gov.bc.ca");
-            email.To.Add(MailboxAddress.Parse(toEmail));
-            email.From.Add(email.Sender);
-
-            var builder = new BodyBuilder
-            {
-                TextBody = body
-            };
-            email.Body = builder.ToMessageBody();
-            email.Subject = subject;
-
-            using var smtp = new SmtpClient();
-            await smtp.ConnectAsync("apps.smtp.gov.bc.ca", 25, SecureSocketOptions.None);
-            await smtp.SendAsync(email);
-            await smtp.DisconnectAsync(true);
-        }
-
-        /// <summary>
         ///     Sets the exchange credentials
         /// </summary>
-        private WebCredentials SetExchangeCredentials(string courtLevel)
+        private ClientSecretCredential SetExchangeCredentials(string courtLevel)
         {
-            string emailUserName = _configuration[$"{courtLevel}_MAIL_USERNAME"] ?? "";
-            string emailPassword = _configuration[$"{courtLevel}_MAIL_PASSWORD"] ?? "";
-            string emailDomain = _configuration["MAIL_DOMAIN"] ?? "";
+            string tenantId = _configuration["EXCHANGE_TENANT_ID"] ?? "";
+            string clientId = _configuration["EXCHANGE_CLIENT_ID"] ?? "";
+            string clientSecret = _configuration["EXCHANGE_CLIENT_SECRET"] ?? "";
 
-            if (emailDomain == "")
+            if (tenantId == "")
             {
-                _logger.Error("MAIL_DOMAIN is not set");
+                _logger.Error("EXCHANGE_TENANT_ID is not set");
             }
 
-            if (emailPassword == "")
+            if (clientId == "")
             {
-                _logger.Error($"{courtLevel}_MAIL_PASSWORD is not set");
+                _logger.Error("EXCHANGE_CLIENT_ID is not set");
             }
 
-            if (emailUserName == "")
+            if (clientSecret == "")
             {
-                _logger.Error($"{courtLevel}_MAIL_USERNAME is not set");
+                _logger.Error("EXCHANGE_CLIENT_SECRET is not set");
             }
 
-            if (emailDomain == "" || emailPassword == "" || emailUserName == "")
+            if (_senderEmail == "")
+            {
+                _logger.Error($"{courtLevel}_EMAIL is not set");
+            }
+
+            if (tenantId == "" || clientId == "" || clientSecret == "" || _senderEmail == "")
             {
                 return null;
             }
 
-            return new WebCredentials(emailUserName, emailPassword, emailDomain);
+            return new ClientSecretCredential(tenantId, clientId, clientSecret);
         }
     }
 }
