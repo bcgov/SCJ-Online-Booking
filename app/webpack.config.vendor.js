@@ -38,7 +38,7 @@ module.exports = (env) => {
                         }
                     },
                     {
-                        test: /@fortawesome([^\x]+).(woff|woff2|eot|ttf|svg)$/,
+                        test: /@fortawesome([^*]+).(woff|woff2|eot|ttf|svg)$/,
                         use: {
                             loader: "file-loader",
                             options: {
@@ -47,7 +47,7 @@ module.exports = (env) => {
                         }
                     },
                     {
-                        test: /@bcgov([^\x]+).(woff)$/,
+                        test: /@bcgov([^*]+).(woff)$/,
                         use: {
                             loader: "file-loader",
                             options: {

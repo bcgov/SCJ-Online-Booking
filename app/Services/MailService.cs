@@ -20,7 +20,6 @@ namespace SCJ.Booking.MVC.Services
         private readonly ClientSecretCredential _emailCredentials;
         private readonly ILogger _logger;
         private readonly string _senderEmail;
-        private readonly string _senderName;
 
         public MailService(string courtLevel, IConfiguration configuration, ILogger logger)
         {
@@ -30,9 +29,6 @@ namespace SCJ.Booking.MVC.Services
             {
                 _senderEmail = configuration[$"{courtLevel}_EMAIL"] ?? "";
                 _emailCredentials = SetExchangeCredentials(courtLevel);
-                _senderName = courtLevel == "SC"
-                            ? "Supreme Court Scheduling"
-                            : "Court of Appeal Scheduling";
             }
         }
 
@@ -55,8 +51,7 @@ namespace SCJ.Booking.MVC.Services
                     {
                         EmailAddress = new Microsoft.Graph.EmailAddress
                         {
-                            Address = _senderEmail,
-                            Name = _senderName
+                            Address = _senderEmail
                         }
                     },
                     Subject = subject,
