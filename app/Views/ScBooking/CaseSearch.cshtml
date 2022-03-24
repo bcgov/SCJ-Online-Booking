@@ -66,7 +66,7 @@
                         <label id="courtClassLabel">
                             Pick court class for the court file number.
                         </label>@* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
-                        <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" required>
+                        <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" aria-label="Court classes" required>
                                 @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"
                                 required="@(Model.HearingTypeId != ScHearingType.PTC)"*@
                             <option value="">-- Pick a class --</option>
