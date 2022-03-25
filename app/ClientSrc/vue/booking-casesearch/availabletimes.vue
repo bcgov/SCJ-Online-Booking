@@ -4,7 +4,6 @@
             <div class="swiper-button-prev" slot="button-prev"></div>
             <swiper ref="mySwiper" :options="swiperOption" id="swipe-container"
                     :auto-destroy="true" :delete-instance-on-destroy="true">
-                <!--navigation-->
                 <swiper-slide v-for="entry in availabletimes" :key="entry.date">
                     <div class="custom-slide-container">
                         <div class="custom-slide-header text-center">
@@ -58,11 +57,6 @@
         directives: {
             swiper: directive
         }, 
-        //setup() {
-        //    return {
-        //        modules: [Navigation]
-        //    }
-        //},
         props: {
             locationId: Number,
             availableDates: [],
@@ -86,10 +80,6 @@
                         nextEl: '.swiper-button-next',
                         prevEl: '.swiper-button-prev'
                     },
-                    //onSlideChangeEnd: function () {
-                    //    $("#datepicker").html(this.availableDates[this.activeIndex]);
-                    //    //$("#datepicker").datepicker("setDate", this.availableDates[this.activeIndex]);
-                    //},
                     breakpoints: {
                         1200: {
                             slidesPerView: 4,
