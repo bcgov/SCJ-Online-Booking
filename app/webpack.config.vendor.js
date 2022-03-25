@@ -74,7 +74,7 @@ module.exports = (env) => {
                     "@fortawesome/fontawesome-free/css/regular.css",
                     "@fortawesome/fontawesome-free/css/solid.css",
                     "@bcgov/bc-sans/css/BCSans.css",
-                    "swiper/dist/css/swiper.css",
+                    "swiper/css/swiper.css",
                     "bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css"
                 ]
             },
@@ -142,7 +142,7 @@ module.exports = (env) => {
                         // the min version is packaged above (vendor.min.css) 
                         // Just copy the regular version for Development
                         from:
-                            "node_modules/swiper/dist/css/swiper.css",
+                            "node_modules/swiper/css/swiper.css",
                         to: "css/swiper.css",
                         toType: "file"
                     },

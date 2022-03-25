@@ -65,7 +65,7 @@ module.exports = (env) => {
                 },
                 { test: /\.js$/, include: /ClientSrc/, use: "babel-loader?presets=es2015" },
                 {
-                    test: /\.scss/,
+                    test: /\.(scss|css)/,
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
