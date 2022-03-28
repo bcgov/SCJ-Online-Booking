@@ -16,6 +16,8 @@
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-tertiary btn-block"
                                             @click="selectTime(container.containerId, container.startDateTime)"
+                                            @keypress.enter="keyboardSelection(container.containerId, container.startDateTime)"
+                                            @keypress.space="keyboardSelection(container.containerId, container.startDateTime)"
                                             :class="{'selected': container.containerId === selectedContainerId}">
                                         {{ container.start }} - {{ container.end }}
                                     </button>
@@ -112,6 +114,10 @@
                 if (this.swiper) {
                     this.swiper.slideTo(i, 0);
                 }
+            },
+            keyboardSelection(containerId, bookingTime) {
+                this.selectTime(containerId, bookingTime);
+                $("#availableTimesForm").submit();
             },
             selectTime(containerId, bookingTime) {
                 this.selectedContainerId = containerId;

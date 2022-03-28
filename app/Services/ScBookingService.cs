@@ -107,9 +107,6 @@ namespace SCJ.Booking.MVC.Services
                     .Select(x => x.bookingHearingTypeID).Distinct().ToList();
             }
 
-            // The following is for testing only
-            //result.AddRange(new[] { ScHearingType.JCC, ScHearingType.CPC });
-
             return result;
         }
 
