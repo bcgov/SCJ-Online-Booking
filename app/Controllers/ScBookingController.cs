@@ -41,9 +41,9 @@ namespace SCJ.Booking.MVC.Controllers
             return View("Index", model);
         }
 
-        [HttpPost]
-        [Route("~/booking/sc/select-case")]
-        public async Task<IActionResult> SelectCase(ScCaseSearchViewModel model)
+        [HttpGet]
+        [Route("~/booking/sc/search")]
+        public async Task<IActionResult> Search(ScCaseSearchViewModel model)
         {
             if (model.CaseRegistryId == -1)
             {
