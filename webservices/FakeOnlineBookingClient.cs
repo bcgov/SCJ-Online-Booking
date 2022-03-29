@@ -17,7 +17,7 @@ namespace SCJ.OnlineBooking
 
             var result = Array.Empty<CourtFile>();
 
-            //CRE23222 -- Campbell River (CR) / Family Court / #23222
+            //VAE23222 -- Vancouver (VA) / Family Court / #23222
             if (caseNum == "VAE23222" || caseNum == "VA23222")
             {
                 result = new[]

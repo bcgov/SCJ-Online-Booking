@@ -27,19 +27,23 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         [Route("~/booking/sc")]
-        [Route("~/booking/sc/Index")]
-        public IActionResult Index(bool s = true)
+        public IActionResult Index()
         {
-            var model = s ?
-                _scBookingService.LoadSearchForm() :
-                _scBookingService.LoadSearchForm2();
+            var model = _scBookingService.LoadSearchForm();
             return View(model);
         }
 
-        [HttpPost]
-        [Route("~/booking/sc")]
-        [Route("~/booking/sc/Index")]
-        public async Task<IActionResult> Index(ScCaseSearchViewModel model)
+        [HttpGet]
+        [Route("~/booking/sc/select-case")]
+        public IActionResult SelectCase()
+        {
+            var model = _scBookingService.LoadSearchForm2();
+            return View("Index", model);
+        }
+
+        [HttpGet]
+        [Route("~/booking/sc/search")]
+        public async Task<IActionResult> Search(ScCaseSearchViewModel model)
         {
             if (model.CaseRegistryId == -1)
             {
@@ -51,20 +55,16 @@ namespace SCJ.Booking.MVC.Controllers
                 ModelState.AddModelError("CaseNumber", "Please provide a Court File Number");
             }
 
-            // ToDo: the following check is just for testing and will be removed later
-            if (model.CaseRegistryId != 6)
-                model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypeIds(model);
-            else
-                model.AvailableConferenceTypeIds = null;
+            model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypeIds(model);
 
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("Index", model);
             }
 
             model = await _scBookingService.GetSearchResults2(model);
 
-            return View(model);
+            return View("Index", model);
         }
 
         [HttpPost]
