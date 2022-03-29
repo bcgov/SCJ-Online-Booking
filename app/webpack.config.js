@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const RemovePlugin = require('remove-files-webpack-plugin');
 const bundleOutputDir = "./wwwroot/dist";
+const { VueLoaderPlugin } = require('vue-loader')
 
 var appBasePath = "./ClientSrc/";
 
@@ -65,7 +66,7 @@ module.exports = (env) => {
                 },
                 { test: /\.js$/, include: /ClientSrc/, use: "babel-loader?presets=es2015" },
                 {
-                    test: /\.scss/,
+                    test: /\.(scss|css)/,
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
@@ -77,6 +78,7 @@ module.exports = (env) => {
             ]
         },
         plugins: [
+            new VueLoaderPlugin(),
             new MiniCssExtractPlugin(),
             new RemovePlugin({
                 after: {

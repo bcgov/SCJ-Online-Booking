@@ -2,7 +2,8 @@
     <div class="row no-gutters">
         <div class="col">
             <div class="swiper-button-prev" slot="button-prev"></div>
-            <swiper ref="mySwiper" :options="swiperOption" id="swipe-container">
+            <swiper ref="mySwiper" :options="swiperOption" id="swipe-container"
+                    :auto-destroy="true" :delete-instance-on-destroy="true">
                 <swiper-slide v-for="entry in availabletimes" :key="entry.date">
                     <div class="custom-slide-container">
                         <div class="custom-slide-header text-center">
@@ -25,9 +26,9 @@
                 </swiper-slide>
             </swiper>
             <div class="swiper-button-next" slot="button-next"></div>
-            <input type="hidden" id="selectedDate" /> 
+            <input type="hidden" id="selectedDate" />
             <button type="button" class="btn btn-primary" id="slideBtn" hidden
-                    @click="toSlide()"> 
+                           @click="toSlide()">
                 Slide to selected date
             </button>
         </div>
@@ -37,16 +38,25 @@
 <script>
     import Vue from "vue";
     import VueAwesomeSwiper from 'vue-awesome-swiper';
-    import { swiper, swiperSlide } from 'vue-awesome-swiper';
+
+    //import { swiper, swiperSlide } from 'vue-awesome-swiper'; // for 3.1.3
+    import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
+    import 'swiper/css/swiper.css';
+
     import axios from 'axios';
 
     Vue.use(VueAwesomeSwiper);
 
     export default {
         components: {
-            swiper,
-            swiperSlide
+            Swiper,
+            SwiperSlide
+            //swiper, // for 3.1.3
+            //swiperSlide
         },
+        directives: {
+            swiper: directive
+        }, 
         props: {
             locationId: Number,
             availableDates: [],
@@ -91,10 +101,17 @@
                 }
             }
         },
+        computed: {
+            swiper() {
+                return this.$refs.mySwiper.$swiper;
+            }
+        },
         methods: {
             toSlide() {
                 const i = $('#selectedDate').val();
-                this.$refs.mySwiper.swiper.slideTo(i, 0);
+                if (this.swiper) {
+                    this.swiper.slideTo(i, 0);
+                }
             },
             selectTime(containerId, bookingTime) {
                 this.selectedContainerId = containerId;
@@ -126,9 +143,11 @@
         },
         mounted() {
             let self = this;
-            this.$refs.mySwiper.swiper.on('slideChange', function () {
-                $("#datepicker").datepicker("setDate", self.availableDates[this.activeIndex])
-            });
+            if (this.swiper) {
+                this.swiper.on('slideChange', function () {
+                    $("#datepicker").datepicker("setDate", self.availableDates[this.activeIndex])
+                });
+            }
         }
     }
 </script>
