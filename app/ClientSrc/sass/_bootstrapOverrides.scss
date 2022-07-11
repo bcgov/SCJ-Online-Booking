@@ -65,8 +65,12 @@ label:not(.btn) {
     margin-top: 18px;
     margin-bottom: 8px;
 
-    @include breakpoint(sm) {
+    @include breakpoint(md) {
         white-space: nowrap;
+
+        &.can-wrap {
+            white-space: normal;
+        }
     }
 }
 

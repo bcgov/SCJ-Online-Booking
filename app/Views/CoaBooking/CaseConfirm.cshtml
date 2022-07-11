@@ -68,7 +68,9 @@
             @if (Model.CaseType == CoaCaseType.Civil)
             {
                 <div class="form-group">
-                    <label>Has a Certificate of Readiness been filed?</label>
+                    <label class="can-wrap">
+                        Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
+                    </label>
                     <div>
                         <span>@((Model.CertificateOfReadiness ?? false) ? "Yes" : "No")</span>
                     </div>

@@ -121,7 +121,9 @@
                         <div class="preliminary_questions preliminary_questions--Civil">
                             <div class="row search-info-row">
                                 <div class="col-md-6">
-                                    <label>Has a Certificate of Readiness been filed?</label>
+                                    <label class="factum can-wrap">
+                                        Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
+                                    </label>
                                     <div id="Civil_CertificateOfReadiness" class="btn-radio-group preliminary_questions__radio">
                                         <label class="btn btn-radio @((Model.CertificateOfReadiness ?? false) ? "active" : "")">
                                             <input type="radio" asp-for="CertificateOfReadiness" value="true" /> Yes
@@ -139,11 +141,13 @@
                                     </div>
                                     <div class="alert alert-warning  alert--preliminary_question">
                                         <i class="fa fa-exclamation-triangle"></i>
-                                        You will not be able to book a hearing of appeal until the Certificate of Readiness for this case has been filed. If you require assistance for your booking, please contact the scheduler at 604-660-2865.
+                                        You will not be able to book a hearing date for the appeal until these two steps have been taken.
+                                        If you require assistance with your booking, please contact the scheduler at
+                                        <span class="nowrap">604-660-2865</span>.
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Is the hearing date agreed upon by all parties?</label>
+                                    <label class="can-wrap"><br>Is the hearing date agreed upon by all parties?</label>
                                     <div id="Civil_DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
                                         <label class="btn btn-radio @((Model.DateIsAgreed ?? false) ? "active" : "")">
                                             <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
@@ -156,7 +160,9 @@
                                     <span class="text-danger" asp-validation-for="DateIsAgreed"></span>
                                     <div class="alert alert-warning alert--preliminary_question">
                                         <i class="fa fa-exclamation-triangle"></i>
-                                        You will not be able to book a hearing of appeal until all parties agree upon a date. If you require assistance for your booking, please contact the scheduler at 604-660-2865.
+                                        You will not be able to book a hearing of appeal until all parties agree upon a date.
+                                        If you require assistance for your booking, please contact the scheduler at
+                                        <span class="nowrap">604-660-2865</span>.
                                     </div>
                                 </div>
                             </div>
@@ -273,20 +279,20 @@
             foreach (var month in Model.Results)
             {
                 var days = month.Value;
-                <div class="availableDates__month @monthIndex @((monthIndex == 0 || monthIndex == 1) ? "" : "hidden")">
-                    <h6 class="h3--month">@month.Key.ToString("MMMM yyyy")</h6>
-                    <div class="availableDates__month__days">
-                        @foreach (var day in days)
+                    <div class="availableDates__month @monthIndex @((monthIndex == 0 || monthIndex == 1) ? "" : "hidden")">
+                        <h6 class="h3--month">@month.Key.ToString("MMMM yyyy")</h6>
+                        <div class="availableDates__month__days">
+                            @foreach (var day in days)
                         {
-                            <a class="btn btn-primary availableDate" data-date="@day.ToString("yyyy-MM-dd")">
-                                <p>@day.ToString("dddd")</p>
-                                <p>@day.ToString("MMMM d, yyyy")</p>
-                            </a>
-                            <br />
+                                <a class="btn btn-primary availableDate" data-date="@day.ToString("yyyy-MM-dd")">
+                                    <p>@day.ToString("dddd")</p>
+                                    <p>@day.ToString("MMMM d, yyyy")</p>
+                                </a>
+                                <br />
                         }
-                        <br />
+                            <br />
+                        </div>
                     </div>
-                </div>
                 monthIndex++;
             }
         }
