@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SCJ.Booking.MVC.Models
+namespace SCJ.Booking.Data.Models
 {
 
     public class BookingHistory

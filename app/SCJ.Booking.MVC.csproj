@@ -38,7 +38,13 @@
     <None Remove="wwwroot\templates\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SCJ.Booking.Data\SCJ.Booking.Data.csproj" />
     <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SCJ.Booking.Data">
+      <HintPath>..\SCJ.Booking.Data\bin\Debug\net6.0\SCJ.Booking.Data.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\ScBooking\Email-JCC.cshtml">

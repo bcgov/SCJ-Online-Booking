@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SCJ.Booking.MVC.Data;
+using SCJ.Booking.Data;
 using SCJ.Booking.MVC.Services;
 
 namespace SCJ.Booking.MVC

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SCJ.Booking.MVC.Migrations
+namespace SCJ.Booking.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {

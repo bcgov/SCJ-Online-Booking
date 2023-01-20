@@ -2,7 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SCJ.Booking.MVC.Data;
+using SCJ.Booking.Data;
 
 namespace SCJ.Booking.MVC
 {

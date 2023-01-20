@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{C72F
 		openshift\jenkins\deploy-to-test-Jenkinsfile = openshift\jenkins\deploy-to-test-Jenkinsfile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCJ.Booking.Data", "SCJ.Booking.Data\SCJ.Booking.Data.csproj", "{B0621E37-FF9F-41CE-9392-18A5655ABC23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0621E37-FF9F-41CE-9392-18A5655ABC23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0621E37-FF9F-41CE-9392-18A5655ABC23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0621E37-FF9F-41CE-9392-18A5655ABC23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0621E37-FF9F-41CE-9392-18A5655ABC23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

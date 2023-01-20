@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SCJ.Booking.MVC.Models;
+using SCJ.Booking.Data.Models;
 
-namespace SCJ.Booking.MVC.Data
+namespace SCJ.Booking.Data
 {
     public class ApplicationDbContext : DbContext
     {
