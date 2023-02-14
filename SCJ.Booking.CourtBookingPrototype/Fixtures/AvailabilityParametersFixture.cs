@@ -11,7 +11,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
         public static AvailabilityParameter AugustParameters = new AvailabilityParameter
         {
             Id = 1,
-            RegistryId = "VA",
+            RegistryId = 1,
             HearingType = 9999,
             CourtClass = "M",
             HearingLength = 1
@@ -20,7 +20,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
         public static AvailabilityParameter SeptemberParameters = new AvailabilityParameter
         {
             Id = 2,
-            RegistryId = "VA",
+            RegistryId = 1,
             HearingType = 9999,
             CourtClass = "M",
             HearingLength = 1
@@ -30,9 +30,10 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
     public class AvailabilityParameter
     {
         public int Id { get; set; }
-        public string RegistryId { get; set; }
+        public int RegistryId { get; set; }
         public decimal HearingType { get; set; }
         public string CourtClass { get; set; }
+        public string CourtClassName { get; set; }
         public decimal HearingLength { get; set; }
     }
 }

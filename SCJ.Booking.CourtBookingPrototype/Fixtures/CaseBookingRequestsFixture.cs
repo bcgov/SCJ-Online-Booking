@@ -9,6 +9,28 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
 {
     public static class CaseBookingRequestsFixture
     {
+        #region August CaseBookingRequests
+        private static List<CaseBookingRequest> _augustCaseBookingRequests;
+        public static List<CaseBookingRequest> AugustCaseBookingRequests
+        {
+            get
+            {
+                if(_augustCaseBookingRequests == null || _augustCaseBookingRequests.Count <= 0)
+                {
+                    _augustCaseBookingRequests = new List<CaseBookingRequest>();
+                    _augustCaseBookingRequests.AddRange(AugustSixteenPlusDayCaseBookingRequests);
+                    _augustCaseBookingRequests.AddRange(AugustFifteenToSixDayCaseBookingRequests);
+                    _augustCaseBookingRequests.AddRange(AugustFiveDayCaseBookingRequests);
+                    _augustCaseBookingRequests.AddRange(AugustFourDayCaseBookingRequests);
+                    _augustCaseBookingRequests.AddRange(AugustThreeDayCaseBookingRequests);
+                    _augustCaseBookingRequests.AddRange(AugustTwoDayCaseBookingRequests);
+                    _augustCaseBookingRequests.AddRange(AugustOneDayCaseBookingRequests);
+                }
+                    
+                return _augustCaseBookingRequests;
+            }
+        }
+
         public static CaseBookingRequest[] AugustSixteenPlusDayCaseBookingRequests =
         {
             new CaseBookingRequest
@@ -2225,6 +2247,29 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                 Phone = ""
             },
         };
+        #endregion
+
+        #region September CaseBookingRequests
+        private static List<CaseBookingRequest> _septemberCaseBookingRequests;
+        public static List<CaseBookingRequest> SeptemberCaseBookingRequests
+        {
+            get
+            {
+                if (_septemberCaseBookingRequests == null || _septemberCaseBookingRequests.Count <= 0)
+                {
+                    _septemberCaseBookingRequests = new List<CaseBookingRequest>();
+                    _septemberCaseBookingRequests.AddRange(SeptemberSixteenPlusDayCaseBookingRequests);
+                    _septemberCaseBookingRequests.AddRange(SeptemberFifteenToSixDayCaseBookingRequests);
+                    _septemberCaseBookingRequests.AddRange(SeptemberFiveDayCaseBookingRequests);
+                    _septemberCaseBookingRequests.AddRange(SeptemberFourDayCaseBookingRequests);
+                    _septemberCaseBookingRequests.AddRange(SeptemberThreeDayCaseBookingRequests);
+                    _septemberCaseBookingRequests.AddRange(SeptemberTwoDayCaseBookingRequests);
+                    _septemberCaseBookingRequests.AddRange(SeptemberOneDayCaseBookingRequests);
+                }
+
+                return _septemberCaseBookingRequests;
+            }
+        }
 
         public static CaseBookingRequest[] SeptemberSixteenPlusDayCaseBookingRequests =
         {
@@ -4442,5 +4487,10 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                 Phone = ""
             },
         };
+        #endregion
+
+        #region October CaseBookingRequests
+
+        #endregion
     }
 }

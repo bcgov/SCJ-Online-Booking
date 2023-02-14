@@ -17,7 +17,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
             new RegistrySetting
             {
                 Id = 1,
-                RegistryId = "VA",
+                RegistryId = 1,
                 UsesLottery = DefaultUsesLottery,
                 MaximumDateSelections = DefaultNumberOfPicksPerUser,
                 MonthlyBookingWeek = 1,
@@ -28,7 +28,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
             new RegistrySetting
             {
                 Id = 2,
-                RegistryId = "VA",
+                RegistryId = 1,
                 UsesLottery = DefaultUsesLottery,
                 MaximumDateSelections = DefaultNumberOfPicksPerUser,
                 MonthlyBookingWeek = 1,

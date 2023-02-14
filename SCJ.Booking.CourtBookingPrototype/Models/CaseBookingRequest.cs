@@ -13,7 +13,5 @@ namespace SCJ.Booking.CourtBookingPrototype.Models
         public int HearingType { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-
-        public virtual ICollection<DateSelection> DateSelections { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Models
     {
         public TrialType TrialType { get; set; }
         public int BookingSlotsAvailable { get; set; }
+        public int InitialBookingSlotsAvailable { get; set; }
         public DateTime Date { get; set; }
     }
 }

@@ -14,14 +14,14 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
             new BookingPeriod
             {
                 Id = 1,
-                RegistryId = "VA",
+                RegistryId = 1,
                 OpeningDate = new DateTime(2024, 8, 1),
                 ClosingDate = new DateTime(2024, 8, 31)
             },
             new BookingPeriod
             {
                 Id = 2,
-                RegistryId = "VA",
+                RegistryId = 1,
                 OpeningDate = new DateTime(2024, 9, 1),
                 ClosingDate = new DateTime(2024, 9, 30)
             }

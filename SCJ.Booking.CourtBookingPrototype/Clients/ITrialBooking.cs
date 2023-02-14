@@ -1,4 +1,5 @@
 using Microsoft.Win32;
+using SCJ.Booking.CourtBookingPrototype.Fixtures;
 using SCJ.Booking.CourtBookingPrototype.Models;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,17 @@ namespace SCJ.Booking.CourtBookingPrototype.Clients
     {
         //hearingType is 9999 until updated by Lorne
         //return array should be an object with date and number of booking slots for that date
-        Task<TrialDate[]> GetAvailableTrialDates(int registryId, decimal hearingType, string courtClass, decimal hearingLength);
+        TrialDate[] GetAvailableTrialDates(int registryId, decimal hearingType, string courtClass, decimal hearingLength, int bookingYear = 0, int bookingMonth = 0);
 
-        Task<string> BookTrial(decimal caseId, DateTime date, int registryId, decimal hearingType, decimal hearingLength);
+        string BookTrial(int caseId, DateTime date, int registryId, decimal hearingType, decimal hearingLength);
 
-        Task<int> UpdateTrialSlotsAvailable(DateTime date, int registryId, decimal hearingType, string courtClass, decimal hearingLength);
+        int UpdateTrialSlotsAvailable(DateTime date, int registryId, decimal hearingType, string courtClass, decimal hearingLength);
 
-        Task<int> GetUnmetDemand(decimal caseId);
+        List<List<UnmetDemand>> GetUnmetDemand();
 
         //return value is a string atm, will be revisited when actual API call has been flushed out more
-        Task<string> RecordUnmetDemand(decimal caseId, int bookingPeriodId);
+        string RecordUnmetDemand(int caseBookingRequestId, int bookingPeriodId);
+
+        string RemoveUnmetDemand(int caseBookingRequestId);
     }
 }

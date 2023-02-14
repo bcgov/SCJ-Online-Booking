@@ -71,12 +71,6 @@ namespace SCJ.Booking.CourtBookingPrototype
                 entity.ToTable("DateSelection");
 
                 entity.Property(e => e.Date).HasColumnType("date");
-
-                entity.HasOne(d => d.CaseBookingRequest)
-                    .WithMany(p => p.DateSelections)
-                    .HasForeignKey(d => d.CaseBookingRequestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_DateSelection_CaseBookingRequest");
             });
 
             modelBuilder.Entity<RegistrySetting>(entity =>

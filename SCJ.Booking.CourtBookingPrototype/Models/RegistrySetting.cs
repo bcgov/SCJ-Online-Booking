@@ -6,7 +6,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Models
     public partial class RegistrySetting
     {
         public int Id { get; set; }
-        public string RegistryId { get; set; }
+        public int RegistryId { get; set; }
         public bool UsesLottery { get; set; }
         public int MaximumDateSelections { get; set; }
         public int MonthlyBookingWeek { get; set; }
