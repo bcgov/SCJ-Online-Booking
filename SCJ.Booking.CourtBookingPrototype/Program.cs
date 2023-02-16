@@ -5,6 +5,7 @@ using SCJ.Booking.CourtBookingPrototype.Fixtures;
 using SCJ.Booking.CourtBookingPrototype.Models;
 using SCJ.Booking.MVC.Utils;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -12,7 +13,9 @@ namespace SCJ.Booking.CourtBookingPrototype
 {
     public class Program
     {
-        private static string BookingScheduleTemplate = "~/Templates/Lottery-Booking-Schedule-Template.csv";
+        private static string LotteryCSVHeader = "Court File number,Unmet demand (months),Lottery ranking,Hearing Length (days),Registry ID,Court Class,First Choice Date,Second Choice Date,Third Choice Date,Fourth Choice Date,Fifth Choice Date,Date booked,New unmet demand (months)";
+        private static string WorkingDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+        private static string BookingScheduleTemplate = $"{WorkingDirectory}/Templates/Lottery-Booking-Schedule-Template.csv";
 
         public static decimal DefaultDemandSupplyRatio = 1.25m;
 
@@ -82,223 +85,305 @@ namespace SCJ.Booking.CourtBookingPrototype
         private static void RunLotterySimulation(int registryId, decimal hearingType, string courtClass, decimal hearingLength, int bookingYear, int bookingMonth)
         {
             //duplicate the template for writing
-            string newFilePath = $"~/Outputs/{bookingMonth}-{bookingYear}-Booking-Schedule-" + DateTime.Now.ToString() + ".csv";
+            FileStream fileStream = null;
+            string newFilePath = $"{WorkingDirectory}/Outputs/{bookingMonth}-{bookingYear}-Booking-Schedule-" + DateTime.Now.ToString("MM-dd-yyyy-H-mm-ss") + ".csv";
             try
             {
-                File.Copy(BookingScheduleTemplate, newFilePath);
+                fileStream = new FileStream(newFilePath, FileMode.OpenOrCreate);
+
+                using (var writer = new StreamWriter(fileStream))
+                {
+                    //write the header to the file
+                    writer.WriteLine(LotteryCSVHeader);
+
+                    //get all available dates for the booking period
+                    TrialDate[] trialDates = Client.GetAvailableTrialDates(registryId, hearingType, courtClass, hearingLength, bookingYear, bookingMonth);
+
+                    //get all the demand for the current booking period
+                    if (bookingMonth == FakeTrialBookingClient.AugustMonth)
+                        BookingRequests = CaseBookingRequestsFixture.AugustCaseBookingRequests;
+                    else if (bookingMonth == FakeTrialBookingClient.SeptemberMonth)
+                        BookingRequests = CaseBookingRequestsFixture.SeptemberCaseBookingRequests;
+
+                    #region book unmet demand
+                    //get all unmet demand so we book those first
+                    List<List<UnmetDemand>> previousUnmetDemand = Client.GetUnmetDemand();
+
+                    //create a list of all unmet demand that we weren't able to book
+                    List<UnmetDemand> remainingUnmetDemand = new List<UnmetDemand>();
+
+                    //try to create booking for unmet demand
+                    foreach (var unmetDemandTier in previousUnmetDemand)
+                    {
+                        //run lottery to determine the order
+                        int unmetDemandLotteryRanking = 1;
+                        unmetDemandTier.Shuffle();
+                        foreach (var unmetDemand in unmetDemandTier)
+                        {
+                            var matchingCaseBookingRequest = BookingRequests.Where(x => x.Id == unmetDemand.CaseBookingRequestId).FirstOrDefault();
+                            if (matchingCaseBookingRequest != null)
+                            {
+                                var courtFileNumber = $"{RegistryFixture.VancouverRegistry.Location} {courtClass}{matchingCaseBookingRequest.PhysicalFileId.ToString("00000")}";
+
+                                //set a flag to indicate if we could create a booking for any of the date selections
+                                bool successfulBooking = false;
+
+                                //figure out what type of trial the booking request is asking for
+                                TrialType trialType = TrialType.SixteenPlusDay;
+                                switch (matchingCaseBookingRequest.TrialLength)
+                                {
+                                    case 1:
+                                        trialType = TrialType.OneDay;
+                                        break;
+                                    case 2:
+                                        trialType = TrialType.TwoDay;
+                                        break;
+                                    case 3:
+                                        trialType = TrialType.ThreeDay;
+                                        break;
+                                    case 4:
+                                        trialType = TrialType.FourDay;
+                                        break;
+                                    case 5:
+                                        trialType = TrialType.FiveDay;
+                                        break;
+                                    case decimal n when (n > 5 && n < 16):
+                                        trialType = TrialType.SixToFifteenDay;
+                                        break;
+                                }
+
+                                //get all the selected dates of this booking request and run through them to try and book a date
+                                var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == matchingCaseBookingRequest.Id).OrderBy(x => x.PreferenceOrder);
+
+                                foreach (var dateSelection in matchingDateSelections)
+                                {
+                                    //check if date has availability and try to book date
+                                    var matchingTrialDate = trialDates.Where(x => x.Date == dateSelection.Date && x.TrialType == trialType).FirstOrDefault();
+                                    if (matchingTrialDate != null && matchingTrialDate.BookingSlotsAvailable > 0)
+                                    {
+                                        var result = Client.BookTrial(matchingCaseBookingRequest.Id, dateSelection.Date, registryId, hearingType, hearingLength);
+                                        if (result == "success")    //will always be able to successfully book since there is no API call atm
+                                        {
+                                            successfulBooking = true;
+                                            DecrementAvailabilityDates(matchingCaseBookingRequest.TrialLength, ref trialDates, dateSelection.Date, trialType);
+
+                                            //write booking to csv
+                                            var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
+                                            var secondDateSelection = matchingDateSelections.Skip(1).Take(1).FirstOrDefault();
+                                            var thirdDateSelection = matchingDateSelections.Skip(2).Take(1).FirstOrDefault();
+                                            var fourthDateSelection = matchingDateSelections.Skip(3).Take(1).FirstOrDefault();
+                                            var fifthDateSelection = matchingDateSelections.Skip(4).Take(1).FirstOrDefault();
+
+                                            var newLine = string.Format(
+                                                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                                                courtFileNumber,
+                                                unmetDemand.Count,
+                                                unmetDemandLotteryRanking++,
+                                                matchingCaseBookingRequest.TrialLength,
+                                                RegistryFixture.VancouverRegistry.Location,
+                                                string.Format("{0} - Motor Vehicle Accidents", courtClass),
+                                                firstDateSelection != null ? firstDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                                secondDateSelection != null ? secondDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                                thirdDateSelection != null ? thirdDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                                fourthDateSelection != null ? fourthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                                fifthDateSelection != null ? fifthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                                dateSelection.Date.ToString("dd-MMMM-yyyy"),
+                                                0
+                                            );
+
+                                            writer.WriteLine(newLine);
+                                            unmetDemandLotteryRanking++;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                //if we were unable to successfully book something, we increment the unmetDemand count and add it to the remaining demand
+                                //to be passed on
+                                if (!successfulBooking)
+                                {
+                                    unmetDemand.Count++;
+                                    remainingUnmetDemand.Add(unmetDemand);
+
+                                    //write booking to csv
+                                    var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
+                                    var secondDateSelection = matchingDateSelections.Skip(1).Take(1).FirstOrDefault();
+                                    var thirdDateSelection = matchingDateSelections.Skip(2).Take(1).FirstOrDefault();
+                                    var fourthDateSelection = matchingDateSelections.Skip(3).Take(1).FirstOrDefault();
+                                    var fifthDateSelection = matchingDateSelections.Skip(4).Take(1).FirstOrDefault();
+
+                                    var newLine = string.Format(
+                                        "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                                        courtFileNumber,
+                                        unmetDemand.Count,
+                                        unmetDemandLotteryRanking++,
+                                        hearingLength,
+                                        RegistryFixture.VancouverRegistry.Location,
+                                        string.Format("{0} - Motor Vehicle Accidents", courtClass),
+                                        firstDateSelection != null ? firstDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        secondDateSelection != null ? secondDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        thirdDateSelection != null ? thirdDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        fourthDateSelection != null ? fourthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        fifthDateSelection != null ? fifthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        "Not Booked",
+                                        unmetDemand.Count
+                                    );
+
+                                    writer.WriteLine(newLine);
+                                }
+                                else    //remove this case booking from the master list of booking requests as we were able to create a successful booking
+                                {
+                                    BookingRequests.Remove(matchingCaseBookingRequest);
+                                }
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region book for normal slots
+                    //run lottery to determine the order
+                    BookingRequests.Shuffle();
+
+                    int lotteryRanking = 1;
+                    foreach (var bookingRequest in BookingRequests)
+                    {
+                        var courtFileNumber = $"{RegistryFixture.VancouverRegistry.Location} {courtClass}{bookingRequest.PhysicalFileId.ToString("00000")}";
+
+                        //set a flag to indicate if we could create a booking for any of the date selections
+                        bool successfulBooking = false;
+
+                        //figure out what type of trial the booking request is asking for
+                        TrialType trialType = TrialType.SixteenPlusDay;
+                        switch (bookingRequest.TrialLength)
+                        {
+                            case 1:
+                                trialType = TrialType.OneDay;
+                                break;
+                            case 2:
+                                trialType = TrialType.TwoDay;
+                                break;
+                            case 3:
+                                trialType = TrialType.ThreeDay;
+                                break;
+                            case 4:
+                                trialType = TrialType.FourDay;
+                                break;
+                            case 5:
+                                trialType = TrialType.FiveDay;
+                                break;
+                            case decimal n when (n > 5 && n < 16):
+                                trialType = TrialType.SixToFifteenDay;
+                                break;
+                        }
+
+                        //get all the selected dates of this booking request and run through them to try and book a date
+                        var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == bookingRequest.Id).OrderBy(x => x.PreferenceOrder);
+                        foreach (var dateSelection in matchingDateSelections)
+                        {
+                            //check if date has availability and try to book date
+                            var matchingTrialDate = trialDates.Where(x => x.Date == dateSelection.Date && x.TrialType == trialType).FirstOrDefault();
+                            if (matchingTrialDate != null && matchingTrialDate.BookingSlotsAvailable > 0)
+                            {
+                                var result = Client.BookTrial(bookingRequest.Id, dateSelection.Date, registryId, hearingType, hearingLength);
+                                if (result == "success")    //will always be able to successfully book since there is no API call atm
+                                {
+                                    successfulBooking = true;
+                                    DecrementAvailabilityDates(bookingRequest.TrialLength, ref trialDates, dateSelection.Date, trialType);
+
+                                    //write booking to csv
+                                    var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
+                                    var secondDateSelection = matchingDateSelections.Skip(1).Take(1).FirstOrDefault();
+                                    var thirdDateSelection = matchingDateSelections.Skip(2).Take(1).FirstOrDefault();
+                                    var fourthDateSelection = matchingDateSelections.Skip(3).Take(1).FirstOrDefault();
+                                    var fifthDateSelection = matchingDateSelections.Skip(4).Take(1).FirstOrDefault();
+
+                                    var newLine = string.Format(
+                                        "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                                        courtFileNumber,
+                                        0,
+                                        lotteryRanking++,
+                                        bookingRequest.TrialLength,
+                                        RegistryFixture.VancouverRegistry.Location,
+                                        string.Format("{0} - Motor Vehicle Accidents", courtClass),
+                                        firstDateSelection != null ? firstDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        secondDateSelection != null ? secondDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        thirdDateSelection != null ? thirdDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        fourthDateSelection != null ? fourthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        fifthDateSelection != null ? fifthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                        dateSelection.Date.ToString("dd-MMMM-yyyy"),
+                                        0
+                                    );
+
+                                    writer.WriteLine(newLine);
+                                    break;
+                                }
+                            }
+                        }
+
+                        //if we were unable to successfully book something, we increment the unmetDemand count and add it to the remaining demand
+                        //to be passed on
+                        if (!successfulBooking)
+                        {
+                            remainingUnmetDemand.Add(new UnmetDemand
+                            {
+                                CaseBookingRequestId = bookingRequest.Id,
+                                BookingPeriodId = bookingRequest.BookingPeriodId,
+                                Count = 1
+                            });
+
+                            var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
+                            var secondDateSelection = matchingDateSelections.Skip(1).Take(1).FirstOrDefault();
+                            var thirdDateSelection = matchingDateSelections.Skip(2).Take(1).FirstOrDefault();
+                            var fourthDateSelection = matchingDateSelections.Skip(3).Take(1).FirstOrDefault();
+                            var fifthDateSelection = matchingDateSelections.Skip(4).Take(1).FirstOrDefault();
+
+                            //write booking to csv
+                            var newLine = string.Format(
+                                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
+                                courtFileNumber,
+                                0,
+                                lotteryRanking++,
+                                hearingLength,
+                                RegistryFixture.VancouverRegistry.Location,
+                                string.Format("{0} - Motor Vehicle Accidents", courtClass),
+                                firstDateSelection != null ? firstDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                secondDateSelection != null ? secondDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                thirdDateSelection != null ? thirdDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                fourthDateSelection != null ? fourthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                fifthDateSelection != null ? fifthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
+                                "Not Booked",
+                                1
+                            );
+                        }
+                    }
+                    #endregion
+                }
             }
             catch (IOException iox)
             {
                 Console.WriteLine(iox.Message);
             }
-            
-            using (var writer = new StreamWriter(newFilePath))
+            finally
             {
-                //get all available dates for the booking period
-                TrialDate[] trialDates = Client.GetAvailableTrialDates(registryId, hearingType, courtClass, hearingLength, bookingYear, bookingMonth);
-
-                //get all the demand for the current booking period
-                if (bookingMonth == FakeTrialBookingClient.AugustMonth)
-                    BookingRequests = CaseBookingRequestsFixture.AugustCaseBookingRequests;
-                else if (bookingMonth == FakeTrialBookingClient.SeptemberMonth)
-                    BookingRequests = CaseBookingRequestsFixture.SeptemberCaseBookingRequests;
-
-                #region book unmet demand
-                //get all unmet demand so we book those first
-                List<List<UnmetDemand>> previousUnmetDemand = Client.GetUnmetDemand();
-
-                //create a list of all unmet demand that we weren't able to book
-                List<UnmetDemand> remainingUnmetDemand = new List<UnmetDemand>();
-
-                //try to create booking for unmet demand
-                foreach (var unmetDemandTier in previousUnmetDemand)
-                {
-                    //run lottery to determine the order
-                    int lotteryRanking = 1;
-                    unmetDemandTier.Shuffle();
-                    foreach (var unmetDemand in unmetDemandTier)
-                    {
-                        var matchingCaseBookingRequest = BookingRequests.Where(x => x.Id == unmetDemand.CaseBookingRequestId).FirstOrDefault();
-                        if (matchingCaseBookingRequest != null)
-                        {
-                            var courtFileNumber = $"{RegistryFixture.VancouverRegistry.Location} {courtClass}{String.Format("0:00000", matchingCaseBookingRequest.PhysicalFileId)}";
-
-                            //set a flag to indicate if we could create a booking for any of the date selections
-                            bool successfulBooking = false;
-
-                            //get all the selected dates of this booking request and run through them to try and book a date
-                            var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == matchingCaseBookingRequest.Id).OrderBy(x => x.PreferenceOrder);
-
-                            foreach (var dateSelection in matchingDateSelections)
-                            {
-                                //check if date has availability and try to book date
-                                var matchingTrialDate = trialDates.Where(x => x.Date == dateSelection.Date).FirstOrDefault();
-                                if (matchingTrialDate != null && matchingTrialDate.BookingSlotsAvailable > 0)
-                                {
-                                    var result = Client.BookTrial(matchingCaseBookingRequest.Id, dateSelection.Date, registryId, hearingType, hearingLength);
-                                    if (result == "success")    //will always be able to successfully book since there is no API call atm
-                                    {
-                                        successfulBooking = true;
-                                        DecrementAvailabilityDates(matchingCaseBookingRequest.TrialLength, ref trialDates, dateSelection.Date);
-
-                                        //write booking to csv
-                                        var newLine = string.Format(
-                                            "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
-                                            courtFileNumber,
-                                            unmetDemand.Count,
-                                            lotteryRanking++,
-                                            hearingLength,
-                                            RegistryFixture.VancouverRegistry.Location,
-                                            string.Format("{0} - Motor Vehicle", courtClass),
-                                            matchingDateSelections.ElementAt(0).Date.ToString("dd-MMMM-yyyy"),
-                                            matchingDateSelections.ElementAt(1).Date.ToString("dd-MMMM-yyyy"),
-                                            matchingDateSelections.ElementAt(2).Date.ToString("dd-MMMM-yyyy"),
-                                            matchingDateSelections.ElementAt(3).Date.ToString("dd-MMMM-yyyy"),
-                                            matchingDateSelections.ElementAt(4).Date.ToString("dd-MMMM-yyyy"),
-                                            dateSelection.Date.ToString("dd-MMMM-yyyy"),
-                                            0
-                                        );
-
-                                        writer.WriteLine(newLine);
-                                        lotteryRanking++;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            //if we were unable to successfully book something, we increment the unmetDemand count and add it to the remaining demand
-                            //to be passed on
-                            if (!successfulBooking)
-                            {
-                                unmetDemand.Count++;
-                                remainingUnmetDemand.Add(unmetDemand);
-
-                                //write booking to csv
-                                var newLine = string.Format(
-                                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
-                                    courtFileNumber,
-                                    unmetDemand.Count,
-                                    lotteryRanking++,
-                                    hearingLength,
-                                    RegistryFixture.VancouverRegistry.Location,
-                                    string.Format("{0} - Motor Vehicle", courtClass),
-                                    matchingDateSelections.ElementAt(0).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(1).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(2).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(3).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(4).Date.ToString("dd-MMMM-yyyy"),
-                                    "Not Booked",
-                                    unmetDemand.Count
-                                );
-
-                                writer.WriteLine(newLine);
-                            }
-                            else    //remove this case booking from the master list of booking requests as we were able to create a successful booking
-                            {
-                                BookingRequests.Remove(matchingCaseBookingRequest);
-                            }
-                        }
-                    }
-                }
-                #endregion
-
-                #region book for normal slots
-                //run lottery to determine the order
-                BookingRequests.Shuffle();
-
-                foreach (var bookingRequest in BookingRequests)
-                {
-                    int lotteryRanking = 1;
-                    var courtFileNumber = $"{RegistryFixture.VancouverRegistry.Location} {courtClass}{String.Format("0:00000", bookingRequest.PhysicalFileId)}";
-
-                    //set a flag to indicate if we could create a booking for any of the date selections
-                    bool successfulBooking = false;
-
-                    //get all the selected dates of this booking request and run through them to try and book a date
-                    var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == bookingRequest.Id).OrderBy(x => x.PreferenceOrder);
-                    foreach (var dateSelection in matchingDateSelections)
-                    {
-                        //check if date has availability and try to book date
-                        var matchingTrialDate = trialDates.Where(x => x.Date == dateSelection.Date).FirstOrDefault();
-                        if (matchingTrialDate != null && matchingTrialDate.BookingSlotsAvailable > 0)
-                        {
-                            var result = Client.BookTrial(bookingRequest.Id, dateSelection.Date, registryId, hearingType, hearingLength);
-                            if (result == "success")    //will always be able to successfully book since there is no API call atm
-                            {
-                                successfulBooking = true;
-                                DecrementAvailabilityDates(bookingRequest.TrialLength, ref trialDates, dateSelection.Date);
-
-                                //write booking to csv
-                                var newLine = string.Format(
-                                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
-                                    courtFileNumber,
-                                    0,
-                                    lotteryRanking++,
-                                    hearingLength,
-                                    RegistryFixture.VancouverRegistry.Location,
-                                    string.Format("{0} - Motor Vehicle", courtClass),
-                                    matchingDateSelections.ElementAt(0).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(1).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(2).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(3).Date.ToString("dd-MMMM-yyyy"),
-                                    matchingDateSelections.ElementAt(4).Date.ToString("dd-MMMM-yyyy"),
-                                    dateSelection.Date.ToString("dd-MMMM-yyyy"),
-                                    0
-                                );
-
-                                writer.WriteLine(newLine);
-                                break;
-                            }
-                        }
-                    }
-
-                    //if we were unable to successfully book something, we increment the unmetDemand count and add it to the remaining demand
-                    //to be passed on
-                    if (!successfulBooking)
-                    {
-                        remainingUnmetDemand.Add(new UnmetDemand
-                        {
-                            CaseBookingRequestId = bookingRequest.Id,
-                            BookingPeriodId = bookingRequest.BookingPeriodId,
-                            Count = 1
-                        });
-
-                        //write booking to csv
-                        var newLine = string.Format(
-                            "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
-                            courtFileNumber,
-                            0,
-                            lotteryRanking++,
-                            hearingLength,
-                            RegistryFixture.VancouverRegistry.Location,
-                            string.Format("{0} - Motor Vehicle", courtClass),
-                            matchingDateSelections.ElementAt(0).Date.ToString("dd-MMMM-yyyy"),
-                            matchingDateSelections.ElementAt(1).Date.ToString("dd-MMMM-yyyy"),
-                            matchingDateSelections.ElementAt(2).Date.ToString("dd-MMMM-yyyy"),
-                            matchingDateSelections.ElementAt(3).Date.ToString("dd-MMMM-yyyy"),
-                            matchingDateSelections.ElementAt(4).Date.ToString("dd-MMMM-yyyy"),
-                            "Not Booked",
-                            1
-                        );
-                    }
-                }
-                #endregion
+                if (fileStream != null)
+                    fileStream.Dispose();
             }
+
         }
 
         //function used to decrement the prototype's available date slots based on the trial length
-        private static void DecrementAvailabilityDates(decimal trialLength, ref TrialDate[] trialDates, DateTime trialDate)
+        private static void DecrementAvailabilityDates(decimal trialLength, ref TrialDate[] trialDates, DateTime trialDate, TrialType trialType)
         {
-            TrialDate startDate = trialDates.Where(x => x.Date == trialDate).First();
-            
+            TrialDate startDate = trialDates.Where(x => x.Date == trialDate && x.TrialType == trialType).First();
+
             //modify the availability based on the fixed trial lengths (2 - 5)
             if (trialLength <= 5)
             {
-                if(trialLength == 1)
+                if (trialLength == 1)
                 {
                     DecrementAvailabilityDate(ref trialDates, trialDate, 1);
 
-                    if(trialDate.DayOfWeek == DayOfWeek.Wednesday)
+                    if (trialDate.DayOfWeek == DayOfWeek.Wednesday)
                     {
                         var oneDayPrior = trialDate.AddDays(-1);
                         var oneDayPriorThreeDay = trialDates.Where(x => x.Date == oneDayPrior && x.TrialType == TrialType.ThreeDay).FirstOrDefault();
@@ -309,7 +394,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                         if (oneDayPriorTwoDay != null)
                             oneDayPriorTwoDay.BookingSlotsAvailable--;
                     }
-                    else if(trialDate.DayOfWeek == DayOfWeek.Thursday || trialDate.DayOfWeek == DayOfWeek.Friday)
+                    else if (trialDate.DayOfWeek == DayOfWeek.Thursday || trialDate.DayOfWeek == DayOfWeek.Friday)
                     {
                         var twoDaysPrior = trialDate.AddDays(-2);
                         var twoDayPriorThreeDay = trialDates.Where(x => x.Date == twoDaysPrior && x.TrialType == TrialType.ThreeDay).FirstOrDefault();
@@ -331,7 +416,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                     DecrementAvailabilityDate(ref trialDates, trialDate, 2);
 
                     //if wednesday is selected, will need to decrement the 2 and 3 day slots for tuesday
-                    if(trialDate.DayOfWeek == DayOfWeek.Wednesday)
+                    if (trialDate.DayOfWeek == DayOfWeek.Wednesday)
                     {
                         var date = trialDate.AddDays(-1);
                         var otherThreeDay = trialDates.Where(x => x.Date == date && x.TrialType == TrialType.ThreeDay).FirstOrDefault();
@@ -343,7 +428,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                             otherTwoDay.BookingSlotsAvailable--;
                     }
                     //if thursday is selected, decrement all 3 day slots and the 2day slot for wednesday
-                    else if (trialDate.DayOfWeek == DayOfWeek.Thursday)  
+                    else if (trialDate.DayOfWeek == DayOfWeek.Thursday)
                     {
                         var tuesday = trialDate.AddDays(-2);
                         var tuesdayThreeDay = trialDates.Where(x => x.Date == tuesday && x.TrialType == TrialType.ThreeDay).FirstOrDefault();
@@ -370,7 +455,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                     {
                         var date = trialDate.AddDays(-1);
                         var otherThreeDay = trialDates.Where(x => x.Date == date && x.TrialType == TrialType.ThreeDay).FirstOrDefault();
-                        if(otherThreeDay != null)
+                        if (otherThreeDay != null)
                             otherThreeDay.BookingSlotsAvailable--;
                     }
                 }
@@ -395,7 +480,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                 for (int x = 0; x < weeks; x++)
                 {
                     DecrementAvailabilityDate(ref trialDates, trialDate, 5);
-                    trialDate.AddDays(7);
+                    trialDate = trialDate.AddDays(7);
                 }
 
                 //reduce the remaining days left
@@ -405,12 +490,12 @@ namespace SCJ.Booking.CourtBookingPrototype
 
         private static void DecrementAvailabilityDate(ref TrialDate[] trialDates, DateTime trialDate, int decrementAmount)
         {
-            for(int x = 0; x < decrementAmount; x++)
+            for (int x = 0; x < decrementAmount; x++)
             {
-                foreach(var day in trialDates.Where(x => x.Date == trialDate))
+                foreach (var day in trialDates.Where(x => x.Date == trialDate))
                     day.BookingSlotsAvailable--;
-                
-                trialDate.AddDays(1);
+
+                trialDate = trialDate.AddDays(1);
             }
         }
 

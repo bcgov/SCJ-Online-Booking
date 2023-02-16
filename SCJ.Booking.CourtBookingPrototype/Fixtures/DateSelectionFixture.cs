@@ -33,7 +33,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     int dateSelectionIdCounter = 1;
 
                     #region August dates
-                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustSixteenPlusDayCaseBookingRequests.Take(DefaultNumberOfSixteenPlusDayBookings))
+                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustSixteenPlusDayCaseBookingRequests)
                     {
                         var augustDatesForSixteenPlus = AvailabilityDatesFixture.AugustDates.Where(x => x.TrialType == TrialType.SixteenPlusDay).ToArray();
                         for (int x = 0; x < augustDatesForSixteenPlus.Length; x++)
@@ -48,7 +48,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         }
                     }
                     
-                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustFifteenToSixDayCaseBookingRequests.Take(DefaultNumberOfFifteenToSixDayBookings))
+                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustFifteenToSixDayCaseBookingRequests)
                     {
                         var augustDatesForSixToFifteen = AvailabilityDatesFixture.AugustDates.Where(x => x.TrialType == TrialType.SixToFifteenDay).ToArray();
                         for (int x = 0; x < augustDatesForSixToFifteen.Length; x++)
@@ -63,7 +63,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         }
                     }
                     
-                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustFiveDayCaseBookingRequests.Take(DefaultNumberOfFiveDayBookings))
+                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustFiveDayCaseBookingRequests)
                     {
                         var augustDatesForFive = AvailabilityDatesFixture.AugustDates.Where(x => x.TrialType == TrialType.FiveDay).ToArray();
                         for (int x = 0; x < augustDatesForFive.Length; x++)
@@ -78,7 +78,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         }
                     }
                     
-                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustFourDayCaseBookingRequests.Take(DefaultNumberOfFourDayBookings))
+                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustFourDayCaseBookingRequests)
                     {
                         var augustDatesForFour = AvailabilityDatesFixture.AugustDates.Where(x => x.TrialType == TrialType.FourDay).ToArray();
                         for (int x = 0; x < augustDatesForFour.Length; x++)
@@ -93,7 +93,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         }
                     }
                     
-                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustThreeDayCaseBookingRequests.Take(DefaultNumberOfThreeDayBookings))
+                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustThreeDayCaseBookingRequests)
                     {
                         var augustDatesForThree = AvailabilityDatesFixture.AugustDates.Where(x => x.TrialType == TrialType.ThreeDay).ToArray();
                         for (int x = 0; x < augustDatesForThree.Length; x++)
@@ -108,7 +108,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         }
                     }
 
-                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustTwoDayCaseBookingRequests.Take(DefaultNumberOfTwoDayBookings))
+                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustTwoDayCaseBookingRequests)
                     {
                         var augustDatesForTwo = AvailabilityDatesFixture.AugustDates.Where(x => x.TrialType == TrialType.TwoDay).ToArray();
                         for (int x = 0; x < augustDatesForTwo.Length; x++)
@@ -123,7 +123,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         }
                     }
 
-                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustOneDayCaseBookingRequests.Take(DefaultNumberOfOneDayBookings))
+                    foreach (var bookingRequest in CaseBookingRequestsFixture.AugustOneDayCaseBookingRequests)
                     {
                         var augustDatesForOne = AvailabilityDatesFixture.AugustDates.Where(x => x.TrialType == TrialType.OneDay).ToArray();
                         for (int x = 0; x < augustDatesForOne.Length; x++)
