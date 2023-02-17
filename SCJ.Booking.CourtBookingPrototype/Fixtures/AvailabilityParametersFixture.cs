@@ -25,6 +25,42 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
             CourtClass = "M",
             HearingLength = 1
         };
+
+        public static AvailabilityParameter OctoberParameters = new AvailabilityParameter
+        {
+            Id = 3,
+            RegistryId = 1,
+            HearingType = 9999,
+            CourtClass = "M",
+            HearingLength = 1
+        };
+
+        public static AvailabilityParameter NovemberParameters = new AvailabilityParameter
+        {
+            Id = 4,
+            RegistryId = 1,
+            HearingType = 9999,
+            CourtClass = "M",
+            HearingLength = 1
+        };
+
+        public static AvailabilityParameter DecemberParameters = new AvailabilityParameter
+        {
+            Id = 5,
+            RegistryId = 1,
+            HearingType = 9999,
+            CourtClass = "M",
+            HearingLength = 1
+        };
+
+        public static AvailabilityParameter JanuaryParameters = new AvailabilityParameter
+        {
+            Id = 6,
+            RegistryId = 1,
+            HearingType = 9999,
+            CourtClass = "M",
+            HearingLength = 1
+        };
     }
 
     public class AvailabilityParameter

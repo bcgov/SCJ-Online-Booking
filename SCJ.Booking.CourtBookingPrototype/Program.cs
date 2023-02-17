@@ -14,7 +14,7 @@ namespace SCJ.Booking.CourtBookingPrototype
     public class Program
     {
         private static string LotteryCSVHeader = "Court File number,Unmet demand (months),Lottery ranking,Hearing Length (days),Registry ID,Court Class,First Choice Date,Second Choice Date,Third Choice Date,Fourth Choice Date,Fifth Choice Date,Date booked,New unmet demand (months)";
-        private static string WorkingDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+        public static string WorkingDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
         private static string BookingScheduleTemplate = $"{WorkingDirectory}/Templates/Lottery-Booking-Schedule-Template.csv";
 
         public static decimal DefaultDemandSupplyRatio = 1.25m;
@@ -38,7 +38,25 @@ namespace SCJ.Booking.CourtBookingPrototype
         public static List<DateSelection> DateSelections = DateSelectionFixture.DateSelections;
 
         //storage of all CaseBookingRequests
-        public static List<CaseBookingRequest> BookingRequests = new List<CaseBookingRequest>();
+        public static List<CaseBookingRequest> CurrentBookingMonthRequests;
+        public static List<CaseBookingRequest> _bookingRequests;
+        public static List<CaseBookingRequest> BookingRequests
+        {
+            get
+            {
+                if (_bookingRequests == null || _bookingRequests.Count <= 0)
+                {
+                    _bookingRequests = new List<CaseBookingRequest>();
+                    _bookingRequests.AddRange(CaseBookingRequestsFixture.AugustCaseBookingRequests);
+                    _bookingRequests.AddRange(CaseBookingRequestsFixture.SeptemberCaseBookingRequests);
+                    _bookingRequests.AddRange(CaseBookingRequestsFixture.OctoberCaseBookingRequests);
+                    _bookingRequests.AddRange(CaseBookingRequestsFixture.NovemberCaseBookingRequests);
+                    _bookingRequests.AddRange(CaseBookingRequestsFixture.DecemberCaseBookingRequests);
+                }
+
+                return _bookingRequests;
+            }
+        }
 
         public static void Main(string[] args)
         {
@@ -79,6 +97,22 @@ namespace SCJ.Booking.CourtBookingPrototype
             var augustAvailabilityParameters = AvailabilityParametersFixture.AugustParameters;
             RunLotterySimulation(augustAvailabilityParameters.RegistryId, augustAvailabilityParameters.HearingType, augustAvailabilityParameters.CourtClass, augustAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.AugustMonth);
 
+            //run lottery simulation for September
+            var septemberAvailabilityParameters = AvailabilityParametersFixture.SeptemberParameters;
+            RunLotterySimulation(septemberAvailabilityParameters.RegistryId, septemberAvailabilityParameters.HearingType, septemberAvailabilityParameters.CourtClass, septemberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.SeptemberMonth);
+
+            //run lottery simulation for October
+            var octoberAvailabilityParameters = AvailabilityParametersFixture.OctoberParameters;
+            RunLotterySimulation(octoberAvailabilityParameters.RegistryId, octoberAvailabilityParameters.HearingType, octoberAvailabilityParameters.CourtClass, octoberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.OctoberMonth);
+
+            //run lottery simulation for November
+            //var novemberAvailabilityParameters = AvailabilityParametersFixture.NovemberParameters;
+            //RunLotterySimulation(novemberAvailabilityParameters.RegistryId, novemberAvailabilityParameters.HearingType, novemberAvailabilityParameters.CourtClass, novemberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.NovemberMonth);
+
+            //run lottery simulation for December
+            //var decemberAvailabilityParameters = AvailabilityParametersFixture.DecemberParameters;
+            //RunLotterySimulation(decemberAvailabilityParameters.RegistryId, decemberAvailabilityParameters.HearingType, decemberAvailabilityParameters.CourtClass, decemberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.DecemberMonth);
+
             #endregion
         }
 
@@ -101,16 +135,21 @@ namespace SCJ.Booking.CourtBookingPrototype
 
                     //get all the demand for the current booking period
                     if (bookingMonth == FakeTrialBookingClient.AugustMonth)
-                        BookingRequests = CaseBookingRequestsFixture.AugustCaseBookingRequests;
+                        CurrentBookingMonthRequests = CaseBookingRequestsFixture.AugustCaseBookingRequests;
                     else if (bookingMonth == FakeTrialBookingClient.SeptemberMonth)
-                        BookingRequests = CaseBookingRequestsFixture.SeptemberCaseBookingRequests;
+                        CurrentBookingMonthRequests = CaseBookingRequestsFixture.SeptemberCaseBookingRequests;
+                    else if (bookingMonth == FakeTrialBookingClient.OctoberMonth)
+                        CurrentBookingMonthRequests = CaseBookingRequestsFixture.OctoberCaseBookingRequests;
+                    else if (bookingMonth == FakeTrialBookingClient.NovemberMonth)
+                        CurrentBookingMonthRequests = CaseBookingRequestsFixture.NovemberCaseBookingRequests;
+                    else if (bookingMonth == FakeTrialBookingClient.DecemberMonth)
+                        CurrentBookingMonthRequests = CaseBookingRequestsFixture.DecemberCaseBookingRequests;
+                    //else if (bookingMonth == FakeTrialBookingClient.JanuaryMonth)
+                    //    BookingRequests = CaseBookingRequestsFixture.Janu;
 
                     #region book unmet demand
                     //get all unmet demand so we book those first
                     List<List<UnmetDemand>> previousUnmetDemand = Client.GetUnmetDemand();
-
-                    //create a list of all unmet demand that we weren't able to book
-                    List<UnmetDemand> remainingUnmetDemand = new List<UnmetDemand>();
 
                     //try to create booking for unmet demand
                     foreach (var unmetDemandTier in previousUnmetDemand)
@@ -153,7 +192,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                                 }
 
                                 //get all the selected dates of this booking request and run through them to try and book a date
-                                var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == matchingCaseBookingRequest.Id).OrderBy(x => x.PreferenceOrder);
+                                var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == matchingCaseBookingRequest.Id && x.Date.Month == bookingMonth).OrderBy(x => x.PreferenceOrder);
 
                                 foreach (var dateSelection in matchingDateSelections)
                                 {
@@ -192,7 +231,6 @@ namespace SCJ.Booking.CourtBookingPrototype
                                             );
 
                                             writer.WriteLine(newLine);
-                                            unmetDemandLotteryRanking++;
                                             break;
                                         }
                                     }
@@ -202,8 +240,12 @@ namespace SCJ.Booking.CourtBookingPrototype
                                 //to be passed on
                                 if (!successfulBooking)
                                 {
-                                    unmetDemand.Count++;
-                                    remainingUnmetDemand.Add(unmetDemand);
+                                    //we need to also generate new dates for this new unmet demand for next month
+                                    int newBookingMonth = bookingMonth + 1;
+                                    if (newBookingMonth > 12)
+                                        newBookingMonth = 1;
+
+                                    DateSelectionFixture.AddUnmetDemandDateSelectionsForNextMonth(matchingCaseBookingRequest.Id, trialType, bookingMonth + 1);
 
                                     //write booking to csv
                                     var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
@@ -217,7 +259,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                                         courtFileNumber,
                                         unmetDemand.Count,
                                         unmetDemandLotteryRanking++,
-                                        hearingLength,
+                                        matchingCaseBookingRequest.TrialLength,
                                         RegistryFixture.VancouverRegistry.Location,
                                         string.Format("{0} - Motor Vehicle Accidents", courtClass),
                                         firstDateSelection != null ? firstDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
@@ -226,10 +268,11 @@ namespace SCJ.Booking.CourtBookingPrototype
                                         fourthDateSelection != null ? fourthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
                                         fifthDateSelection != null ? fifthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
                                         "Not Booked",
-                                        unmetDemand.Count
+                                        unmetDemand.Count+1
                                     );
-
                                     writer.WriteLine(newLine);
+
+                                    Client.RecordUnmetDemand(matchingCaseBookingRequest.Id, matchingCaseBookingRequest.BookingPeriodId);
                                 }
                                 else    //remove this case booking from the master list of booking requests as we were able to create a successful booking
                                 {
@@ -242,10 +285,10 @@ namespace SCJ.Booking.CourtBookingPrototype
 
                     #region book for normal slots
                     //run lottery to determine the order
-                    BookingRequests.Shuffle();
+                    CurrentBookingMonthRequests.Shuffle();
 
                     int lotteryRanking = 1;
-                    foreach (var bookingRequest in BookingRequests)
+                    foreach (var bookingRequest in CurrentBookingMonthRequests)
                     {
                         var courtFileNumber = $"{RegistryFixture.VancouverRegistry.Location} {courtClass}{bookingRequest.PhysicalFileId.ToString("00000")}";
 
@@ -277,7 +320,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                         }
 
                         //get all the selected dates of this booking request and run through them to try and book a date
-                        var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == bookingRequest.Id).OrderBy(x => x.PreferenceOrder);
+                        var matchingDateSelections = DateSelections.Where(x => x.CaseBookingRequestId == bookingRequest.Id && x.Date.Month == bookingMonth).OrderBy(x => x.PreferenceOrder);
                         foreach (var dateSelection in matchingDateSelections)
                         {
                             //check if date has availability and try to book date
@@ -324,12 +367,12 @@ namespace SCJ.Booking.CourtBookingPrototype
                         //to be passed on
                         if (!successfulBooking)
                         {
-                            remainingUnmetDemand.Add(new UnmetDemand
-                            {
-                                CaseBookingRequestId = bookingRequest.Id,
-                                BookingPeriodId = bookingRequest.BookingPeriodId,
-                                Count = 1
-                            });
+                            //we need to also generate new dates for this new unmet demand for next month
+                            int newBookingMonth = bookingMonth + 1;
+                            if (newBookingMonth > 12)
+                                newBookingMonth = 1;
+
+                            DateSelectionFixture.AddUnmetDemandDateSelectionsForNextMonth(bookingRequest.Id, trialType, bookingMonth+1);
 
                             var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
                             var secondDateSelection = matchingDateSelections.Skip(1).Take(1).FirstOrDefault();
@@ -343,7 +386,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                                 courtFileNumber,
                                 0,
                                 lotteryRanking++,
-                                hearingLength,
+                                bookingRequest.TrialLength,
                                 RegistryFixture.VancouverRegistry.Location,
                                 string.Format("{0} - Motor Vehicle Accidents", courtClass),
                                 firstDateSelection != null ? firstDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
@@ -354,6 +397,9 @@ namespace SCJ.Booking.CourtBookingPrototype
                                 "Not Booked",
                                 1
                             );
+                            writer.WriteLine(newLine);
+
+                            Client.RecordUnmetDemand(bookingRequest.Id, bookingRequest.BookingPeriodId);
                         }
                     }
                     #endregion
@@ -472,9 +518,19 @@ namespace SCJ.Booking.CourtBookingPrototype
             //for longer trials, we will need to loop through the number of days and decrement those slots
             else
             {
-                //6+ day trials can only be booked on mondays so we can break it into 5 day weeks and the remainder
+                //6+ day trials can only be booked on mondays or tuesdays so we can break it into weeks and the remainder
                 int weeks = decimal.ToInt32(trialLength) / 5;
                 int remainingDays = decimal.ToInt32(trialLength) % 5;
+
+                //if the trial date starts on a tuesday, we need to decrement by 4 to account for the missing day
+                if (trialDate.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    weeks--;
+                    remainingDays++;
+                    DecrementAvailabilityDate(ref trialDates, trialDate, 4);
+                    trialDate = trialDate.AddDays(6);
+                }
+                
 
                 //for each week, reduce every mon to fri slot by 1
                 for (int x = 0; x < weeks; x++)

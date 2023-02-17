@@ -24,7 +24,14 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                 RegistryId = 1,
                 OpeningDate = new DateTime(2024, 9, 1),
                 ClosingDate = new DateTime(2024, 9, 30)
-            }
+            },
+            new BookingPeriod
+            {
+                Id = 3,
+                RegistryId = 1,
+                OpeningDate = new DateTime(2024, 10, 1),
+                ClosingDate = new DateTime(2024, 10, 31)
+            },
         };
     }
 }

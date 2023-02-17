@@ -47,11 +47,16 @@ namespace SCJ.Booking.CourtBookingPrototype.Clients
 
         public string RecordUnmetDemand(int caseBookingRequestId, int bookingPeriodId)
         {
-            UnmetDemandFixture.UnmetDemand.Add(new UnmetDemand()
-            {
-                CaseBookingRequestId = caseBookingRequestId,
-                BookingPeriodId = bookingPeriodId
-            });
+            var matchingUnmetDemand = UnmetDemandFixture.UnmetDemand.Where(x => x.CaseBookingRequestId == caseBookingRequestId).FirstOrDefault();
+            if (matchingUnmetDemand != null)
+                matchingUnmetDemand.Count++;
+            else
+                UnmetDemandFixture.UnmetDemand.Add(new UnmetDemand()
+                {
+                    CaseBookingRequestId = caseBookingRequestId,
+                    BookingPeriodId = bookingPeriodId,
+                    Count = 1
+                });
 
             return "success";
         }
