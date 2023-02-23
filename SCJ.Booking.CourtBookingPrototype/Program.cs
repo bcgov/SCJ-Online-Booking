@@ -34,7 +34,7 @@ namespace SCJ.Booking.CourtBookingPrototype
             }
         }
 
-        //data for CaseBookingRequests are hard coded.  From there, the date selections for each CaseBookingRequest is generated in the DateSelection Fixture
+        //Date selections for each CaseBookingRequest is generated in DateSelectionFixture and written to the Demand CSV on startup
         public static List<DateSelection> DateSelections = DateSelectionFixture.DateSelections;
 
         //storage of all CaseBookingRequests
@@ -92,6 +92,7 @@ namespace SCJ.Booking.CourtBookingPrototype
 
             #region Algorithm Runner
             var client = new FakeTrialBookingClient();
+
             AvailabilityDatesFixture.CreateSupplyCSV();
 
             //run lottery simulation for August

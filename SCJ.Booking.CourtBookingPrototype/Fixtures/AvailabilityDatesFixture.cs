@@ -1,6 +1,7 @@
 using SCJ.Booking.CourtBookingPrototype.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -2385,8 +2386,14 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
 
         public static void CreateSupplyCSV()
         {
+            //to remove the period from the end of the abbreviated month name
+            CultureInfo ci = CultureInfo.CreateSpecificCulture("en-US");
+            DateTimeFormatInfo dtfi = ci.DateTimeFormat;
+            dtfi.AbbreviatedMonthNames = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "" };
+            dtfi.AbbreviatedMonthGenitiveNames = dtfi.AbbreviatedMonthNames;
+
             FileStream fileStream = null;
-            string newFilePath = $"{Program.WorkingDirectory}/Outputs/supply-dates-" + DateTime.Now.ToString("MM-dd-yyyy-H-mm-ss") + ".csv";
+            string newFilePath = $"{Program.WorkingDirectory}/Outputs/Supply-dates-" + DateTime.Now.ToString("MM-dd-yyyy-H-mm-ss") + ".csv";
             fileStream = new FileStream(newFilePath, FileMode.OpenOrCreate);
 
             using (var writer = new StreamWriter(fileStream))
@@ -2401,17 +2408,19 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
 
                 writer.WriteLine(SupplyCSVHeaderFirstRow);
                 writer.WriteLine(SupplyCSVHeaderSecondRow);
-
-                foreach (var date in masterList.OrderBy(x=>x.Date))
+                
+                foreach (var group in masterList.GroupBy(x=>x.Date).OrderBy(x=>x.Key))
                 {
                     //get all the slots for a particular date and write them out on a single line
                     string line = "";
-                    var matchingDays = masterList.Where(x => x.Date == date.Date);
+                    var matchingDays = group.ToList();
                     for(int x = 1; x <= 7; x++)
                     {
                         var trialTypeDay = matchingDays.Where(y => (int)y.TrialType == x).FirstOrDefault();
                         if (trialTypeDay != null)
-                            line += $"{trialTypeDay.Date.ToString("d-MMM-yyyy")},{trialTypeDay.NumberOfSlots},";
+                            line += $"{group.Key.ToString("d-MMM-yyyy", dtfi)},{trialTypeDay.NumberOfSlots},";
+                        else if (x == 1)
+                            line += $"{group.Key.ToString("d-MMM-yyyy", dtfi)},,";
                         else
                             line += ",,";
 
