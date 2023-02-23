@@ -75,7 +75,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Clients
         private static TrialDate[] GetFakeTrialDates(int bookingMonth)
         {
             var trialDates = new List<TrialDate>();
-            AvailabilityDate[] testDates = new AvailabilityDate[0];
+            List<AvailabilityDate> testDates = new List<AvailabilityDate>();
             switch (bookingMonth)
             {
                 case AugustMonth:

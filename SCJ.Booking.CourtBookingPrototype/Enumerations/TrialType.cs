@@ -14,6 +14,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Enumerations
         FourDay = 4,
         FiveDay = 5,
         SixToFifteenDay = 6,
-        SixteenPlusDay = 16
+        SixteenPlusDay = 7
     }
 }

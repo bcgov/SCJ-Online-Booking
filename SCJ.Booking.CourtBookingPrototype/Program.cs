@@ -92,6 +92,7 @@ namespace SCJ.Booking.CourtBookingPrototype
 
             #region Algorithm Runner
             var client = new FakeTrialBookingClient();
+            AvailabilityDatesFixture.CreateSupplyCSV();
 
             //run lottery simulation for August
             var augustAvailabilityParameters = AvailabilityParametersFixture.AugustParameters;
@@ -106,12 +107,16 @@ namespace SCJ.Booking.CourtBookingPrototype
             RunLotterySimulation(octoberAvailabilityParameters.RegistryId, octoberAvailabilityParameters.HearingType, octoberAvailabilityParameters.CourtClass, octoberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.OctoberMonth);
 
             //run lottery simulation for November
-            //var novemberAvailabilityParameters = AvailabilityParametersFixture.NovemberParameters;
-            //RunLotterySimulation(novemberAvailabilityParameters.RegistryId, novemberAvailabilityParameters.HearingType, novemberAvailabilityParameters.CourtClass, novemberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.NovemberMonth);
+            var novemberAvailabilityParameters = AvailabilityParametersFixture.NovemberParameters;
+            RunLotterySimulation(novemberAvailabilityParameters.RegistryId, novemberAvailabilityParameters.HearingType, novemberAvailabilityParameters.CourtClass, novemberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.NovemberMonth);
 
             //run lottery simulation for December
-            //var decemberAvailabilityParameters = AvailabilityParametersFixture.DecemberParameters;
-            //RunLotterySimulation(decemberAvailabilityParameters.RegistryId, decemberAvailabilityParameters.HearingType, decemberAvailabilityParameters.CourtClass, decemberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.DecemberMonth);
+            var decemberAvailabilityParameters = AvailabilityParametersFixture.DecemberParameters;
+            RunLotterySimulation(decemberAvailabilityParameters.RegistryId, decemberAvailabilityParameters.HearingType, decemberAvailabilityParameters.CourtClass, decemberAvailabilityParameters.HearingLength, 2024, FakeTrialBookingClient.DecemberMonth);
+
+            //run lottery simulation for January
+            var januaryAvailabilityParameters = AvailabilityParametersFixture.JanuaryParameters;
+            RunLotterySimulation(januaryAvailabilityParameters.RegistryId, januaryAvailabilityParameters.HearingType, januaryAvailabilityParameters.CourtClass, januaryAvailabilityParameters.HearingLength, 2025, FakeTrialBookingClient.JanuaryMonth);
 
             #endregion
         }
@@ -144,8 +149,8 @@ namespace SCJ.Booking.CourtBookingPrototype
                         CurrentBookingMonthRequests = CaseBookingRequestsFixture.NovemberCaseBookingRequests;
                     else if (bookingMonth == FakeTrialBookingClient.DecemberMonth)
                         CurrentBookingMonthRequests = CaseBookingRequestsFixture.DecemberCaseBookingRequests;
-                    //else if (bookingMonth == FakeTrialBookingClient.JanuaryMonth)
-                    //    BookingRequests = CaseBookingRequestsFixture.Janu;
+                    else if (bookingMonth == FakeTrialBookingClient.JanuaryMonth)
+                        CurrentBookingMonthRequests = CaseBookingRequestsFixture.JanuaryCaseBookingRequests;
 
                     #region book unmet demand
                     //get all unmet demand so we book those first
@@ -245,7 +250,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                                     if (newBookingMonth > 12)
                                         newBookingMonth = 1;
 
-                                    DateSelectionFixture.AddUnmetDemandDateSelectionsForNextMonth(matchingCaseBookingRequest.Id, trialType, bookingMonth + 1);
+                                    DateSelectionFixture.AddUnmetDemandDateSelectionsForNextMonth(matchingCaseBookingRequest.Id, trialType, newBookingMonth);
 
                                     //write booking to csv
                                     var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
@@ -253,7 +258,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                                     var thirdDateSelection = matchingDateSelections.Skip(2).Take(1).FirstOrDefault();
                                     var fourthDateSelection = matchingDateSelections.Skip(3).Take(1).FirstOrDefault();
                                     var fifthDateSelection = matchingDateSelections.Skip(4).Take(1).FirstOrDefault();
-
+                                    int increasedDemand = unmetDemand.Count + 1;
                                     var newLine = string.Format(
                                         "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
                                         courtFileNumber,
@@ -268,7 +273,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                                         fourthDateSelection != null ? fourthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
                                         fifthDateSelection != null ? fifthDateSelection.Date.ToString("dd-MMMM-yyyy") : "",
                                         "Not Booked",
-                                        unmetDemand.Count+1
+                                        increasedDemand
                                     );
                                     writer.WriteLine(newLine);
 
@@ -372,7 +377,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                             if (newBookingMonth > 12)
                                 newBookingMonth = 1;
 
-                            DateSelectionFixture.AddUnmetDemandDateSelectionsForNextMonth(bookingRequest.Id, trialType, bookingMonth+1);
+                            DateSelectionFixture.AddUnmetDemandDateSelectionsForNextMonth(bookingRequest.Id, trialType, newBookingMonth);
 
                             var firstDateSelection = matchingDateSelections.Take(1).FirstOrDefault();
                             var secondDateSelection = matchingDateSelections.Skip(1).Take(1).FirstOrDefault();
