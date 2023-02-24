@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SCJ.Booking.CourtBookingPrototype.Extensions
 {
+    //the shuffle is based on the Fisher-Yates shuffle
     //extension for List that adds a shuffle method to randomly shuffle the contents of the list
     //see https://stackoverflow.com/questions/273313/randomize-a-listt for additional details
     public static class ListExtension

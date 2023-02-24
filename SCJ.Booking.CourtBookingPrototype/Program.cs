@@ -36,7 +36,7 @@ namespace SCJ.Booking.CourtBookingPrototype
         }
 
         //Date selections for each CaseBookingRequest is generated in DateSelectionFixture and written to the Demand CSV on startup
-        public static List<DateSelection> DateSelections = DateSelectionFixture.DateSelections;
+        public static List<DateSelection> DateSelections;
 
         //storage of all CaseBookingRequests
         public static List<CaseBookingRequest> CurrentBookingMonthRequests;
@@ -94,7 +94,11 @@ namespace SCJ.Booking.CourtBookingPrototype
             #region Algorithm Runner
             var client = new FakeTrialBookingClient();
 
+            //write supply to csv
             AvailabilityDatesFixture.CreateSupplyCSV();
+
+            //set up demand, which also writes demand to a csv
+            DateSelections = DateSelectionFixture.DateSelections;
 
             //run lottery simulation for August
             var augustAvailabilityParameters = AvailabilityParametersFixture.AugustParameters;
@@ -165,6 +169,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                         //run lottery to determine the order
                         int unmetDemandLotteryRanking = 1;
                         unmetDemandTier.Shuffle();
+
                         foreach (var unmetDemand in unmetDemandTier)
                         {
                             var matchingCaseBookingRequest = BookingRequests.Where(x => x.Id == unmetDemand.CaseBookingRequestId).FirstOrDefault();
