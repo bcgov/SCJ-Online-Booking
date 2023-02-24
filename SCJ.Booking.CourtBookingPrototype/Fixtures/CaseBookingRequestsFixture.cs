@@ -15,7 +15,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
         {
             get {
                 if (_demandRatio == 0)
-                    _demandRatio = 1.5m;
+                    _demandRatio = 1.2m;
 
                 return _demandRatio;
             }

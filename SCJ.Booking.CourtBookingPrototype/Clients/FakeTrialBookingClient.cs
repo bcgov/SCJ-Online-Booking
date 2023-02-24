@@ -51,12 +51,20 @@ namespace SCJ.Booking.CourtBookingPrototype.Clients
             if (matchingUnmetDemand != null)
                 matchingUnmetDemand.Count++;
             else
+            {
+                int id = 1;
+                var highestUnmetDemandId = UnmetDemandFixture.UnmetDemand.OrderByDescending(x => x.Id).FirstOrDefault();
+                if (highestUnmetDemandId != null)
+                    id = highestUnmetDemandId.Id + 1;
+
                 UnmetDemandFixture.UnmetDemand.Add(new UnmetDemand()
                 {
+                    Id = id,
                     CaseBookingRequestId = caseBookingRequestId,
                     BookingPeriodId = bookingPeriodId,
                     Count = 1
                 });
+            }
 
             return "success";
         }

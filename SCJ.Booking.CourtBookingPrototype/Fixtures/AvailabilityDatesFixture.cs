@@ -1,4 +1,5 @@
 using SCJ.Booking.CourtBookingPrototype.Enumerations;
+using SCJ.Booking.CourtBookingPrototype.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -541,13 +542,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 9, 16),
-                            NumberOfSlots = 43,
-                            TrialType = TrialType.FourDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 8, 23),
                             NumberOfSlots = 43,
                             TrialType = TrialType.FourDay
                         },
@@ -2386,12 +2380,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
 
         public static void CreateSupplyCSV()
         {
-            //to remove the period from the end of the abbreviated month name
-            CultureInfo ci = CultureInfo.CreateSpecificCulture("en-US");
-            DateTimeFormatInfo dtfi = ci.DateTimeFormat;
-            dtfi.AbbreviatedMonthNames = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "" };
-            dtfi.AbbreviatedMonthGenitiveNames = dtfi.AbbreviatedMonthNames;
-
             FileStream fileStream = null;
             string newFilePath = $"{Program.WorkingDirectory}/Outputs/Supply-dates-" + DateTime.Now.ToString("MM-dd-yyyy-H-mm-ss") + ".csv";
             fileStream = new FileStream(newFilePath, FileMode.OpenOrCreate);
@@ -2418,9 +2406,9 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     {
                         var trialTypeDay = matchingDays.Where(y => (int)y.TrialType == x).FirstOrDefault();
                         if (trialTypeDay != null)
-                            line += $"{group.Key.ToString("d-MMM-yyyy", dtfi)},{trialTypeDay.NumberOfSlots},";
+                            line += $"{group.Key.ToString("d-MMM-yyyy", DateTimeFormatInfoExtension.DateTimeFormatInfoEx)},{trialTypeDay.NumberOfSlots},";
                         else if (x == 1)
-                            line += $"{group.Key.ToString("d-MMM-yyyy", dtfi)},,";
+                            line += $"{group.Key.ToString("d-MMM-yyyy", DateTimeFormatInfoExtension.DateTimeFormatInfoEx)},,";
                         else
                             line += ",,";
 

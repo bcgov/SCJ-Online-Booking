@@ -15,7 +15,8 @@ namespace SCJ.Booking.CourtBookingPrototype
     {
         private static string LotteryCSVHeader = "Court File number,Unmet demand (months),Lottery ranking,Hearing Length (days),Registry ID,Court Class,First Choice Date,Second Choice Date,Third Choice Date,Fourth Choice Date,Fifth Choice Date,Date booked,New unmet demand (months)";
         public static string WorkingDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-        private static string BookingScheduleTemplate = $"{WorkingDirectory}/Templates/Lottery-Booking-Schedule-Template.csv";
+        private static string LotteryMonthSummaryCSVHeader = "16+,,,,15-6,,,,5,,,,4,,,,3,,,,2,,,,1,,,";
+        private static string LotteryMonthSummaryCSVSubheader = "Dates,Remaining,Booked,,Dates,Remaining,Booked,,Dates,Remaining,Booked,,Dates,Remaining,Booked,,Dates,Remaining,Booked,,Dates,Remaining,Booked,,Dates,Remaining,Booked,";
 
         public static decimal DefaultDemandSupplyRatio = 1.25m;
 
@@ -124,9 +125,13 @@ namespace SCJ.Booking.CourtBookingPrototype
 
         private static void RunLotterySimulation(int registryId, decimal hearingType, string courtClass, decimal hearingLength, int bookingYear, int bookingMonth)
         {
-            //duplicate the template for writing
+            DateTime currentTime = DateTime.Now;
+            //get all available dates for the booking period
+            TrialDate[] trialDates = Client.GetAvailableTrialDates(registryId, hearingType, courtClass, hearingLength, bookingYear, bookingMonth);
+
+            //set up lottery csv 
             FileStream fileStream = null;
-            string newFilePath = $"{WorkingDirectory}/Outputs/{bookingMonth}-{bookingYear}-Booking-Schedule-" + DateTime.Now.ToString("MM-dd-yyyy-H-mm-ss") + ".csv";
+            string newFilePath = $"{WorkingDirectory}/Outputs/{bookingMonth}-{bookingYear}-Booking-Schedule-" + currentTime.ToString("MM-dd-yyyy-H-mm-ss") + ".csv";
             try
             {
                 fileStream = new FileStream(newFilePath, FileMode.OpenOrCreate);
@@ -135,9 +140,6 @@ namespace SCJ.Booking.CourtBookingPrototype
                 {
                     //write the header to the file
                     writer.WriteLine(LotteryCSVHeader);
-
-                    //get all available dates for the booking period
-                    TrialDate[] trialDates = Client.GetAvailableTrialDates(registryId, hearingType, courtClass, hearingLength, bookingYear, bookingMonth);
 
                     //get all the demand for the current booking period
                     if (bookingMonth == FakeTrialBookingClient.AugustMonth)
@@ -283,6 +285,7 @@ namespace SCJ.Booking.CourtBookingPrototype
                                 else    //remove this case booking from the master list of booking requests as we were able to create a successful booking
                                 {
                                     BookingRequests.Remove(matchingCaseBookingRequest);
+                                    Client.RemoveUnmetDemand(unmetDemand.Id);
                                 }
                             }
                         }
@@ -293,8 +296,12 @@ namespace SCJ.Booking.CourtBookingPrototype
                     //run lottery to determine the order
                     CurrentBookingMonthRequests.Shuffle();
 
+                    //get the number of unmet demand to reduce from the current month's requests
+                    int totalUnmetDemandCount = previousUnmetDemand.SelectMany(x => x).Count();
+                    int newAmountOfDemand = CurrentBookingMonthRequests.Count - totalUnmetDemandCount;
+
                     int lotteryRanking = 1;
-                    foreach (var bookingRequest in CurrentBookingMonthRequests)
+                    foreach (var bookingRequest in CurrentBookingMonthRequests.Take(newAmountOfDemand))
                     {
                         var courtFileNumber = $"{RegistryFixture.VancouverRegistry.Location} {courtClass}{bookingRequest.PhysicalFileId.ToString("00000")}";
 
@@ -421,6 +428,58 @@ namespace SCJ.Booking.CourtBookingPrototype
                     fileStream.Dispose();
             }
 
+            //set up summary csv
+            FileStream summaryFileStream = null;
+            string summaryFilePath = $"{WorkingDirectory}/Outputs/{bookingMonth}-{bookingYear}-Booking-Summary-" + currentTime.ToString("MM-dd-yyyy-H-mm-ss") + ".csv";
+            try
+            {
+                summaryFileStream = new FileStream(summaryFilePath, FileMode.OpenOrCreate);
+
+                using (var writer = new StreamWriter(summaryFileStream))
+                {
+                    writer.WriteLine(LotteryMonthSummaryCSVHeader);
+                    writer.WriteLine(LotteryMonthSummaryCSVSubheader);
+
+                    foreach(var group in trialDates.GroupBy(x => x.Date).OrderBy(x => x.Key))
+                    {
+                        //get all the slots for a particular date and write them out on a single line
+                        string line = "";
+                        var matchingDays = group.ToList();
+                        for (int x = 7; x > 0; x--)
+                        {
+                            
+                            var date = group.Key.ToString("d-MMM-yyyy", DateTimeFormatInfoExtension.DateTimeFormatInfoEx);
+                            var trialTypeDay = matchingDays.Where(y => (int)y.TrialType == x).FirstOrDefault();
+                            if (trialTypeDay != null)
+                            {
+                                //booked and remaining dates need to be properly calculated since the booking slots available goes negative if overbooked
+                                int booked = trialTypeDay.InitialBookingSlotsAvailable;
+                                int remaining = 0;
+                                if (trialTypeDay.BookingSlotsAvailable > 0)
+                                {
+                                    remaining = trialTypeDay.BookingSlotsAvailable;
+                                    booked -= trialTypeDay.BookingSlotsAvailable;
+                                }
+                                    
+                                line += $"{date},{remaining},{booked},,";
+                            }
+                            else
+                                line += $"{date},,,,";
+
+                        }
+                        writer.WriteLine(line.Substring(0, line.Length - 1));
+                    }
+                }
+            }
+            catch (IOException iox)
+            {
+                Console.WriteLine(iox.Message);
+            }
+            finally
+            {
+                if (summaryFileStream != null)
+                    summaryFileStream.Dispose();
+            }
         }
 
         //function used to decrement the prototype's available date slots based on the trial length

@@ -271,3 +271,4 @@ app/scj-booking.sqlite
 app/scj-booking.sqlite*
 
 SCJ.Booking.CourtBookingPrototype/Outputs
+*.csv
