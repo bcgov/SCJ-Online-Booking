@@ -1,8 +1,7 @@
 {
   "profiles": {
     "SCJ.Booking.CourtBookingPrototype": {
-      "commandName": "Project",
-      "commandLineArgs": "1.5"
+      "commandName": "Project"
     }
   }
 }

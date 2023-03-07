@@ -17,9 +17,17 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
         public static decimal BaseNumberOfTwoDayBookingsPerMonth = 1;
         public static decimal BaseNumberOfThreeDayBookingsPerMonth = 5;
         public static decimal BaseNumberOfFourDayBookingsPerMonth = 5;
-        public static decimal BaseNumberOfFiveDayBookingsPerMonth = 135;
-        public static decimal BaseNumberOfSixToFifteenDayBookingsPerMonth = 11;
-        public static decimal BaseNumberOfSixteenPlusDayBookingsPerMonth = 2;
+        public static decimal BaseNumberOfFiveDayBookingsPerMonth = 122;
+        public static decimal BaseNumberOfSixToFifteenDayBookingsPerMonth = 22;
+        public static decimal BaseNumberOfSixteenPlusDayBookingsPerMonth = 4;
+
+        //predefined demand ratios for each month as indicated by Lorne
+        private static decimal AugustDefaultDemandSupplyRatio = 1.2m;
+        private static decimal SeptemberDefaultDemandSupplyRatio = 1.75m;
+        private static decimal OctoberDefaultDemandSupplyRatio = 1.75m;
+        private static decimal NovemberDefaultDemandSupplyRatio = 1.5m;
+        private static decimal DecemberDefaultDemandSupplyRatio = 1.5m;
+        private static decimal JanuaryDefaultDemandSupplyRatio = 1.75m;
 
         //Ids for August start at 1
         #region August CaseBookingRequests
@@ -34,7 +42,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     _augustCaseBookingRequests = new List<CaseBookingRequest>();
 
                     #region 16+ dates
-                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * AugustDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixteenPlusDates; x++)
                     {
                         Random r = new Random();
@@ -54,7 +62,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 6 to 15 dates
-                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * AugustDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixToFifteenDates; x++)
                     {
                         Random r = new Random();
@@ -74,7 +82,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 5 dates
-                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * AugustDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFiveDates; x++)
                     {
                         _augustCaseBookingRequests.Add(new CaseBookingRequest
@@ -93,7 +101,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 4 dates
-                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * AugustDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFourDates; x++)
                     {
                         _augustCaseBookingRequests.Add(new CaseBookingRequest
@@ -112,7 +120,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 3 dates
-                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * AugustDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfThreeDates; x++)
                     {
                         _augustCaseBookingRequests.Add(new CaseBookingRequest
@@ -131,7 +139,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 2 dates
-                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * AugustDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfTwoDates; x++)
                     {
                         _augustCaseBookingRequests.Add(new CaseBookingRequest
@@ -150,7 +158,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 1 dates
-                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * AugustDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfOneDates; x++)
                     {
                         _augustCaseBookingRequests.Add(new CaseBookingRequest
@@ -187,7 +195,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     _septemberCaseBookingRequests = new List<CaseBookingRequest>();
 
                     #region 16+ dates
-                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * SeptemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixteenPlusDates; x++)
                     {
                         Random r = new Random();
@@ -207,7 +215,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 6 to 15 dates
-                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * SeptemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixToFifteenDates; x++)
                     {
                         Random r = new Random();
@@ -227,7 +235,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 5 dates
-                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * SeptemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFiveDates; x++)
                     {
                         _septemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -246,7 +254,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 4 dates
-                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * SeptemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFourDates; x++)
                     {
                         _septemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -265,7 +273,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 3 dates
-                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * SeptemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfThreeDates; x++)
                     {
                         _septemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -284,7 +292,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 2 dates
-                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * SeptemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfTwoDates; x++)
                     {
                         _septemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -303,7 +311,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 1 dates
-                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * SeptemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfOneDates; x++)
                     {
                         _septemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -340,7 +348,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     _octoberCaseBookingRequests = new List<CaseBookingRequest>();
 
                     #region 16+ dates
-                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * OctoberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixteenPlusDates; x++)
                     {
                         Random r = new Random();
@@ -360,7 +368,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 6 to 15 dates
-                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * OctoberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixToFifteenDates; x++)
                     {
                         Random r = new Random();
@@ -380,7 +388,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 5 dates
-                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * OctoberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFiveDates; x++)
                     {
                         _octoberCaseBookingRequests.Add(new CaseBookingRequest
@@ -399,7 +407,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 4 dates
-                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * OctoberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFourDates; x++)
                     {
                         _octoberCaseBookingRequests.Add(new CaseBookingRequest
@@ -418,7 +426,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 3 dates
-                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * OctoberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfThreeDates; x++)
                     {
                         _octoberCaseBookingRequests.Add(new CaseBookingRequest
@@ -437,7 +445,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 2 dates
-                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * OctoberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfTwoDates; x++)
                     {
                         _octoberCaseBookingRequests.Add(new CaseBookingRequest
@@ -456,7 +464,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 1 dates
-                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * OctoberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfOneDates; x++)
                     {
                         _octoberCaseBookingRequests.Add(new CaseBookingRequest
@@ -493,7 +501,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     _novemberCaseBookingRequests = new List<CaseBookingRequest>();
 
                     #region 16+ dates
-                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * NovemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixteenPlusDates; x++)
                     {
                         Random r = new Random();
@@ -513,7 +521,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 6 to 15 dates
-                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * NovemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixToFifteenDates; x++)
                     {
                         Random r = new Random();
@@ -533,7 +541,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 5 dates
-                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * NovemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFiveDates; x++)
                     {
                         _novemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -552,7 +560,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 4 dates
-                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * NovemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFourDates; x++)
                     {
                         _novemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -571,7 +579,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 3 dates
-                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * NovemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfThreeDates; x++)
                     {
                         _novemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -590,7 +598,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 2 dates
-                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * NovemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfTwoDates; x++)
                     {
                         _novemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -609,7 +617,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 1 dates
-                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * NovemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfOneDates; x++)
                     {
                         _novemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -646,7 +654,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     _decemberCaseBookingRequests = new List<CaseBookingRequest>();
 
                     #region 16+ dates
-                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * DecemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixteenPlusDates; x++)
                     {
                         Random r = new Random();
@@ -666,7 +674,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 6 to 15 dates
-                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * DecemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixToFifteenDates; x++)
                     {
                         Random r = new Random();
@@ -686,7 +694,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 5 dates
-                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * DecemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFiveDates; x++)
                     {
                         _decemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -705,7 +713,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 4 dates
-                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * DecemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFourDates; x++)
                     {
                         _decemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -724,7 +732,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 3 dates
-                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * DecemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfThreeDates; x++)
                     {
                         _decemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -743,7 +751,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 2 dates
-                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * DecemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfTwoDates; x++)
                     {
                         _decemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -762,7 +770,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 1 dates
-                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * DecemberDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfOneDates; x++)
                     {
                         _decemberCaseBookingRequests.Add(new CaseBookingRequest
@@ -801,7 +809,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     _januaryCaseBookingRequests = new List<CaseBookingRequest>();
 
                     #region 16+ dates
-                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixteenPlusDates = (int)Math.Round(BaseNumberOfSixteenPlusDayBookingsPerMonth * JanuaryDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixteenPlusDates; x++)
                     {
                         Random r = new Random();
@@ -821,7 +829,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 6 to 15 dates
-                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfSixToFifteenDates = (int)Math.Round(BaseNumberOfSixToFifteenDayBookingsPerMonth * JanuaryDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfSixToFifteenDates; x++)
                     {
                         Random r = new Random();
@@ -841,7 +849,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 5 dates
-                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFiveDates = (int)Math.Round(BaseNumberOfFiveDayBookingsPerMonth * JanuaryDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFiveDates; x++)
                     {
                         _januaryCaseBookingRequests.Add(new CaseBookingRequest
@@ -860,7 +868,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 4 dates
-                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfFourDates = (int)Math.Round(BaseNumberOfFourDayBookingsPerMonth * JanuaryDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfFourDates; x++)
                     {
                         _januaryCaseBookingRequests.Add(new CaseBookingRequest
@@ -879,7 +887,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 3 dates
-                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfThreeDates = (int)Math.Round(BaseNumberOfThreeDayBookingsPerMonth * JanuaryDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfThreeDates; x++)
                     {
                         _januaryCaseBookingRequests.Add(new CaseBookingRequest
@@ -898,7 +906,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 2 dates
-                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfTwoDates = (int)Math.Round(BaseNumberOfTwoDayBookingsPerMonth * JanuaryDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfTwoDates; x++)
                     {
                         _januaryCaseBookingRequests.Add(new CaseBookingRequest
@@ -917,7 +925,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     #endregion
 
                     #region 1 dates
-                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * Program.DefaultDemandSupplyRatio);
+                    int numberOfOneDates = (int)Math.Round(BaseNumberOfOneDayBookingsPerMonth * JanuaryDefaultDemandSupplyRatio);
                     for (int x = 0; x < numberOfOneDates; x++)
                     {
                         _januaryCaseBookingRequests.Add(new CaseBookingRequest

@@ -1226,20 +1226,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 4),
-                            NumberOfSlots = 4,
-                            TrialType = TrialType.SixteenPlusDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 12),
-                            NumberOfSlots = 2,
-                            TrialType = TrialType.SixteenPlusDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 11, 18),
                             NumberOfSlots = 4,
                             TrialType = TrialType.SixteenPlusDay
@@ -1259,13 +1245,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 11, 4),
                             NumberOfSlots = 60,
-                            TrialType = TrialType.SixToFifteenDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 12),
-                            NumberOfSlots = 35,
                             TrialType = TrialType.SixToFifteenDay
                         },
                         new AvailabilityDate
@@ -1319,13 +1298,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 12),
-                            NumberOfSlots = 43,
-                            TrialType = TrialType.FourDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 11, 18),
                             NumberOfSlots = 43,
                             TrialType = TrialType.FourDay
@@ -1351,20 +1323,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 11, 6),
-                            NumberOfSlots = 8,
-                            TrialType = TrialType.ThreeDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 13),
-                            NumberOfSlots = 10,
-                            TrialType = TrialType.ThreeDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 14),
                             NumberOfSlots = 8,
                             TrialType = TrialType.ThreeDay
                         },
@@ -1417,27 +1375,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 11, 7),
-                            NumberOfSlots = 8,
-                            TrialType = TrialType.TwoDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 13),
-                            NumberOfSlots = 10,
-                            TrialType = TrialType.TwoDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 14),
-                            NumberOfSlots = 14,
-                            TrialType = TrialType.TwoDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 15),
                             NumberOfSlots = 8,
                             TrialType = TrialType.TwoDay
                         },
@@ -1524,34 +1461,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 13),
-                            NumberOfSlots = 10,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 14),
-                            NumberOfSlots = 18,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 15),
-                            NumberOfSlots = 14,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 11, 16),
-                            NumberOfSlots = 8,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 11, 19),
                             NumberOfSlots = 10,
                             TrialType = TrialType.OneDay
@@ -1623,27 +1532,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                     _decemberDates = new List<AvailabilityDate>
                     {
                         #region 16+ dates
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 2),
-                            NumberOfSlots = 2,
-                            TrialType = TrialType.SixteenPlusDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 9),
-                            NumberOfSlots = 2,
-                            TrialType = TrialType.SixteenPlusDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 16),
-                            NumberOfSlots = 2,
-                            TrialType = TrialType.SixteenPlusDay
-                        },
                         #endregion
 
                         #region 6 - 15 dates
@@ -1651,21 +1539,14 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 2),
-                            NumberOfSlots = 35,
+                            NumberOfSlots = 60,
                             TrialType = TrialType.SixToFifteenDay
                         },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 9),
-                            NumberOfSlots = 35,
-                            TrialType = TrialType.SixToFifteenDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 16),
-                            NumberOfSlots = 35,
+                            NumberOfSlots = 60,
                             TrialType = TrialType.SixToFifteenDay
                         },
                         #endregion
@@ -1675,7 +1556,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 2),
-                            NumberOfSlots = 27,
+                            NumberOfSlots = 43,
                             TrialType = TrialType.FiveDay
                         },
                         new AvailabilityDate
@@ -1699,7 +1580,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 2),
-                            NumberOfSlots = 27,
+                            NumberOfSlots = 43,
                             TrialType = TrialType.FourDay
                         },
                         new AvailabilityDate
@@ -1723,14 +1604,14 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 3),
-                            NumberOfSlots = 6,
+                            NumberOfSlots = 10,
                             TrialType = TrialType.ThreeDay
                         },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 4),
-                            NumberOfSlots = 7,
+                            NumberOfSlots = 8,
                             TrialType = TrialType.ThreeDay
                         },
                         new AvailabilityDate
@@ -1768,21 +1649,21 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 3),
-                            NumberOfSlots = 6,
+                            NumberOfSlots = 10,
                             TrialType = TrialType.TwoDay
                         },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 4),
-                            NumberOfSlots = 9,
+                            NumberOfSlots = 14,
                             TrialType = TrialType.TwoDay
                         },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 5),
-                            NumberOfSlots = 7,
+                            NumberOfSlots = 8,
                             TrialType = TrialType.TwoDay
                         },
                         new AvailabilityDate
@@ -1834,28 +1715,28 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 3),
-                            NumberOfSlots = 6,
+                            NumberOfSlots = 10,
                             TrialType = TrialType.OneDay
                         },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 4),
-                            NumberOfSlots = 11,
+                            NumberOfSlots = 18,
                             TrialType = TrialType.OneDay
                         },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 5),
-                            NumberOfSlots = 9,
+                            NumberOfSlots = 14,
                             TrialType = TrialType.OneDay
                         },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 6),
-                            NumberOfSlots = 7,
+                            NumberOfSlots = 8,
                             TrialType = TrialType.OneDay
                         },
                         new AvailabilityDate
@@ -1911,41 +1792,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2024, 12, 20),
-                            NumberOfSlots = 7,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 23),
-                            NumberOfSlots = 8,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 24),
-                            NumberOfSlots = 7,
-                            TrialType = TrialType.OneDay
-                        },
-                         new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 27),
-                            NumberOfSlots = 6,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 30),
-                            NumberOfSlots = 8,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2024, 12, 31),
                             NumberOfSlots = 7,
                             TrialType = TrialType.OneDay
                         },
@@ -2016,7 +1862,7 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         {
                             AvailabilityParameterId = 1,
                             Date = new DateTime(2025, 1, 20),
-                            NumberOfSlots = 60,
+                            NumberOfSlots = 59,
                             TrialType = TrialType.SixToFifteenDay
                         },
                         new AvailabilityDate
@@ -2150,13 +1996,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         #endregion
 
                         #region 2 dates
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2025, 1, 2),
-                            NumberOfSlots = 8,
-                            TrialType = TrialType.TwoDay
-                        },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,
@@ -2244,20 +2083,6 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                         #endregion
 
                         #region 1 dates
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2025, 1, 2),
-                            NumberOfSlots = 10,
-                            TrialType = TrialType.OneDay
-                        },
-                        new AvailabilityDate
-                        {
-                            AvailabilityParameterId = 1,
-                            Date = new DateTime(2025, 1, 3),
-                            NumberOfSlots = 8,
-                            TrialType = TrialType.OneDay
-                        },
                         new AvailabilityDate
                         {
                             AvailabilityParameterId = 1,

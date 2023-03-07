@@ -861,25 +861,28 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
                                 if (RandomDateSelections)
                                     decemberDatesForSixteenPlus.Shuffle();
 
-                                for (int x = 0; x < decemberDatesForSixteenPlus.Length; x++)
+                                if(decemberDatesForSixteenPlus != null && decemberDatesForSixteenPlus.Length > 0)
                                 {
-                                    _dateSelections.Add(new DateSelection
+                                    for (int x = 0; x < decemberDatesForSixteenPlus.Length; x++)
                                     {
-                                        Id = dateSelectionIdCounter++,
-                                        CaseBookingRequestId = bookingRequest.Id,
-                                        Date = decemberDatesForSixteenPlus[x].Date,
-                                        PreferenceOrder = x + 1
-                                    });
-                                    dates = dates + decemberDatesForSixteenPlus[x].Date.ToString("dd-MMMM-yyyy") + ",";
-                                }
+                                        _dateSelections.Add(new DateSelection
+                                        {
+                                            Id = dateSelectionIdCounter++,
+                                            CaseBookingRequestId = bookingRequest.Id,
+                                            Date = decemberDatesForSixteenPlus[x].Date,
+                                            PreferenceOrder = x + 1
+                                        });
+                                        dates = dates + decemberDatesForSixteenPlus[x].Date.ToString("dd-MMMM-yyyy") + ",";
+                                    }
 
-                                dates = dates.Substring(0, dates.Length - 1);
-                                writer.WriteLine(String.Format(
-                                    "{0},{1},{2}",
-                                    $"{RegistryFixture.VancouverRegistry.Location} M{bookingRequest.PhysicalFileId.ToString("00000")}",
-                                    bookingRequest.TrialLength,
-                                    dates
-                                ));
+                                    dates = dates.Substring(0, dates.Length - 1);
+                                    writer.WriteLine(String.Format(
+                                        "{0},{1},{2}",
+                                        $"{RegistryFixture.VancouverRegistry.Location} M{bookingRequest.PhysicalFileId.ToString("00000")}",
+                                        bookingRequest.TrialLength,
+                                        dates
+                                    ));
+                                }
                             }
 
                             foreach (var bookingRequest in CaseBookingRequestsFixture.DecemberCaseBookingRequests.Where(x => x.TrialLength >= 6 && x.TrialLength <= 15))
