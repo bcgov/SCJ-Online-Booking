@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using SCJ.Booking.CourtBookingPrototype.Clients;
 using SCJ.Booking.CourtBookingPrototype.Enumerations;
 using SCJ.Booking.CourtBookingPrototype.Extensions;
@@ -61,23 +63,26 @@ namespace SCJ.Booking.CourtBookingPrototype
 
         public static void Main(string[] args)
         {
+            //used for EF Core, can be moved/changed when moving code over
+            CreateHostBuilder(args).Build().Run();
+
             #region parse arguments
             //set the different default settings based on the number of arguments provided
-            switch (args.Length)
-            {
-                case 1:
-                    DefaultDemandSupplyRatio = decimal.Parse(args[0]);
-                    break;
-                case 2:
-                    DefaultDemandSupplyRatio = decimal.Parse(args[0]);
-                    RegistrySettingsFixture.DefaultNumberOfPicksPerUser = int.Parse(args[1]);
-                    break;
-                case 3:
-                    DefaultDemandSupplyRatio = decimal.Parse(args[0]);
-                    RegistrySettingsFixture.DefaultNumberOfPicksPerUser = int.Parse(args[1]);
-                    RegistrySettingsFixture.DefaultUsesLottery = bool.Parse(args[2]);
-                    break;
-            }
+            //switch (args.Length)
+            //{
+            //    case 1:
+            //        DefaultDemandSupplyRatio = decimal.Parse(args[0]);
+            //        break;
+            //    case 2:
+            //        DefaultDemandSupplyRatio = decimal.Parse(args[0]);
+            //        RegistrySettingsFixture.DefaultNumberOfPicksPerUser = int.Parse(args[1]);
+            //        break;
+            //    case 3:
+            //        DefaultDemandSupplyRatio = decimal.Parse(args[0]);
+            //        RegistrySettingsFixture.DefaultNumberOfPicksPerUser = int.Parse(args[1]);
+            //        RegistrySettingsFixture.DefaultUsesLottery = bool.Parse(args[2]);
+            //        break;
+            //}
             #endregion
 
             #region connect to db
@@ -625,6 +630,10 @@ namespace SCJ.Booking.CourtBookingPrototype
             }
         }
 
-
+        // EF Core uses this method at design time to access the DbContext
+        public static IHostBuilder CreateHostBuilder(string[] args)
+            => Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(
+                    webBuilder => webBuilder.UseStartup<Startup>());
     }
 }
