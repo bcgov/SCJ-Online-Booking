@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
       <ProjectReference Include="..\app\SCJ.Booking.MVC.csproj" />
+      <ProjectReference Include="..\SCJ.Booking.CourtBookingPrototype\SCJ.Booking.CourtBookingPrototype.csproj" />
       <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
   </ItemGroup>
 </Project>

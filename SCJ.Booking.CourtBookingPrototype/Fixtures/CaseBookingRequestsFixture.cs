@@ -13,12 +13,12 @@ namespace SCJ.Booking.CourtBookingPrototype.Fixtures
         public static int MotorVehicleHearingType = 9999;
 
         //these are the average amount of bookings that we will multiply the demand ratio by, any half values will be rounded up
-        public static decimal BaseNumberOfOneDayBookingsPerMonth = 1;
-        public static decimal BaseNumberOfTwoDayBookingsPerMonth = 1;
-        public static decimal BaseNumberOfThreeDayBookingsPerMonth = 5;
-        public static decimal BaseNumberOfFourDayBookingsPerMonth = 5;
-        public static decimal BaseNumberOfFiveDayBookingsPerMonth = 122;
-        public static decimal BaseNumberOfSixToFifteenDayBookingsPerMonth = 22;
+        public static decimal BaseNumberOfOneDayBookingsPerMonth = 2;
+        public static decimal BaseNumberOfTwoDayBookingsPerMonth = 2;
+        public static decimal BaseNumberOfThreeDayBookingsPerMonth = 6;
+        public static decimal BaseNumberOfFourDayBookingsPerMonth = 6;
+        public static decimal BaseNumberOfFiveDayBookingsPerMonth = 64;
+        public static decimal BaseNumberOfSixToFifteenDayBookingsPerMonth = 116;
         public static decimal BaseNumberOfSixteenPlusDayBookingsPerMonth = 4;
 
         //predefined demand ratios for each month as indicated by Lorne
