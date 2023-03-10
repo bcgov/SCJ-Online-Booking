@@ -2,7 +2,7 @@ using Microsoft.Graph;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using SCJ.Booking.CourtBookingPrototype.Extensions;
+using SCJ.Booking.MVC.Extensions;
 
 namespace SCJ.Booking.UnitTest
 {
