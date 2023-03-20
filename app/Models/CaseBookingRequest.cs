@@ -14,7 +14,7 @@ namespace SCJ.Booking.MVC.Models
         public Guid SmGovUserGuid { get; set; }
 
         [Required]
-        public decimal PhysicalFileId { get; set; }
+        public decimal CaseId { get; set; }
 
         [Required]
         public int BookingPeriodId { get; set; }
