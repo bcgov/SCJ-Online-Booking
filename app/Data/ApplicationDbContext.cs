@@ -14,6 +14,7 @@ namespace SCJ.Booking.MVC.Data
         public DbSet<CaseBookingRequest> CaseBookingRequests { get; set; }
         public DbSet<DateSelection> DateSelections { get; set; }
         public DbSet<RegistrySetting> RegistrySettings { get; set; }
+        public DbSet<CourtBookingEmail> CourtBookingEmails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

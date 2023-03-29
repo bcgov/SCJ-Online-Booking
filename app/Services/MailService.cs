@@ -17,9 +17,9 @@ namespace SCJ.Booking.MVC.Services
     public class MailService
     {
         private readonly IConfiguration _configuration;
-        private readonly ClientSecretCredential _emailCredentials;
+        private ClientSecretCredential _emailCredentials;
         private readonly ILogger _logger;
-        private readonly string _senderEmail;
+        private string _senderEmail;
 
         public MailService(string courtLevel, IConfiguration configuration, ILogger logger)
         {
@@ -138,6 +138,15 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return new ClientSecretCredential(tenantId, clientId, clientSecret);
+        }
+
+        /// <summary>
+        ///     Sets the exchange credentials
+        /// </summary>
+        public void ChangeSenderEmail(string courtLevel)
+        {
+            _senderEmail = _configuration[$"{courtLevel}_EMAIL"] ?? "";
+            _emailCredentials = SetExchangeCredentials(courtLevel);
         }
     }
 }
