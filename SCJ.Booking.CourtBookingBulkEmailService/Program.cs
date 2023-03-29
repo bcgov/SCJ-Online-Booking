@@ -8,7 +8,7 @@ using Serilog;
 
 namespace SCJ.Booking.CourtBookingBulkEmailService
 {
-    public class Program
+    internal class Program
     {
         private static ILogger _logger;
         private static MailService _mailService;
@@ -21,7 +21,7 @@ namespace SCJ.Booking.CourtBookingBulkEmailService
             _mailService = new MailService("CA", configuration, _logger);
         }
 
-        public static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             //get the successful court booking emails in batches of 50 to send out
             var courtBookingEmailBatch = _dbContext.Set<CourtBookingEmail>().Take(50);
@@ -40,7 +40,7 @@ namespace SCJ.Booking.CourtBookingBulkEmailService
 
                     //update the sender email address
                     _mailService.ChangeSenderEmail(email.CourtLevel);
-                    _mailService.ExchangeSendEmail(email.ToEmail, email.Subject, body).Wait();
+                    await _mailService.ExchangeSendEmail(email.ToEmail, email.Subject, body);
 
                     //delete the email record
                     _dbContext.Remove(email);
@@ -54,7 +54,7 @@ namespace SCJ.Booking.CourtBookingBulkEmailService
             }
             finally
             {
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
         }
     }
