@@ -9,7 +9,7 @@ namespace SCJ.Booking.MVC.Services
     {
         TrialDate[] GetAvailableTrialDates(int caseRegistryId, decimal hearingType, string bucketLocationId, decimal hearingLength, int bookingYear, int bookingMonth);
 
-        string BookTrial(decimal caseId, int caseRegistryId, string bucketLocationId, decimal hearingType,  decimal hearingLength, int ranking, int firstChoiceMonth, int firstChoiceYear, int secondChoiceMonth, int secondChoiceYear, int thirdChoiceMonth, int thirdChoiceYear, int fourthChoiceMonth, int fourthChoiceYear, int fifthChoiceMonth, int fifthChoiceYear);
+        string BookTrial(decimal caseId, int caseRegistryId, string bucketLocationId, decimal hearingType,  decimal hearingLength, int ranking, DateTime[] choices);
         
         List<UnmetDemand> GetUnmetDemand(string bucketLocationId);
 
