@@ -6,15 +6,15 @@ using SCJ.Booking.MVC.Extensions;
 
 namespace SCJ.Booking.UnitTest
 {
-    public class LotteryTests
+    public class FairUseAlgorithmTests
     {
-        public LotteryTests()
+        public FairUseAlgorithmTests()
         {
 
         }
 
         [Fact]
-        public void LotteryTestSuccess()
+        public void FairUseAlgorithmTestSuccess()
         {
             //create sequential list to perform lottery on
             List<int> controlList = Enumerable.Range(1, 100).ToList();

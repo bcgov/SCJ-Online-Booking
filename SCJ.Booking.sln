@@ -25,9 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{C72F
 		openshift\jenkins\deploy-to-test-Jenkinsfile = openshift\jenkins\deploy-to-test-Jenkinsfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCJ.Booking.CourtBookingBulkEmailService", "SCJ.Booking.CourtBookingBulkEmailService\SCJ.Booking.CourtBookingBulkEmailService.csproj", "{08BBED63-31C3-4E17-9272-257341B3C911}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.CourtBookingPrototype", "SCJ.Booking.CourtBookingPrototype\SCJ.Booking.CourtBookingPrototype.csproj", "{7B1CF2D3-A928-4BE1-BBA0-1E50CAFC7364}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.CourtBookingBulkEmailService", "SCJ.Booking.CourtBookingBulkEmailService\SCJ.Booking.CourtBookingBulkEmailService.csproj", "{08BBED63-31C3-4E17-9272-257341B3C911}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +49,6 @@ Global
 		{08BBED63-31C3-4E17-9272-257341B3C911}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08BBED63-31C3-4E17-9272-257341B3C911}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08BBED63-31C3-4E17-9272-257341B3C911}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B1CF2D3-A928-4BE1-BBA0-1E50CAFC7364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B1CF2D3-A928-4BE1-BBA0-1E50CAFC7364}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B1CF2D3-A928-4BE1-BBA0-1E50CAFC7364}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B1CF2D3-A928-4BE1-BBA0-1E50CAFC7364}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
