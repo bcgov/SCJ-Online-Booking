@@ -4,6 +4,7 @@ using SCJ.Booking.MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
 
@@ -20,7 +21,7 @@ namespace SCJ.Booking.MVC.Services
             _viewRenderService = viewRenderService;
         }
 
-        public void PerformFairUseAlgorithm<T>(int caseRegistryId, int trialRegistryId, decimal hearingType, string bucketLocationId, decimal hearingLength, int bookingYear, int bookingMonth)
+        public async Task PerformFairUseAlgorithm<T>(int caseRegistryId, int trialRegistryId, decimal hearingType, string bucketLocationId, decimal hearingLength, int bookingYear, int bookingMonth)
         {
             //get all trial date slots from SCSS
             TrialDate[] trialDates = GetAvailableTrialDates(caseRegistryId, hearingType, bucketLocationId, hearingLength, bookingYear, bookingMonth);
@@ -71,14 +72,15 @@ namespace SCJ.Booking.MVC.Services
                                 EmailAddress = matchingCaseBookingRequest.Email,
                                 Date = $"{bookingMonth}, {bookingYear}"
                             };
-                            var viewResult = _viewRenderService.RenderToStringAsync(viewName, emailViewModel);
+                            var viewResult = await _viewRenderService.RenderToStringAsync(viewName, emailViewModel);
 
                             //create a booking email
-                            courtBookingEmails.AddAsync(new CourtBookingEmail
+                            await courtBookingEmails.AddAsync(new CourtBookingEmail
                             {
                                 CourtLevel = "SC",
                                 ToEmail = matchingCaseBookingRequest.Email,
                                 Subject = "",
+                                BodyHtml = viewResult,
                                 //need to figure out which template is for which body
                             });
                         }
@@ -104,7 +106,29 @@ namespace SCJ.Booking.MVC.Services
                     .Select(x => x.Date).ToArray();
 
                 var result = BookTrial(bookingRequest.CaseId, caseRegistryId, bucketLocationId, hearingType, hearingLength, ranking, choices);
-                if (result != "success"){
+
+                if (result == "success")
+                {
+                    //TODO figure out which templates are needed for each hearing type code as well as if new viewmodel required
+                    string viewName = $"Email-{ScHearingType.GetHearingType(Convert.ToInt32(hearingType))}.cshtml";
+                    EmailViewModel emailViewModel = new EmailViewModel
+                    {
+                        EmailAddress = bookingRequest.Email,
+                        Date = $"{bookingMonth}, {bookingYear}"
+                    };
+                    var viewResult = await _viewRenderService.RenderToStringAsync(viewName, emailViewModel);
+
+                    //create a booking email
+                    await courtBookingEmails.AddAsync(new CourtBookingEmail
+                    {
+                        CourtLevel = "SC",
+                        ToEmail = bookingRequest.Email,
+                        Subject = "",
+                        BodyHtml = viewResult,
+                        //need to figure out which template is for which body
+                    });
+                }
+                else{
                     newUnmetDemand.Add(new UnmetDemand(){
                         CaseId = bookingRequest.Id,
                         BookingPeriodId = bookingRequest.BookingPeriodId,
@@ -117,7 +141,7 @@ namespace SCJ.Booking.MVC.Services
             RecordUnmetDemand(newUnmetDemand);
 
             //save all the court booking emails to our db
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             #endregion
         }
 
