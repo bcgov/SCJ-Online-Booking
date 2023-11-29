@@ -139,5 +139,20 @@ namespace SCJ.OnlineBooking
 
             return ScBookingHearingResultFixture.Success;
         }
+
+        public Task<CoAChambersAvailableDates> CoAAvailableDatesChambersAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BookingHearingResult> CoAChambersQueueHearingAsync(CoAChambersBookingHearingInfo bookingInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

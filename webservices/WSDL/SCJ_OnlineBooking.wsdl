@@ -124,6 +124,46 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="CoAAvailableDatesChambers">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoAAvailableDatesChambersResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CoAAvailableDatesChambersResult" nillable="true" type="q10:CoAChambersAvailableDates" xmlns:q10="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoAChambersQueueHearing">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="bookingInfo" nillable="true" type="q11:CoAChambersBookingHearingInfo" xmlns:q11="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoAChambersQueueHearingResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CoAChambersQueueHearingResult" nillable="true" type="q12:BookingHearingResult" xmlns:q12="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoAChambersApplicationsList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="type" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CoAChambersApplicationsListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CoAChambersApplicationsListResult" nillable="true" type="q13:ArrayOfCoAChambersApplications" xmlns:q13="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
     <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
       <xs:element name="anyType" nillable="true" type="xs:anyType"/>
@@ -268,6 +308,41 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="ShedulesInfo" nillable="true" type="tns:ShedulesInfo"/>
+      <xs:complexType name="CoAChambersAvailableDates">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AvailableDates" nillable="true" type="tns:ArrayOfCoAChambersShedulesInfo"/>
+          <xs:element minOccurs="0" name="BookingNotes" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CoAChambersAvailableDates" nillable="true" type="tns:CoAChambersAvailableDates"/>
+      <xs:complexType name="ArrayOfCoAChambersShedulesInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CoAChambersShedulesInfo" nillable="true" type="tns:CoAChambersShedulesInfo"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCoAChambersShedulesInfo" nillable="true" type="tns:ArrayOfCoAChambersShedulesInfo"/>
+      <xs:complexType name="CoAChambersShedulesInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="availability" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="scheduleDate" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CoAChambersShedulesInfo" nillable="true" type="tns:CoAChambersShedulesInfo"/>
+      <xs:complexType name="ArrayOfCoAChambersApplications">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CoAChambersApplications" nillable="true" type="tns:CoAChambersApplications"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCoAChambersApplications" nillable="true" type="tns:ArrayOfCoAChambersApplications"/>
+      <xs:complexType name="CoAChambersApplications">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApplicationTypeDefinition" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ApplicationTypeName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="HearingTypeID" type="xs:int"/>
+          <xs:element minOccurs="0" name="Timeline" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CoAChambersApplications" nillable="true" type="tns:CoAChambersApplications"/>
     </xs:schema>
     <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking">
       <xs:complexType name="BookHearingInfo">
@@ -302,6 +377,20 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="CoABookingHearingInfo" nillable="true" type="tns:CoABookingHearingInfo"/>
+      <xs:complexType name="CoAChambersBookingHearingInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="HearingTypeListID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="MainCase" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="RelatedCases" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="caseID" type="xs:int"/>
+          <xs:element minOccurs="0" name="email" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="hearingDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="hearingLength" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="requestedBy" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CoAChambersBookingHearingInfo" nillable="true" type="tns:CoAChambersBookingHearingInfo"/>
     </xs:schema>
   </wsdl:types>
   <wsdl:message name="IOnlineBooking_caseNumberValid_InputMessage">
@@ -346,6 +435,24 @@
   <wsdl:message name="IOnlineBooking_CoAQueueHearing_OutputMessage">
     <wsdl:part name="parameters" element="tns:CoAQueueHearingResponse"/>
   </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAAvailableDatesChambers_InputMessage">
+    <wsdl:part name="parameters" element="tns:CoAAvailableDatesChambers"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAAvailableDatesChambers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CoAAvailableDatesChambersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAChambersQueueHearing_InputMessage">
+    <wsdl:part name="parameters" element="tns:CoAChambersQueueHearing"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAChambersQueueHearing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CoAChambersQueueHearingResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAChambersApplicationsList_InputMessage">
+    <wsdl:part name="parameters" element="tns:CoAChambersApplicationsList"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_CoAChambersApplicationsList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CoAChambersApplicationsListResponse"/>
+  </wsdl:message>
   <wsdl:portType name="IOnlineBooking">
     <wsdl:operation name="caseNumberValid">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/caseNumberValid" message="tns:IOnlineBooking_caseNumberValid_InputMessage"/>
@@ -374,6 +481,18 @@
     <wsdl:operation name="CoAQueueHearing">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoAQueueHearing" message="tns:IOnlineBooking_CoAQueueHearing_InputMessage"/>
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoAQueueHearingResponse" message="tns:IOnlineBooking_CoAQueueHearing_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CoAAvailableDatesChambers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoAAvailableDatesChambers" message="tns:IOnlineBooking_CoAAvailableDatesChambers_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoAAvailableDatesChambersResponse" message="tns:IOnlineBooking_CoAAvailableDatesChambers_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CoAChambersQueueHearing">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoAChambersQueueHearing" message="tns:IOnlineBooking_CoAChambersQueueHearing_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoAChambersQueueHearingResponse" message="tns:IOnlineBooking_CoAChambersQueueHearing_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CoAChambersApplicationsList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsList" message="tns:IOnlineBooking_CoAChambersApplicationsList_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsListResponse" message="tns:IOnlineBooking_CoAChambersApplicationsList_OutputMessage"/>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOnlineBooking" type="tns:IOnlineBooking">
@@ -435,6 +554,33 @@
     </wsdl:operation>
     <wsdl:operation name="CoAQueueHearing">
       <soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoAQueueHearing" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CoAAvailableDatesChambers">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoAAvailableDatesChambers" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CoAChambersQueueHearing">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoAChambersQueueHearing" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CoAChambersApplicationsList">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsList" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>
