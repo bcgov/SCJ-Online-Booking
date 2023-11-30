@@ -1,0 +1,137 @@
+cluster:
+  domain: apps.silver.devops.gov.bc.ca
+  ssoAuthUrl: https://dev.loginproxy.gov.bc.ca/auth
+  ssoRealm: bcparks-service-transformation
+  ssoClientId: staff-portal
+
+images:
+  app:
+    name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/scj-booking-runtime
+    tag: latest
+  patroni:
+    name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/patroni-postgres
+    tag: 2.0.1-12.4
+  pgbouncer:
+    name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/pgbouncer
+    tag: latest
+  backup:
+    name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/backup-container
+    tag: postgres-latest
+
+app:
+  componentName: app
+
+  imagePullPolicy: Always
+
+  resources:
+    limits:
+      memory: 128Mi
+
+  env:
+    aspNetCoreEnvironment: Development
+    tagName: dev
+    scMailUsername: no-reply_SC_Booking
+    caMailUsername: no-reply_CA_Booking
+    scEmail: noreply_BCSC_Booking@bccourts.ca
+    caEmail: noreply_BCCA_Booking@bccourts.ca
+
+  service:
+    portName: netcore
+    port: 8080
+
+  hpa:
+    minReplicas: 1
+    maxReplicas: 1
+    cpuUtilizationThreshold: 125
+    memoryUtilizationThreshold: 125
+
+patroni:
+  componentName: patroni
+
+  enabled: true
+
+  replicas: 3
+
+  databaseName: scj_booking
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1250Mi
+    requests:
+      cpu: 100m
+      memory: 250Mi
+
+  env:
+    maxConnections: 240
+
+  service:
+    portName: patroni-leader
+    port: 5432
+
+  pvc:
+    accessMode: ReadWriteOnce
+    storageClassName: netapp-block-standard
+    size: 1Gi
+
+pgbouncer:
+  enabled: true
+
+  componentName: pgbouncer
+
+  resources:
+    limits:
+      cpu: 150m
+      memory: 150Mi
+    requests:
+      cpu: 50m
+      memory: 50Mi
+
+  env:
+    defaultPoolSize: 80
+    poolMode: transaction
+    maxClientConn: 120
+
+  service:
+    portName: pgbouncer
+    port: 6432
+
+backup:
+  componentName: postgres-backup
+
+  # Disabled by default.  Overriden for TEST and PROD
+  enabled: false
+
+  pvc:
+    accessMode: ReadWriteOnce
+    storageClassName: netapp-file-backup
+    size: 1Gi
+
+  schedule: "0 9 * * *"
+
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 2
+  backoffLimit: 0
+
+  backupStrategy: "rolling"
+  backupDir: "/backups/"
+
+  retention:
+    numBackups: 5
+    dailyBackups: 7
+    weeklyBackups: 4
+    monthlyBackups: 1
+
+  enironment:
+    friendlyName: "SCJOB Postgres Backup [dev]"
+    name: "bc7c5c-dev"
+
+  tableSchema: "public"
+
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 250Mi
