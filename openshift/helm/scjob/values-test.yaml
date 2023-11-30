@@ -1,0 +1,9 @@
+app:
+  env:
+    environment: test
+
+patroni:
+  replicas: 1
+
+backup:
+  enabled: true

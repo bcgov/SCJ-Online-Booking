@@ -1,14 +1,6 @@
-cluster:
-  ssoAuthUrl: https://dev.loginproxy.gov.bc.ca/auth
-
 app:
   env:
     environment: dev
-    externalUrl: https://dev.justice.gov.bc.ca/scjob
 
 patroni:
   replicas: 1
-
-backup:
-  # temporarily enable on dev for initial setup
-  enabled: true
