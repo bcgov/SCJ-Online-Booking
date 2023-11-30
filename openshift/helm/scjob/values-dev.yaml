@@ -8,3 +8,7 @@ app:
 
 patroni:
   replicas: 1
+
+backup:
+  # temporarily enable on dev for initial setup
+  enabled: true

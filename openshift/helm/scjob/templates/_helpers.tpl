@@ -79,3 +79,7 @@ Gets the suffix of the namespace. (-dev, -tools, ... )
 {{ define "scjob_patroni_fullname" -}}
 {{ .Release.Name }}-{{ .Values.patroni.componentName }}
 {{- end -}}
+
+{{ define "scjob_postgres_backup_fullname" -}}
+{{ .Release.Name }}-{{ .Values.backup.componentName }}
+{{- end -}}
