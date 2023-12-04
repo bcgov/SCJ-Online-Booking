@@ -130,7 +130,6 @@ namespace SCJ.Booking.UnitTest
             Assert.True(result.CaseType == "Criminal");
         }
 
-
         [Fact]
         public void CoACaseNumberValidAsync_Invalid()
         {
@@ -151,7 +150,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoAQueueHearingAsync()
         {
-            // civil case 
+            // civil case
             // case number = "CA39029"
             // case id = 37351
 
@@ -179,6 +178,51 @@ namespace SCJ.Booking.UnitTest
             };
 
             _ = _soapClient.CoAQueueHearingAsync(booking).Result;
+        }
+
+        [Fact]
+        public void CoAChambersApplicationsListAsync()
+        {
+            // types: Civil, Criminal
+            // 255 is the maximum character limit for the definition
+            // 255 is the limit for names too, but the longest one right now is 50. Average is about 25-30
+
+            var criminal = _soapClient.CoAChambersApplicationsListAsync("Criminal").Result;
+            Assert.NotNull(criminal);
+
+            var civil = _soapClient.CoAChambersApplicationsListAsync("Civil").Result;
+            Assert.NotNull(civil);
+        }
+
+        [Fact]
+        public void CoAChambersQueueHearingAsync()
+        {
+            // "Fail - Booking could not be completed. Please contact scheduling or select a different date/time."
+            // "Success - Hearing Booked"
+
+            var booking = new CoAChambersBookingHearingInfo
+            {
+                caseID = 37351,
+                email = "mike@olund.ca",
+                hearingDate = DateTime.Parse("2023-12-18T00:00:00.0000000"),
+                hearingLength = "One Hour",
+                phone = "778-865-7042",
+                HearingTypeListID = "116|114",
+                requestedBy = "Mike Olund",
+                MainCase = true,
+                RelatedCases = ""
+            };
+
+            var result = _soapClient.CoAChambersQueueHearingAsync(booking).Result;
+
+            Assert.NotEmpty(result.bookingResult);
+        }
+
+        [Fact]
+        public void CoAAvailableDatesChambersAsync()
+        {
+            var dates = _soapClient.CoAAvailableDatesChambersAsync().Result;
+            Assert.NotNull(dates);
         }
     }
 }

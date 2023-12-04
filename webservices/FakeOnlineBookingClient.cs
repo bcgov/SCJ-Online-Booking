@@ -59,8 +59,8 @@ namespace SCJ.OnlineBooking
                     }
                 };
             }
-            
-            return result.ToList().OrderBy(x => x.styleOfCause).ToArray(); 
+
+            return result.ToList().OrderBy(x => x.styleOfCause).ToArray();
         }
 
         public async Task<Location[]> getLocationsAsync()
@@ -75,8 +75,9 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
             var result = ScAvailableDatesByLocationFixture.AvailableDatesResult;
-            result.AvailableDates = result.AvailableDates.Where(
-                x => x.Date_Time > DateTime.Now).ToArray();
+            result.AvailableDates = result.AvailableDates
+                .Where(x => x.Date_Time > DateTime.Now)
+                .ToArray();
             return result;
         }
 
@@ -140,19 +141,35 @@ namespace SCJ.OnlineBooking
             return ScBookingHearingResultFixture.Success;
         }
 
-        public Task<CoAChambersAvailableDates> CoAAvailableDatesChambersAsync()
+        public async Task<CoAChambersAvailableDates> CoAAvailableDatesChambersAsync()
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            return CoAAvailableDatesFixture.ChambersDates;
         }
 
-        public Task<BookingHearingResult> CoAChambersQueueHearingAsync(CoAChambersBookingHearingInfo bookingInfo)
+        public async Task<BookingHearingResult> CoAChambersQueueHearingAsync(CoAChambersBookingHearingInfo bookingInfo)
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            return ScBookingHearingResultFixture.Success;
         }
 
-        public Task<CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type)
+        public async Task<CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type)
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            if (type == "Criminal")
+            {
+                return CoAChambersApplicationsFixture.CoAChambersApplicationsCriminal;
+            }
+
+            if (type == "Civil")
+            {
+                return CoAChambersApplicationsFixture.CoAChambersApplicationsCivil;
+            }
+
+            return null;
         }
     }
 }
