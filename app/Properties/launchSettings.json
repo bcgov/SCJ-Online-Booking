@@ -3,7 +3,7 @@
         "windowsAuthentication": false,
         "anonymousAuthentication": true,
         "iisExpress": {
-            "applicationUrl": "http://127.0.0.1:5000",
+            "applicationUrl": "http://127.0.0.1:5001",
             "sslPort": 0
         }
     },
@@ -11,7 +11,7 @@
         "IIS Express": {
             "commandName": "IISExpress",
             "launchBrowser": true,
-            "launchUrl": "http://scj-booking.local/scjob",
+            "launchUrl": "http://127.0.0.1:5001/scjob",
             "environmentVariables": {
                 "TAG_NAME": "localdev",
                 "API_USERNAME": "fake_username",
@@ -29,7 +29,7 @@
         "SCJ.Booking.MVC": {
             "commandName": "Project",
             "launchBrowser": true,
-            "launchUrl": "http://scj-booking.local/scjob",
+            "launchUrl": "http://127.0.0.1:5001/scjob",
             "environmentVariables": {
                 "TAG_NAME": "localdev",
                 "API_USERNAME": "fake_username",
@@ -43,7 +43,7 @@
                 "SENDGRID_API_KEY": "FAKE SENDGRID API KEY",
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
-            "applicationUrl": "http://127.0.0.1:5000"
+            "applicationUrl": "http://127.0.0.1:5001"
         }
     }
 }
