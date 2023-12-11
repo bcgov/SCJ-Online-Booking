@@ -1,0 +1,99 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.app.componentName }}
+  labels:
+    component: {{ .Values.app.componentName }}
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: scj-booking
+      component: {{ .Values.app.componentName }}
+      release: {{ .Release.Name }}
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: scj-booking
+        component: {{ .Values.app.componentName }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Values.app.componentName }}
+          resources:
+{{ toYaml .Values.app.resources | indent 12 }}
+          image: {{ .Values.images.app.name }}:{{ .Values.images.app.tag }}
+          imagePullPolicy: {{ .Values.app.imagePullPolicy }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          name: container
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            timeoutSeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          ports:
+            - name: {{ .Values.app.service.portName }}
+              containerPort: {{ .Values.app.service.port }}
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ .Values.app.env.aspNetCoreEnvironment }}
+            - name: TAG_NAME
+              value: {{ .Values.app.env.tagName }}
+            - name: SC_MAIL_USERNAME
+              value: {{ .Values.app.env.scMailUsername }}
+            - name: CA_MAIL_USERNAME
+              value: {{ .Values.app.env.caMailUsername }}
+            - name: SC_EMAIL
+              value: {{ .Values.app.env.scEmail }}
+            - name: CA_EMAIL
+              value: {{ .Values.app.env.caEmail }}
+            - name: ConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "scjob_patroni_secrets" . }}
+                  key: connect-string
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-app-secrets
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.app.service.portName }}
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 20
+          startupProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.app.service.portName }}
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 20

@@ -1,0 +1,9 @@
+app:
+  env:
+    environment: prod
+
+patroni:
+  replicas: 3
+
+backup:
+  enabled: true

@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.app.componentName }}
+  labels:
+    component: {{ .Values.app.componentName }}
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    heritage: {{ .Release.Service }}
+spec:
+  type: ClusterIP
+  selector:
+    component: {{ .Values.app.componentName }}
+    release: {{ .Release.Name }}
+  ports:
+    - name: {{ .Values.app.service.portName }}
+      port: {{ .Values.app.service.port }}
