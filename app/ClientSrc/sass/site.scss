@@ -801,7 +801,7 @@ select, input {
 }
 
 /* Court of Appeal side */
-.preliminary_questions__radio, #Civil_IsFullDay {
+.preliminary_questions__radio, #Civil_IsFullDay, #Criminal_IsFullDay {
     .btn {
         display: inline-block;
         margin-top: 0;
