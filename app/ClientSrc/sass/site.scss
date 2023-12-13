@@ -812,3 +812,9 @@ select, input {
 label.factum {
     max-width: 90%;
 }
+
+select#HearingTypeId {
+    height: 44px;
+    font-size: 1.6rem;
+    max-width: 250px;
+}
