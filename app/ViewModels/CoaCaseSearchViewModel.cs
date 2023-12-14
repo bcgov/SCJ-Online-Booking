@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.Booking.MVC.Utils;
 using SCJ.OnlineBooking;
 
@@ -22,6 +21,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool? IsValidCaseNumber { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
+
         //public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
         public int? HearingTypeId { get; set; }
@@ -96,7 +96,5 @@ namespace SCJ.Booking.MVC.ViewModels
                 return IsFullDay != null;
             }
         }
-
-
     }
 }

@@ -1,9 +1,7 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SCJ.Booking.Data.Models
 {
-
     public class BookingHistory
     {
         [StringLength(36)]

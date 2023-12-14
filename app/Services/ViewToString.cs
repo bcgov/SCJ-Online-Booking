@@ -23,9 +23,11 @@ namespace SCJ.Booking.MVC.Services
         private readonly ITempDataProvider _tempDataProvider;
         private readonly IServiceProvider _serviceProvider;
 
-        public ViewRenderService(IRazorViewEngine razorViewEngine,
+        public ViewRenderService(
+            IRazorViewEngine razorViewEngine,
             ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider
+        )
         {
             _razorViewEngine = razorViewEngine;
             _tempDataProvider = tempDataProvider;
@@ -35,7 +37,11 @@ namespace SCJ.Booking.MVC.Services
         public async Task<string> RenderToStringAsync(string viewName, object model)
         {
             var httpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
-            var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
+            var actionContext = new ActionContext(
+                httpContext,
+                new RouteData(),
+                new ActionDescriptor()
+            );
 
             using (var sw = new StringWriter())
             {
@@ -43,10 +49,15 @@ namespace SCJ.Booking.MVC.Services
 
                 if (viewResult.View == null)
                 {
-                    throw new ArgumentNullException($"{viewName} does not match any available view");
+                    throw new ArgumentNullException(
+                        $"{viewName} does not match any available view"
+                    );
                 }
 
-                var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
+                var viewDictionary = new ViewDataDictionary(
+                    new EmptyModelMetadataProvider(),
+                    new ModelStateDictionary()
+                )
                 {
                     Model = model
                 };

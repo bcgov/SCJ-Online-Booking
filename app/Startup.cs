@@ -63,7 +63,7 @@ namespace SCJ.Booking.MVC
                 });
             }
 
-            // this setting is needed because NTLM auth does not work by default on Unix 
+            // this setting is needed because NTLM auth does not work by default on Unix
             AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false);
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
@@ -101,13 +101,12 @@ namespace SCJ.Booking.MVC
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
                     "confirmbooking",
-                    "{controller}/{action}/{caseId}/{locationId}/{containerId}/{bookingTime}");
+                    "{controller}/{action}/{caseId}/{locationId}/{containerId}/{bookingTime}"
+                );
             });
         }
 
@@ -116,15 +115,20 @@ namespace SCJ.Booking.MVC
         {
             var platform = new Platform();
 
-            using (IServiceScope serviceScope = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>()
-                .CreateScope())
+            using (
+                IServiceScope serviceScope = app.ApplicationServices
+                    .GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope()
+            )
             {
-                using (var context =
-                    serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+                using (
+                    var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
+                )
                 {
-                    string cs = Configuration["ConnectionString"] ?? // environment variable
-                                Configuration["Data:DefaultConnection:ConnectionString"]; // appsettings.json
+                    string cs =
+                        Configuration["ConnectionString"]
+                        ?? // environment variable
+                        Configuration["Data:DefaultConnection:ConnectionString"]; // appsettings.json
 
                     // the migrations should run on pretty much any platform except Mac localdev environments
                     if (cs != string.Empty || !platform.UseInMemoryStore)

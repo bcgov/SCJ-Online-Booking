@@ -1,12 +1,8 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Azure.Identity;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
-using MimeKit;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Serilog;
@@ -49,25 +45,15 @@ namespace SCJ.Booking.MVC.Services
                 {
                     From = new Recipient
                     {
-                        EmailAddress = new Microsoft.Graph.EmailAddress
-                        {
-                            Address = _senderEmail
-                        }
+                        EmailAddress = new Microsoft.Graph.EmailAddress { Address = _senderEmail }
                     },
                     Subject = subject,
-                    Body = new ItemBody
-                    {
-                        ContentType = BodyType.Text,
-                        Content = body
-                    },
+                    Body = new ItemBody { ContentType = BodyType.Text, Content = body },
                     ToRecipients = new System.Collections.Generic.List<Recipient>()
                     {
                         new Recipient
                         {
-                            EmailAddress = new Microsoft.Graph.EmailAddress
-                            {
-                                Address = to
-                            }
+                            EmailAddress = new Microsoft.Graph.EmailAddress { Address = to }
                         }
                     }
                 };
@@ -88,7 +74,11 @@ namespace SCJ.Booking.MVC.Services
         ///     For local development purposes only
         /// </remarks>
         public async Task<Response> SendGridSendEmail(
-            string fromEmail, string toEmail, string subject, string body)
+            string fromEmail,
+            string toEmail,
+            string subject,
+            string body
+        )
         {
             // log the settings the the console
             _logger.Information($"Sending email with SendGrid");
@@ -99,7 +89,13 @@ namespace SCJ.Booking.MVC.Services
             var to = new SendGrid.Helpers.Mail.EmailAddress(toEmail);
             var plainTextContent = body;
             var htmlContent = body;
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var msg = MailHelper.CreateSingleEmail(
+                from,
+                to,
+                subject,
+                plainTextContent,
+                htmlContent
+            );
             return await client.SendEmailAsync(msg);
         }
 

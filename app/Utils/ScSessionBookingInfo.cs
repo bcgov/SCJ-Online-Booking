@@ -36,10 +36,7 @@ namespace SCJ.Booking.MVC.Utils
 
         public int HearingLengthMinutes
         {
-            get
-            {
-                return Results?.BookingDetails?.detailBookingLength ?? 0;
-            }
+            get { return Results?.BookingDetails?.detailBookingLength ?? 0; }
         }
 
         //Full date for the booking
@@ -54,10 +51,7 @@ namespace SCJ.Booking.MVC.Utils
         }
         public string DateFriendlyName
         {
-            get
-            {
-                return FullDate.ToString("dddd, MMMM dd, yyyy");
-            }
+            get { return FullDate.ToString("dddd, MMMM dd, yyyy"); }
         }
 
         public string FriendlyError

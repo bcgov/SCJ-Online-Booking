@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
@@ -18,13 +17,15 @@ namespace SCJ.Booking.MVC.Controllers
         // Strongly typed session
         private readonly SessionService _session;
 
-        //Constructor 
-        public CoaBookingController(SessionService sessionService, CoaBookingService coaBookingService)
+        //Constructor
+        public CoaBookingController(
+            SessionService sessionService,
+            CoaBookingService coaBookingService
+        )
         {
             _session = sessionService;
             _coaBookingService = coaBookingService;
         }
-
 
         [HttpGet]
         public IActionResult Restart()
@@ -40,14 +41,16 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (bookingInfo == null)
             {
-                return View(new CoaCaseSearchViewModel {CaseNumber = "CA"});
+                return View(new CoaCaseSearchViewModel { CaseNumber = "CA" });
             }
 
             var model = new CoaCaseSearchViewModel
             {
                 CaseId = bookingInfo.CaseId,
                 HearingTypeId = bookingInfo.HearingTypeId,
-                CaseNumber = string.IsNullOrWhiteSpace(bookingInfo.CaseNumber) ? "CA" : bookingInfo.CaseNumber, 
+                CaseNumber = string.IsNullOrWhiteSpace(bookingInfo.CaseNumber)
+                    ? "CA"
+                    : bookingInfo.CaseNumber,
                 CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
                 IsFullDay = bookingInfo.IsFullDay,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
@@ -62,7 +65,9 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (model.Step2Complete)
             {
-                model.Results = await _coaBookingService.GetAvailableDates(model.IsFullDay ?? false);
+                model.Results = await _coaBookingService.GetAvailableDates(
+                    model.IsFullDay ?? false
+                );
             }
 
             return View(model);
@@ -85,11 +90,12 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     if (model.CertificateOfReadiness == null)
                     {
-                        ModelState.AddModelError("CertificateOfReadiness",
-                            "Please answer this question.");
+                        ModelState.AddModelError(
+                            "CertificateOfReadiness",
+                            "Please answer this question."
+                        );
                     }
                 }
-
                 else if (model.CaseType == CoaCaseType.Criminal)
                 {
                     //if (model.LowerCourtOrder == null)
@@ -99,8 +105,7 @@ namespace SCJ.Booking.MVC.Controllers
 
                     if (model.HearingTypeId == null)
                     {
-                        ModelState.AddModelError("HearingTypeId",
-                            "Please select a hearing type.");
+                        ModelState.AddModelError("HearingTypeId", "Please select a hearing type.");
                     }
                 }
 
@@ -111,8 +116,10 @@ namespace SCJ.Booking.MVC.Controllers
 
                 if (model.IsFullDay == null)
                 {
-                    ModelState.AddModelError("IsFullDay",
-                        "Please choose the length of time required for your Hearing.");
+                    ModelState.AddModelError(
+                        "IsFullDay",
+                        "Please choose the length of time required for your Hearing."
+                    );
                 }
             }
 
@@ -128,7 +135,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //test if the user selected a time-slot that is available
             if (model.SelectedDate != null && !model.TimeSlotExpired)
-                //go to confirmation screen
+            //go to confirmation screen
             {
                 return new RedirectResult("/scjob/booking/coa/CaseConfirm");
             }
@@ -153,7 +160,9 @@ namespace SCJ.Booking.MVC.Controllers
             if (bookingInfo.CaseList.Length > 1)
             {
                 var mainCase = bookingInfo.CaseList.Where(x => x.Main).First();
-                var finalCaseNumber = bookingInfo.SelectedCases.Where(x => x == mainCase.Case_Num).FirstOrDefault() ?? bookingInfo.CaseNumber;
+                var finalCaseNumber =
+                    bookingInfo.SelectedCases.Where(x => x == mainCase.Case_Num).FirstOrDefault()
+                    ?? bookingInfo.CaseNumber;
                 //Store final main case number back to the session
                 bookingInfo.CaseNumber = finalCaseNumber;
 
@@ -226,11 +235,15 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             //make booking
-            CoaCaseConfirmViewModel result =
-                await _coaBookingService.BookCourtCase(model, userGuid, userDisplayName);
+            CoaCaseConfirmViewModel result = await _coaBookingService.BookCourtCase(
+                model,
+                userGuid,
+                userDisplayName
+            );
 
             return Redirect(
-                $"/scjob/booking/coa/CaseBooked?booked={(result.IsBooked ? "true" : "false")}");
+                $"/scjob/booking/coa/CaseBooked?booked={(result.IsBooked ? "true" : "false")}"
+            );
         }
 
         [HttpGet]

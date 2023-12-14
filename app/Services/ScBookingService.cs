@@ -35,9 +35,14 @@ namespace SCJ.Booking.MVC.Services
         private readonly ILogger _logger;
 
         //Constructor
-        public ScBookingService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor,
-            IConfiguration configuration, SessionService sessionService,
-            IViewRenderService viewRenderService, ScCacheService scCacheService)
+        public ScBookingService(
+            ApplicationDbContext dbContext,
+            IHttpContextAccessor httpAccessor,
+            IConfiguration configuration,
+            SessionService sessionService,
+            IViewRenderService viewRenderService,
+            ScCacheService scCacheService
+        )
         {
             //check if this is running on a developer workstation (outside OpenShift)
             string tagName = configuration["TAG_NAME"] ?? "";
@@ -74,7 +79,8 @@ namespace SCJ.Booking.MVC.Services
             var bookingInfo = _session.ScBookingInfo;
 
             //Model instance
-            return new ScCaseSearchViewModel {
+            return new ScCaseSearchViewModel
+            {
                 CaseRegistryId = bookingInfo.CaseRegistryId,
                 CaseLocationName = bookingInfo.CaseLocationName,
                 SelectedCaseId = bookingInfo.CaseId,
@@ -99,12 +105,19 @@ namespace SCJ.Booking.MVC.Services
             if (!string.IsNullOrWhiteSpace(caseLocationName))
             {
                 var locations = await _cache.GetLocationsAsync();
-                result = locations.Where(
-                    x => x.locationName == caseLocationName && (
-                    x.bookingHearingTypeID == ScHearingType.TMC ||
-                    x.bookingHearingTypeID == ScHearingType.CPC ||
-                    x.bookingHearingTypeID == ScHearingType.JCC))
-                    .Select(x => x.bookingHearingTypeID).Distinct().ToList();
+                result = locations
+                    .Where(
+                        x =>
+                            x.locationName == caseLocationName
+                            && (
+                                x.bookingHearingTypeID == ScHearingType.TMC
+                                || x.bookingHearingTypeID == ScHearingType.CPC
+                                || x.bookingHearingTypeID == ScHearingType.JCC
+                            )
+                    )
+                    .Select(x => x.bookingHearingTypeID)
+                    .Distinct()
+                    .ToList();
             }
 
             return result;
@@ -126,7 +139,10 @@ namespace SCJ.Booking.MVC.Services
             };
 
             //set hearing type name
-            if (retval.HearingTypeId > 0 && ScHearingType.HearingTypeNameMap.ContainsKey(retval.HearingTypeId))
+            if (
+                retval.HearingTypeId > 0
+                && ScHearingType.HearingTypeNameMap.ContainsKey(retval.HearingTypeId)
+            )
             {
                 retval.HearingTypeName = ScHearingType.HearingTypeNameMap[retval.HearingTypeId];
             }
@@ -135,15 +151,19 @@ namespace SCJ.Booking.MVC.Services
             retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
 
             // set booking location information
-            retval.BookingRegistryId = await _cache.GetBookingLocationIdAsync(
-                retval.CaseRegistryId,
-                retval.HearingTypeId
-                ) ?? retval.CaseRegistryId;
+            retval.BookingRegistryId =
+                await _cache.GetBookingLocationIdAsync(retval.CaseRegistryId, retval.HearingTypeId)
+                ?? retval.CaseRegistryId;
 
-            retval.BookingLocationName = await _cache.GetLocationNameAsync(retval.BookingRegistryId);
+            retval.BookingLocationName = await _cache.GetLocationNameAsync(
+                retval.BookingRegistryId
+            );
 
             //search the current case number
-            (retval.FullCaseNumber, retval.LocationPrefix) = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
+            (retval.FullCaseNumber, retval.LocationPrefix) = await BuildCaseNumber(
+                model.CaseNumber,
+                model.CaseRegistryId
+            );
             retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
 
             if (!retval.IsValidCaseNumber)
@@ -161,7 +181,10 @@ namespace SCJ.Booking.MVC.Services
                 //check for valid date
                 if (model.ContainerId > 0)
                 {
-                    retval.TimeSlotExpired = !IsTimeStillAvailable(retval.Results, model.ContainerId);
+                    retval.TimeSlotExpired = !IsTimeStillAvailable(
+                        retval.Results,
+                        model.ContainerId
+                    );
 
                     //convert JS ticks to .Net date
                     DateTime? dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
@@ -170,7 +193,8 @@ namespace SCJ.Booking.MVC.Services
                     retval.ContainerId = model.ContainerId;
                     retval.SelectedCaseDate = model.SelectedCaseDate;
 
-                    string bookingTime = $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(retval.HearingLengthMinutes):hh:mm tt}";
+                    string bookingTime =
+                        $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(retval.HearingLengthMinutes):hh:mm tt}";
 
                     retval.TimeSlotFriendlyName = $"{dt.Value:MMMM dd} from {bookingTime}";
                 }
@@ -180,7 +204,7 @@ namespace SCJ.Booking.MVC.Services
                     ContainerId = model.ContainerId,
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
                     FullCaseNumber = retval.FullCaseNumber,
-                    CaseId = (int)retval.CourtFiles[0].physicalFileId, 
+                    CaseId = (int)retval.CourtFiles[0].physicalFileId,
                     HearingTypeId = model.HearingTypeId,
                     HearingTypeName = retval.HearingTypeName,
                     Results = retval.Results,
@@ -212,11 +236,14 @@ namespace SCJ.Booking.MVC.Services
                 CaseNumber = model.CaseNumber,
                 SelectedCourtClass = model.SelectedCourtClass,
                 CaseLocationName = model.CaseLocationName,
-                AvailableConferenceTypeIds = model.AvailableConferenceTypeIds,  
+                AvailableConferenceTypeIds = model.AvailableConferenceTypeIds,
             };
 
             //search the current case number
-            (result.FullCaseNumber, result.LocationPrefix) = await BuildCaseNumber(model.CaseNumber, model.CaseRegistryId);
+            (result.FullCaseNumber, result.LocationPrefix) = await BuildCaseNumber(
+                model.CaseNumber,
+                model.CaseRegistryId
+            );
             result.CourtFiles = await _client.caseNumberValidAsync(result.FullCaseNumber);
 
             if (!result.IsValidCaseNumber)
@@ -249,14 +276,18 @@ namespace SCJ.Booking.MVC.Services
                 bookingInfo.CaseId = model.SelectedCaseId;
             }
 
-            if (!string.IsNullOrWhiteSpace(model.SelectedCourtClass) &&
-                bookingInfo.SelectedCourtClass != model.SelectedCourtClass)
+            if (
+                !string.IsNullOrWhiteSpace(model.SelectedCourtClass)
+                && bookingInfo.SelectedCourtClass != model.SelectedCourtClass
+            )
             {
                 bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
             }
 
-            if (!string.IsNullOrWhiteSpace(model.FileNumber) &&
-                bookingInfo.FileNumber != model.FileNumber)
+            if (
+                !string.IsNullOrWhiteSpace(model.FileNumber)
+                && bookingInfo.FileNumber != model.FileNumber
+            )
             {
                 bookingInfo.FileNumber = model.FileNumber;
             }
@@ -270,35 +301,45 @@ namespace SCJ.Booking.MVC.Services
             bookingInfo.AvailableConferenceTypeIds = model.AvailableConferenceTypeIds;
 
             //set hearing type name
-            if (model.HearingTypeId > 0 &&
-                ScHearingType.HearingTypeNameMap.ContainsKey(model.HearingTypeId) &&
-                bookingInfo.HearingTypeId != model.HearingTypeId)
+            if (
+                model.HearingTypeId > 0
+                && ScHearingType.HearingTypeNameMap.ContainsKey(model.HearingTypeId)
+                && bookingInfo.HearingTypeId != model.HearingTypeId
+            )
             {
                 bookingInfo.HearingTypeId = model.HearingTypeId;
                 bookingInfo.HearingTypeName = ScHearingType.HearingTypeNameMap[model.HearingTypeId];
 
-                bookingInfo.BookingRegistryId = await _cache.GetBookingLocationIdAsync(
-                    bookingInfo.CaseRegistryId,
-                    bookingInfo.HearingTypeId
+                bookingInfo.BookingRegistryId =
+                    await _cache.GetBookingLocationIdAsync(
+                        bookingInfo.CaseRegistryId,
+                        bookingInfo.HearingTypeId
                     ) ?? bookingInfo.CaseRegistryId;
 
                 bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
-                    bookingInfo.BookingRegistryId);
+                    bookingInfo.BookingRegistryId
+                );
 
                 bookingInfo.Results = await _client.AvailableDatesByLocationAsync(
                     bookingInfo.BookingRegistryId,
-                    bookingInfo.HearingTypeId);
+                    bookingInfo.HearingTypeId
+                );
             }
 
             if (model.ContainerId > 0)
             {
-                if (!string.IsNullOrWhiteSpace(model.SelectedCaseDate) &&
-                    bookingInfo.SelectedCaseDate != model.SelectedCaseDate)
+                if (
+                    !string.IsNullOrWhiteSpace(model.SelectedCaseDate)
+                    && bookingInfo.SelectedCaseDate != model.SelectedCaseDate
+                )
                 {
                     bookingInfo.SelectedCaseDate = model.SelectedCaseDate;
                 }
 
-                model.TimeSlotExpired = !IsTimeStillAvailable(bookingInfo.Results, model.ContainerId);
+                model.TimeSlotExpired = !IsTimeStillAvailable(
+                    bookingInfo.Results,
+                    model.ContainerId
+                );
 
                 if (bookingInfo.ContainerId != model.ContainerId)
                 {
@@ -338,10 +379,13 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Book court case
         /// </summary>
-        public async Task<ScCaseConfirmViewModel> BookCourtCase(ScCaseConfirmViewModel model,
-            string userGuid, string userDisplayName)
+        public async Task<ScCaseConfirmViewModel> BookCourtCase(
+            ScCaseConfirmViewModel model,
+            string userGuid,
+            string userDisplayName
+        )
         {
-            //if the user could not be detected return 
+            //if the user could not be detected return
             if (string.IsNullOrWhiteSpace(userGuid))
             {
                 return model;
@@ -350,10 +394,10 @@ namespace SCJ.Booking.MVC.Services
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
-            AvailableDatesByLocation schedule =
-                await _client.AvailableDatesByLocationAsync(
-                    bookingInfo.BookingRegistryId,
-                    bookingInfo.HearingTypeId);
+            AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+                bookingInfo.BookingRegistryId,
+                bookingInfo.HearingTypeId
+            );
 
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
@@ -375,7 +419,7 @@ namespace SCJ.Booking.MVC.Services
 
                 //submit booking
                 BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
-                
+
                 //get the raw result
                 bookingInfo.RawResult = result.bookingResult;
 
@@ -394,12 +438,14 @@ namespace SCJ.Booking.MVC.Services
                     //create database entry
                     DbSet<BookingHistory> bookingHistory = _dbContext.Set<BookingHistory>();
 
-                    bookingHistory.Add(new BookingHistory
-                    {
-                        ContainerId = bookingInfo.ContainerId,
-                        SmGovUserGuid = userGuid,
-                        Timestamp = DateTime.UtcNow
-                    });
+                    bookingHistory.Add(
+                        new BookingHistory
+                        {
+                            ContainerId = bookingInfo.ContainerId,
+                            SmGovUserGuid = userGuid,
+                            Timestamp = DateTime.UtcNow
+                        }
+                    );
 
                     //save to DB
                     await _dbContext.SaveChangesAsync();
@@ -416,7 +462,8 @@ namespace SCJ.Booking.MVC.Services
                         await _mailService.ExchangeSendEmail(
                             model.EmailAddress,
                             EmailSubject,
-                            emailBody);
+                            emailBody
+                        );
                     }
                     else
                     {
@@ -425,7 +472,8 @@ namespace SCJ.Booking.MVC.Services
                             fromEmail,
                             model.EmailAddress,
                             EmailSubject,
-                            emailBody);
+                            emailBody
+                        );
                     }
 
                     //clear booking info session
@@ -508,10 +556,14 @@ namespace SCJ.Booking.MVC.Services
             //get all entries for logged-in user
             //booked on today
             List<BookingHistory> hearingsBookedForToday = _dbContext.BookingHistory
-                .Where(b => b.SmGovUserGuid == userGuid &&
-                            b.Timestamp.Day == today.Day &&
-                            b.Timestamp.Month == today.Month &&
-                            b.Timestamp.Year == today.Year).ToList();
+                .Where(
+                    b =>
+                        b.SmGovUserGuid == userGuid
+                        && b.Timestamp.Day == today.Day
+                        && b.Timestamp.Month == today.Month
+                        && b.Timestamp.Year == today.Year
+                )
+                .ToList();
 
             return MaxHearingsPerDay - hearingsBookedForToday.Count;
         }
@@ -548,7 +600,8 @@ namespace SCJ.Booking.MVC.Services
                 //ScHearingType.JMC => "ScBooking/Email-JMC",
                 //ScHearingType.PTC => "ScBooking/Email-CV-PTC",
                 //ScHearingType.TCH => "ScBooking/Email-CV-TCH",
-                ScHearingType.TMC => "ScBooking/Email-TMC", 
+                ScHearingType.TMC
+                    => "ScBooking/Email-TMC",
                 ScHearingType.CPC => "ScBooking/Email-CPC",
                 ScHearingType.JCC => "ScBooking/Email-JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
@@ -567,34 +620,34 @@ namespace SCJ.Booking.MVC.Services
 
             var numbers = new Dictionary<int, string>
             {
-                {1, "604-660-2853"},
-                {2, "250-356-1450"},
-                {3, "604-660-8551"},
-                {4, "250-614-2750"},
-                {6, "250-828-4351"},
-                {7, "250-741-5860"},
-                {9, "250-741-5860"},
-                {10, "604-795-8349"},
-                {11, "250-614-2750"},
-                {12, "250-356-1450"},
-                {13, "250-614-2750"},
-                {15, "250-828-4351"},
-                {17, "250-828-4351"},
-                {18, "250-470-6935"},
-                {20, "250-741-5860"},
-                {21, "250-828-4351"},
-                {22, "250-741-5860"},
-                {24, "250-741-5860"},
-                {25, "250-624-7474"},
-                {26, "250-470-6935"},
-                {27, "250-614-2750"},
-                {28, "250-828-4351"},
-                {29, "250-828-4351"},
-                {30, "250-828-4351"},
-                {31, "250-847-7482"},
-                {32, "250-624-7474"},
-                {33, "250-614-2750"},
-                {34, "250-470-6935"}
+                { 1, "604-660-2853" },
+                { 2, "250-356-1450" },
+                { 3, "604-660-8551" },
+                { 4, "250-614-2750" },
+                { 6, "250-828-4351" },
+                { 7, "250-741-5860" },
+                { 9, "250-741-5860" },
+                { 10, "604-795-8349" },
+                { 11, "250-614-2750" },
+                { 12, "250-356-1450" },
+                { 13, "250-614-2750" },
+                { 15, "250-828-4351" },
+                { 17, "250-828-4351" },
+                { 18, "250-470-6935" },
+                { 20, "250-741-5860" },
+                { 21, "250-828-4351" },
+                { 22, "250-741-5860" },
+                { 24, "250-741-5860" },
+                { 25, "250-624-7474" },
+                { 26, "250-470-6935" },
+                { 27, "250-614-2750" },
+                { 28, "250-828-4351" },
+                { 29, "250-828-4351" },
+                { 30, "250-828-4351" },
+                { 31, "250-847-7482" },
+                { 32, "250-624-7474" },
+                { 33, "250-614-2750" },
+                { 34, "250-470-6935" }
             };
 
             return numbers[registryId];

@@ -8,8 +8,10 @@ namespace SCJ.Booking.MVC
 {
     internal static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddApplicationDbContext(this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection AddApplicationDbContext(
+            this IServiceCollection services,
+            IConfiguration configuration
+        )
         {
             string provider;
             string connectionString;
@@ -23,8 +25,9 @@ namespace SCJ.Booking.MVC
             else
             {
                 provider = configuration[ServiceConfig.DataProviderKey.Replace("__", ":")];
-                connectionString =
-                    configuration[ServiceConfig.ConnectionStringKey.Replace("__", ":")];
+                connectionString = configuration[
+                    ServiceConfig.ConnectionStringKey.Replace("__", ":")
+                ];
             }
 
             if (string.IsNullOrEmpty(provider))
@@ -44,28 +47,35 @@ namespace SCJ.Booking.MVC
             switch (provider)
             {
                 case ServiceConfig.DataProviderMemory:
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseInMemoryDatabase("Scratch"));
+                    services.AddDbContext<ApplicationDbContext>(
+                        options => options.UseInMemoryDatabase("Scratch")
+                    );
                     break;
                 case ServiceConfig.DataProviderSqlServer:
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlServer(connectionString));
+                    services.AddDbContext<ApplicationDbContext>(
+                        options => options.UseSqlServer(connectionString)
+                    );
                     break;
                 case ServiceConfig.DataProviderNpgsql:
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseNpgsql(connectionString));
+                    services.AddDbContext<ApplicationDbContext>(
+                        options => options.UseNpgsql(connectionString)
+                    );
                     break;
                 case ServiceConfig.DataProviderSqlite:
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlite(connectionString));
+                    services.AddDbContext<ApplicationDbContext>(
+                        options => options.UseSqlite(connectionString)
+                    );
                     break;
                 case ServiceConfig.DataProviderMysql:
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseMySql(connectionString));
+                    services.AddDbContext<ApplicationDbContext>(
+                        options => options.UseMySql(connectionString)
+                    );
                     break;
                 default:
-                    throw new ArgumentException("Unknown data provider",
-                        ServiceConfig.DataProviderKey);
+                    throw new ArgumentException(
+                        "Unknown data provider",
+                        ServiceConfig.DataProviderKey
+                    );
             }
 
             return services;

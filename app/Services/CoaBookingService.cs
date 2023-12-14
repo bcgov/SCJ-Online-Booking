@@ -14,8 +14,6 @@ using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
 
 namespace SCJ.Booking.MVC.Services
 {
@@ -32,8 +30,12 @@ namespace SCJ.Booking.MVC.Services
         private readonly MailService _mailService;
 
         //Constructor
-        public CoaBookingService(ApplicationDbContext dbContext, IConfiguration configuration,
-            SessionService sessionService, IViewRenderService viewRenderService)
+        public CoaBookingService(
+            ApplicationDbContext dbContext,
+            IConfiguration configuration,
+            SessionService sessionService,
+            IViewRenderService viewRenderService
+        )
         {
             //check if this is running on a developer workstation (outside OpenShift)
             string tagName = configuration["TAG_NAME"] ?? "";
@@ -83,7 +85,6 @@ namespace SCJ.Booking.MVC.Services
 
                 //retval.CaseId = 0;
             }
-
             else
             {
                 //case ID
@@ -110,10 +111,11 @@ namespace SCJ.Booking.MVC.Services
 
                 if (model.Step2Complete)
                 {
-                    retval.HearingTypeName = CoaHearingType
-                    .GetHearingTypes()
-                    .FirstOrDefault(h => h.HearingTypeId == model.HearingTypeId)?
-                    .Description ?? "";
+                    retval.HearingTypeName =
+                        CoaHearingType
+                            .GetHearingTypes()
+                            .FirstOrDefault(h => h.HearingTypeId == model.HearingTypeId)
+                            ?.Description ?? "";
                 }
 
                 var bookingInfo = new CoaSessionBookingInfo
@@ -147,9 +149,9 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<Dictionary<DateTime, List<DateTime>>> GetAvailableDates(bool isFullDay)
         {
-                    var availableDates = await _client.COAAvailableDatesAsync();
+            var availableDates = await _client.COAAvailableDatesAsync();
 
-                    return GroupAvailableDates(availableDates, isFullDay);
+            return GroupAvailableDates(availableDates, isFullDay);
         }
 
         /// <summary>
@@ -158,10 +160,13 @@ namespace SCJ.Booking.MVC.Services
         public static SelectList GetHearingTypes()
         {
             return new SelectList(
-                CoaHearingType.GetHearingTypes()
+                CoaHearingType
+                    .GetHearingTypes()
                     .Where(x => x.IsCriminal)
-                    .Select(x => new {Id = x.HearingTypeId, Value = x.Description}),
-                "Id", "Value");
+                    .Select(x => new { Id = x.HearingTypeId, Value = x.Description }),
+                "Id",
+                "Value"
+            );
         }
 
         /// <summary>
@@ -176,10 +181,13 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Book court case
         /// </summary>
-        public async Task<CoaCaseConfirmViewModel> BookCourtCase(CoaCaseConfirmViewModel model,
-            string userGuid, string userDisplayName)
+        public async Task<CoaCaseConfirmViewModel> BookCourtCase(
+            CoaCaseConfirmViewModel model,
+            string userGuid,
+            string userDisplayName
+        )
         {
-            //if the user could not be detected return 
+            //if the user could not be detected return
             if (string.IsNullOrWhiteSpace(userGuid))
             {
                 return model;
@@ -188,16 +196,26 @@ namespace SCJ.Booking.MVC.Services
             CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
-            CoAAvailableDates schedule =  await _client.COAAvailableDatesAsync();
+            CoAAvailableDates schedule = await _client.COAAvailableDatesAsync();
 
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate.Value))
             {
                 //Fetch final main case file after ruling out selection of cases with main case and related cases
-                var finalCase = bookingInfo.CaseList.Where(x => x.Case_Num == bookingInfo.CaseNumber).First();
+                var finalCase = bookingInfo.CaseList
+                    .Where(x => x.Case_Num == bookingInfo.CaseNumber)
+                    .First();
                 var relatedCases = "";
-                if (finalCase.Main && model.RelatedCaseList != null && model.RelatedCaseList.Count > 0) {
-                    var relatedCaseIDList = bookingInfo.CaseList.Where(x => model.RelatedCaseList.Contains(x.Case_Num)).Select(x => x.CaseId).ToList();
+                if (
+                    finalCase.Main
+                    && model.RelatedCaseList != null
+                    && model.RelatedCaseList.Count > 0
+                )
+                {
+                    var relatedCaseIDList = bookingInfo.CaseList
+                        .Where(x => model.RelatedCaseList.Contains(x.Case_Num))
+                        .Select(x => x.CaseId)
+                        .ToList();
                     relatedCases = string.Join("|", relatedCaseIDList);
                 }
 
@@ -220,7 +238,7 @@ namespace SCJ.Booking.MVC.Services
 
                 //submit booking
                 BookingHearingResult result = await _client.CoAQueueHearingAsync(bookInfo);
-                
+
                 //get the raw result
                 bookingInfo.RawResult = result.bookingResult;
 
@@ -230,12 +248,14 @@ namespace SCJ.Booking.MVC.Services
                     //create database entry
                     DbSet<BookingHistory> bookingHistory = _dbContext.Set<BookingHistory>();
 
-                    bookingHistory.Add(new BookingHistory
-                    {
-                        ContainerId = bookingInfo.ContainerId,
-                        SmGovUserGuid = userGuid,
-                        Timestamp = DateTime.Now
-                    });
+                    bookingHistory.Add(
+                        new BookingHistory
+                        {
+                            ContainerId = bookingInfo.ContainerId,
+                            SmGovUserGuid = userGuid,
+                            Timestamp = DateTime.Now
+                        }
+                    );
 
                     //save to DB
                     _dbContext.SaveChanges();
@@ -258,7 +278,8 @@ namespace SCJ.Booking.MVC.Services
                     await _mailService.ExchangeSendEmail(
                         model.EmailAddress,
                         EmailSubject,
-                        await GetEmailBody());
+                        await GetEmailBody()
+                    );
 
                     //clear booking info session
                     _session.CoaBookingInfo = null;
@@ -312,20 +333,25 @@ namespace SCJ.Booking.MVC.Services
 
             if (booking.RelatedCaseList != null && booking.RelatedCaseList.Any())
             {
-                viewModel.RelatedCasesString = "\nRELATED FILE NUMBER(S):\n" + string.Join(", ", booking.RelatedCaseList) + "\n";
+                viewModel.RelatedCasesString =
+                    "\nRELATED FILE NUMBER(S):\n"
+                    + string.Join(", ", booking.RelatedCaseList)
+                    + "\n";
             }
-
 
             var template = $"CoaBooking/EmailText";
 
-            //Render the email template 
+            //Render the email template
             return await _viewRenderService.RenderToStringAsync(template, viewModel);
         }
 
         /// <summary>
         ///     Groups Court of Appeal available hearing dates by month and filter by full day if needed
         /// </summary>
-        public Dictionary<DateTime, List<DateTime>> GroupAvailableDates(CoAAvailableDates availableDates, bool fullDay)
+        public Dictionary<DateTime, List<DateTime>> GroupAvailableDates(
+            CoAAvailableDates availableDates,
+            bool fullDay
+        )
         {
             var result = new Dictionary<DateTime, List<DateTime>>();
 

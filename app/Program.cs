@@ -12,8 +12,7 @@ namespace SCJ.Booking.MVC
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
         }
     }
 }

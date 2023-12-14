@@ -29,17 +29,21 @@ namespace SCJ.Booking.MVC.Controllers
         ///     Used by the vue.js date slider control
         /// </summary>
         [Route("/booking/api/sc-available-dates-by-location/{locationId}/{hearingType}")]
-        public async Task<List<ScAvailableDayViewModel>> AvailableScDatesByLocation(int locationId,
-            int hearingType)
+        public async Task<List<ScAvailableDayViewModel>> AvailableScDatesByLocation(
+            int locationId,
+            int hearingType
+        )
         {
             // call the remote API
-            AvailableDatesByLocation soapResult = await _client
-                .AvailableDatesByLocationAsync(locationId, hearingType);
+            AvailableDatesByLocation soapResult = await _client.AvailableDatesByLocationAsync(
+                locationId,
+                hearingType
+            );
 
             // sort the available times chronologically
-            IOrderedEnumerable<ContainerInfo> dates = soapResult
-                .AvailableDates
-                .OrderBy(d => d.Date_Time);
+            IOrderedEnumerable<ContainerInfo> dates = soapResult.AvailableDates.OrderBy(
+                d => d.Date_Time
+            );
 
             // create the return object
             var result = new List<ScAvailableDayViewModel>();
@@ -72,14 +76,18 @@ namespace SCJ.Booking.MVC.Controllers
                 }
 
                 // add the timeslot to the day grouping
-                day.Times.Add(new ScAvailableTimeViewModel
-                {
-                    ContainerId = item.ContainerID,
-                    StartDateTime = item.Date_Time,
-                    Start = item.Date_Time.ToString("h:mm tt").ToLower(),
-                    End = item.Date_Time.AddMinutes(soapResult.BookingDetails.detailBookingLength)
-                        .ToString("h:mm tt").ToLower()
-                });
+                day.Times.Add(
+                    new ScAvailableTimeViewModel
+                    {
+                        ContainerId = item.ContainerID,
+                        StartDateTime = item.Date_Time,
+                        Start = item.Date_Time.ToString("h:mm tt").ToLower(),
+                        End = item.Date_Time
+                            .AddMinutes(soapResult.BookingDetails.detailBookingLength)
+                            .ToString("h:mm tt")
+                            .ToLower()
+                    }
+                );
 
                 lastDate = date;
             }

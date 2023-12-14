@@ -46,27 +46,40 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Saves a string to the cache
         /// </summary>
-        protected async Task SaveStringAsync(string cacheKey, string value,
-            int slidingExpirySeconds = 600)
+        protected async Task SaveStringAsync(
+            string cacheKey,
+            string value,
+            int slidingExpirySeconds = 600
+        )
         {
             await RemoveAsync(cacheKey);
 
             byte[] b = Encoding.Unicode.GetBytes(value);
 
-            await Cache.SetAsync(cacheKey, b, new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromSeconds(slidingExpirySeconds)
-            });
+            await Cache.SetAsync(
+                cacheKey,
+                b,
+                new DistributedCacheEntryOptions
+                {
+                    SlidingExpiration = TimeSpan.FromSeconds(slidingExpirySeconds)
+                }
+            );
         }
 
         /// <summary>
         ///     Saves an object to the cache
         /// </summary>
-        protected async Task SaveObjectAsync(string cacheKey, object value,
-            int slidingExpirySeconds = 600)
+        protected async Task SaveObjectAsync(
+            string cacheKey,
+            object value,
+            int slidingExpirySeconds = 600
+        )
         {
-            await SaveStringAsync(cacheKey, JsonConvert.SerializeObject(value),
-                slidingExpirySeconds);
+            await SaveStringAsync(
+                cacheKey,
+                JsonConvert.SerializeObject(value),
+                slidingExpirySeconds
+            );
         }
 
         /// <summary>

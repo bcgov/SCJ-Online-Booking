@@ -17,7 +17,7 @@ namespace SCJ.Booking.MVC.ViewModels
         //Date for the booking
         public string Date { get; set; }
 
-        //Time for booking 
+        //Time for booking
         public string Time { get; set; }
 
         //indicate if the time-slot was available on the time the user clicked on the confirm button
@@ -37,13 +37,17 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //User email address
         [Required(ErrorMessage = "Please provide your email address.")]
-        [EmailAddress(ErrorMessage = "Please provide a valid email address (e.g. example@email.com).")]
+        [EmailAddress(
+            ErrorMessage = "Please provide a valid email address (e.g. example@email.com)."
+        )]
         public string EmailAddress { get; set; }
 
         //Phone number
         [Required(ErrorMessage = "Please provide your phone number.")]
-        [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}",
-            ErrorMessage = "Please provide a valid phone number (e.g. 250-333-3333).")]
+        [RegularExpression(
+            @"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}",
+            ErrorMessage = "Please provide a valid phone number (e.g. 250-333-3333)."
+        )]
         public string Phone { get; set; }
 
         public string BookingLocationName { get; set; }

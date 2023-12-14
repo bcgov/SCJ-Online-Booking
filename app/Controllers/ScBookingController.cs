@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
@@ -47,7 +46,10 @@ namespace SCJ.Booking.MVC.Controllers
         {
             if (model.CaseRegistryId == -1)
             {
-                ModelState.AddModelError("CaseRegistryId", "Please select the registry where the file was created");
+                ModelState.AddModelError(
+                    "CaseRegistryId",
+                    "Please select the registry where the file was created"
+                );
             }
 
             if (string.IsNullOrWhiteSpace(model.CaseNumber))
@@ -83,7 +85,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View("Index", model);
             }
 
-            await _scBookingService.SaveScBookingInfoAsync(model); 
+            await _scBookingService.SaveScBookingInfoAsync(model);
 
             return RedirectToAction("ConferenceType");
         }
@@ -144,7 +146,10 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (model.ContainerId == -1)
             {
-                ModelState.AddModelError("ContainerId", "Please choose from one of the available times.");
+                ModelState.AddModelError(
+                    "ContainerId",
+                    "Please choose from one of the available times."
+                );
             }
 
             if (!ModelState.IsValid)
@@ -175,7 +180,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             //test if the user selected a time-slot that is available
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
-                //go to confirmation screen
+            //go to confirmation screen
             {
                 return new RedirectResult("/scjob/booking/sc/CaseConfirm");
             }
@@ -201,7 +206,7 @@ namespace SCJ.Booking.MVC.Controllers
             var model = new ScCaseConfirmViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
-                Date = bookingInfo.DateFriendlyName, 
+                Date = bookingInfo.DateFriendlyName,
                 Time = bookingInfo.TimeSlotFriendlyName,
                 CaseLocationName = $"{bookingInfo.CaseLocationName} Law Courts",
                 BookingLocationName = $"{bookingInfo.BookingLocationName} Law Courts",
@@ -209,8 +214,8 @@ namespace SCJ.Booking.MVC.Controllers
                 ContainerId = bookingInfo.ContainerId,
                 CaseRegistryId = bookingInfo.CaseRegistryId,
                 BookingRegistryId = bookingInfo.BookingRegistryId,
-                FullDate = bookingInfo.FullDate, 
-                EmailAddress =  user.Email,
+                FullDate = bookingInfo.FullDate,
+                EmailAddress = user.Email,
                 Phone = user.Phone
             };
 
@@ -250,8 +255,7 @@ namespace SCJ.Booking.MVC.Controllers
             //make booking
             var result = await _scBookingService.BookCourtCase(model, userGuid, userDisplayName);
 
-            return Redirect(
-                $"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
+            return Redirect($"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
         }
 
         [HttpGet]

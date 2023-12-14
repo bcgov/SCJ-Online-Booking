@@ -27,12 +27,8 @@ namespace SCJ.Booking.MVC.Services
         {
             return new SessionUserInfo
             {
-                Phone = string.IsNullOrEmpty(UserInfo.Phone)
-                    ? string.Empty
-                    : UserInfo.Phone,
-                Email = string.IsNullOrEmpty(UserInfo.Email)
-                    ? string.Empty
-                    : UserInfo.Email
+                Phone = string.IsNullOrEmpty(UserInfo.Phone) ? string.Empty : UserInfo.Phone,
+                Email = string.IsNullOrEmpty(UserInfo.Email) ? string.Empty : UserInfo.Email
             };
         }
 
@@ -41,8 +37,9 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public ScSessionBookingInfo ScBookingInfo
         {
-            get => GetObject<ScSessionBookingInfo>(_httpContext.Session, ScBookingInfoKey) ??
-                   new ScSessionBookingInfo();
+            get =>
+                GetObject<ScSessionBookingInfo>(_httpContext.Session, ScBookingInfoKey)
+                ?? new ScSessionBookingInfo();
             set => SetObject(_httpContext.Session, ScBookingInfoKey, value);
         }
 
@@ -51,8 +48,9 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public CoaSessionBookingInfo CoaBookingInfo
         {
-            get => GetObject<CoaSessionBookingInfo>(_httpContext.Session, CoaBookingInfoKey) ??
-                   new CoaSessionBookingInfo();
+            get =>
+                GetObject<CoaSessionBookingInfo>(_httpContext.Session, CoaBookingInfoKey)
+                ?? new CoaSessionBookingInfo();
             set => SetObject(_httpContext.Session, CoaBookingInfoKey, value);
         }
 
@@ -61,8 +59,9 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public SessionUserInfo UserInfo
         {
-            get => GetObject<SessionUserInfo>(_httpContext.Session, UserInfoKey) ??
-                   new SessionUserInfo();
+            get =>
+                GetObject<SessionUserInfo>(_httpContext.Session, UserInfoKey)
+                ?? new SessionUserInfo();
             set => SetObject(_httpContext.Session, UserInfoKey, value);
         }
 

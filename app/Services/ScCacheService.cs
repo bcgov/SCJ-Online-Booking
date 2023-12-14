@@ -29,8 +29,10 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<int?> GetBookingLocationIdAsync(int caseLocationId, int hearingTypeId)
         {
-            return (await GetLocationsAsync()).FirstOrDefault(l =>
-                    l.bookingHearingTypeID == hearingTypeId && l.locationID == caseLocationId)
+            return (await GetLocationsAsync())
+                .FirstOrDefault(
+                    l => l.bookingHearingTypeID == hearingTypeId && l.locationID == caseLocationId
+                )
                 ?.bookingLocationID;
         }
 
@@ -75,7 +77,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             Dictionary<int, string> locationList = (await GetLocationsAsync())
-                .Select(x => new {x.locationID, x.locationName})
+                .Select(x => new { x.locationID, x.locationName })
                 .Distinct()
                 .OrderBy(x => x.locationName)
                 .ToDictionary(x => x.locationID, x => x.locationName);

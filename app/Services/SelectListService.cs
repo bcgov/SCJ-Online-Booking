@@ -21,8 +21,9 @@ namespace SCJ.Booking.MVC.Services
         {
             get
             {
-                return _cacheService.GetLocationDictionaryAsync().Result
-                    .Select(x => new SelectListItem(x.Value, x.Key.ToString()));
+                return _cacheService
+                    .GetLocationDictionaryAsync()
+                    .Result.Select(x => new SelectListItem(x.Value, x.Key.ToString()));
             }
         }
 
@@ -34,10 +35,13 @@ namespace SCJ.Booking.MVC.Services
             get
             {
                 return new SelectList(
-                    CoaHearingType.GetHearingTypes()
+                    CoaHearingType
+                        .GetHearingTypes()
                         .Where(x => x.IsCriminal)
-                        .Select(x => new {Id = x.HearingTypeId, Value = x.Description}),
-                    "Id", "Value");
+                        .Select(x => new { Id = x.HearingTypeId, Value = x.Description }),
+                    "Id",
+                    "Value"
+                );
             }
         }
     }

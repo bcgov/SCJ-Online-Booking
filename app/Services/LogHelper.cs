@@ -6,7 +6,7 @@ namespace SCJ.Booking.MVC.Services
 {
     public static class LogHelper
     {
-        public static ILogger GetLogger (IConfiguration configuration)
+        public static ILogger GetLogger(IConfiguration configuration)
         {
             // default log level is error (less verbose)
             var logLevel = LogEventLevel.Error;
@@ -25,9 +25,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             //setup error logger settings
-            return new LoggerConfiguration()
-                .WriteTo.Console(logLevel)
-                .CreateLogger();
+            return new LoggerConfiguration().WriteTo.Console(logLevel).CreateLogger();
         }
     }
 }

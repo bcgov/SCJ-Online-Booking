@@ -9,6 +9,7 @@ namespace SCJ.Booking.MVC.ViewModels
     public class ScCaseSearchViewModel
     {
         private readonly string format = "yyyy-MM-dd";
+
         public ScCaseSearchViewModel()
         {
             //Default values
@@ -31,26 +32,26 @@ namespace SCJ.Booking.MVC.ViewModels
         public string HearingTypeName { get; set; }
 
         //Available dates
-        public AvailableDatesByLocation Results { get; set; } 
-        public int HearingLengthMinutes 
+        public AvailableDatesByLocation Results { get; set; }
+        public int HearingLengthMinutes
         {
-            get
-            {
-                return Results?.BookingDetails?.detailBookingLength ?? 0;
-            }
+            get { return Results?.BookingDetails?.detailBookingLength ?? 0; }
         }
+
         public int GetSelectedDateIndex(string selectedDate)
         {
             return AvailableDates != null ? AvailableDates.ToList().IndexOf(selectedDate) : 0;
         }
+
         public string[] AvailableDates
         {
             get
             {
-                var result = Results?.AvailableDates?.Select(
-                    x => x.Date_Time.ToString(format)
-                    ).Distinct().ToArray();
-                return result; 
+                var result = Results
+                    ?.AvailableDates?.Select(x => x.Date_Time.ToString(format))
+                    .Distinct()
+                    .ToArray();
+                return result;
             }
         }
         public string FirstAvailableDate
@@ -63,7 +64,8 @@ namespace SCJ.Booking.MVC.ViewModels
                     result = Results.AvailableDates
                         .Select(x => x.Date_Time.Date)
                         .OrderBy(x => x)
-                        .FirstOrDefault().ToString(format);
+                        .FirstOrDefault()
+                        .ToString(format);
                 }
                 return result;
             }
@@ -78,7 +80,8 @@ namespace SCJ.Booking.MVC.ViewModels
                     result = Results.AvailableDates
                         .Select(x => x.Date_Time.Date)
                         .OrderBy(x => x)
-                        .LastOrDefault().ToString(format);
+                        .LastOrDefault()
+                        .ToString(format);
                 }
                 return result;
             }
@@ -87,9 +90,10 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                var result = Results?.AvailableDates?.Select(
-                    x => (x.Date_Time.Year, x.Date_Time.Month)
-                    ).Distinct().ToArray();
+                var result = Results
+                    ?.AvailableDates?.Select(x => (x.Date_Time.Year, x.Date_Time.Month))
+                    .Distinct()
+                    .ToArray();
                 return result;
             }
         }
@@ -102,24 +106,32 @@ namespace SCJ.Booking.MVC.ViewModels
                 {
                     foreach (var yearAndMonth in AvailableYearsAndMonths)
                     {
-                        result.AddRange(Enumerable.Range(1, DateTime.DaysInMonth(
-                            yearAndMonth.Item1, yearAndMonth.Item2))
-                            .Select(day => new DateTime(yearAndMonth.Item1, yearAndMonth.Item2, day)
-                            .ToString(format)));
+                        result.AddRange(
+                            Enumerable
+                                .Range(
+                                    1,
+                                    DateTime.DaysInMonth(yearAndMonth.Item1, yearAndMonth.Item2)
+                                )
+                                .Select(
+                                    day =>
+                                        new DateTime(
+                                            yearAndMonth.Item1,
+                                            yearAndMonth.Item2,
+                                            day
+                                        ).ToString(format)
+                                )
+                        );
                     }
                     result = result.Where(x => !AvailableDates.Contains(x)).ToList();
                 }
-                return result; 
+                return result;
             }
         }
 
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber
         {
-            get
-            {
-                return (CourtFiles?.Length ?? 0) > 0;
-            }
+            get { return (CourtFiles?.Length ?? 0) > 0; }
         }
 
         //Indicates if the time slot expired
@@ -154,8 +166,10 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 var result = DateTime.MinValue;
-                if (!string.IsNullOrWhiteSpace(SelectedCaseDate) &&
-                    long.TryParse(SelectedCaseDate, out long ticks))
+                if (
+                    !string.IsNullOrWhiteSpace(SelectedCaseDate)
+                    && long.TryParse(SelectedCaseDate, out long ticks)
+                )
                 {
                     result = new DateTime(ticks);
                 }
@@ -180,9 +194,13 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                return CourtFiles?.Where(x =>
-                    string.IsNullOrWhiteSpace(SelectedCourtClass) ||
-                    x.courtClassCode == SelectedCourtClass).ToList();
+                return CourtFiles
+                    ?.Where(
+                        x =>
+                            string.IsNullOrWhiteSpace(SelectedCourtClass)
+                            || x.courtClassCode == SelectedCourtClass
+                    )
+                    .ToList();
             }
         }
         public CourtFile SelectedCourtFile
@@ -194,26 +212,18 @@ namespace SCJ.Booking.MVC.ViewModels
         }
         public string SelectedFileNumber
         {
-            get
-            {
-                return SelectedCourtFile?.courtClassCode + SelectedCourtFile?.courtFileNumber;
-            }
+            get { return SelectedCourtFile?.courtClassCode + SelectedCourtFile?.courtFileNumber; }
         }
         public string SelectedCourtClassName
         {
-            get
-            {
-                return GetCourtClass(SelectedCourtFile?.courtClassCode);
-            }
+            get { return GetCourtClass(SelectedCourtFile?.courtClassCode); }
         }
         public string FileNumber
         {
-            get
-            {
-                return LocationPrefix + " " + SelectedFileNumber;
-            }
+            get { return LocationPrefix + " " + SelectedFileNumber; }
         }
-        public List<int> AvailableConferenceTypeIds { get; set; }    
+        public List<int> AvailableConferenceTypeIds { get; set; }
+
         public string GetCourtClass(string value)
         {
             switch (value)

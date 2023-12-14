@@ -13,11 +13,14 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool IsValidCaseNumber { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
+
         //public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
+
         //public SelectList HearingTypes { get; set; }
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
+
         //public Dictionary<DateTime, List<DateTime>> Results { get; set; }
         public DateTime? SelectedDate { get; set; }
         public string SubmitButton { get; set; }
@@ -36,7 +39,10 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Phone number
         [Required(ErrorMessage = "Please provide a valid phone number.")]
-        [RegularExpression(@"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}", ErrorMessage = "Please provide a valid phone number.")]
+        [RegularExpression(
+            @"\d{3}[\-]{0,1}\d{3}[\-]{0,1}\d{4}",
+            ErrorMessage = "Please provide a valid phone number."
+        )]
         public string Phone { get; set; }
         public CoAClassInfo[] CaseList { get; set; }
         public List<string> SelectedCases { get; set; }
