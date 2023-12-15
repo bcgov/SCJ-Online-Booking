@@ -20,7 +20,7 @@
     "dependencies": {
         "@bcgov/bc-sans": "^1.0.1",
         "@fortawesome/fontawesome-free": "^5.15.4",
-        "axios": "^0.21.4",
+        "axios": "^1.6.0",
         "bootstrap-datepicker": "^1.9.0",
         "browserslist": "^4.20.2",
         "caniuse-lite": "^1.0.30001320",
@@ -44,7 +44,7 @@
         "mini-css-extract-plugin": "^2.6.0",
         "optimize-css-assets-webpack-plugin": "^6.0.1",
         "popper.js": "^1.16.1",
-        "postcss": "^8.4.12",
+        "postcss": "^8.4.31",
         "remove-files-webpack-plugin": "^1.4.5",
         "sass": "^1.49.9",
         "sass-loader": "^10.2.0",
