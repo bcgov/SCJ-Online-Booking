@@ -1,7 +1,3 @@
-images:
-  app:
-    tag: dev
-
 app:
   env:
     environment: dev
