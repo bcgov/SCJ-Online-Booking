@@ -25,6 +25,18 @@ objects:
       name: ${NAME}-build
       annotations:
         description: Keeps track of changes in the application builder image
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: partoni-postgres
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: pgbouncer
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: backup-container
   - kind: BuildConfig
     apiVersion: v1
     metadata:
@@ -103,125 +115,23 @@ objects:
           from:
             kind: DockerImage
             name: ${DOTNET_RUNTIME_DOCKER_IMAGE}
+      triggers:
+          - type: ImageChange
+            imageChange:
+              from:
+                kind: ImageStreamTag
+                name: ${NAME}-build:latest
+      resources:
+        limits:
+          cpu: '2'
+          memory: 4Gi
+        requests:
+          cpu: '1'
+          memory: 2Gi
       output:
         to:
           kind: ImageStreamTag
           name: ${NAME}-runtime:latest
-  - kind: BuildConfig
-    apiVersion: v1
-    metadata:
-      name: core-build-pipeline
-      labels:
-        name: core-build-pipeline
-      annotations:
-        pipeline.alpha.openshift.io/uses: '[{"name": "", "namespace": "", "kind": "DeploymentConfig"}]'
-    spec:
-      strategy:
-        type: JenkinsPipeline
-        jenkinsPipelineStrategy:
-          jenkinsfilePath: core-build-pipeline-Jenkinsfile
-      triggers:
-        - type: GitHub
-          github:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-        - type: Generic
-          generic:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-      runPolicy: Serial
-      source:
-        type: Git
-        git:
-          uri: https://github.com/bcgov/SCJ-Online-Booking.git
-          ref: master
-        contextDir: openshift/jenkins
-  - kind: BuildConfig
-    apiVersion: v1
-    metadata:
-      name: create-runtime-and-deploy-to-dev
-      labels:
-        name: create-runtime-and-deploy-to-dev
-      annotations:
-        pipeline.alpha.openshift.io/uses: '[{"name": "", "namespace": "", "kind": "DeploymentConfig"}]'
-    spec:
-      strategy:
-        type: JenkinsPipeline
-        jenkinsPipelineStrategy:
-          jenkinsfilePath: create-runtime-and-deploy-to-dev-Jenkinsfile
-      triggers:
-        - type: ImageChange
-        - type: ConfigChange
-        - type: ImageChange
-          imageChange:
-            from:
-              kind: ImageStreamTag
-              name: ${NAME}-build:latest
-        - type: GitHub
-          github:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-        - type: Generic
-          generic:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-      runPolicy: Serial
-      source:
-        type: Git
-        git:
-          uri: https://github.com/bcgov/SCJ-Online-Booking
-          ref: master
-        contextDir: openshift/jenkins
-  - kind: BuildConfig
-    apiVersion: v1
-    metadata:
-      name: deploy-to-prod
-      labels:
-        name: deploy-to-prod
-      annotations:
-        pipeline.alpha.openshift.io/uses: '[{"name": "", "namespace": "", "kind": "DeploymentConfig"}]'
-    spec:
-      strategy:
-        type: JenkinsPipeline
-        jenkinsPipelineStrategy:
-          jenkinsfilePath: deploy-to-prod-Jenkinsfile
-      triggers:
-        - type: GitHub
-          github:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-        - type: Generic
-          generic:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-      runPolicy: Serial
-      source:
-        type: Git
-        git:
-          uri: https://github.com/bcgov/SCJ-Online-Booking
-          ref: master
-        contextDir: openshift/jenkins
-  - kind: BuildConfig
-    apiVersion: v1
-    metadata:
-      name: deploy-to-test
-      labels:
-        name: deploy-to-test
-      annotations:
-        pipeline.alpha.openshift.io/uses: '[{"name": "", "namespace": "", "kind": "DeploymentConfig"}]'
-    spec:
-      strategy:
-        type: JenkinsPipeline
-        jenkinsPipelineStrategy:
-          jenkinsfilePath: deploy-to-test-Jenkinsfile
-      triggers:
-        - type: GitHub
-          github:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-        - type: Generic
-          generic:
-            secret: ${GITHUB_WEBHOOK_SECRET}
-      runPolicy: Serial
-      source:
-        type: Git
-        git:
-          uri: https://github.com/bcgov/SCJ-Online-Booking
-          ref: master
-        contextDir: openshift/jenkins
 parameters:
   - name: NAME
     displayName: Name
