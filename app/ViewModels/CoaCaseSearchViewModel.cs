@@ -19,6 +19,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public int CaseId { get; set; }
         public string CaseType { get; set; }
         public bool? IsValidCaseNumber { get; set; }
+        public bool? IsAppealHearing { get; set; }
         public bool? CertificateOfReadiness { get; set; }
         public bool? DateIsAgreed { get; set; }
 
@@ -32,6 +33,9 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool TimeSlotExpired { get; set; }
         public CoAClassInfo[] CaseList { get; set; }
         public List<string> SelectedCases { get; set; }
+        public CoAChambersApplications[] ChambersApplicationTypes {  get; set; }
+        public List<int> SelectedApplicationTypes { get; set; }
+        public bool? HalfHourRequired { get; set; }
 
         public bool Step1Complete
         {
@@ -71,14 +75,19 @@ namespace SCJ.Booking.MVC.ViewModels
                 {
                     case CoaCaseType.Civil:
                     {
-                        var certificateOrReadiness = CertificateOfReadiness ?? false;
+                        //var certificateOrReadiness = CertificateOfReadiness ?? false;
 
-                        if (!dateIsAgreed || !certificateOrReadiness)
+                        //if (!dateIsAgreed || !certificateOrReadiness)
+                        //{
+                        //    return false;
+                        //}
+
+                        if (!dateIsAgreed || (IsAppealHearing is null))
                         {
                             return false;
                         }
 
-                        break;
+                        return true;
                     }
                     case CoaCaseType.Criminal:
                     {
@@ -94,6 +103,14 @@ namespace SCJ.Booking.MVC.ViewModels
                 }
 
                 return IsFullDay != null;
+            }
+        }
+
+        public bool Step3Complete
+        {
+            get
+            {
+                return true;
             }
         }
     }

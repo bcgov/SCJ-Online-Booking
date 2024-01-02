@@ -88,12 +88,17 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 if (model.CaseType == CoaCaseType.Civil)
                 {
-                    if (model.CertificateOfReadiness == null)
+                    //if (model.CertificateOfReadiness == null)
+                    //{
+                    //    ModelState.AddModelError(
+                    //        "CertificateOfReadiness",
+                    //        "Please answer this question."
+                    //    );
+                    //}
+
+                    if(model.IsAppealHearing is null)
                     {
-                        ModelState.AddModelError(
-                            "CertificateOfReadiness",
-                            "Please answer this question."
-                        );
+                        ModelState.AddModelError("IsAppealHearing", "Please answer this question.");
                     }
                 }
                 else if (model.CaseType == CoaCaseType.Criminal)
@@ -113,23 +118,37 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     ModelState.AddModelError("DateIsAgreed", "Please answer this question.");
                 }
-
-                if (model.IsFullDay == null)
-                {
-                    ModelState.AddModelError(
-                        "IsFullDay",
-                        "Please choose the length of time required for your Hearing."
-                    );
-                }
             }
 
-            if (ModelState.IsValid)
+            //if(model.Step2Complete)
+            //{
+            //    if (model.IsFullDay == null)
+            //    {
+            //        ModelState.AddModelError(
+            //            "IsFullDay",
+            //            "Please choose the length of time required for your Hearing."
+            //        );
+            //    }
+            //}
+
+            if (ModelState.IsValid && !model.Step2Complete)
             {
                 model = await _coaBookingService.GetSearchResults(model);
+            }
+            else
+            {
+                model = await _coaBookingService.GetApplicationTypes(model);
             }
 
             if (!ModelState.IsValid || model.CaseId == 0)
             {
+                //need to repopulate the case list if there
+                if(model.CaseNumber != null)
+                {
+                    var bookingInfo = _session.CoaBookingInfo;
+                    model.CaseList = bookingInfo.CaseList;
+                }    
+
                 return View(model);
             }
 

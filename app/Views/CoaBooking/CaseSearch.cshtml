@@ -119,45 +119,37 @@
                     if (Model.CaseType == CoaCaseType.Civil)
                     {
                         <div class="preliminary_questions preliminary_questions--Civil">
-                            <div class="row search-info-row">
+                            <div id="" class="row search-info-row">
                                 <div class="col-md-6">
-                                    <label class="factum can-wrap">
-                                        Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
+                                    <label class="can-wrap">
+                                        What hearing are you trying to book?
                                     </label>
-                                    <div id="Civil_CertificateOfReadiness" class="btn-radio-group preliminary_questions__radio">
-                                        <label class="btn btn-radio @((Model.CertificateOfReadiness ?? false) ? "active" : "")">
-                                            <input type="radio" asp-for="CertificateOfReadiness" value="true" /> Yes
+                                    <div class="btn-radio-group preliminary_questions__radio">
+                                        <label class="btn btn-radio btn-radio--secondary @((Model.IsAppealHearing ?? false) ? "active" : "")">
+                                            <input type="radio" asp-for="IsAppealHearing" value="true" checked="@(Model.IsAppealHearing)" disabled="@(Model.Step2Complete)"/> Appeal
                                         </label>
 
-                                        <label class="btn btn-radio @((Model.CertificateOfReadiness ?? true) ? "" : "active") @(showingDates && (Model.CertificateOfReadiness ?? false) ? "disabled" : "")">
-                                            <input type="radio" asp-for="CertificateOfReadiness" value="false" disabled="@(showingDates && (Model.CertificateOfReadiness ?? false))" /> No
+                                        <label class="btn btn-radio btn-radio--secondary @((Model.IsAppealHearing ?? true) ? "" : "active")">
+                                            <input type="radio" asp-for="IsAppealHearing" value="false" checked="@(!Model.IsAppealHearing)" disabled="@(Model.Step2Complete)" /> Chambers
                                         </label>
                                     </div>
-
-                                    <span class="text-danger" asp-validation-for="CertificateOfReadiness"></span>
-
-                                    <div class="notice--preliminary_question">
-                                        <span>Your hearing will not be confirmed unless the Order(s) of the Lower Court are submitted.</span>
-                                    </div>
-                                    <div class="alert alert-warning  alert--preliminary_question">
-                                        <i class="fa fa-exclamation-triangle"></i>
-                                        You will not be able to book a hearing date for the appeal until these two steps have been taken.
-                                        If you require assistance with your booking, please contact the scheduler at
-                                        <span class="nowrap">604-660-2865</span>.
-                                    </div>
+                                    <span class="text-danger" asp-validation-for="IsAppealHearing"></span>
                                 </div>
+
                                 <div class="col-md-6">
-                                    <label class="can-wrap"><br>Is the hearing date agreed upon by all parties?</label>
+                                    <label class="can-wrap">Is the hearing date agreed upon by all parties?</label>
                                     <div id="Civil_DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
                                         <label class="btn btn-radio @((Model.DateIsAgreed ?? false) ? "active" : "")">
-                                            <input type="radio" asp-for="DateIsAgreed" value="true" /> Yes
+                                            <input type="radio" asp-for="DateIsAgreed" value="true" disabled="@(Model.Step2Complete)" /> Yes
                                         </label>
 
                                         <label class="btn btn-radio @((Model.DateIsAgreed ?? true) ? "" : "active") @(showingDates && (Model.DateIsAgreed ?? false) ? "disabled" : "")">
-                                            <input type="radio" asp-for="DateIsAgreed" value="false" disabled="@(showingDates && (Model.DateIsAgreed ?? false))" /> No
+                                            <input type="radio" asp-for="DateIsAgreed" value="false" disabled="@(Model.Step2Complete)" /> No
                                         </label>
                                     </div>
+
                                     <span class="text-danger" asp-validation-for="DateIsAgreed"></span>
+
                                     <div class="alert alert-warning alert--preliminary_question">
                                         <i class="fa fa-exclamation-triangle"></i>
                                         You will not be able to book a hearing of appeal until all parties agree upon a date.
@@ -166,24 +158,51 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div id="CivilAdditionalQs" class="row search-info-row" style="display: @((Model.CertificateOfReadiness ?? false) && (Model.DateIsAgreed ?? false) ? "block" : "none")">
-                                <div class="col-md-6">
-                                    <label>How long will you require for your hearing?</label>
-                                    <div id="Civil_IsFullDay" class="btn-radio-group">
-                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates && Model.IsFullDay == true ? "disabled" : "")">
-                                            <input type="radio" asp-for="IsFullDay" value="false" disabled="@(showingDates && Model.IsFullDay == true)" /> Half day
-                                        </label>
-
-                                        <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates && Model.IsFullDay == false ? "disabled" : "")">
-                                            <input type="radio" asp-for="IsFullDay" value="true" disabled="@(showingDates && Model.IsFullDay == false)" /> Full day
-                                        </label>
-                                    </div>
-                                    <span class="text-danger" asp-validation-for="IsFullDay"></span>
-                                </div>
-                            </div>
-
                         </div>
+                        if (Model.Step2Complete)
+                        {
+                            <div class="preliminary_questions preliminary_questions--Civil">
+                                <div class="row search-info-row">
+                                    <div class="col-md-6">
+                                        <label class="application_type can-wrap">
+                                            Please select the application type(s) for this chambers hearing.
+                                        </label>
+                                        @Html.DropDownListFor(x => x.SelectedApplicationTypes, new MultiSelectList(Model.ChambersApplicationTypes, "HearingTypeID", "ApplicationTypeName", Model.SelectedApplicationTypes))
+
+                                        <span class="text-danger" asp-validation-for="CertificateOfReadiness"></span>
+
+                                        <div class="notice--preliminary_question">
+                                            <span>Your hearing will not be confirmed unless the Order(s) of the Lower Court are submitted.</span>
+                                        </div>
+                                        <div class="alert alert-warning  alert--preliminary_question">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                            You will not be able to book a hearing date for the appeal until these two steps have been taken.
+                                            If you require assistance with your booking, please contact the scheduler at
+                                            <span class="nowrap">604-660-2865</span>.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="CivilAdditionalQs" class="row search-info-row">
+                                    <div class="col-md-6">
+                                        <label>How long will you require for your chambers hearing.</label>
+                                        <p>If you require more than 2 hours, please contact the Registry.</p>
+                                        <div id="Civil_Chambers_TimeRequired" class="btn-radio-group">
+                                            <label class="btn btn-radio btn-radio--time_required  @((Model.HalfHourRequired ?? false) ? "" : "active") @(showingDates && Model.HalfHourRequired == false ? "disabled" : "")">
+                                                <input type="radio" asp-for="HalfHourRequired" value="true" disabled="@(showingDates && Model.HalfHourRequired == false)" /> Half hour
+                                            </label>
+
+                                            <label class="btn btn-radio btn-radio--time_required  @((Model.HalfHourRequired ?? true) ? "active" : "") @(showingDates && Model.HalfHourRequired == true ? "disabled" : "")">
+                                                <input type="radio" asp-for="HalfHourRequired" value="false" disabled="@(showingDates && Model.HalfHourRequired == true)" /> One hour
+                                            </label>
+                                        </div>
+                                        <span class="text-danger" asp-validation-for="HalfHourRequired"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
                     }
                     else if (Model.CaseType == CoaCaseType.Criminal)
                     {
@@ -246,6 +265,10 @@
                         {
                             <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block mt-2">Next</button>
                         }
+                        else if (!Model.Step2Complete)
+                        {
+                            <button type="submit" id="btnNext" name="SubmitButton" value="hearingType" class="btn btn-primary btn-block mt-2">Next</button>
+                        }
                         else
                         {
                             <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-block mt-2" style='display: flex;'>Show Available Dates</button>
@@ -263,7 +286,6 @@
                 </div>
             }
         </div>
-    </div>
 </form>
 
 @if (showingDates)
@@ -279,20 +301,20 @@
             foreach (var month in Model.Results)
             {
                 var days = month.Value;
-                    <div class="availableDates__month @monthIndex @((monthIndex == 0 || monthIndex == 1) ? "" : "hidden")">
-                        <h6 class="h3--month">@month.Key.ToString("MMMM yyyy")</h6>
-                        <div class="availableDates__month__days">
-                            @foreach (var day in days)
+                <div class="availableDates__month @monthIndex @((monthIndex == 0 || monthIndex == 1) ? "" : "hidden")">
+                    <h6 class="h3--month">@month.Key.ToString("MMMM yyyy")</h6>
+                    <div class="availableDates__month__days">
+                        @foreach (var day in days)
                         {
-                                <a class="btn btn-primary availableDate" data-date="@day.ToString("yyyy-MM-dd")">
-                                    <p>@day.ToString("dddd")</p>
-                                    <p>@day.ToString("MMMM d, yyyy")</p>
-                                </a>
-                                <br />
-                        }
+                            <a class="btn btn-primary availableDate" data-date="@day.ToString("yyyy-MM-dd")">
+                                <p>@day.ToString("dddd")</p>
+                                <p>@day.ToString("MMMM d, yyyy")</p>
+                            </a>
                             <br />
-                        </div>
+                        }
+                        <br />
                     </div>
+                </div>
                 monthIndex++;
             }
         }

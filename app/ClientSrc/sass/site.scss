@@ -607,6 +607,11 @@ div#progress-overlay {
         clip: rect(0,0,0,0);
         pointer-events: none;
     }
+
+    &--secondary {
+        width: auto;
+        padding: 20px;
+    }
 }
 
 label {

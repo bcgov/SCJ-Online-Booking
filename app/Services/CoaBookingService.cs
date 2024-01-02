@@ -130,7 +130,7 @@ namespace SCJ.Booking.MVC.Services
                     HearingTypeName = retval.HearingTypeName,
                     SelectedDate = model.SelectedDate,
                     CaseList = retval.CaseList,
-                    SelectedCases = model.SelectedCases,
+                    SelectedCases = model.SelectedCases
                 };
 
                 if (model.HearingTypeId != null)
@@ -141,6 +141,17 @@ namespace SCJ.Booking.MVC.Services
                 _session.CoaBookingInfo = bookingInfo;
             }
 
+            return retval;
+        }
+
+        /// <summary>
+        ///     Search for available times
+        /// </summary>
+        public async Task<CoaCaseSearchViewModel> GetApplicationTypes(CoaCaseSearchViewModel model)
+        {
+            //application type dropdown list
+            var retval = model;
+            retval.ChambersApplicationTypes = await _client.CoAChambersApplicationsListAsync(model.CaseType);
             return retval;
         }
 
