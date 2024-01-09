@@ -33,6 +33,10 @@ Run the following commands from the `helm/scjob` directory.
 
 `helm -n bc7c5c-prod install scjob . -f values-prod.yaml`
 
+### After deploying
+
+You will need to edit the secrets and the routes on OpenShift. The route whitelist annotations should match the eDivorce application for Dev/Test/Prod respectively. Both apps use justice.gov.bc.ca as a reverse proxy.
+
 ## Upgrading
 
 The `upgrade` command can be used when updating existing deployments in a namespace.
