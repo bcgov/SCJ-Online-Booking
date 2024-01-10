@@ -574,7 +574,7 @@ div#progress-overlay {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
 
-    &--day {
+    &--day, &--time_required {
         padding: 12px 0;
     }
 
@@ -593,7 +593,7 @@ div#progress-overlay {
         cursor: default;
 
         &:hover, &:focus {
-            color: $blue;
+            color: $blue !important;
             background-color: $white;
         }
     }
@@ -806,11 +806,11 @@ select, input {
 }
 
 /* Court of Appeal side */
-.preliminary_questions__radio, #Civil_IsFullDay, #Criminal_IsFullDay {
+.preliminary_questions__radio, #Appeal_IsFullDay, #Criminal_IsFullDay, #Chambers_TimeRequired {
     .btn {
         display: inline-block;
         margin-top: 0;
-        margin-bottom: 20px
+        margin-bottom: 10px
     }
 }
 

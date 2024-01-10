@@ -6,7 +6,9 @@ $(document).ready(function () {
     var $radiobtns = $('input[type="radio"]');
     $radiobtns.click(function () {
         $radiobtns.each(function () {
-            $(this).parent().toggleClass("active", this.checked);
+            if (!$(this).parent().hasClass("disabled")) {
+                $(this).parent().toggleClass("active", this.checked);
+            }
         });
     });
 
@@ -16,7 +18,7 @@ $(document).ready(function () {
     var $checkboxes = $('.related-cases input[name="SelectedCases"]');
     $checkboxes.click(function () {
         if ($(this).is(':checked')) {
-
+            
             if (!($checkboxes.filter('[data-main="True"]').attr("checked") == "checked")) {
                 if ($(this).attr("data-main") == "True") {
                     //If the main is not checked, and the current checked one is the main
@@ -37,7 +39,7 @@ $(document).ready(function () {
 
         else {
             var $checked = $('.related-cases input[name="SelectedCases"]:checked');
-
+            
             if ($checkboxes.filter('[data-main="True"]').attr("checked") == "checked") {
                 if ($(this).attr("data-main") == "True" && $checked.length > 1) {
                     //If the main is checked, and the current unchecked one is the main
@@ -61,71 +63,71 @@ $(document).ready(function () {
             this.checked = false;
         }
 
-        var caseType = $("#CaseType").val().toLowerCase();
-        if (caseType === "civil") {
-            toggleCivil();
+        var hearingType = $('#IsAppealHearing:checked').val();
+        if (hearingType === "true") {
+            toggleAppeal();
         }
 
-        if (caseType === "criminal") {
+        if (hearingType === "false") {
             toggleCriminal();
         }
     });
 
     //Display last row of questions for Civil case if previous questions are answered Yes
     //And selection of related case files is valid
-    var toggleCivil = function () {
+    var toggleCriminal = function () {
         var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
-        var $Civil_DateIsAgreed = $('#Civil_DateIsAgreed input[type="radio"]:checked').val();
-        if ($Civil_CertificateOfReadiness === "true" && $Civil_DateIsAgreed === "true" && validCaseSelection) {
-            $("#CivilAdditionalQs").show();
+        if ($Civil_CertificateOfReadiness === "true" && validCaseSelection) {
+            $("#AppealsAdditionalQs").show();
         } else {
-            $("#CivilAdditionalQs").hide();
+            $("#AppealsAdditionalQs").hide();
         }
     };
 
-    $('#Civil_CertificateOfReadiness input[type="radio"]').click(toggleCivil);
-    $('#Civil_DateIsAgreed input[type="radio"]').click(toggleCivil);
+    $('#Civil_CertificateOfReadiness input[type="radio"]').click(toggleCriminal);
+    $('#DateIsAgreed input[type="radio"]').click(toggleCriminal);
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
     //And selection of related case files is valid
-    var toggleCriminal = function () {
-        var $Criminal_DateIsAgreed = $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
-        if ($Criminal_DateIsAgreed === "true" && validCaseSelection) {
-            $("#CriminalAdditionalQs").css("display", "flex");
-        } else {
-            $("#CriminalAdditionalQs").hide();
+    var toggleAppeal = function () {
+        var $Appeal_CertificateOfReadiness = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').val();
+        var $IsButtonDisabled = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').parent().hasClass('disabled');
+        if (!$IsButtonDisabled) {
+            if ($Appeal_CertificateOfReadiness === "true" && validCaseSelection) {
+                $("#AppealAdditionalQs").css("display", "flex");
+            } else {
+                $("#AppealAdditionalQs").hide();
+            } 
         }
     };
 
-    $('#Criminal_DateIsAgreed input[type="radio"]').click(toggleCriminal);
+    $('#Appeal_CertificateOfReadiness input[type="radio"]').click(toggleAppeal);
 
 
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
-    $('.preliminary_questions input[type="radio"], .preliminary_questions select, input[name="SelectedCases"]').change(function () {
-        var caseType = $("#CaseType").val().toLowerCase();
+    $('.preliminary_questions input[type="radio"], input[name="SelectedCases"]').change(function () {
+        var hearingType = $('#IsAppealHearing:checked').val();
         var $radioBtnGroup = $(this).parent().parent();
-
+        
         if ($radioBtnGroup.hasClass("preliminary_questions__radio")) {
             var $radioBtnValue = $(this).val();
-
-            if ($radioBtnValue === "false") {
+            if ($radioBtnValue === "false" && !$(this).parent().hasClass('disabled')) {
                 $radioBtnGroup.siblings(".alert--preliminary_question").show();
                 $radioBtnGroup.siblings(".notice--preliminary_question").hide();
-            } else if ($radioBtnValue === "true") {
+            } else if ($radioBtnValue === "true" && !$(this).parent().hasClass('disabled')) {
                 $radioBtnGroup.siblings(".alert--preliminary_question").hide();
                 $radioBtnGroup.siblings(".notice--preliminary_question").show();
             }
         }
 
-        if (caseType === "civil") {
-            var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
-            var $Civil_DateIsAgreed = $('#Civil_DateIsAgreed input[type="radio"]:checked').val();
-            var $Civil_IsFullDay = $('#Civil_IsFullDay input[type="radio"]:checked').val();
+        //hearing type is appeals
+        if (hearingType === "true") {
+            var $Appeal_CertificateOfReadiness = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').val();
+            var $Appeal_IsFullDay = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').val();
 
-            if ($Civil_CertificateOfReadiness === "true" &&
-                $Civil_DateIsAgreed === "true" &&
-                ($Civil_IsFullDay === "true" || $Civil_IsFullDay === "false") &&
+            if ($Appeal_CertificateOfReadiness === "true" &&
+                ($Appeal_IsFullDay === "true" || $Appeal_IsFullDay === "false") &&
                 validCaseSelection) {
                 $("#btnShowDates").show();
             } else {
@@ -133,16 +135,11 @@ $(document).ready(function () {
             }
         }
 
-        if (caseType === "criminal") {
-            var $Criminal_DateIsAgreed =
-                $('#Criminal_DateIsAgreed input[type="radio"]:checked').val();
-            var $Criminal_IsFullDay = $('#Criminal_IsFullDay input[type="radio"]:checked').val();
-
-            var $Criminal_HearingTypeId = $("select#HearingTypeId").val();
-
-            if ($Criminal_DateIsAgreed === "true" &&
-                ($Criminal_IsFullDay === "true" || $Criminal_IsFullDay === "false") &&
-                $Criminal_HearingTypeId !== "" &&
+        //hearing type is chambers
+        if (hearingType === "false") {
+            var $Chambers_TimeRequired = $('#Chambers_TimeRequired input[type="radio"]:checked').val();
+            
+            if (($Chambers_TimeRequired === "true" || $Chambers_TimeRequired === "false") &&
                 validCaseSelection) {
                 $("#btnShowDates").show();
             } else {

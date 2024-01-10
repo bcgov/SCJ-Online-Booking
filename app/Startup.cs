@@ -45,6 +45,7 @@ namespace SCJ.Booking.MVC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<SessionService>();
             services.AddSingleton<ScCacheService>();
+            services.AddSingleton<CoaCacheService>();
 
             if (Configuration["TAG_NAME"] == "localdev")
             {

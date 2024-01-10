@@ -34,6 +34,10 @@ namespace SCJ.Booking.MVC.Utils
         public CoAClassInfo[] CaseList { get; set; }
         public List<string> SelectedCases { get; set; }
         public List<string> RelatedCaseList { get; set; }
+        public bool? IsAppealHearing { get; set; }
+        public List<string> SelectedApplicationTypes { get; set; }
+        public bool? HalfHourRequired { get; set; }
+
 
         public string FriendlyError
         {

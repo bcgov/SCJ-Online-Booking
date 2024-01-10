@@ -86,32 +86,9 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (model.Step1Complete)
             {
-                if (model.CaseType == CoaCaseType.Civil)
+                if (model.IsAppealHearing == null)
                 {
-                    //if (model.CertificateOfReadiness == null)
-                    //{
-                    //    ModelState.AddModelError(
-                    //        "CertificateOfReadiness",
-                    //        "Please answer this question."
-                    //    );
-                    //}
-
-                    if(model.IsAppealHearing is null)
-                    {
-                        ModelState.AddModelError("IsAppealHearing", "Please answer this question.");
-                    }
-                }
-                else if (model.CaseType == CoaCaseType.Criminal)
-                {
-                    //if (model.LowerCourtOrder == null)
-                    //{
-                    //    ModelState.AddModelError("LowerCourtOrder", "Please answer this question.");
-                    //}
-
-                    if (model.HearingTypeId == null)
-                    {
-                        ModelState.AddModelError("HearingTypeId", "Please select a hearing type.");
-                    }
+                    ModelState.AddModelError("IsAppealHearing", "Please answer this question.");
                 }
 
                 if (model.DateIsAgreed == null)
@@ -120,36 +97,15 @@ namespace SCJ.Booking.MVC.Controllers
                 }
             }
 
-            //if(model.Step2Complete)
-            //{
-            //    if (model.IsFullDay == null)
-            //    {
-            //        ModelState.AddModelError(
-            //            "IsFullDay",
-            //            "Please choose the length of time required for your Hearing."
-            //        );
-            //    }
-            //}
+model = await _coaBookingService.GetSearchResults(model);
+            
 
-            if (ModelState.IsValid && !model.Step2Complete)
+            //populate the available dates if at that step
+            if (model.SubmitButton == "GetDates" && model.SelectedDate == null)
             {
-                model = await _coaBookingService.GetSearchResults(model);
-            }
-            else
-            {
-                model = await _coaBookingService.GetApplicationTypes(model);
-            }
-
-            if (!ModelState.IsValid || model.CaseId == 0)
-            {
-                //need to repopulate the case list if there
-                if(model.CaseNumber != null)
-                {
-                    var bookingInfo = _session.CoaBookingInfo;
-                    model.CaseList = bookingInfo.CaseList;
-                }    
-
-                return View(model);
+                model.Results = await _coaBookingService.GetAvailableDates(
+                    model.IsFullDay ?? false
+                );
             }
 
             //test if the user selected a time-slot that is available
@@ -159,7 +115,8 @@ namespace SCJ.Booking.MVC.Controllers
                 return new RedirectResult("/scjob/booking/coa/CaseConfirm");
             }
 
-            return new RedirectResult("/scjob/booking/coa/CaseSearch");
+            return View(model);
+            //return new RedirectResult("/scjob/booking/coa/CaseSearch");
         }
 
         [HttpGet]

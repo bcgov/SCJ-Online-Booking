@@ -34,7 +34,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public CoAClassInfo[] CaseList { get; set; }
         public List<string> SelectedCases { get; set; }
         public CoAChambersApplications[] ChambersApplicationTypes {  get; set; }
-        public List<int> SelectedApplicationTypes { get; set; }
+        public List<string> SelectedApplicationTypes { get; set; }
         public bool? HalfHourRequired { get; set; }
 
         public bool Step1Complete
@@ -64,45 +64,14 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                if (!Step1Complete)
+                var dateIsAgreed = DateIsAgreed ?? false;
+
+                if (!IsAppealHearing.HasValue || !dateIsAgreed)
                 {
                     return false;
                 }
 
-                var dateIsAgreed = DateIsAgreed ?? false;
-
-                switch (CaseType)
-                {
-                    case CoaCaseType.Civil:
-                    {
-                        //var certificateOrReadiness = CertificateOfReadiness ?? false;
-
-                        //if (!dateIsAgreed || !certificateOrReadiness)
-                        //{
-                        //    return false;
-                        //}
-
-                        if (!dateIsAgreed || (IsAppealHearing is null))
-                        {
-                            return false;
-                        }
-
-                        return true;
-                    }
-                    case CoaCaseType.Criminal:
-                    {
-                        //var lowerCourtOrder = LowerCourtOrder ?? false;
-
-                        if (!dateIsAgreed)
-                        {
-                            return false;
-                        }
-
-                        break;
-                    }
-                }
-
-                return IsFullDay != null;
+                return true;
             }
         }
 
@@ -110,6 +79,42 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
+                //true value means the hearing is an appeals hearing
+                if(IsAppealHearing != null && IsAppealHearing.Value)
+                {
+                    var certificateOrReadiness = CertificateOfReadiness ?? false;
+
+                    if (!certificateOrReadiness)
+                    {
+                        return false;
+                    }
+
+                    if (IsFullDay is null)
+                    {
+                        return false;
+                    }
+                }
+                //false means chambers hearing
+                else 
+                {
+                    if(SelectedApplicationTypes != null)
+                    {
+                        if(SelectedApplicationTypes.Count <= 0)
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                    if(HalfHourRequired == null)
+                    {
+                        return false;
+                    }
+                }
+
                 return true;
             }
         }
