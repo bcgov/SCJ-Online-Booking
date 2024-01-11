@@ -97,8 +97,7 @@ namespace SCJ.Booking.MVC.Controllers
                 }
             }
 
-model = await _coaBookingService.GetSearchResults(model);
-            
+            model = await _coaBookingService.GetSearchResults(model);
 
             //populate the available dates if at that step
             if (model.SubmitButton == "GetDates" && model.SelectedDate == null)
@@ -160,10 +159,8 @@ model = await _coaBookingService.GetSearchResults(model);
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 CaseType = bookingInfo.CaseType,
-                CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
                 //LowerCourtOrder = bookingInfo.LowerCourtOrder,
-                IsFullDay = bookingInfo.IsFullDay,
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,
                 SelectedDate = bookingInfo.SelectedDate,
@@ -171,8 +168,20 @@ model = await _coaBookingService.GetSearchResults(model);
                 Phone = cui.Phone,
                 CaseList = bookingInfo.CaseList,
                 SelectedCases = bookingInfo.SelectedCases,
-                RelatedCaseList = bookingInfo.RelatedCaseList
+                RelatedCaseList = bookingInfo.RelatedCaseList,
+                IsAppealHearing = bookingInfo.IsAppealHearing.Value
             };
+
+            if(bookingInfo.IsAppealHearing.Value)
+            {
+                model.IsFullDay = bookingInfo.IsFullDay;
+                model.CertificateOfReadiness = bookingInfo.CertificateOfReadiness;
+            }
+            else
+            {
+                model.IsHalfHour = bookingInfo.IsHalfHour;
+                model.SelectedApplicationTypes = bookingInfo.SelectedApplicationTypes;
+            }
 
             // save the booking info back to the session
             _session.CoaBookingInfo = bookingInfo;

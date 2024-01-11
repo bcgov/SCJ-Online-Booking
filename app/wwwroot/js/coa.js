@@ -124,7 +124,7 @@ $(document).ready(function () {
         //hearing type is appeals
         if (hearingType === "true") {
             var $Appeal_CertificateOfReadiness = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').val();
-            var $Appeal_IsFullDay = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').val();
+            var $Appeal_IsFullDay = $('#Appeal_IsFullDay input[type="radio"]:checked').val();
 
             if ($Appeal_CertificateOfReadiness === "true" &&
                 ($Appeal_IsFullDay === "true" || $Appeal_IsFullDay === "false") &&
@@ -163,5 +163,19 @@ $(document).ready(function () {
         $("input#SelectedDate").val($(this).data("date"));
         $("#CaseSearchForm").submit();
     });
-
+    
+    $('.btn-radio--hearing-type').click(function () {
+        if ($('.btn-radio--date-agreed.active input').val() == "true") {
+            $('#btnNext').show();
+        } else {
+            $('#btnNext').hide();
+        }
+    });
+    $('.btn-radio--date-agreed input').click(function () {
+        if ($(this).val() == "true" && $('.btn-radio--hearing-type').hasClass('active')) {
+            $('#btnNext').show();
+        } else {
+            $('#btnNext').hide();
+        }
+    });
 });

@@ -136,7 +136,7 @@ namespace SCJ.Booking.MVC.Services
                     SelectedCases = model.SelectedCases,
                     IsAppealHearing = model.IsAppealHearing,
                     SelectedApplicationTypes = model.SelectedApplicationTypes,
-                    HalfHourRequired = model.HalfHourRequired
+                    IsHalfHour = model.HalfHourRequired
             };
 
                 if (model.HearingTypeId != null)

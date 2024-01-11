@@ -610,7 +610,8 @@ div#progress-overlay {
 
     &--secondary {
         width: auto;
-        padding: 20px;
+        height: auto;
+        padding: 10px 15px;
     }
 }
 
@@ -740,9 +741,9 @@ span.nowrap {
 }
 
 #btnShowMore {
-    color:  $blue-active;
+    color: $blue-active;
     border: 1px solid $blue-active;
-    margin-bottom: 60px;
+    margin: 0 auto 60px auto;
 }
 
 .alert--preliminary_question, .alert--related-cases {
@@ -768,9 +769,29 @@ select, input {
     display: none;
 }
 
+#ChambersAdditionalQs > div {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.btn-hearing-confirmation.btn-primary {
+    background-color: $green-dark;
+    width: auto;
+
+    &:after {
+        margin-left: 10px;
+    }
+}
+
+.col-centered {
+    margin: 0 auto;
+}
+
 /* Supreme Court side */
 .conference-type-selection {
     margin-top: 16px;
+
     label {
         @media (min-width: $breakpoint-md) {
             white-space: nowrap;

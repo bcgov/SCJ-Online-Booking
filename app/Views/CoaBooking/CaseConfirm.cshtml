@@ -65,7 +65,19 @@
                     <span>@Model.CaseType</span>
                 </div>
             </div>
-            @if (Model.CaseType == CoaCaseType.Civil)
+            <div class="form-group">
+                <label>Hearing type</label>
+                <div>
+                    <span>@(Model.IsAppealHearing ? "Appeals" : "Chambers")</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Is the hearing date agreed upon by all parties?</label>
+                <div>
+                    <span>@((Model.DateIsAgreed ?? false) ? "Yes" : "No")</span>
+                </div>
+            </div>
+            @if (Model.IsAppealHearing)
             {
                 <div class="form-group">
                     <label class="can-wrap">
@@ -75,25 +87,37 @@
                         <span>@((Model.CertificateOfReadiness ?? false) ? "Yes" : "No")</span>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>How long will you require for your hearing?</label>
+                    <div>
+                        <span>@((Model.IsFullDay ?? false) ? "Full Day" : "Half Day")</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Type of appeal hearing</label>
+                    <div>
+                        <span>@Model.HearingTypeName</span>
+                    </div>
+                </div>
             }
-            <div class="form-group">
-                <label>Is the hearing date agreed upon by all parties?</label>
-                <div>
-                    <span>@((Model.DateIsAgreed ?? false) ? "Yes" : "No")</span>
+            else
+            {
+                <div class="form-group">
+                    <label>Application Type(s)</label>
+                    <ul>
+                        @foreach (var type in Model.SelectedApplicationTypes)
+                        {
+                            <li>@type</li>
+                        }
+                    </ul>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>How long will you require for your hearing?</label>
-                <div>
-                    <span>@((Model.IsFullDay ?? false) ? "Full Day" : "Half Day")</span>
+                <div class="form-group">
+                    <label>How long will you require for your hearing?</label>
+                    <div>
+                        <span>@((Model.IsHalfHour ?? false) ? "One Hour" : "Half Hour")</span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>Type of appeal hearing</label>
-                <div>
-                    <span>@Model.HearingTypeName</span>
-                </div>
-            </div>
+            }
             <div class="form-group">
                 <label>Date of hearing</label>
                 <div>

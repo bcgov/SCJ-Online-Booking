@@ -123,11 +123,11 @@
                                     What hearing are you trying to book?
                                 </label>
                                 <div class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio btn-radio--secondary @((Model.IsAppealHearing ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @((Model.IsAppealHearing ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="IsAppealHearing" value="true" checked="@(Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Appeal
                                     </label>
-
-                                    <label class="btn btn-radio btn-radio--secondary @((Model.IsAppealHearing ?? true) ? "" : "active") @(Model.Step2Complete ? "disabled" : "")">
+                                    
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @((Model.IsAppealHearing ?? true) ? "" : "active") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="IsAppealHearing" value="false" checked="@(!Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Chambers
                                     </label>
                                 </div>
@@ -137,11 +137,11 @@
                             <div class="col-md-6">
                                 <label class="can-wrap">Is the hearing date agreed upon by all parties?</label>
                                 <div id="DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio @((Model.DateIsAgreed ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @((Model.DateIsAgreed ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="DateIsAgreed" value="true" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Yes
                                     </label>
 
-                                    <label class="btn btn-radio @((Model.DateIsAgreed ?? true) ? "" : "active") @((showingDates && (Model.DateIsAgreed ?? false)) || Model.Step2Complete  ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @((Model.DateIsAgreed ?? true) ? "" : "active") @((showingDates && (Model.DateIsAgreed ?? false)) || Model.Step2Complete  ? "disabled" : "")">
                                         <input type="radio" asp-for="DateIsAgreed" value="false" readonly="@(Model.Step2Complete ? "readonly" : "")" /> No
                                     </label>
                                 </div>
@@ -169,11 +169,11 @@
                                             Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
                                         </label>
                                         <div id="Appeal_CertificateOfReadiness" class="btn-radio-group preliminary_questions__radio">
-                                            <label class="btn btn-radio @((Model.CertificateOfReadiness ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary @((Model.CertificateOfReadiness ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
                                                 <input type="radio" asp-for="CertificateOfReadiness" value="true" readonly="@(Model.Step3Complete ? "readonly" : "")" /> Yes
                                             </label>
 
-                                            <label class="btn btn-radio @((Model.CertificateOfReadiness ?? true) ? "" : "active") @((showingDates && (Model.CertificateOfReadiness ?? false)) || Model.Step3Complete ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary @((Model.CertificateOfReadiness ?? true) ? "" : "active") @((showingDates && (Model.CertificateOfReadiness ?? false)) || Model.Step3Complete ? "disabled" : "")">
                                                 <input type="radio" asp-for="CertificateOfReadiness" value="false" readonly="@(Model.Step3Complete ? "readonly" : "")" /> No
                                             </label>
                                         </div>
@@ -196,11 +196,11 @@
                                     <div class="col-md-6">
                                         <label>How long will you require for your hearing?</label>
                                         <div id="Appeal_IsFullDay" class="btn-radio-group">
-                                            <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsFullDay" value="false" readonly="@(showingDates ? "readonly" : "")" /> Half day
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsFullDay" value="true" readonly="@(showingDates ? "readonly" : "")" /> Full day
                                             </label>
                                         </div>
@@ -237,13 +237,13 @@
                                 <div id="ChambersAdditionalQs" class="row search-info-row">
                                     <div class="col-md-6">
                                         <label>How long will you require for your chambers hearing.</label>
-                                        <p>If you require more than 2 hours, please contact the Registry.</p>
+                                        <p>If you require more than 2 hours, please contact the <a href="">Registry - Chambers Hearings</a>.</p>
                                         <div id="Chambers_TimeRequired" class="btn-radio-group">
-                                            <label class="btn btn-radio btn-radio--time_required  @((Model.HalfHourRequired ?? true) ? "" : "active") @(showingDates && Model.HalfHourRequired == false ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.HalfHourRequired ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="HalfHourRequired" value="true" disabled="@(showingDates && Model.HalfHourRequired == false)" /> Half hour
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--time_required  @((Model.HalfHourRequired ?? false) ? "active" : "") @(showingDates && Model.HalfHourRequired == true ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.HalfHourRequired ?? true) == false ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="HalfHourRequired" value="false" disabled="@(showingDates && Model.HalfHourRequired == true)" /> One hour
                                             </label>
                                         </div>
@@ -256,22 +256,22 @@
                     }
                 }
             </div>
-
-            @if (Model.Results == null)
+             
+            @if (Model.Results == null) 
             {
                 <div class="row">
-                    <div class="col-6 col-md-4 col-lg-3">
+                    <div class="col-6 col-md-4 col-lg-3 @(!Model.Step1Complete ? "" : "col-centered")">
                         @if (!Model.Step1Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block mt-2">Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block btn-hearing-confirmation mt-2">Next</button>
                         }
                         else if (!Model.Step2Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType" class="btn btn-primary btn-block mt-2">Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType" class="btn btn-primary btn-hearing-confirmation btn-block mt-2" style='display: none;'>Next</button>
                         }
                         else
                         {
-                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-block mt-2" style='display: none;'>Show Available Dates</button>
+                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-block btn-hearing-confirmation mt-2" style='display: none;'>Show Available Dates</button>
                         }
                     </div>
                 </div>

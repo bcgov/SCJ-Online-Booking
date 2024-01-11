@@ -36,7 +36,7 @@ namespace SCJ.Booking.MVC.Utils
         public List<string> RelatedCaseList { get; set; }
         public bool? IsAppealHearing { get; set; }
         public List<string> SelectedApplicationTypes { get; set; }
-        public bool? HalfHourRequired { get; set; }
+        public bool? IsHalfHour { get; set; }
 
 
         public string FriendlyError
