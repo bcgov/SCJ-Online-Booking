@@ -95,6 +95,41 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     ModelState.AddModelError("DateIsAgreed", "Please answer this question.");
                 }
+
+                if (model.Step2Complete)
+                {
+                    if (model.IsAppealHearing.Value)
+                    {
+                        if (model.CertificateOfReadiness == null)
+                        {
+                            ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
+                        }
+
+                        if (model.IsFullDay == null)
+                        {
+                            ModelState.AddModelError("IsFullDay", "Please answer this question.");
+                        }
+                    }
+                    else
+                    {
+                        if (model.SelectedApplicationTypes != null)
+                        {
+                            if (!model.SelectedApplicationTypes.Any())
+                            {
+                                ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
+                        }
+
+                        if (model.HalfHourRequired == null)
+                        {
+                            ModelState.AddModelError("HalfHourRequired", "Please answer this question.");
+                        }
+                    }
+                }
             }
 
             model = await _coaBookingService.GetSearchResults(model);

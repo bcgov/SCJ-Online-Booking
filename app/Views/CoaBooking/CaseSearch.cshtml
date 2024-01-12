@@ -192,7 +192,7 @@
                                     </div>
                                 </div>
 
-                                <div id="AppealAdditionalQs" class="row search-info-row" style="display: @(Model.CertificateOfReadiness ?? false ? "block" : "none")">
+                                <div id="AppealAdditionalQs" class="row search-info-row" style="display: @((Model.CertificateOfReadiness ?? false) ? "block" : "none")">
                                     <div class="col-md-6">
                                         <label>How long will you require for your hearing?</label>
                                         <div id="Appeal_IsFullDay" class="btn-radio-group">

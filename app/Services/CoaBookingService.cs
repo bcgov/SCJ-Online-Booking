@@ -84,7 +84,7 @@ namespace SCJ.Booking.MVC.Services
                 retval.IsValidCaseNumber = false;
 
                 //empty result set
-                retval.Results = new Dictionary<DateTime, List<DateTime>>();
+                //retval.Results = new Dictionary<DateTime, List<DateTime>>();
 
                 //retval.CaseId = 0;
             }
