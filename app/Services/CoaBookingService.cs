@@ -26,6 +26,7 @@ namespace SCJ.Booking.MVC.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger _logger;
         private readonly SessionService _session;
+        private readonly CoaCacheService _coaCacheService;
         private readonly IViewRenderService _viewRenderService;
         private readonly MailService _mailService;
 
@@ -34,6 +35,7 @@ namespace SCJ.Booking.MVC.Services
             ApplicationDbContext dbContext,
             IConfiguration configuration,
             SessionService sessionService,
+            CoaCacheService coaCacheService,
             IViewRenderService viewRenderService
         )
         {
@@ -49,6 +51,7 @@ namespace SCJ.Booking.MVC.Services
             _configuration = configuration;
             _dbContext = dbContext;
             _session = sessionService;
+            _coaCacheService = coaCacheService;
             _viewRenderService = viewRenderService;
             _mailService = new MailService("CA", _configuration, _logger);
         }
@@ -81,7 +84,7 @@ namespace SCJ.Booking.MVC.Services
                 retval.IsValidCaseNumber = false;
 
                 //empty result set
-                retval.Results = new Dictionary<DateTime, List<DateTime>>();
+                //retval.Results = new Dictionary<DateTime, List<DateTime>>();
 
                 //retval.CaseId = 0;
             }
@@ -131,11 +134,20 @@ namespace SCJ.Booking.MVC.Services
                     SelectedDate = model.SelectedDate,
                     CaseList = retval.CaseList,
                     SelectedCases = model.SelectedCases,
-                };
+                    IsAppealHearing = model.IsAppealHearing,
+                    SelectedApplicationTypes = model.SelectedApplicationTypes,
+                    IsHalfHour = model.HalfHourRequired
+            };
 
                 if (model.HearingTypeId != null)
                 {
                     bookingInfo.HearingTypeId = model.HearingTypeId.Value;
+                }
+
+                //check if hearing is chambers and populate the app types if it is
+                if (model.IsAppealHearing != null && !model.IsAppealHearing.Value && model.ChambersApplicationTypes == null)
+                {
+                    retval.ChambersApplicationTypes = await _coaCacheService.GetChambersApplicationTypesAsync(model.CaseType);
                 }
 
                 _session.CoaBookingInfo = bookingInfo;

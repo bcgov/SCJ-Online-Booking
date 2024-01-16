@@ -47,5 +47,8 @@ namespace SCJ.Booking.MVC.ViewModels
         public CoAClassInfo[] CaseList { get; set; }
         public List<string> SelectedCases { get; set; }
         public List<string> RelatedCaseList { get; set; }
+        public bool IsAppealHearing { get; set; }
+        public bool? IsHalfHour { get; set; }
+        public List<string> SelectedApplicationTypes { get; set; }
     }
 }
