@@ -1,14 +1,18 @@
+{{- $route_name := printf "%s-%s-siteminder-route" .Release.Name .Values.app.componentName }}
+{{- if not (lookup "v1" "Route" .Release.Namespace $route_name) -}}
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: {{ .Release.Name }}-{{ .Values.app.componentName }}
+  name: {{ $route_name }}
   labels:
     component: {{ .Values.app.componentName }}
     release: {{ .Release.Name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     heritage: {{ .Release.Service }}
+  annotations:
+    haproxy.router.openshift.io/ip_whitelist: {{ .Values.app.allowedIPs }}
 spec:
-  host: {{ .Release.Name }}-{{ .Values.app.componentName }}-{{ .Release.Namespace }}.{{ .Values.cluster.domain }}
+  host: scj-booking-{{ .Values.app.env.environment }}.silver.devops.bcgov
   to:
     kind: Service
     name: {{ .Release.Name }}-{{ .Values.app.componentName }}
@@ -19,3 +23,4 @@ spec:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
+{{- end -}}

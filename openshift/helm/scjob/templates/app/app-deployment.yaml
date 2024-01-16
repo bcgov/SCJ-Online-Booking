@@ -7,6 +7,9 @@ metadata:
     release: {{ .Release.Name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     heritage: {{ .Release.Service }}
+  annotations:
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"scj-booking-runtime:{{ .Values.images.app.tag }}","namespace":"bc7c5c-tools"},"fieldPath":"spec.template.spec.containers[?(@.name==\"app\")].image","pause":"false"}]
 spec:
   selector:
     matchLabels:
@@ -43,7 +46,7 @@ spec:
             successThreshold: 1
             failureThreshold: 3
           terminationMessagePath: /dev/termination-log
-          name: container
+          name: app
           livenessProbe:
             httpGet:
               path: /
