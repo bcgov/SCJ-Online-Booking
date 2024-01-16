@@ -29,7 +29,7 @@
     <div class="content col-lg-6">
         <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
             <input type="hidden" asp-for="CaseNumber" />
-            <input type="hidden" asp-for="CertificateOfReadiness" />
+            <input type="hidden" asp-for="FactumFiled" />
             <input type="hidden" asp-for="DateIsAgreed" />
             <input type="hidden" asp-for="IsFullDay" />
             <input type="hidden" asp-for="HearingTypeName" />
@@ -84,7 +84,7 @@
                         Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
                     </label>
                     <div>
-                        <span>@((Model.CertificateOfReadiness ?? false) ? "Yes" : "No")</span>
+                        <span>@((Model.FactumFiled ?? false) ? "Yes" : "No")</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -112,7 +112,7 @@
                     </ul>
                 </div>
                 <div class="form-group">
-                    <label>How long will you require for your hearing?</label>
+                    <label>How long will you require for your chambers hearing?</label>
                     <div>
                         <span>@((Model.IsHalfHour ?? false) ? "One Hour" : "Half Hour")</span>
                     </div>

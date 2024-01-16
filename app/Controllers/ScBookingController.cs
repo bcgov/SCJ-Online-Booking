@@ -12,8 +12,6 @@ namespace SCJ.Booking.MVC.Controllers
         //Services
         private readonly ScBookingService _scBookingService;
 
-        //private readonly string step1Url = "/scjob/booking/sc";
-
         // Strongly typed session
         private readonly SessionService _session;
 
@@ -131,7 +129,6 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(model.CaseNumber))
             {
-                //return Redirect(step1Url);
                 return RedirectToAction("Index");
             }
 
@@ -180,8 +177,8 @@ namespace SCJ.Booking.MVC.Controllers
 
             //test if the user selected a time-slot that is available
             if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
-            //go to confirmation screen
             {
+                //go to confirmation screen
                 return new RedirectResult("/scjob/booking/sc/CaseConfirm");
             }
 
@@ -195,7 +192,6 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                //return Redirect(step1Url);
                 return RedirectToAction("Index");
             }
 
@@ -265,7 +261,6 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                //return Redirect(step1Url);
                 return RedirectToAction("Index");
             }
 

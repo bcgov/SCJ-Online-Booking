@@ -76,24 +76,24 @@ $(document).ready(function () {
     //Display last row of questions for Civil case if previous questions are answered Yes
     //And selection of related case files is valid
     var toggleCriminal = function () {
-        var $Civil_CertificateOfReadiness = $('#Civil_CertificateOfReadiness input[type="radio"]:checked').val();
-        if ($Civil_CertificateOfReadiness === "true" && validCaseSelection) {
+        var $Civil_FactumFiled = $('#Civil_FactumFiled input[type="radio"]:checked').val();
+        if ($Civil_FactumFiled === "true" && validCaseSelection) {
             $("#AppealsAdditionalQs").show();
         } else {
             $("#AppealsAdditionalQs").hide();
         }
     };
 
-    $('#Civil_CertificateOfReadiness input[type="radio"]').click(toggleCriminal);
+    $('#Civil_FactumFiled input[type="radio"]').click(toggleCriminal);
     $('#DateIsAgreed input[type="radio"]').click(toggleCriminal);
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
     //And selection of related case files is valid
     var toggleAppeal = function () {
-        var $Appeal_CertificateOfReadiness = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').val();
-        var $IsButtonDisabled = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').parent().hasClass('disabled');
+        var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
+        var $IsButtonDisabled = $('#Appeal_FactumFiled input[type="radio"]:checked').parent().hasClass('disabled');
         if (!$IsButtonDisabled) {
-            if ($Appeal_CertificateOfReadiness === "true" && validCaseSelection) {
+            if ($Appeal_FactumFiled === "true" && validCaseSelection) {
                 $("#AppealAdditionalQs").css("display", "flex");
             } else {
                 $("#AppealAdditionalQs").hide();
@@ -101,7 +101,7 @@ $(document).ready(function () {
         }
     };
 
-    $('#Appeal_CertificateOfReadiness input[type="radio"]').click(toggleAppeal);
+    $('#Appeal_FactumFiled input[type="radio"]').click(toggleAppeal);
 
 
     //Display Show Available Dates button when all fields are correctly selected
@@ -123,13 +123,13 @@ $(document).ready(function () {
 
         //hearing type is appeals
         if (hearingType === "true") {
-            var $Appeal_CertificateOfReadiness = $('#Appeal_CertificateOfReadiness input[type="radio"]:checked').val();
+            var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
             var $Appeal_IsFullDay = $('#Appeal_IsFullDay input[type="radio"]:checked').val();
 
-            if ($Appeal_CertificateOfReadiness === "true" &&
+            if ($Appeal_FactumFiled === "true" &&
                 ($Appeal_IsFullDay === "true" || $Appeal_IsFullDay === "false") &&
                 validCaseSelection) {
-                $("#btnShowDates").show();
+                $("#btnShowDates").css("display", "flex");
             } else {
                 $("#btnShowDates").hide();
             }
@@ -141,7 +141,7 @@ $(document).ready(function () {
             
             if (($Chambers_TimeRequired === "true" || $Chambers_TimeRequired === "false") &&
                 validCaseSelection) {
-                $("#btnShowDates").show();
+                $("#btnShowDates").css("display", "flex");
             } else {
                 $("#btnShowDates").hide();
             }

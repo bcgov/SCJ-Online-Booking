@@ -82,11 +82,6 @@ namespace SCJ.Booking.MVC.Services
             {
                 //case could not be found
                 retval.IsValidCaseNumber = false;
-
-                //empty result set
-                //retval.Results = new Dictionary<DateTime, List<DateTime>>();
-
-                //retval.CaseId = 0;
             }
             else
             {
@@ -126,9 +121,8 @@ namespace SCJ.Booking.MVC.Services
                     CaseId = caseId,
                     CaseNumber = model.CaseNumber.ToUpper().Trim(),
                     CaseType = caseType,
-                    CertificateOfReadiness = model.CertificateOfReadiness,
+                    FactumFiled = model.FactumFiled,
                     DateIsAgreed = model.DateIsAgreed,
-                    //LowerCourtOrder = model.LowerCourtOrder,
                     IsFullDay = model.IsFullDay,
                     HearingTypeName = retval.HearingTypeName,
                     SelectedDate = model.SelectedDate,
@@ -136,18 +130,22 @@ namespace SCJ.Booking.MVC.Services
                     SelectedCases = model.SelectedCases,
                     IsAppealHearing = model.IsAppealHearing,
                     SelectedApplicationTypes = model.SelectedApplicationTypes,
-                    IsHalfHour = model.HalfHourRequired
-            };
+                    IsHalfHour = model.IsHalfHour
+                };
 
-                if (model.HearingTypeId != null)
+                if (model.HearingTypeId.HasValue)
                 {
                     bookingInfo.HearingTypeId = model.HearingTypeId.Value;
                 }
 
                 //check if hearing is chambers and populate the app types if it is
-                if (model.IsAppealHearing != null && !model.IsAppealHearing.Value && model.ChambersApplicationTypes == null)
+                if (
+                    model.IsChambersHearing.GetValueOrDefault(false)
+                    && model.ChambersApplicationTypes == null
+                )
                 {
-                    retval.ChambersApplicationTypes = await _coaCacheService.GetChambersApplicationTypesAsync(model.CaseType);
+                    retval.ChambersApplicationTypes =
+                        await _coaCacheService.GetChambersApplicationTypesAsync(model.CaseType);
                 }
 
                 _session.CoaBookingInfo = bookingInfo;
@@ -159,11 +157,33 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     List available times
         /// </summary>
-        public async Task<Dictionary<DateTime, List<DateTime>>> GetAvailableDates(bool isFullDay)
+        public async Task<Dictionary<DateTime, List<DateTime>>> GetAvailableDates(
+            string availability,
+            bool isAppealHearing
+        )
         {
-            var availableDates = await _client.COAAvailableDatesAsync();
-
-            return GroupAvailableDates(availableDates, isFullDay);
+            ShedulesInfo[] dates;
+            if (isAppealHearing)
+            {
+                var availableAppealDates = await _client.COAAvailableDatesAsync();
+                dates = availableAppealDates.AvailableDates;
+            }
+            else
+            {
+                var availableChambersDates = await _client.CoAAvailableDatesChambersAsync();
+                // convert chambers dates to appeal dates (these could have been the same type in the first place)
+                dates = availableChambersDates.AvailableDates
+                    .Select(
+                        date =>
+                            new ShedulesInfo
+                            {
+                                scheduleDate = date.scheduleDate,
+                                availability = date.availability
+                            }
+                    )
+                    .ToArray();
+            }
+            return GroupAvailableDates(dates, availability);
         }
 
         /// <summary>
@@ -338,6 +358,7 @@ namespace SCJ.Booking.MVC.Services
                 RelatedCaseList = booking.RelatedCaseList,
                 CaseType = booking.CaseType,
                 TypeOfConference = booking.HearingTypeName,
+                // todo: need to handle chambers 1 hour / half hour
                 HearingLength = booking.IsFullDay ?? false ? "Full Day" : "Half Day",
                 Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? "",
                 RelatedCasesString = ""
@@ -361,27 +382,24 @@ namespace SCJ.Booking.MVC.Services
         ///     Groups Court of Appeal available hearing dates by month and filter by full day if needed
         /// </summary>
         public Dictionary<DateTime, List<DateTime>> GroupAvailableDates(
-            CoAAvailableDates availableDates,
-            bool fullDay
+            ShedulesInfo[] availableDates,
+            string availability
         )
         {
             var result = new Dictionary<DateTime, List<DateTime>>();
 
             IOrderedEnumerable<DateTime> dates;
-            if (fullDay)
+            if (!string.IsNullOrEmpty(availability))
             {
-                dates = availableDates.AvailableDates
-                    .Where(d => d.availability == "Full Day")
+                dates = availableDates
+                    .Where(d => d.availability == availability)
                     .Select(s => s.scheduleDate)
                     .Distinct()
                     .OrderBy(s => s);
             }
             else
             {
-                dates = availableDates.AvailableDates
-                    .Select(s => s.scheduleDate)
-                    .Distinct()
-                    .OrderBy(s => s);
+                dates = availableDates.Select(s => s.scheduleDate).Distinct().OrderBy(s => s);
             }
 
             DateTime previousMonth = DateTime.MinValue;

@@ -20,10 +20,8 @@ namespace SCJ.Booking.MVC.ViewModels
         public string CaseType { get; set; }
         public bool? IsValidCaseNumber { get; set; }
         public bool? IsAppealHearing { get; set; }
-        public bool? CertificateOfReadiness { get; set; }
+        public bool? FactumFiled { get; set; }
         public bool? DateIsAgreed { get; set; }
-
-        //public bool? LowerCourtOrder { get; set; }
         public bool? IsFullDay { get; set; }
         public int? HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
@@ -33,9 +31,9 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool TimeSlotExpired { get; set; }
         public CoAClassInfo[] CaseList { get; set; }
         public List<string> SelectedCases { get; set; }
-        public CoAChambersApplications[] ChambersApplicationTypes {  get; set; }
+        public CoAChambersApplications[] ChambersApplicationTypes { get; set; }
         public List<string> SelectedApplicationTypes { get; set; }
-        public bool? HalfHourRequired { get; set; }
+        public bool? IsHalfHour { get; set; }
 
         public bool Step1Complete
         {
@@ -65,13 +63,7 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 var dateIsAgreed = DateIsAgreed ?? false;
-
-                if (!IsAppealHearing.HasValue || !dateIsAgreed)
-                {
-                    return false;
-                }
-
-                return true;
+                return IsAppealHearing.HasValue && dateIsAgreed;
             }
         }
 
@@ -80,11 +72,11 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 //true value means the hearing is an appeals hearing
-                if(IsAppealHearing != null && IsAppealHearing.Value)
+                if (IsAppealHearing is true)
                 {
-                    var certificateOrReadiness = CertificateOfReadiness ?? false;
+                    var factumFiled = FactumFiled ?? false;
 
-                    if (!certificateOrReadiness)
+                    if (!factumFiled)
                     {
                         return false;
                     }
@@ -95,11 +87,11 @@ namespace SCJ.Booking.MVC.ViewModels
                     }
                 }
                 //false means chambers hearing
-                else 
+                else
                 {
-                    if(SelectedApplicationTypes != null)
+                    if (SelectedApplicationTypes != null)
                     {
-                        if(SelectedApplicationTypes.Count <= 0)
+                        if (SelectedApplicationTypes.Count <= 0)
                         {
                             return false;
                         }
@@ -109,7 +101,7 @@ namespace SCJ.Booking.MVC.ViewModels
                         return false;
                     }
 
-                    if(HalfHourRequired == null)
+                    if (!IsHalfHour.HasValue)
                     {
                         return false;
                     }
@@ -118,5 +110,21 @@ namespace SCJ.Booking.MVC.ViewModels
                 return true;
             }
         }
+
+        public string MinimumAvailabilityNeeded
+        {
+            get
+            {
+                if (IsAppealHearing.GetValueOrDefault(true))
+                {
+                    return IsFullDay.GetValueOrDefault(false) ? "Full Day" : "";
+                }
+                return IsFullHour.GetValueOrDefault(false) ? "One hour" : "";
+            }
+        }
+
+        public bool? IsChambersHearing => !IsAppealHearing;
+
+        public bool? IsFullHour => !IsHalfHour;
     }
 }

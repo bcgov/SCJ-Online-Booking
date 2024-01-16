@@ -40,7 +40,6 @@
     import Vue from "vue";
     import VueAwesomeSwiper from 'vue-awesome-swiper';
 
-    //import { swiper, swiperSlide } from 'vue-awesome-swiper'; // for 3.1.3
     import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
     import 'swiper/css/swiper.css';
 
@@ -52,8 +51,6 @@
         components: {
             Swiper,
             SwiperSlide
-            //swiper, // for 3.1.3
-            //swiperSlide
         },
         directives: {
             swiper: directive

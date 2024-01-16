@@ -53,7 +53,7 @@
                                 }
                                 else if (Model.CaseNumber != null && Model.CaseNumber != "CA" && !(Model.IsValidCaseNumber ?? false))
                                 {
-                                    <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(true)" />
+                                    <input class="form-control caseNumber" asp-for="CaseNumber" />
                                 }
                                 else
                                 {
@@ -168,17 +168,17 @@
                                         <label class="factum can-wrap">
                                             Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
                                         </label>
-                                        <div id="Appeal_CertificateOfReadiness" class="btn-radio-group preliminary_questions__radio">
-                                            <label class="btn btn-radio btn-radio--secondary @((Model.CertificateOfReadiness ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
-                                                <input type="radio" asp-for="CertificateOfReadiness" value="true" readonly="@(Model.Step3Complete ? "readonly" : "")" /> Yes
+                                        <div id="Appeal_FactumFiled" class="btn-radio-group preliminary_questions__radio">
+                                            <label class="btn btn-radio btn-radio--secondary @((Model.FactumFiled ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
+                                                <input type="radio" asp-for="FactumFiled" value="true" readonly="@(Model.Step3Complete ? "readonly" : "")" /> Yes
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary @((Model.CertificateOfReadiness ?? true) ? "" : "active") @((showingDates && (Model.CertificateOfReadiness ?? false)) || Model.Step3Complete ? "disabled" : "")">
-                                                <input type="radio" asp-for="CertificateOfReadiness" value="false" readonly="@(Model.Step3Complete ? "readonly" : "")" /> No
+                                            <label class="btn btn-radio btn-radio--secondary @((Model.FactumFiled ?? true) ? "" : "active") @((showingDates && (Model.FactumFiled ?? false)) || Model.Step3Complete ? "disabled" : "")">
+                                                <input type="radio" asp-for="FactumFiled" value="false" readonly="@(Model.Step3Complete ? "readonly" : "")" /> No
                                             </label>
                                         </div>
 
-                                        <span class="text-danger" asp-validation-for="CertificateOfReadiness"></span>
+                                        <span class="text-danger" asp-validation-for="FactumFiled"></span>
 
                                         <div class="notice--preliminary_question">
                                             <span>Your hearing will not be confirmed unless the Order(s) of the Lower Court are submitted.</span>
@@ -192,7 +192,7 @@
                                     </div>
                                 </div>
 
-                                <div id="AppealAdditionalQs" class="row search-info-row" style="display: @((Model.CertificateOfReadiness ?? false) ? "block" : "none")">
+                                <div id="AppealAdditionalQs" class="row search-info-row" style="display: @((Model.FactumFiled ?? false) ? "block" : "none")">
                                     <div class="col-md-6">
                                         <label>How long will you require for your hearing?</label>
                                         <div id="Appeal_IsFullDay" class="btn-radio-group">
@@ -236,18 +236,23 @@
 
                                 <div id="ChambersAdditionalQs" class="row search-info-row">
                                     <div class="col-md-6">
-                                        <label>How long will you require for your chambers hearing.</label>
-                                        <p>If you require more than 2 hours, please contact the <a href="">Registry - Chambers Hearings</a>.</p>
-                                        <div id="Chambers_TimeRequired" class="btn-radio-group">
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.HalfHourRequired ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
-                                                <input type="radio" asp-for="HalfHourRequired" value="true" disabled="@(showingDates && Model.HalfHourRequired == false)" /> Half hour
+                                        <label>How long will you require for your chambers hearing?</label>
+                                        <p>
+                                            If you require more than 1 hour, please contact the
+                                            <a target="_blank" href="https://www.bccourts.ca/court_of_appeal/court_locations_and_contacts.aspx">
+                                                Registry - Chambers Hearings
+                                            </a>.
+                                        </p>
+                                        <div id="Chambers_TimeRequired" class="btn-radio-group mt-3">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.IsHalfHour ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
+                                                <input type="radio" asp-for="IsHalfHour" value="true" disabled="@(showingDates && Model.IsHalfHour == false)" /> Half hour
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.HalfHourRequired ?? true) == false ? "active" : "") @(showingDates ? "disabled" : "")">
-                                                <input type="radio" asp-for="HalfHourRequired" value="false" disabled="@(showingDates && Model.HalfHourRequired == true)" /> One hour
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.IsHalfHour ?? true) == false ? "active" : "") @(showingDates ? "disabled" : "")">
+                                                <input type="radio" asp-for="IsHalfHour" value="false" disabled="@(showingDates && Model.IsHalfHour == true)" /> One hour
                                             </label>
                                         </div>
-                                        <span class="text-danger" asp-validation-for="HalfHourRequired"></span>
+                                        <span class="text-danger" asp-validation-for="IsHalfHour"></span>
                                     </div>
                                 </div>
 
@@ -263,15 +268,15 @@
                     <div class="col-6 col-md-4 col-lg-3 @(!Model.Step1Complete ? "" : "col-centered")">
                         @if (!Model.Step1Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block btn-hearing-confirmation mt-2">Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block btn-hearing-confirmation mt-2 mb-5">Next</button>
                         }
                         else if (!Model.Step2Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType" class="btn btn-primary btn-hearing-confirmation btn-block mt-2" style='display: none;'>Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType" class="btn btn-primary btn-hearing-confirmation btn-block mt-2 mb-5" style='display: none;'>Next</button>
                         }
                         else
                         {
-                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-block btn-hearing-confirmation mt-2" style='display: none;'>Show Available Dates</button>
+                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-block btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Show Available Dates</button>
                         }
                     </div>
                 </div>
@@ -324,8 +329,11 @@
     <button id="btnShowMore" class="btn btn-outline-primary btn-lg">Show More Dates</button>
 }
 
-<div class="row mt-2">
-    <div class="col col-md-12">
-        <a href="/scjob/booking/coa/Restart">Restart Search</a>
+@if (Model.CaseNumber != null && Model.CaseNumber != "CA" && (Model.IsValidCaseNumber ?? false))
+{
+    <div class="row mt-2">
+        <div class="col col-md-12">
+            <a href="/scjob/booking/coa/Restart">Restart Search</a>
+        </div>
     </div>
-</div>
+}

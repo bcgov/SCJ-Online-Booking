@@ -51,12 +51,11 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseNumber = string.IsNullOrWhiteSpace(bookingInfo.CaseNumber)
                     ? "CA"
                     : bookingInfo.CaseNumber,
-                CertificateOfReadiness = bookingInfo.CertificateOfReadiness,
+                FactumFiled = bookingInfo.FactumFiled,
                 IsFullDay = bookingInfo.IsFullDay,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
                 HearingTypeName = bookingInfo.HearingTypeName,
                 CaseType = bookingInfo.CaseType,
-                //LowerCourtOrder = bookingInfo.LowerCourtOrder,
                 SelectedDate = bookingInfo.SelectedDate,
                 IsValidCaseNumber = !string.IsNullOrEmpty(bookingInfo.CaseNumber),
                 CaseList = bookingInfo.CaseList,
@@ -66,7 +65,8 @@ namespace SCJ.Booking.MVC.Controllers
             if (model.Step2Complete)
             {
                 model.Results = await _coaBookingService.GetAvailableDates(
-                    model.IsFullDay ?? false
+                    model.MinimumAvailabilityNeeded,
+                    model.IsAppealHearing.GetValueOrDefault(true)
                 );
             }
 
@@ -86,49 +86,14 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (model.Step1Complete)
             {
-                if (model.IsAppealHearing == null)
+                if (!model.IsAppealHearing.HasValue)
                 {
                     ModelState.AddModelError("IsAppealHearing", "Please answer this question.");
                 }
 
-                if (model.DateIsAgreed == null)
+                if (!model.DateIsAgreed.HasValue)
                 {
                     ModelState.AddModelError("DateIsAgreed", "Please answer this question.");
-                }
-
-                if (model.Step2Complete)
-                {
-                    if (model.IsAppealHearing.Value)
-                    {
-                        if (model.CertificateOfReadiness == null)
-                        {
-                            ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
-                        }
-
-                        if (model.IsFullDay == null)
-                        {
-                            ModelState.AddModelError("IsFullDay", "Please answer this question.");
-                        }
-                    }
-                    else
-                    {
-                        if (model.SelectedApplicationTypes != null)
-                        {
-                            if (!model.SelectedApplicationTypes.Any())
-                            {
-                                ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("CertificateOfReadiness", "Please answer this question.");
-                        }
-
-                        if (model.HalfHourRequired == null)
-                        {
-                            ModelState.AddModelError("HalfHourRequired", "Please answer this question.");
-                        }
-                    }
                 }
             }
 
@@ -138,7 +103,8 @@ namespace SCJ.Booking.MVC.Controllers
             if (model.SubmitButton == "GetDates" && model.SelectedDate == null)
             {
                 model.Results = await _coaBookingService.GetAvailableDates(
-                    model.IsFullDay ?? false
+                    model.MinimumAvailabilityNeeded,
+                    model.IsAppealHearing.GetValueOrDefault(true)
                 );
             }
 
@@ -150,7 +116,6 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             return View(model);
-            //return new RedirectResult("/scjob/booking/coa/CaseSearch");
         }
 
         [HttpGet]
@@ -169,33 +134,35 @@ namespace SCJ.Booking.MVC.Controllers
             //Swapping Case Number to the main case file if it was selected from the search result of a sub case file number
             if (bookingInfo.CaseList.Length > 1)
             {
-                var mainCase = bookingInfo.CaseList.Where(x => x.Main).First();
-                var finalCaseNumber =
-                    bookingInfo.SelectedCases.Where(x => x == mainCase.Case_Num).FirstOrDefault()
-                    ?? bookingInfo.CaseNumber;
-                //Store final main case number back to the session
-                bookingInfo.CaseNumber = finalCaseNumber;
+                string finalCaseNumber = bookingInfo.CaseNumber;
+                var mainCase = bookingInfo.CaseList.FirstOrDefault(x => x.Main);
+                if (mainCase != null)
+                {
+                    finalCaseNumber =
+                        bookingInfo.SelectedCases.FirstOrDefault(x => x == mainCase.Case_Num)
+                        ?? bookingInfo.CaseNumber;
+                    //Store final main case number back to the session
+                    bookingInfo.CaseNumber = finalCaseNumber;
+                }
 
                 //Filtering out related cases
                 var relatedCaseList = new List<string>();
-                foreach (var x in bookingInfo.SelectedCases)
+                foreach (var caseNumber in bookingInfo.SelectedCases)
                 {
-                    if (x != finalCaseNumber)
+                    if (caseNumber != finalCaseNumber)
                     {
-                        relatedCaseList.Add(x);
+                        relatedCaseList.Add(caseNumber);
                     }
                 }
                 //Store final main case number back to the session
                 bookingInfo.RelatedCaseList = relatedCaseList;
             }
 
-            //Time-slot is still available
             var model = new CoaCaseConfirmViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 CaseType = bookingInfo.CaseType,
                 DateIsAgreed = bookingInfo.DateIsAgreed,
-                //LowerCourtOrder = bookingInfo.LowerCourtOrder,
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,
                 SelectedDate = bookingInfo.SelectedDate,
@@ -204,13 +171,13 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseList = bookingInfo.CaseList,
                 SelectedCases = bookingInfo.SelectedCases,
                 RelatedCaseList = bookingInfo.RelatedCaseList,
-                IsAppealHearing = bookingInfo.IsAppealHearing.Value
+                IsAppealHearing = bookingInfo.IsAppealHearing.GetValueOrDefault(true)
             };
 
-            if(bookingInfo.IsAppealHearing.Value)
+            if (bookingInfo.IsAppealHearing.GetValueOrDefault(true))
             {
                 model.IsFullDay = bookingInfo.IsFullDay;
-                model.CertificateOfReadiness = bookingInfo.CertificateOfReadiness;
+                model.FactumFiled = bookingInfo.FactumFiled;
             }
             else
             {
