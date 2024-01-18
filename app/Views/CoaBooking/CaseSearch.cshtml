@@ -3,9 +3,11 @@
 @model CoaCaseSearchViewModel
 
 @{
-    ViewData["Title"] = "Request a Hearing Date";
+    ViewData["Title"] = "Request an Appeal or Chambers Hearing Date";
     bool showingDates = Model.Results != null && Model.Results.Any();
 }
+
+<div class="body-content--inner coa">
 
 <div class="row screen-intro">
     <div class="col-md-12">
@@ -25,14 +27,13 @@
 <form method="post" id="CaseSearchForm">
     <input type="hidden" id="CaseType" name="CaseType" value="@Model.CaseType" />
     <input type="hidden" id="IsValidCaseNumber" name="IsValidCaseNumber" value="@Convert.ToString(Model.IsValidCaseNumber.Value)" />
-    <input type="hidden" id="SelectedDate" name="SelectedDate" />
     <!-- Search filter-->
     <div class="row search-container">
         <div class="col col-md-12">
-            <div class="search-info border">
+            <div class="search-info coa border">
                 <div class="row search-info-row">
                     <div class="col-md-6 form-group">
-                        <label for="hearingLocation">Where will the hearing occur.</label>
+                        <label for="hearingLocation">Where will the hearing occur?</label>
                         <div class="align-tooltip">
                             <select class="form-control registryOptions" id="hearingLocation" disabled>
                                 <option value="Vancouver">Vancouver </option>
@@ -43,7 +44,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 form-group">
-                        <label asp-for="CaseNumber">What is the court file number for the case?</label>
+                        <label asp-for="CaseNumber">What is the Court File Number for the case?</label>
                         <div class="align-tooltip">
                             <div>
                                 @if (Model.Step1Complete)
@@ -265,7 +266,7 @@
             @if (Model.Results == null) 
             {
                 <div class="row">
-                    <div class="col-6 col-md-4 col-lg-3 @(!Model.Step1Complete ? "" : "col-centered")">
+                    <div class="col-12">
                         @if (!Model.Step1Complete)
                         {
                             <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block btn-hearing-confirmation mt-2 mb-5">Next</button>
@@ -292,42 +293,47 @@
             }
         </div>
     </div>
+
+    @if (showingDates)
+    {
+        <div class="search-info coa">
+            <h5>Available Dates for @Model.HearingRoomType</h5>
+            <p>Choose the date that works best for you. Each hearing is a @Model.HearingLengthText.ToLower() long.</p>
+
+            <div class="availableDates">
+                @{
+                    var monthIndex = 0;
+                    var optionIndex = 0;
+
+                    foreach (var month in Model.Results)
+                    {
+                        var days = month.Value;
+                        <div class="availableDates__month @monthIndex @((monthIndex == 0 || monthIndex == 1) ? "" : "hidden")">
+                            <h6 class="h3--month">@month.Key.ToString("MMMM yyyy")</h6>
+                            <div class="availableDates__month__days">
+                                @foreach (var day in days)
+                                {
+                                    <input type="radio" id="@("Date" + optionIndex)" asp-for="SelectedDate" value="@day.ToString("yyyy-MM-dd")" />
+                                    <label for="@("Date" + optionIndex)" class="availableDate">
+                                        <p>@day.ToString("dddd")</p>
+                                        <p>@day.ToString("MMMM d, yyyy")</p>
+                                    </label>
+                                    <br />
+                                    optionIndex++;
+                                }
+                                <br />
+                            </div>
+                        </div>
+                        monthIndex++;
+                    }
+                }
+            </div>
+            <button type="button" id="btnShowMore" class="btn btn-outline-primary btn-lg">Show More Dates</button>
+        </div>
+
+        <button type="submit" id="btnSelectDate" name="SubmitButton" value="SelectDate" class="btn btn-primary btn-block btn-hearing-confirmation mt-2 mb-5 float-right">Confirm selection</button>
+    }
 </form>
-
-@if (showingDates)
-{
-    <hr class="results-linebreak" />
-    <h5>Available Dates for @Model.HearingTypeName</h5>
-    <p>Choose the date that works best for you. Each hearing is @((Model.IsFullDay ?? false) ? "full day" : "half day") long.</p>
-
-    <div class="availableDates">
-        @{
-            var monthIndex = 0;
-
-            foreach (var month in Model.Results)
-            {
-                var days = month.Value;
-                <div class="availableDates__month @monthIndex @((monthIndex == 0 || monthIndex == 1) ? "" : "hidden")">
-                    <h6 class="h3--month">@month.Key.ToString("MMMM yyyy")</h6>
-                    <div class="availableDates__month__days">
-                        @foreach (var day in days)
-                        {
-                            <a class="btn btn-primary availableDate" data-date="@day.ToString("yyyy-MM-dd")">
-                                <p>@day.ToString("dddd")</p>
-                                <p>@day.ToString("MMMM d, yyyy")</p>
-                            </a>
-                            <br />
-                        }
-                        <br />
-                    </div>
-                </div>
-                monthIndex++;
-            }
-        }
-    </div>
-
-    <button id="btnShowMore" class="btn btn-outline-primary btn-lg">Show More Dates</button>
-}
 
 @if (Model.CaseNumber != null && Model.CaseNumber != "CA" && (Model.IsValidCaseNumber ?? false))
 {
@@ -337,3 +343,5 @@
         </div>
     </div>
 }
+
+</div>

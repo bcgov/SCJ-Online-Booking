@@ -159,11 +159,6 @@ $(document).ready(function () {
 
 
     //Submitting selected date for Coa
-    $("a.availableDate").click(function () {
-        $("input#SelectedDate").val($(this).data("date"));
-        $("#CaseSearchForm").submit();
-    });
-    
     $('.btn-radio--hearing-type').click(function () {
         if ($('.btn-radio--date-agreed.active input').val() == "true") {
             $('#btnNext').show();

@@ -63,6 +63,10 @@ body {
                 color: $black;
             }         
         }
+
+        &.coa {
+            max-width: 850px;
+        }
     }
 }
 
@@ -292,6 +296,10 @@ div.invalid-field-message {
     margin-bottom: 20px;
     margin-top: 40px;
     border-radius: 0.3rem;
+
+    &.coa {
+        background-color: #fff;
+    }
 
     .search-info-row {
         margin-left: 0;
@@ -641,7 +649,21 @@ span.nowrap {
             display: flex;
             flex-wrap: wrap;
 
-            a.availableDate {
+            input[type="radio"] {
+                opacity: 0;
+                position: fixed;
+                width: 0;
+
+                &:checked + label {
+                    background-color: $blue-active;
+
+                    p {
+                        color: $white;
+                    }
+                }
+            }
+
+            label.availableDate {
                 width: 240px;
                 min-width: 240px;
                 display: inline-block;
@@ -655,17 +677,13 @@ span.nowrap {
                 background-color: $blue-active-lighter;
                 border: 1px solid darken(#eff2f5, 10%);
 
-                &:hover, &:active, &:focus {
+                &:hover {
                     background-color: $blue-active;
-                    transition: all 0.1s ease-in-out;
+                    transition: all 0.2s ease-in-out;
 
                     p {
                         color: $white;
                     }
-                }
-
-                &::after {
-                    display: none;
                 }
 
                 @media(min-width: 568px) {
@@ -674,56 +692,22 @@ span.nowrap {
                     margin: 15px;
                 }
 
-                @media(min-width: 568px) and (max-width: $breakpoint-md) {
-                    &:nth-of-type(2n+1) {
-                        margin-left: 0;
-                    }
-
-                    &:nth-of-type(2n+2) {
-                        margin-right: 0;
-                    }
-                }
-
                 @media(min-width: $breakpoint-md) and (max-width: $breakpoint-lg) {
                     width: 210px;
                     min-width: 210px;
                     margin: 10px 15px;
-
-                    &:nth-of-type(3n+1) {
-                        margin-left: 0;
-                    }
-
-                    &:nth-of-type(3n+3) {
-                        margin-right: 0;
-                    }
                 }
 
                 @media(min-width: $breakpoint-lg) and (max-width: $breakpoint-xl) {
                     width: 210px;
                     min-width: 210px;
                     margin: 10px 15px;
-
-                    &:nth-of-type(4n+1) {
-                        margin-left: 0;
-                    }
-
-                    &:nth-of-type(4n+4) {
-                        margin-right: 0;
-                    }
                 }
 
                 @media(min-width: $breakpoint-xl) {
                     width: 206px;
                     min-width: 206px;
                     margin: 10px;
-
-                    &:nth-of-type(5n+1) {
-                        margin-left: 0;
-                    }
-
-                    &:nth-of-type(5n+5) {
-                        margin-right: 0;
-                    }
                 }
 
                 p {
@@ -744,6 +728,10 @@ span.nowrap {
     color: $blue-active;
     border: 1px solid $blue-active;
     margin: 0 auto 60px auto;
+
+    &:focus {
+        color: $blue-active !important;
+    }
 }
 
 .alert--preliminary_question, .alert--related-cases {

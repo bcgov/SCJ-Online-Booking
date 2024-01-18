@@ -123,8 +123,32 @@ namespace SCJ.Booking.MVC.ViewModels
             }
         }
 
+        public string HearingLengthText
+        {
+            get
+            {
+                if (IsAppealHearing.GetValueOrDefault(true))
+                {
+                    return IsFullDay.GetValueOrDefault(false) ? "Full Day" : "Half Day";
+                }
+                return IsFullHour.GetValueOrDefault(false) ? "One hour" : "Half hour";
+            }
+        }
+
         public bool? IsChambersHearing => !IsAppealHearing;
 
         public bool? IsFullHour => !IsHalfHour;
+
+        public string HearingRoomType
+        {
+            get
+            {
+                if (IsAppealHearing.GetValueOrDefault(true))
+                {
+                    return "Appeal Hearing";
+                }
+                return "Chambers Hearing";
+            }
+        }
     }
 }
