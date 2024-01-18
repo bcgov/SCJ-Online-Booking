@@ -21,6 +21,7 @@
 
 .swiper-button-prev {
     left: 0;
+    color: $blue-medium;
 
     @include breakpoint(lg) {
         left: -30px;
@@ -29,6 +30,7 @@
 
 .swiper-button-next {
     right: 0;
+    color: $blue-medium;
 
     @include breakpoint(lg) {
         right: -30px;

@@ -32,7 +32,7 @@
                 width: 0;
 
                 &:checked + label {
-                    background-color: $blue-active;
+                    background-color: $blue-dark;
 
                     p {
                         color: $white;
@@ -51,11 +51,11 @@
                 cursor: pointer;
                 text-align: center;
                 text-decoration: none;
-                background-color: $blue-active-lighter;
-                border: 1px solid darken(#eff2f5, 10%);
+                background-color: $white;
+                border: 2px solid $blue-dark;
 
                 &:hover {
-                    background-color: $blue-active;
+                    background-color: $blue-medium;
                     transition: all 0.2s ease-in-out;
 
                     p {
@@ -90,10 +90,18 @@
                 p {
                     margin-bottom: 0;
                     font-weight: 700;
-                    color: $blue;
+                    color: $black;
                 }
             }
         }
+    }
+}
+
+h6 {
+    &.h3--month {
+        font-weight: 700;
+        font-size: 1.4em;
+        margin-bottom: 1rem;
     }
 }
 
@@ -102,13 +110,7 @@
 }
 
 #btnShowMore {
-    color: $blue-active;
-    border: 1px solid $blue-active;
     margin: 0 auto 60px auto;
-
-    &:focus {
-        color: $blue-active !important;
-    }
 }
 
 .preliminary_questions__radio,

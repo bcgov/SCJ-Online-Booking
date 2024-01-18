@@ -498,7 +498,7 @@ div#progress-overlay {
 }
 
 .btn-radio {
-    color: $blue;
+    color: $blue-dark;
     background-color: $white;
     font-size: 16px;
     line-height: 16px;
@@ -507,7 +507,7 @@ div#progress-overlay {
     width: 60px;
     height: 60px;
     border-radius: 30px;
-    border: 3px solid darken(#eff2f5, 10%);
+    border: 1px solid $blue-dark;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
 
@@ -517,13 +517,13 @@ div#progress-overlay {
 
     &:hover, &:active, &:focus, &.active {
         color: $white;
-        background-color: $blue-active;
+        background-color: $blue-medium;
         -webkit-transition: all 0.1s ease-in-out;
         transition: all 0.1s ease-in-out;
     }
 
     &:active, &.active {
-        border: 3px solid darken(#eff2f5, 20%);
+        border: 1px solid $blue-medium;
     }
 
     &.disabled {
@@ -554,12 +554,6 @@ div#progress-overlay {
 
 label {
     font-weight: 700;
-}
-
-h3 {
-    &.h3--month {
-        font-weight: 700;
-    }
 }
 
 span.nowrap {
