@@ -26,7 +26,6 @@
 </div>
 
 <div class="row booking-confirmation">
-    <div class="content col-lg-6">
         <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
             <input type="hidden" asp-for="CaseNumber" />
             <input type="hidden" asp-for="FactumFiled" />
@@ -35,116 +34,121 @@
             <input type="hidden" asp-for="HearingTypeName" />
             <input type="hidden" asp-for="SelectedDate" />
 
-            <div class="form-group">
-                <label>Court file number</label>
-                <div>
-                    <span>@Model.CaseNumber</span>
-                </div>
-            </div>
+            <div class="content col-lg-6">
 
-            @if (Model.RelatedCaseList !=null && Model.RelatedCaseList.Count > 0)
-            {
-                @for (int i = 0; i < Model.RelatedCaseList.Count; i++)
+                <div class="form-group">
+                    <label>Court file number</label>
+                    <div>
+                        <span>@Model.CaseNumber</span>
+                    </div>
+                </div>
+
+                @if (Model.RelatedCaseList !=null && Model.RelatedCaseList.Count > 0)
                 {
-                    <input type="hidden" asp-for="RelatedCaseList[i]" />
+                    @for (int i = 0; i < Model.RelatedCaseList.Count; i++)
+                    {
+                        <input type="hidden" asp-for="RelatedCaseList[i]" />
+                    }
+
+                    <div class="form-group">
+                        <label>Related file number(s)</label>
+                        <div>
+                            <span>
+                                @string.Join(", ", Model.RelatedCaseList)
+                            </span>
+                        </div>
+                    </div>
                 }
 
                 <div class="form-group">
-                    <label>Related file number(s)</label>
+                    <label>Case type</label>
                     <div>
-                        <span>
-                            @string.Join(", ", Model.RelatedCaseList)
-                        </span>
-                    </div>
-                </div>
-            }
-
-            <div class="form-group">
-                <label>Case type</label>
-                <div>
-                    <span>@Model.CaseType</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Hearing type</label>
-                <div>
-                    <span>@(Model.IsAppealHearing ? "Appeals" : "Chambers")</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Is the hearing date agreed upon by all parties?</label>
-                <div>
-                    <span>@((Model.DateIsAgreed ?? false) ? "Yes" : "No")</span>
-                </div>
-            </div>
-            @if (Model.IsAppealHearing)
-            {
-                <div class="form-group">
-                    <label class="can-wrap">
-                        Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
-                    </label>
-                    <div>
-                        <span>@((Model.FactumFiled ?? false) ? "Yes" : "No")</span>
+                        <span>@Model.CaseType</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>How long will you require for your hearing?</label>
+                    <label>Hearing type</label>
                     <div>
-                        <span>@((Model.IsFullDay ?? false) ? "Full Day" : "Half Day")</span>
+                        <span>@(Model.IsAppealHearing ? "Appeals" : "Chambers")</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Type of appeal hearing</label>
+                    <label>Is the hearing date agreed upon by all parties?</label>
                     <div>
-                        <span>@Model.HearingTypeName</span>
+                        <span>@((Model.DateIsAgreed ?? false) ? "Yes" : "No")</span>
                     </div>
                 </div>
-            }
-            else
-            {
-                <div class="form-group">
-                    <label>Application Type(s)</label>
-                    <ul>
-                        @foreach (var type in Model.SelectedApplicationTypes)
-                        {
-                            <li>@type</li>
-                        }
-                    </ul>
-                </div>
-                <div class="form-group">
-                    <label>How long will you require for your chambers hearing?</label>
-                    <div>
-                        <span>@((Model.IsHalfHour ?? false) ? "One Hour" : "Half Hour")</span>
+                @if (Model.IsAppealHearing)
+                {
+                    <div class="form-group">
+                        <label class="can-wrap">
+                            Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
+                        </label>
+                        <div>
+                            <span>@((Model.FactumFiled ?? false) ? "Yes" : "No")</span>
+                        </div>
                     </div>
-                </div>
-            }
-            <div class="form-group">
-                <label>Date of hearing</label>
-                <div>
-                    <span>@Model.SelectedDate.Value.ToString("dddd, MMMM dd, yyyy")</span>
+                    <div class="form-group">
+                        <label>How long will you require for your hearing?</label>
+                        <div>
+                            <span>@((Model.IsFullDay ?? false) ? "Full Day" : "Half Day")</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Type of appeal hearing</label>
+                        <div>
+                            <span>@Model.HearingTypeName</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label>Application Type(s)</label>
+                        <ul>
+                            @foreach (var type in Model.SelectedApplicationTypes)
+                            {
+                                <li>@type</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label>How long will you require for your chambers hearing?</label>
+                        <div>
+                            <span>@((Model.IsHalfHour ?? false) ? "One Hour" : "Half Hour")</span>
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <label>Date of hearing</label>
+                    <div>
+                        <span>@Model.SelectedDate.Value.ToString("dddd, MMMM dd, yyyy")</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group contact-information">
-                <h2>Your Contact Information</h2>
-                <p>We will contact you regarding this booking. Please provide the following contact information.</p>
-                <label class="font-weight-bold" asp-for="EmailAddress">E-mail address:</label>
-                <input type="email" asp-for="EmailAddress" required class="form-control" />
-                <div class="invalid-feedback">
-                    Please provide a valid email address.
+            <div class="col-12">
+                <div class="form-group mt-5 pt-4">
+                    <h2>Your Contact Information</h2>
+                    <p>We will contact you regarding this booking. Please provide the following contact information.</p>
+                    <label class="font-weight-bold" asp-for="EmailAddress">E-mail address:</label>
+                    <input type="email" asp-for="EmailAddress" required class="form-control" />
+                    <div class="invalid-feedback">
+                        Please provide a valid email address.
+                    </div>
+                    <div class="invalid-field-message">
+                        @Html.ValidationMessageFor(model => model.EmailAddress)
+                    </div>
                 </div>
-                <div class="invalid-field-message">
-                    @Html.ValidationMessageFor(model => model.EmailAddress)
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="font-weight-bold">Phone number (format: xxx-xxx-xxxx):</label>
-                <input type="tel" asp-for="Phone" required class="form-control phone-input" pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
-                <div class="invalid-feedback">
-                    Please provide a valid phone number.
-                </div>
-                <div class="invalid-field-message">
-                    @Html.ValidationMessageFor(model => model.Phone)
+                <div class="form-group">
+                    <label asp-for="Phone" class="font-weight-bold">Phone number (format: xxx-xxx-xxxx):</label>
+                    <input type="tel" asp-for="Phone" required class="form-control phone-input" pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
+                    <div class="invalid-feedback">
+                        Please provide a valid phone number.
+                    </div>
+                    <div class="invalid-field-message">
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
                 </div>
             </div>
 
@@ -165,5 +169,4 @@
             </div>
 
         </form>
-    </div>
 </div>
