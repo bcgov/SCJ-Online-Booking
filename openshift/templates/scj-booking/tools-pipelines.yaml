@@ -1,0 +1,133 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: "scj-booking-pipeline-template"
+
+objects:
+- kind: Pipeline
+  apiVersion: tekton.dev/v1beta1
+  metadata:    
+    name: build-pipeline
+  spec:
+    tasks:
+      - name: scj-start-build
+        taskRef:
+          kind: Task
+          name: scj-start-build
+      - name: scj-wait-for-runtime
+        runAfter:
+          - scj-start-build
+        taskRef:
+          kind: Task
+          name: scj-wait-for-runtime
+      - name: scj-deploy-with-tag
+        params:
+          - name: IMAGE
+            value: scj-booking-runtime
+          - name: IMAGE_TAG
+            value: latest
+          - name: ENV
+            value: dev
+        runAfter:
+          - scj-wait-for-runtime
+        taskRef:
+          kind: Task
+          name: scj-deploy-with-tag
+
+- kind: Pipeline
+  apiVersion: tekton.dev/v1beta1
+  metadata:    
+    name: deploy-to-test
+  spec:
+    tasks:
+      - name: scj-deploy-with-tag
+        params:
+          - name: IMAGE
+            value: scj-booking-runtime
+          - name: IMAGE_TAG
+            value: dev
+          - name: ENV
+            value: test
+        taskRef:
+          kind: Task
+          name: scj-deploy-with-tag
+
+- kind: Pipeline
+  apiVersion: tekton.dev/v1beta1
+  metadata:
+    name: deploy-to-prod
+  spec:
+    tasks:
+      - name: scj-deploy-with-tag
+        params:
+          - name: IMAGE
+            value: scj-booking-runtime
+          - name: IMAGE_TAG
+            value: test
+          - name: ENV
+            value: prod
+        taskRef:
+          kind: Task
+          name: scj-deploy-with-tag
+
+- apiVersion: tekton.dev/v1beta1
+  kind: Task
+  metadata:
+    name: scj-start-build
+  spec:
+    steps:
+      - image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+        name: deploy
+        resources: {}
+        script: |
+          set -xe
+
+          echo "Building the application"
+
+          oc start-build scj-booking-build --follow
+
+- apiVersion: tekton.dev/v1beta1
+  kind: Task
+  metadata:
+    name: scj-wait-for-runtime
+  spec:
+    steps:
+      - image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+        name: deploy
+        resources: {}
+        script: |
+          set -xe
+
+          echo "Creating the runtime"
+
+          sleep 5
+
+          oc logs buildconfig/scj-booking-runtime --follow
+
+- apiVersion: tekton.dev/v1beta1
+  kind: Task
+  metadata:
+    name: scj-deploy-with-tag
+  spec:
+    params:
+      - description: The name given to the built image.
+        name: IMAGE
+        type: string
+      - default: latest
+        description: The tag given to the built image.
+        name: IMAGE_TAG
+        type: string
+      - description: The environment to deploy to.
+        name: ENV
+        type: string
+    steps:
+      - image: 'image-registry.openshift-image-registry.svc:5000/openshift/cli:latest'
+        name: deploy
+        resources: {}
+        script: |
+          set -xe
+
+          echo "Tagging image to trigger deployment to $(params.ENV)"
+
+          oc tag $(params.IMAGE):$(params.IMAGE_TAG) $(params.IMAGE):$(params.ENV)
