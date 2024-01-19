@@ -1,8 +1,6 @@
 cluster:
   domain: apps.silver.devops.gov.bc.ca
   ssoAuthUrl: https://dev.loginproxy.gov.bc.ca/auth
-  ssoRealm: bcparks-service-transformation
-  ssoClientId: staff-portal
 
 images:
   app:
