@@ -77,12 +77,12 @@ spec:
                 - name: DATABASE_USER
                   valueFrom:
                     secretKeyRef:
-                      name: {{ template "scjob_patroni_fullname" . }}-secret
+                      name: {{ template "scjob_patroni_fullname" . }}-secrets
                       key: app-db-username
                 - name: DATABASE_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: {{ template "scjob_patroni_fullname" . }}-secret
+                      name: {{ template "scjob_patroni_fullname" . }}-secrets
                       key: app-db-password
                 - name: ENVIRONMENT_FRIENDLY_NAME
                   valueFrom:
