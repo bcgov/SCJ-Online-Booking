@@ -13,3 +13,8 @@ patroni:
 
 backup:
   enabled: true
+
+  enironment:
+    friendlyName: "SCJOB Postgres Backup [test]"
+    name: "bc7c5c-test"
+
