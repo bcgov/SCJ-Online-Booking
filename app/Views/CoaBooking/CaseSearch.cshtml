@@ -3,7 +3,7 @@
 @model CoaCaseSearchViewModel
 
 @{
-    ViewData["Title"] = "Request an Appeal or Chambers Hearing Date";
+    ViewData["Title"] = "Request an Appeal or a Chambers Hearing Date";
     bool showingDates = Model.Results != null && Model.Results.Any();
 }
 
@@ -11,7 +11,7 @@
     <div class="col-md-12">
         <h1>@ViewData["Title"]</h1>
 
-        <div class="paragraph">
+        <div class="paragraph mb-4">
             <p>All bookings will be entered in a queue and will be reviewed by the court scheduler.</p>
             <p>You will be notified by email when the booking has been confirmed.</p>
         </div>
