@@ -14,7 +14,7 @@
                         <div class="custom-slide-times text-center">
                             <div v-for="container in entry.times">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-tertiary btn-block"
+                                    <button type="button" class="btn btn-time-selection btn-block"
                                             @click="selectTime(container.containerId, container.startDateTime)"
                                             @keypress.enter="keyboardSelection(container.containerId, container.startDateTime)"
                                             :class="{'selected': container.containerId === selectedContainerId}">
