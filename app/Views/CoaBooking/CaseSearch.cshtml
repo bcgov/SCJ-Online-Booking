@@ -7,6 +7,17 @@
     bool showingDates = Model.Results != null && Model.Results.Any();
 }
 
+
+@* Returns a class name if the field has any validation errors. *@
+@functions {
+    string GetValidationClass(string fieldName, string errorClass = "input-validation-error", string validClass = "") {
+        if (ViewData.ModelState.ContainsKey(fieldName) && ViewData.ModelState[fieldName].Errors.Any()) {
+            return errorClass;
+        }
+        return validClass;
+    }
+}
+
 <div class="row screen-intro">
     <div class="col-md-12">
         <h1>@ViewData["Title"]</h1>
@@ -122,11 +133,11 @@
                                     What hearing are you trying to book?
                                 </label>
                                 <div class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @((Model.IsAppealHearing ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @((Model.IsAppealHearing ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="IsAppealHearing" value="true" checked="@(Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Appeal
                                     </label>
-                                    
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @((Model.IsAppealHearing ?? true) ? "" : "active") @(Model.Step2Complete ? "disabled" : "")">
+
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @((Model.IsAppealHearing ?? true) ? "" : "active") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="IsAppealHearing" value="false" checked="@(!Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Chambers
                                     </label>
                                 </div>
@@ -136,11 +147,11 @@
                             <div class="col-md-6">
                                 <label class="can-wrap">Is the hearing date agreed upon by all parties?</label>
                                 <div id="DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @((Model.DateIsAgreed ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @((Model.DateIsAgreed ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="DateIsAgreed" value="true" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Yes
                                     </label>
 
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @((Model.DateIsAgreed ?? true) ? "" : "active") @((showingDates && (Model.DateIsAgreed ?? false)) || Model.Step2Complete  ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @((Model.DateIsAgreed ?? true) ? "" : "active") @((showingDates && (Model.DateIsAgreed ?? false)) || Model.Step2Complete  ? "disabled" : "")">
                                         <input type="radio" asp-for="DateIsAgreed" value="false" readonly="@(Model.Step2Complete ? "readonly" : "")" /> No
                                     </label>
                                 </div>

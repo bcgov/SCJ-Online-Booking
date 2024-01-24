@@ -550,6 +550,10 @@ div#progress-overlay {
         height: auto;
         padding: 10px 15px;
     }
+
+    &.input-validation-error:not(.active, :hover) {
+        border-color: $danger;
+    }
 }
 
 label {
