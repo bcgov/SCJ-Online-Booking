@@ -3,15 +3,26 @@
 @model CoaCaseSearchViewModel
 
 @{
-    ViewData["Title"] = "Request an Appeal or Chambers Hearing Date";
+    ViewData["Title"] = "Request an Appeal or a Chambers Hearing Date";
     bool showingDates = Model.Results != null && Model.Results.Any();
+}
+
+
+@* Returns a class name if the field has any validation errors. *@
+@functions {
+    string GetValidationClass(string fieldName, string errorClass = "input-validation-error", string validClass = "") {
+        if (ViewData.ModelState.ContainsKey(fieldName) && ViewData.ModelState[fieldName].Errors.Any()) {
+            return errorClass;
+        }
+        return validClass;
+    }
 }
 
 <div class="row screen-intro">
     <div class="col-md-12">
         <h1>@ViewData["Title"]</h1>
 
-        <div class="paragraph">
+        <div class="paragraph mb-4">
             <p>All bookings will be entered in a queue and will be reviewed by the court scheduler.</p>
             <p>You will be notified by email when the booking has been confirmed.</p>
         </div>
@@ -74,20 +85,19 @@
                         <div class="row search-info-row related-cases">
                             <div class="col-md-12">
                                 <label>Please select the related file numbers that will be heard on the same date.</label>
-                                <p>Note: Only one related file number can be requested in a hearing unless the main file number is also included.</p>
                                 <ul>
                                     @if (showingDates)
                                     {
                                         @foreach (var x in Model.CaseList)
                                         {
                                             <li>
-                                                <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(true)" data-main="@(x.Main)" />
+                                                <input class="mr-2" type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(true)" data-main="@(x.Main)" />
 
                                                 @if ((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))
                                                 {
                                                     <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
                                                 }
-                                                <label>@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
+                                                <label class="mt-0 mb-2">@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
                                             </li>
                                         }
                                     }
@@ -97,16 +107,17 @@
                                         @foreach (var x in Model.CaseList)
                                         {
                                             <li>
-                                                <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" readonly="@(Model.Step2Complete || x.Case_Num == Model.CaseNumber)" data-main="@(x.Main)" />
+                                                <input class="mr-2" type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" readonly="@(Model.Step2Complete || x.Case_Num == Model.CaseNumber)" data-main="@(x.Main)" />
                                                 @if (x.Case_Num == Model.CaseNumber)
                                                 {
                                                     <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
                                                 }
-                                                <label>@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
+                                                <label class="mt-0 mb-2">@x.Case_Num @((x.Main) ? "(Main)" : "")</label>
                                             </li>
                                         }
                                     }
                                 </ul>
+                                <p class="text-danger">Note: Only one related file number can be requested in a hearing unless the main file number is also included.</p>
                                 <div class="alert alert-warning  alert--related-cases">
                                     <i class="fa fa-exclamation-triangle"></i>
                                     Only one related file number can be requested in a hearing unless the main file number is also included. If you require assistance for your booking, please contact the scheduler at 604-660-2865.
@@ -122,11 +133,11 @@
                                     What hearing are you trying to book?
                                 </label>
                                 <div class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @((Model.IsAppealHearing ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @((Model.IsAppealHearing ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="IsAppealHearing" value="true" checked="@(Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Appeal
                                     </label>
-                                    
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @((Model.IsAppealHearing ?? true) ? "" : "active") @(Model.Step2Complete ? "disabled" : "")">
+
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @((Model.IsAppealHearing ?? true) ? "" : "active") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="IsAppealHearing" value="false" checked="@(!Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Chambers
                                     </label>
                                 </div>
@@ -136,11 +147,11 @@
                             <div class="col-md-6">
                                 <label class="can-wrap">Is the hearing date agreed upon by all parties?</label>
                                 <div id="DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @((Model.DateIsAgreed ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @((Model.DateIsAgreed ?? false) ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
                                         <input type="radio" asp-for="DateIsAgreed" value="true" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Yes
                                     </label>
 
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @((Model.DateIsAgreed ?? true) ? "" : "active") @((showingDates && (Model.DateIsAgreed ?? false)) || Model.Step2Complete  ? "disabled" : "")">
+                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @((Model.DateIsAgreed ?? true) ? "" : "active") @((showingDates && (Model.DateIsAgreed ?? false)) || Model.Step2Complete  ? "disabled" : "")">
                                         <input type="radio" asp-for="DateIsAgreed" value="false" readonly="@(Model.Step2Complete ? "readonly" : "")" /> No
                                     </label>
                                 </div>
@@ -168,11 +179,11 @@
                                             Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
                                         </label>
                                         <div id="Appeal_FactumFiled" class="btn-radio-group preliminary_questions__radio">
-                                            <label class="btn btn-radio btn-radio--secondary @((Model.FactumFiled ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
                                                 <input type="radio" asp-for="FactumFiled" value="true" readonly="@(Model.Step3Complete ? "readonly" : "")" /> Yes
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary @((Model.FactumFiled ?? true) ? "" : "active") @((showingDates && (Model.FactumFiled ?? false)) || Model.Step3Complete ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? true) ? "" : "active") @((showingDates && (Model.FactumFiled ?? false)) || Model.Step3Complete ? "disabled" : "")">
                                                 <input type="radio" asp-for="FactumFiled" value="false" readonly="@(Model.Step3Complete ? "readonly" : "")" /> No
                                             </label>
                                         </div>
@@ -195,11 +206,11 @@
                                     <div class="col-md-6">
                                         <label>How long will you require for your hearing?</label>
                                         <div id="Appeal_IsFullDay" class="btn-radio-group">
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsFullDay" value="false" readonly="@(showingDates ? "readonly" : "")" /> Half day
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsFullDay" value="true" readonly="@(showingDates ? "readonly" : "")" /> Full day
                                             </label>
                                         </div>
@@ -243,11 +254,11 @@
                                             </a>.
                                         </p>
                                         <div id="Chambers_TimeRequired" class="btn-radio-group mt-3">
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.IsHalfHour ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @((Model.IsHalfHour ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsHalfHour" value="true" disabled="@(showingDates && Model.IsHalfHour == false)" /> Half hour
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.IsHalfHour ?? true) == false ? "active" : "") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @((Model.IsHalfHour ?? true) == false ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsHalfHour" value="false" disabled="@(showingDates && Model.IsHalfHour == true)" /> One hour
                                             </label>
                                         </div>
