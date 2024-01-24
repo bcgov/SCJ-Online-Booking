@@ -89,7 +89,6 @@ label:not(.btn) {
 }
 
 .text-danger {
-    font-size: 1.2rem;
     color: #c62f3d !important;
     > span {
         display: block;
@@ -158,7 +157,7 @@ hr {
     }
     &::after {
         display: inline-block;
-        font-family: "Font Awesome 5 Free"; 
+        font-family: "Font Awesome 5 Free";
         content: "\f30b";
         margin-left: auto;
     }
@@ -176,7 +175,7 @@ hr {
     }
     &::after {
         display: inline-block;
-        font-family: "Font Awesome 5 Free"; 
+        font-family: "Font Awesome 5 Free";
         content: "\f00c";
         margin-left: auto;
     }
@@ -215,7 +214,7 @@ hr {
     }
     &::after {
         display: inline-block;
-        font-family: "Font Awesome 5 Free"; 
+        font-family: "Font Awesome 5 Free";
         content: "\f073";
         margin-left: auto;
     }
