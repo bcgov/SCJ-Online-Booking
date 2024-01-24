@@ -51,8 +51,8 @@
                 </div>
             <div class="form-group hideMsgClass" @hideMsgClass>
                 <label id="courtClassLabel">
-                    Choose the court class
-                </label> - Optional @* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
+                    Choose the court class (Optional)
+                </label> @* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
                 <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" aria-label="Court classes">
                     <option value="">-- Pick a class --</option>
                     <option value="B">B – Bankruptcy</option>
