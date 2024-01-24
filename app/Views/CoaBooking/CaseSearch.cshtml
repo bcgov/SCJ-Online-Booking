@@ -179,11 +179,11 @@
                                             Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
                                         </label>
                                         <div id="Appeal_FactumFiled" class="btn-radio-group preliminary_questions__radio">
-                                            <label class="btn btn-radio btn-radio--secondary @((Model.FactumFiled ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
                                                 <input type="radio" asp-for="FactumFiled" value="true" readonly="@(Model.Step3Complete ? "readonly" : "")" /> Yes
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary @((Model.FactumFiled ?? true) ? "" : "active") @((showingDates && (Model.FactumFiled ?? false)) || Model.Step3Complete ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? true) ? "" : "active") @((showingDates && (Model.FactumFiled ?? false)) || Model.Step3Complete ? "disabled" : "")">
                                                 <input type="radio" asp-for="FactumFiled" value="false" readonly="@(Model.Step3Complete ? "readonly" : "")" /> No
                                             </label>
                                         </div>
@@ -206,11 +206,11 @@
                                     <div class="col-md-6">
                                         <label>How long will you require for your hearing?</label>
                                         <div id="Appeal_IsFullDay" class="btn-radio-group">
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day  @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsFullDay" value="false" readonly="@(showingDates ? "readonly" : "")" /> Half day
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day  @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsFullDay" value="true" readonly="@(showingDates ? "readonly" : "")" /> Full day
                                             </label>
                                         </div>
@@ -254,11 +254,11 @@
                                             </a>.
                                         </p>
                                         <div id="Chambers_TimeRequired" class="btn-radio-group mt-3">
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.IsHalfHour ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @((Model.IsHalfHour ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsHalfHour" value="true" disabled="@(showingDates && Model.IsHalfHour == false)" /> Half hour
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required  @((Model.IsHalfHour ?? true) == false ? "active" : "") @(showingDates ? "disabled" : "")">
+                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @((Model.IsHalfHour ?? true) == false ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsHalfHour" value="false" disabled="@(showingDates && Model.IsHalfHour == true)" /> One hour
                                             </label>
                                         </div>
