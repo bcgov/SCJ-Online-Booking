@@ -18,7 +18,7 @@
                                             @click="selectTime(container.containerId, container.startDateTime)"
                                             @keypress.enter="keyboardSelection(container.containerId, container.startDateTime)"
                                             :class="{'selected': container.containerId === selectedContainerId}">
-                                        {{ container.start }} - {{ container.end }}
+                                        {{ container.start }}–{{ container.end }}
                                     </button>
                                 </div>
                             </div>
