@@ -276,11 +276,12 @@
             {
                 <div class="row">
                     <div class="col-12 d-flex">
-                        <a class="btn btn-restart-search mr-auto mt-2 mb-5" href="/scjob/booking/coa/Restart">Restart Search</a>
+                        @* Hide the "Restart" button initially, until the File Number field changes *@
+                        <a class="btn btn-restart-search mr-auto mt-2 mb-5" href="/scjob/booking/coa/Restart" style="display: @(Model.Step1Complete ? "block" : "none");">Restart Search</a>
 
                         @if (!Model.Step1Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5">Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Next</button>
                         }
                         else if (!Model.Step2Complete)
                         {
