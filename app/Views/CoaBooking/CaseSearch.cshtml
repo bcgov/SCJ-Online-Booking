@@ -271,22 +271,24 @@
                     }
                 }
             </div>
-             
-            @if (Model.Results == null) 
+
+            @if (Model.Results == null)
             {
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 d-flex">
+                        <a class="btn btn-restart-search mr-auto mt-2 mb-5" href="/scjob/booking/coa/Restart">Restart Search</a>
+
                         @if (!Model.Step1Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-block btn-hearing-confirmation mt-2 mb-5">Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5">Next</button>
                         }
                         else if (!Model.Step2Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType" class="btn btn-primary btn-hearing-confirmation btn-block mt-2 mb-5" style='display: none;'>Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Next</button>
                         }
                         else
                         {
-                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-block btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Show Available Dates</button>
+                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Show Available Dates</button>
                         }
                     </div>
                 </div>
@@ -340,16 +342,11 @@
             <button type="button" id="btnShowMore" class="btn btn-outline-primary btn-lg">Show More Dates</button>
         </div>
 
-        <button type="submit" id="btnSelectDate" name="SubmitButton" value="SelectDate" class="btn btn-primary btn-block btn-hearing-confirmation mt-2 mb-5 float-right">Confirm selection</button>
+        <div class="row">
+            <div class="col-12 d-flex">
+                <a class="btn btn-restart-search mr-auto mt-2 mb-5" href="/scjob/booking/coa/Restart">Restart Search</a>
+                <button type="submit" id="btnSelectDate" name="SubmitButton" value="SelectDate" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5">Confirm selection</button>
+            </div>
+        </div>
     }
 </form>
-
-@if (Model.CaseNumber != null && Model.CaseNumber != "CA" && (Model.IsValidCaseNumber ?? false))
-{
-    <div class="row mt-2">
-        <div class="col col-md-12">
-            <a href="/scjob/booking/coa/Restart">Restart Search</a>
-        </div>
-    </div>
-}
-
