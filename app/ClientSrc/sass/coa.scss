@@ -120,6 +120,13 @@ h6 {
     &:hover, &:active, &:focus {
         color: $grey-dark !important;
     }
+
+    &::before {
+        display: inline-block;
+        font-family: "Font Awesome 5 Free";
+        content: "\f30a";
+        margin-right: 10px;
+    }
 }
 
 .preliminary_questions__radio,
