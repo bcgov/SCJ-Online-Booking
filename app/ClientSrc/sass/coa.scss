@@ -113,6 +113,22 @@ h6 {
     margin: 0 auto 60px auto;
 }
 
+.btn-restart-search {
+    border: 1px solid $grey-dark;
+    color: $grey-dark;
+
+    &:hover, &:active, &:focus {
+        color: $grey-dark !important;
+    }
+
+    &::before {
+        display: inline-block;
+        font-family: "Font Awesome 5 Free";
+        content: "\f30a";
+        margin-right: 10px;
+    }
+}
+
 .preliminary_questions__radio,
 #Appeal_IsFullDay,
 #Criminal_IsFullDay,

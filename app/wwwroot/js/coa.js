@@ -73,6 +73,15 @@ $(document).ready(function () {
         }
     });
 
+    // Show the hidden "Next" button on form interaction
+    $('#CaseNumber').on('input', function () {
+        // skip if the input isn't more than the initial "CA"
+        if ($(this).val().length <= 2) return;
+
+        $('#btnNext').show();
+        $('.btn-restart-search').show();
+    })
+
     //Display last row of questions for Civil case if previous questions are answered Yes
     //And selection of related case files is valid
     var toggleCriminal = function () {
