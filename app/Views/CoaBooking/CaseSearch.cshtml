@@ -263,6 +263,10 @@
                                         </label>
                                         @Html.DropDownListFor(x => x.SelectedApplicationTypes, new MultiSelectList(Model.ChambersApplicationTypes, "HearingTypeID", "ApplicationTypeName", Model.SelectedApplicationTypes))
 
+                                        <div id="VueApplicationTypeSelect">
+                                            <application-type-select />
+                                        </div>
+
                                         <span class="text-danger" asp-validation-for="SelectedApplicationTypes"></span>
 
                                         <div class="notice--preliminary_question">
