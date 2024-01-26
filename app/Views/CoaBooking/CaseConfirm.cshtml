@@ -20,6 +20,8 @@
             <input type="hidden" asp-for="IsFullDay" />
             <input type="hidden" asp-for="HearingTypeName" />
             <input type="hidden" asp-for="SelectedDate" />
+            <input type="hidden" asp-for="SelectedApplicationTypes" />
+            <input type="hidden" asp-for="SelectedApplicationTypeNames" />
 
             <div class="content col-lg-6">
 
@@ -93,9 +95,9 @@
                     <div class="form-group">
                         <label>Application Type(s)</label>
                         <ul>
-                            @foreach (var type in Model.SelectedApplicationTypes)
+                            @foreach (var typeName in Model.SelectedApplicationTypeNames)
                             {
-                                <li>@type</li>
+                                <li>@typeName</li>
                             }
                         </ul>
                     </div>

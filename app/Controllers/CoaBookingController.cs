@@ -119,7 +119,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult CaseConfirm()
+        public async Task<IActionResult> CaseConfirm()
         {
             CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
 
@@ -183,6 +183,11 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 model.IsHalfHour = bookingInfo.IsHalfHour;
                 model.SelectedApplicationTypes = bookingInfo.SelectedApplicationTypes;
+                model.SelectedApplicationTypeNames =
+                    await _coaBookingService.GetApplicationTypeNames(
+                        model.CaseType,
+                        bookingInfo.SelectedApplicationTypes
+                    );
             }
 
             // save the booking info back to the session
