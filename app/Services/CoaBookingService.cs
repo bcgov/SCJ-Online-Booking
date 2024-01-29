@@ -428,5 +428,20 @@ namespace SCJ.Booking.MVC.Services
 
             return result;
         }
+
+        /// <summary>
+        ///     Gets the names of the selected chambers application types
+        /// </summary>
+        /// <param name="caseType">string: CoaCaseType.Civil or CoaCaseType.Criminal</param>
+        public async Task<List<string>> GetApplicationTypeNames(
+            string caseType,
+            List<string> selectedTypeIds
+        )
+        {
+            return (await _coaCacheService.GetChambersApplicationTypesAsync(caseType))
+                .Where(appType => selectedTypeIds.Contains(appType.HearingTypeID.ToString()))
+                .Select(appType => appType.ApplicationTypeName)
+                .ToList();
+        }
     }
 }

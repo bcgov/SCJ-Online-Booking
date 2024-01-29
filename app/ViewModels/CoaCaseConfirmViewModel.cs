@@ -44,5 +44,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool IsAppealHearing { get; set; }
         public bool? IsHalfHour { get; set; }
         public List<string> SelectedApplicationTypes { get; set; }
+        public List<string> SelectedApplicationTypeNames { get; set; }
     }
 }

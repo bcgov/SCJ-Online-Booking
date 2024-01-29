@@ -7,21 +7,8 @@
 <div class="row screen-intro">
     <div class="col-md-12 paragraph">
         <h1>@ViewData["Title"]</h1>
-        <p>The selected date will be reserved for your hearing.</p>
+        <p>The selected date will be reserved for your @(Model.IsAppealHearing ? "appeal" : "chambers") hearing.</p>
         <p>Check that the following information is accurate before confirming your booking.</p>
-        <p>&nbsp;</p>
-        <p>
-            The Court of Appeal has been hearing appeals using different methods during the COVID-19 pandemic.
-            Appeal hearings have been either <strong>in-person or virtual using the Zoom platform,
-                <i>including periods</i></strong> where the use of <strong>Zoom has been mandatory.</strong>
-            <br/>
-            For the latest details on how the Court is presently hearing appeals, see the
-            <strong>Court’s announcement page.</strong>
-            <br/>
-            <a target="_blank" href="https://www.bccourts.ca/Court_of_Appeal/" rel="noopener">
-                https://www.bccourts.ca/Court_of_Appeal/
-            </a>
-        </p>
     </div>
 </div>
 
@@ -33,8 +20,10 @@
             <input type="hidden" asp-for="IsFullDay" />
             <input type="hidden" asp-for="HearingTypeName" />
             <input type="hidden" asp-for="SelectedDate" />
+            <input type="hidden" asp-for="SelectedApplicationTypes" />
+            <input type="hidden" asp-for="SelectedApplicationTypeNames" />
 
-            <div class="content col-lg-6">
+            <div class="content col-lg-6 mb-5">
 
                 <div class="form-group">
                     <label>Court file number</label>
@@ -106,9 +95,9 @@
                     <div class="form-group">
                         <label>Application Type(s)</label>
                         <ul>
-                            @foreach (var type in Model.SelectedApplicationTypes)
+                            @foreach (var typeName in Model.SelectedApplicationTypeNames)
                             {
-                                <li>@type</li>
+                                <li>@typeName</li>
                             }
                         </ul>
                     </div>
@@ -128,26 +117,28 @@
             </div>
 
             <div class="col-12">
-                <div class="form-group mt-5 pt-4">
-                    <h2>Your Contact Information</h2>
-                    <p>We will contact you regarding this booking. Please provide the following contact information.</p>
-                    <label class="font-weight-bold" asp-for="EmailAddress">E-mail address:</label>
-                    <input type="email" asp-for="EmailAddress" required class="form-control" />
-                    <div class="invalid-feedback">
-                        Please provide a valid email address.
+                <div class="content-section">
+                    <div class="form-group">
+                        <h2>Your Contact Information</h2>
+                        <p>We will contact you regarding this booking. Please provide the following contact information.</p>
+                        <label class="font-weight-bold" asp-for="EmailAddress">E-mail address:</label>
+                        <input type="email" asp-for="EmailAddress" required class="form-control" />
+                        <div class="invalid-feedback">
+                            Please provide a valid email address.
+                        </div>
+                        <div class="invalid-field-message">
+                            @Html.ValidationMessageFor(model => model.EmailAddress)
+                        </div>
                     </div>
-                    <div class="invalid-field-message">
-                        @Html.ValidationMessageFor(model => model.EmailAddress)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Phone" class="font-weight-bold">Phone number (format: xxx-xxx-xxxx):</label>
-                    <input type="tel" asp-for="Phone" required class="form-control phone-input" pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
-                    <div class="invalid-feedback">
-                        Please provide a valid phone number.
-                    </div>
-                    <div class="invalid-field-message">
-                        @Html.ValidationMessageFor(model => model.Phone)
+                    <div class="form-group">
+                        <label asp-for="Phone" class="font-weight-bold">Phone number (format: xxx-xxx-xxxx):</label>
+                        <input type="tel" asp-for="Phone" required class="form-control phone-input" pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
+                        <div class="invalid-feedback">
+                            Please provide a valid phone number.
+                        </div>
+                        <div class="invalid-field-message">
+                            @Html.ValidationMessageFor(model => model.Phone)
+                        </div>
                     </div>
                 </div>
             </div>
