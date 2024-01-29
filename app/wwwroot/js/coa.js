@@ -100,8 +100,11 @@ $(document).ready(function () {
     //And selection of related case files is valid
     var toggleAppeal = function () {
         var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
+        var $IsCriminal = $('#CaseType').val() === "Criminal";
         var $IsButtonDisabled = $('#Appeal_FactumFiled input[type="radio"]:checked').parent().hasClass('disabled');
-        if (!$IsButtonDisabled) {
+        if ($IsCriminal) {
+            $("#AppealAdditionalQs").css("display", "flex");
+        } else if (!$IsButtonDisabled) {
             if ($Appeal_FactumFiled === "true" && validCaseSelection) {
                 $("#AppealAdditionalQs").css("display", "flex");
             } else {
@@ -111,11 +114,12 @@ $(document).ready(function () {
     };
 
     $('#Appeal_FactumFiled input[type="radio"]').click(toggleAppeal);
+    $('#Appeal_FactumFiled input[type="radio"]').click(toggleAppeal);
 
 
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
-    $('.preliminary_questions input[type="radio"], input[name="SelectedCases"]').change(function () {
+    $('.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]').change(function () {
         var hearingType = $('#IsAppealHearing:checked').val();
         var $radioBtnGroup = $(this).parent().parent();
         
@@ -133,9 +137,11 @@ $(document).ready(function () {
         //hearing type is appeals
         if (hearingType === "true") {
             var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
+            var $IsCriminal = $('#CaseType').val() === "Criminal";
+            var $CriminalHearingType = $("#HearingTypeId").val();
+            var $CriminalHearingTypeSelected = $IsCriminal && $CriminalHearingType && $CriminalHearingType.length > 0;
             var $Appeal_IsFullDay = $('#Appeal_IsFullDay input[type="radio"]:checked').val();
-
-            if ($Appeal_FactumFiled === "true" &&
+            if (($CriminalHearingTypeSelected || $Appeal_FactumFiled === "true") &&
                 ($Appeal_IsFullDay === "true" || $Appeal_IsFullDay === "false") &&
                 validCaseSelection) {
                 $("#btnShowDates").css("display", "flex");
