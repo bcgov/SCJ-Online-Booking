@@ -346,7 +346,11 @@
         <div class="row">
             <div class="col-12 d-flex">
                 <a class="btn btn-restart-search mr-auto mt-2 mb-5" href="/scjob/booking/coa/Restart">Restart Search</a>
-                <button type="submit" id="btnSelectDate" name="SubmitButton" value="SelectDate" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5">Confirm selection</button>
+                <button type="submit" id="btnSelectDate" name="SubmitButton" value="SelectDate"
+                    class="btn btn-primary btn-hearing-confirmation mt-2 mb-5"
+                    style="display: @(Model.SelectedDate.HasValue ? "block" : "none");">
+                    Confirm selection
+                </button>
             </div>
         </div>
     }
