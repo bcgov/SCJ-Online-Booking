@@ -114,7 +114,6 @@ $(document).ready(function () {
     };
 
     $('#Appeal_FactumFiled input[type="radio"]').click(toggleAppeal);
-    $('#Appeal_FactumFiled input[type="radio"]').click(toggleAppeal);
 
 
     //Display Show Available Dates button when all fields are correctly selected
