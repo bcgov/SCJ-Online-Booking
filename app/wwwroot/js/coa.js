@@ -182,4 +182,9 @@ $(document).ready(function () {
             $('#btnNext').hide();
         }
     });
+
+    // show the "Confirm selection" button when a date is selected
+    $('input[name="SelectedDate"]').change(function () {
+        $("#btnSelectDate").show();
+    });
 });
