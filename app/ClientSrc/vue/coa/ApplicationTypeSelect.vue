@@ -1,7 +1,7 @@
 <template>
     <div class="application-type-select">
         <!-- button to launch the modal dialog -->
-        <button @click="showModal" type="button" class="btn btn-radio btn-radio--secondary">
+        <button :disabled="disabled" @click="showModal" type="button" class="btn btn-radio btn-radio--secondary">
             Choose Application Type(s)
         </button>
 
@@ -51,7 +51,8 @@
         </div>
 
         <!-- hidden input elements to post the selected values with the form -->
-        <input v-for="selectedId in selection" type="text" :value="selectedId" />
+        <input v-for="selectedId in selection" :key="selectedId" type="hidden" name="SelectedApplicationTypes"
+            :value="selectedId" />
     </div>
 </template>
 
@@ -66,6 +67,8 @@ export default {
 
     props: {
         options: Array,
+        initialSelection: Array,
+        disabled: Boolean,
     },
 
     computed: {
@@ -80,8 +83,9 @@ export default {
         },
     },
 
-    mounted() {
-        console.log("printing", this.options);
+    created() {
+        // set initial selection
+        this.selection = [...this.initialSelection];
     },
 
     methods: {
