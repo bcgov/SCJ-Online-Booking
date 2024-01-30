@@ -61,7 +61,16 @@
                 @click="toggleExpandPanel(selected)"
             >
                 <div class="panel-label font-weight-bold">
-                    {{ selected.label }} <span v-if="selected.definition.length">(chevron)</span>
+                    {{ selected.label }}
+                    <i
+                        v-if="selected.definition.length"
+                        class="ml-2 fas"
+                        :class="
+                            expandedPanels.includes(selected.id)
+                                ? 'fa-chevron-up'
+                                : 'fa-chevron-down'
+                        "
+                    ></i>
                 </div>
 
                 <div v-if="selected.definition.length" class="panel-definition">
