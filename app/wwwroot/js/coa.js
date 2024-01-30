@@ -63,13 +63,9 @@ $(document).ready(function () {
             this.checked = false;
         }
 
-        var hearingType = $('#IsAppealHearing:checked').val();
-        if (hearingType === "true") {
+        var isAppeal = $('#IsAppealHearing:checked').val();
+        if (isAppeal === "true") {
             toggleAppeal();
-        }
-
-        if (hearingType === "false") {
-            toggleCriminal();
         }
     });
 
@@ -85,16 +81,15 @@ $(document).ready(function () {
     //Display last row of questions for Civil case if previous questions are answered Yes
     //And selection of related case files is valid
     var toggleCriminal = function () {
-        var $Civil_FactumFiled = $('#Civil_FactumFiled input[type="radio"]:checked').val();
-        if ($Civil_FactumFiled === "true" && validCaseSelection) {
-            $("#AppealsAdditionalQs").show();
+        var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
+        if ($Appeal_FactumFiled === "true" && validCaseSelection) {
+            $("#AppealAdditionalQs").show();
         } else {
-            $("#AppealsAdditionalQs").hide();
+            $("#AppealAdditionalQs").hide();
         }
     };
 
-    $('#Civil_FactumFiled input[type="radio"]').click(toggleCriminal);
-    $('#DateIsAgreed input[type="radio"]').click(toggleCriminal);
+    $('#Appeal_FactumFiled input[type="radio"]').click(toggleCriminal);
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
     //And selection of related case files is valid
@@ -119,7 +114,7 @@ $(document).ready(function () {
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
     $('.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]').change(function () {
-        var hearingType = $('#IsAppealHearing:checked').val();
+        var isAppeal = $('#IsAppealHearing:checked').val();
         var $radioBtnGroup = $(this).parent().parent();
         
         if ($radioBtnGroup.hasClass("preliminary_questions__radio")) {
@@ -133,8 +128,8 @@ $(document).ready(function () {
             }
         }
 
-        //hearing type is appeals
-        if (hearingType === "true") {
+        //hearing type is appeal
+        if (isAppeal === "true") {
             var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
             var $IsCriminal = $('#CaseType').val() === "Criminal";
             var $CriminalHearingType = $("#HearingTypeId").val();
@@ -150,7 +145,7 @@ $(document).ready(function () {
         }
 
         //hearing type is chambers
-        if (hearingType === "false") {
+        if (isAppeal === "false") {
             var $Chambers_TimeRequired = $('#Chambers_TimeRequired input[type="radio"]:checked').val();
             
             if (($Chambers_TimeRequired === "true" || $Chambers_TimeRequired === "false") &&
