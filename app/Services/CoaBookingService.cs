@@ -204,10 +204,10 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Check if a time slot is still available for a court booking
         /// </summary>
-        public bool IsTimeStillAvailable(CoAAvailableDates schedule, DateTime selectedDate)
+        public bool IsTimeStillAvailable(List<DateTime> schedule, DateTime selectedDate)
         {
-            //check if the container ID is still available
-            return schedule.AvailableDates.Any(x => x.scheduleDate == selectedDate);
+            //check if the date/time is still available
+            return schedule.Any(x => x == selectedDate);
         }
 
         /// <summary>
@@ -228,7 +228,20 @@ namespace SCJ.Booking.MVC.Services
             CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
-            CoAAvailableDates schedule = await _client.COAAvailableDatesAsync();
+            List<DateTime> schedule;
+            bool isAppealHearing = bookingInfo.IsAppealHearing.GetValueOrDefault(true);
+            if (isAppealHearing)
+            {
+                schedule = (await _client.COAAvailableDatesAsync()).AvailableDates
+                    .Select(x => x.scheduleDate)
+                    .ToList();
+            }
+            else
+            {
+                schedule = (await _client.CoAAvailableDatesChambersAsync()).AvailableDates
+                    .Select(x => x.scheduleDate)
+                    .ToList();
+            }
 
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate.Value))
@@ -252,24 +265,55 @@ namespace SCJ.Booking.MVC.Services
                 }
 
                 //build object to send to the API
-                var bookInfo = new CoABookingHearingInfo
+                BookingHearingResult result;
+
+                if (isAppealHearing)
                 {
-                    caseID = finalCase.CaseId,
-                    MainCase = finalCase.Main,
-                    RelatedCases = relatedCases,
-                    email = $"{model.EmailAddress}",
-                    hearingDate = DateTime.Parse($"{model.SelectedDate.Value}"),
-                    hearingLength = (bookingInfo.IsFullDay ?? false) ? "Full" : "Half",
-                    phone = $"{model.Phone}",
-                    hearingTypeId = bookingInfo.HearingTypeId,
-                    requestedBy = $"{userDisplayName}"
-                };
+                    var bookInfo = new CoABookingHearingInfo
+                    {
+                        caseID = finalCase.CaseId,
+                        MainCase = finalCase.Main,
+                        RelatedCases = relatedCases,
+                        email = $"{model.EmailAddress}",
+                        hearingDate = DateTime.Parse($"{model.SelectedDate.Value}"),
+                        hearingLength = (bookingInfo.IsFullDay ?? false) ? "Full" : "Half",
+                        phone = $"{model.Phone}",
+                        hearingTypeId = bookingInfo.HearingTypeId,
+                        requestedBy = $"{userDisplayName}"
+                    };
 
-                _logger.Information("BOOKING COURT OF APPEAL => CoAQueueHearingAsync(bookInfo)");
-                _logger.Information(JsonSerializer.Serialize(bookInfo));
+                    _logger.Information(
+                        "BOOKING COURT OF APPEAL => CoAQueueHearingAsync(bookInfo)"
+                    );
+                    _logger.Information(JsonSerializer.Serialize(bookInfo));
 
-                //submit booking
-                BookingHearingResult result = await _client.CoAQueueHearingAsync(bookInfo);
+                    //submit booking
+                    result = await _client.CoAQueueHearingAsync(bookInfo);
+                }
+                else
+                {
+                    var bookInfo = new CoAChambersBookingHearingInfo
+                    {
+                        caseID = finalCase.CaseId,
+                        MainCase = finalCase.Main,
+                        RelatedCases = relatedCases,
+                        email = $"{model.EmailAddress}",
+                        hearingDate = DateTime.Parse($"{model.SelectedDate.Value}"),
+                        hearingLength =
+                            (bookingInfo.IsHalfHour ?? false) ? "Half Hour" : "One Hour",
+                        phone = $"{model.Phone}",
+                        HearingTypeListID = string.Join("|", bookingInfo.SelectedApplicationTypes),
+                        requestedBy = $"{userDisplayName}",
+                    };
+
+                    _logger.Information(
+                        "BOOKING COURT OF APPEAL => CoAChambersQueueHearingAsync(bookInfo)"
+                    );
+                    _logger.Information(JsonSerializer.Serialize(bookInfo));
+
+                    //submit booking
+                    result = await _client.CoAChambersQueueHearingAsync(bookInfo);
+                }
 
                 //get the raw result
                 bookingInfo.RawResult = result.bookingResult;
@@ -283,7 +327,7 @@ namespace SCJ.Booking.MVC.Services
                     bookingHistory.Add(
                         new BookingHistory
                         {
-                            ContainerId = bookingInfo.ContainerId,
+                            ContainerId = 0, // ContainerId is used for Supreme Court
                             SmGovUserGuid = userGuid,
                             Timestamp = DateTime.Now
                         }
@@ -343,6 +387,7 @@ namespace SCJ.Booking.MVC.Services
                 model.IsTimeSlotAvailable = false;
                 model.IsBooked = false;
                 bookingInfo.IsBooked = false;
+                bookingInfo.RawResult = "The selected booking date/time is no longer available";
             }
 
             // save the booking info back to the session
@@ -460,7 +505,8 @@ namespace SCJ.Booking.MVC.Services
             List<string> selectedTypeIds
         )
         {
-            if (selectedTypeIds == null) {
+            if (selectedTypeIds == null)
+            {
                 return new List<string>();
             }
             return (await _coaCacheService.GetChambersApplicationTypesAsync(caseType))
