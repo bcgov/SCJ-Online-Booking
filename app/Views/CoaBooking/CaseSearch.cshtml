@@ -261,10 +261,15 @@
                                         <label class="application_type can-wrap">
                                             Please select the application type(s) for this chambers hearing.
                                         </label>
-                                        @Html.DropDownListFor(x => x.SelectedApplicationTypes, new MultiSelectList(Model.ChambersApplicationTypes, "HearingTypeID", "ApplicationTypeName", Model.SelectedApplicationTypes))
+
+                                        @{
+                                            var availableDates = Json.Serialize(Model.ChambersApplicationTypes);
+                                        }
 
                                         <div id="VueApplicationTypeSelect">
-                                            <application-type-select />
+                                            <application-type-select
+                                                :options="@availableDates.ToString()"
+                                            />
                                         </div>
 
                                         <span class="text-danger" asp-validation-for="SelectedApplicationTypes"></span>
