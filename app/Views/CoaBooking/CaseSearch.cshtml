@@ -173,45 +173,78 @@
                         if (Model.IsAppealHearing.Value)
                         {
                             <div class="preliminary_questions preliminary_questions--Appeal">
-                                <div class="row search-info-row">
-                                    <div class="col-md-6">
-                                        <label class="factum can-wrap">
-                                            Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
-                                        </label>
-                                        <div id="Appeal_FactumFiled" class="btn-radio-group preliminary_questions__radio">
-                                            <label class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
-                                                <input type="radio" asp-for="FactumFiled" value="true" readonly="@(Model.Step3Complete ? "readonly" : "")" /> Yes
+                                @if (Model.CaseType == CoaCaseType.Civil)
+                                {
+                                    <div class="row search-info-row">
+                                        <div class="col-md-6">
+                                            <label class="factum can-wrap">
+                                                Has the Appellant filed their factum and a copy of the entered order(s) being appealed?
+                                                See Rule 32.
                                             </label>
+                                            <div id="Appeal_FactumFiled" class="btn-radio-group preliminary_questions__radio">
+                                                <label
+                                                    class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? false) ? "active" : "") @(Model.Step3Complete ? "disabled" : "")">
+                                                    <input type="radio" asp-for="FactumFiled" value="true"
+                                                        readonly="@(Model.Step3Complete ? "readonly" : "")" /> Yes
+                                                </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? true) ? "" : "active") @((showingDates && (Model.FactumFiled ?? false)) || Model.Step3Complete ? "disabled" : "")">
-                                                <input type="radio" asp-for="FactumFiled" value="false" readonly="@(Model.Step3Complete ? "readonly" : "")" /> No
-                                            </label>
-                                        </div>
+                                                <label
+                                                    class="btn btn-radio btn-radio--secondary @GetValidationClass("FactumFiled") @((Model.FactumFiled ?? true) ? "" : "active") @((showingDates && (Model.FactumFiled ?? false)) || Model.Step3Complete ? "disabled" : "")">
+                                                    <input type="radio" asp-for="FactumFiled" value="false"
+                                                        readonly="@(Model.Step3Complete ? "readonly" : "")" /> No
+                                                </label>
+                                            </div>
 
-                                        <span class="text-danger" asp-validation-for="FactumFiled"></span>
+                                            <span class="text-danger" asp-validation-for="FactumFiled"></span>
 
-                                        <div class="notice--preliminary_question">
-                                            <span>Your hearing will not be confirmed unless the Order(s) of the Lower Court are submitted.</span>
-                                        </div>
-                                        <div class="alert alert-warning  alert--preliminary_question">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                            You will not be able to book a hearing date for the appeal until these two steps have been taken.
-                                            If you require assistance with your booking, please contact the scheduler at
-                                            <span class="nowrap">604-660-2865</span>.
+                                            <div class="notice--preliminary_question">
+                                                <span>Your hearing will not be confirmed unless the Order(s) of the Lower Court are
+                                                    submitted.</span>
+                                            </div>
+                                            <div class="alert alert-warning  alert--preliminary_question">
+                                                <i class="fa fa-exclamation-triangle"></i>
+                                                You will not be able to book a hearing date for the appeal until these two steps have
+                                                been taken.
+                                                If you require assistance with your booking, please contact the scheduler at
+                                                <span class="nowrap">604-660-2865</span>.
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
 
-                                <div id="AppealAdditionalQs" class="row search-info-row" style="display: @((Model.FactumFiled ?? false) ? "block" : "none")">
+                                @if (Model.CaseType == CoaCaseType.Criminal)
+                                {
+                                    <div class="row search-info-row">
+                                        <div class="col-md-6">
+                                            <label for="hearingType">What type of appeal hearing do you need to book?</label>
+                                            <select asp-for="HearingTypeId" class="form-control registryOptions"
+                                                asp-items="SelectListService.CoaHearingTypes" disabled="@showingDates">
+                                                <option value="">--- Hearing Type ---</option>
+                                            </select>
+                                            @if (showingDates)
+                                            {
+                                                <input type="hidden" asp-for="HearingTypeId" value="@Model.HearingTypeId" />
+                                            }
+                                            <span class="text-danger" asp-validation-for="HearingTypeId"></span>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div id="AppealAdditionalQs" class="row search-info-row"
+                                    style="display: @((Model.CaseType == CoaCaseType.Criminal || (Model.FactumFiled ?? false)) ? "block" : "none")">
                                     <div class="col-md-6">
                                         <label>How long will you require for your hearing?</label>
                                         <div id="Appeal_IsFullDay" class="btn-radio-group">
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
-                                                <input type="radio" asp-for="IsFullDay" value="false" readonly="@(showingDates ? "readonly" : "")" /> Half day
+                                            <label
+                                                class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? true) ? "" : "active") @(showingDates ? "disabled" : "")">
+                                                <input type="radio" asp-for="IsFullDay" value="false"
+                                                    readonly="@(showingDates ? "readonly" : "")" /> Half day
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
-                                                <input type="radio" asp-for="IsFullDay" value="true" readonly="@(showingDates ? "readonly" : "")" /> Full day
+                                            <label
+                                                class="btn btn-radio btn-radio--secondary btn-radio--day @GetValidationClass("IsFullDay") @((Model.IsFullDay ?? false) ? "active" : "") @(showingDates ? "disabled" : "")">
+                                                <input type="radio" asp-for="IsFullDay" value="true"
+                                                    readonly="@(showingDates ? "readonly" : "")" /> Full day
                                             </label>
                                         </div>
                                         <span class="text-danger" asp-validation-for="IsFullDay"></span>
@@ -253,7 +286,7 @@
                                                 Registry - Chambers Hearings
                                             </a>.
                                         </p>
-                                        <div id="Chambers_TimeRequired" class="btn-radio-group mt-3">
+                                        <div id="Chambers_IsHalfHour" class="btn-radio-group mt-3">
                                             <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @((Model.IsHalfHour ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsHalfHour" value="true" disabled="@(showingDates && Model.IsHalfHour == false)" /> Half hour
                                             </label>

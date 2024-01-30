@@ -63,13 +63,9 @@ $(document).ready(function () {
             this.checked = false;
         }
 
-        var hearingType = $('#IsAppealHearing:checked').val();
-        if (hearingType === "true") {
+        var isAppeal = $('#IsAppealHearing:checked').val();
+        if (isAppeal === "true") {
             toggleAppeal();
-        }
-
-        if (hearingType === "false") {
-            toggleCriminal();
         }
     });
 
@@ -85,23 +81,25 @@ $(document).ready(function () {
     //Display last row of questions for Civil case if previous questions are answered Yes
     //And selection of related case files is valid
     var toggleCriminal = function () {
-        var $Civil_FactumFiled = $('#Civil_FactumFiled input[type="radio"]:checked').val();
-        if ($Civil_FactumFiled === "true" && validCaseSelection) {
-            $("#AppealsAdditionalQs").show();
+        var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
+        if ($Appeal_FactumFiled === "true" && validCaseSelection) {
+            $("#AppealAdditionalQs").show();
         } else {
-            $("#AppealsAdditionalQs").hide();
+            $("#AppealAdditionalQs").hide();
         }
     };
 
-    $('#Civil_FactumFiled input[type="radio"]').click(toggleCriminal);
-    $('#DateIsAgreed input[type="radio"]').click(toggleCriminal);
+    $('#Appeal_FactumFiled input[type="radio"]').click(toggleCriminal);
 
     //Display last row of questions for Criminal case if previous questions are answered Yes
     //And selection of related case files is valid
     var toggleAppeal = function () {
         var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
+        var $IsCriminal = $('#CaseType').val() === "Criminal";
         var $IsButtonDisabled = $('#Appeal_FactumFiled input[type="radio"]:checked').parent().hasClass('disabled');
-        if (!$IsButtonDisabled) {
+        if ($IsCriminal) {
+            $("#AppealAdditionalQs").css("display", "flex");
+        } else if (!$IsButtonDisabled) {
             if ($Appeal_FactumFiled === "true" && validCaseSelection) {
                 $("#AppealAdditionalQs").css("display", "flex");
             } else {
@@ -115,8 +113,8 @@ $(document).ready(function () {
 
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
-    $('.preliminary_questions input[type="radio"], input[name="SelectedCases"]').change(function () {
-        var hearingType = $('#IsAppealHearing:checked').val();
+    $('.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]').change(function () {
+        var isAppeal = $('#IsAppealHearing:checked').val();
         var $radioBtnGroup = $(this).parent().parent();
         
         if ($radioBtnGroup.hasClass("preliminary_questions__radio")) {
@@ -130,12 +128,14 @@ $(document).ready(function () {
             }
         }
 
-        //hearing type is appeals
-        if (hearingType === "true") {
+        //hearing type is appeal
+        if (isAppeal === "true") {
             var $Appeal_FactumFiled = $('#Appeal_FactumFiled input[type="radio"]:checked').val();
+            var $IsCriminal = $('#CaseType').val() === "Criminal";
+            var $CriminalHearingType = $("#HearingTypeId").val();
+            var $CriminalHearingTypeSelected = $IsCriminal && $CriminalHearingType && $CriminalHearingType.length > 0;
             var $Appeal_IsFullDay = $('#Appeal_IsFullDay input[type="radio"]:checked').val();
-
-            if ($Appeal_FactumFiled === "true" &&
+            if (($CriminalHearingTypeSelected || $Appeal_FactumFiled === "true") &&
                 ($Appeal_IsFullDay === "true" || $Appeal_IsFullDay === "false") &&
                 validCaseSelection) {
                 $("#btnShowDates").css("display", "flex");
@@ -145,10 +145,10 @@ $(document).ready(function () {
         }
 
         //hearing type is chambers
-        if (hearingType === "false") {
-            var $Chambers_TimeRequired = $('#Chambers_TimeRequired input[type="radio"]:checked').val();
+        if (isAppeal === "false") {
+            var $Chambers_IsHalfHour = $('#Chambers_IsHalfHour input[type="radio"]:checked').val();
             
-            if (($Chambers_TimeRequired === "true" || $Chambers_TimeRequired === "false") &&
+            if (($Chambers_IsHalfHour === "true" || $Chambers_IsHalfHour === "false") &&
                 validCaseSelection) {
                 $("#btnShowDates").css("display", "flex");
             } else {
