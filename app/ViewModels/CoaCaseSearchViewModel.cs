@@ -129,9 +129,9 @@ namespace SCJ.Booking.MVC.ViewModels
             {
                 if (IsAppealHearing.GetValueOrDefault(true))
                 {
-                    return IsFullDay.GetValueOrDefault(false) ? "Full Day" : "Half Day";
+                    return IsFullDay.GetValueOrDefault(false) ? "a full day" : "a half day";
                 }
-                return IsFullHour.GetValueOrDefault(false) ? "One hour" : "Half hour";
+                return IsFullHour.GetValueOrDefault(false) ? "one hour" : "half an hour";
             }
         }
 
