@@ -273,6 +273,7 @@
                                                 :options="@availableDates.ToString()"
                                                 :initial-selection="@selectedTypesJson.ToString()"
                                                 :disabled="@applicationTypeSelectDisabled"
+                                                v-on:select="onApplicationTypeChange"
                                             />
                                         </div>
 

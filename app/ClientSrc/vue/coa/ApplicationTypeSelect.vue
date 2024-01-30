@@ -151,6 +151,11 @@ export default {
         confirmSelection() {
             this.selection = [...this.newSelection];
 
+            // also reset "expanded panels" list
+            this.expandedPanels = [];
+
+            this.emitSelection();
+
             this.$refs.dialogEl.close();
         },
 
@@ -165,6 +170,8 @@ export default {
 
             // remove id from expanded panels list
             this.expandedPanels = this.expandedPanels.filter((panelId) => panelId !== id);
+
+            this.emitSelection();
         },
 
         /**
@@ -183,6 +190,15 @@ export default {
                 // add to expanded list
                 this.expandedPanels.push(selected.id);
             }
+        },
+
+        /**
+         * Emits an array of selected options.
+         */
+        emitSelection() {
+            const selection = this.options.filter((option) => this.selection.includes(option.id));
+
+            this.$emit("select", selection);
         },
     },
 };

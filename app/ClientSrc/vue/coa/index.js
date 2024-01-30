@@ -9,8 +9,12 @@ Vue.config.productionTip = false;
 Vue.component("ApplicationTypeSelect", ApplicationTypeSelect);
 
 // Mount vue app if a container element exists
-if ($('#VueApplicationTypeSelect').length) {
+if ($("#VueApplicationTypeSelect").length) {
     new Vue({
-        el: "#VueApplicationTypeSelect"
+        el: "#VueApplicationTypeSelect",
+        methods: {
+            // bring functions (from /js/coa.js) into the vue app scope
+            onApplicationTypeChange,
+        },
     });
 }

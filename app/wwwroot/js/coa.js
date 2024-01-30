@@ -188,3 +188,7 @@ $(document).ready(function () {
         $("#btnSelectDate").show();
     });
 });
+
+function onApplicationTypeChange(applicationTypes) {
+    console.log('onApplicationTypeChange', applicationTypes);
+};
