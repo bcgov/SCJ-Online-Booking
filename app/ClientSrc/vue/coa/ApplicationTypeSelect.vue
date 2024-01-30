@@ -75,17 +75,24 @@ export default {
         formattedOptions() {
             return this.options.map((option) => {
                 return {
-                    id: option.hearingTypeID,
+                    id: String(option.hearingTypeID),
                     label: option.applicationTypeName,
                     definition: option.applicationTypeDefinition,
                 };
             });
         },
+
+        displaySelection() {
+            return this.formattedOptions
+                .filter(option => this.selection.includes(option.id));
+        }
     },
 
     created() {
         // set initial selection
-        this.selection = [...this.initialSelection];
+        if (this.initialSelection) {
+            this.selection = [...this.initialSelection];
+        }
     },
 
     methods: {
