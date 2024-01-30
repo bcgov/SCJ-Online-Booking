@@ -35,7 +35,7 @@
             <div class="actions-wrap">
                 <span>{{ newSelection.length }} selected</span>
 
-                <button type="button" @click="confirmSelection">
+                <button class="btn btn-secondary mt-0" type="button" @click="confirmSelection">
                     Confirm selection
                 </button>
             </div>
@@ -196,6 +196,12 @@ export default {
             justify-content: space-between;
             height: 4em;
             padding: 1em;
+
+            .btn-secondary {
+                &::after {
+                    margin-left: 10px;
+                }
+            }
         }
 
         &::backdrop {
