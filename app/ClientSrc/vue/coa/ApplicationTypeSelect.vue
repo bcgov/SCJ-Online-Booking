@@ -232,6 +232,7 @@ export default {
             margin-bottom: 1em;
 
             .option {
+                cursor: pointer;
                 display: flex;
                 align-items: baseline;
                 line-height: 1;
