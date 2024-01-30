@@ -46,8 +46,23 @@
             Application type(s) selected:
         </label>
 
-        <div>
-            (accordion picker thing here)
+        <div class="temp">{{ expandedPanels }}</div>
+
+        <div class="selection-display">
+            <div class="selection-panel" :class="{
+                'expandable': selected.definition.length,
+                'expanded': expandedPanels.includes(selected.id),
+            }" v-for="selected in displaySelection" :key="selected.id" @click="toggleExpandPanel(selected)">
+                <div class="panel-label font-weight-bold">
+                    {{ selected.label }} <span v-if="selected.definition.length">(chevron)</span>
+                </div>
+
+                <div v-if="selected.definition.length" class="panel-definition">{{ selected.definition }}</div>
+
+                <button class="btn-close" type="button" @click.stop="deselect(selected.id)">
+                    <i class="fas fa-times m-0"></i>
+                </button>
+            </div>
         </div>
 
         <!-- hidden input elements to post the selected values with the form -->
@@ -63,6 +78,7 @@ export default {
     data: () => ({
         selection: [],
         newSelection: [],
+        expandedPanels: [],
     }),
 
     props: {
@@ -115,12 +131,50 @@ export default {
 
             this.$refs.dialogEl.close();
         },
+
+        /**
+         * Deselects an option by ID.
+         *
+         * @param {String} id - option to remove
+         */
+        deselect(id) {
+            // remove item from selection
+            this.selection = this.selection.filter(selectedId => selectedId !== id)
+
+            // remove id from expanded panels list
+            this.expandedPanels = this.expandedPanels.filter(panelId => panelId !== id)
+        },
+
+        /**
+         * Toggles a panel's "expanded" state.
+         *
+         * @param {Object} selected - selected option
+         */
+        toggleExpandPanel(selected) {
+            // skip if the panel has no definition to expand
+            if (!selected.definition.length) return;
+
+            if (this.expandedPanels.includes(selected.id)) {
+                // remove from expanded list
+                this.expandedPanels = this.expandedPanels.filter(id => id !== selected.id);
+            } else {
+                // add to expanded list
+                this.expandedPanels.push(selected.id);
+            }
+        },
     },
 };
 </script>
 
 <style lang="scss">
 .application-type-select {
+
+    // borderless flat button with just an icon
+    .btn-close {
+        background: none;
+        border: none;
+    }
+
     dialog[open] {
         padding: 2em 2em 4em;
         margin: 0;
@@ -157,8 +211,6 @@ export default {
             }
 
             .btn-close {
-                background: none;
-                border: none;
                 font-size: 1.5em;
             }
         }
@@ -213,6 +265,35 @@ export default {
 
         &::backdrop {
             background: rgba(0, 0, 0, 0.25);
+        }
+    }
+
+    .selection-display {
+        .selection-panel {
+            position: relative;
+            border-bottom: 1px solid #D0D0D0;
+            padding: 6px 12px;
+
+            .panel-definition {
+                display: none;
+            }
+
+            // if the panel has a definition to show
+            &.expandable {
+                cursor: pointer;
+            }
+
+            &.expanded {
+                .panel-definition {
+                    display: block;
+                }
+            }
+
+            .btn-close {
+                position: absolute;
+                top: 8px;
+                right: 12px;
+            }
         }
     }
 }
