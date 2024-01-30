@@ -307,11 +307,24 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await _mailService.ExchangeSendEmail(
-                        model.EmailAddress,
-                        EmailSubject,
-                        await GetEmailBody()
-                    );
+                    if (!IsLocalDevEnvironment)
+                    {
+                        await _mailService.ExchangeSendEmail(
+                            model.EmailAddress,
+                            EmailSubject,
+                            await GetEmailBody()
+                        );
+                    }
+                    else
+                    {
+                        var fromEmail = _configuration["FROM_EMAIL"];
+                        await _mailService.SendGridSendEmail(
+                            fromEmail,
+                            model.EmailAddress,
+                            EmailSubject,
+                            await GetEmailBody()
+                        );
+                    }
 
                     //clear booking info session
                     _session.CoaBookingInfo = null;
@@ -357,12 +370,21 @@ namespace SCJ.Booking.MVC.Services
                 CourtFileNumber = booking.CaseNumber,
                 RelatedCaseList = booking.RelatedCaseList,
                 CaseType = booking.CaseType,
-                TypeOfConference = booking.HearingTypeName,
-                // todo: need to handle chambers 1 hour / half hour
+                TypeOfConference = booking.IsAppealHearing ?? true ? "Appeal" : "Chambers",
                 HearingLength = booking.IsFullDay ?? false ? "Full Day" : "Half Day",
                 Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? "",
-                RelatedCasesString = ""
+                RelatedCasesString = "",
+                SelectedApplicationTypeNames = await this.GetApplicationTypeNames(
+                    booking.CaseType,
+                    booking.SelectedApplicationTypes
+                ),
+                HearingTypeName = booking.HearingTypeName
             };
+
+            if (booking.IsAppealHearing.GetValueOrDefault(false))
+            {
+                viewModel.HearingLength = booking.IsHalfHour ?? true ? "Half Hour" : "One Hour";
+            }
 
             if (booking.RelatedCaseList != null && booking.RelatedCaseList.Any())
             {
@@ -438,6 +460,9 @@ namespace SCJ.Booking.MVC.Services
             List<string> selectedTypeIds
         )
         {
+            if (selectedTypeIds == null) {
+                return new List<string>();
+            }
             return (await _coaCacheService.GetChambersApplicationTypesAsync(caseType))
                 .Where(appType => selectedTypeIds.Contains(appType.HearingTypeID.ToString()))
                 .Select(appType => appType.ApplicationTypeName)

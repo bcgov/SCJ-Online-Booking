@@ -19,5 +19,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public List<string> RelatedCaseList { get; set; }
         public string RelatedCasesString { get; set; }
         public string StyleOfCause { get; internal set; }
+        public List<string> SelectedApplicationTypeNames { get; set; }
+        public string HearingTypeName { get; set; }
     }
 }

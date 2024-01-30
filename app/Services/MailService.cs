@@ -88,7 +88,7 @@ namespace SCJ.Booking.MVC.Services
             var from = new SendGrid.Helpers.Mail.EmailAddress(fromEmail);
             var to = new SendGrid.Helpers.Mail.EmailAddress(toEmail);
             var plainTextContent = body;
-            var htmlContent = body;
+            var htmlContent = body.Replace("\n", "<br/>\n");
             var msg = MailHelper.CreateSingleEmail(
                 from,
                 to,
