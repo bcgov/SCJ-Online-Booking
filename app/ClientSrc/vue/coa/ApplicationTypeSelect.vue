@@ -1,7 +1,12 @@
 <template>
     <div class="application-type-select">
         <!-- button to launch the modal dialog -->
-        <button :disabled="disabled" @click="showModal" type="button" class="btn btn-radio btn-radio--secondary">
+        <button
+            :disabled="disabled"
+            @click="showModal"
+            type="button"
+            class="btn btn-radio btn-radio--secondary"
+        >
             Choose Application Type(s)
         </button>
 
@@ -42,22 +47,26 @@
         </dialog>
 
         <!-- expandable/removable panels to show the selection -->
-        <label class="application_type can-wrap">
-            Application type(s) selected:
-        </label>
-
-        <div class="temp">{{ expandedPanels }}</div>
+        <label class="application_type can-wrap"> Application type(s) selected: </label>
 
         <div class="selection-display">
-            <div class="selection-panel" :class="{
-                'expandable': selected.definition.length,
-                'expanded': expandedPanels.includes(selected.id),
-            }" v-for="selected in displaySelection" :key="selected.id" @click="toggleExpandPanel(selected)">
+            <div
+                class="selection-panel"
+                :class="{
+                    expandable: selected.definition.length,
+                    expanded: expandedPanels.includes(selected.id),
+                }"
+                v-for="selected in displaySelection"
+                :key="selected.id"
+                @click="toggleExpandPanel(selected)"
+            >
                 <div class="panel-label font-weight-bold">
                     {{ selected.label }} <span v-if="selected.definition.length">(chevron)</span>
                 </div>
 
-                <div v-if="selected.definition.length" class="panel-definition">{{ selected.definition }}</div>
+                <div v-if="selected.definition.length" class="panel-definition">
+                    {{ selected.definition }}
+                </div>
 
                 <button class="btn-close" type="button" @click.stop="deselect(selected.id)">
                     <i class="fas fa-times m-0"></i>
@@ -66,8 +75,13 @@
         </div>
 
         <!-- hidden input elements to post the selected values with the form -->
-        <input v-for="selectedId in selection" :key="selectedId" type="hidden" name="SelectedApplicationTypes"
-            :value="selectedId" />
+        <input
+            v-for="selectedId in selection"
+            :key="selectedId"
+            type="hidden"
+            name="SelectedApplicationTypes"
+            :value="selectedId"
+        />
     </div>
 </template>
 
@@ -99,9 +113,8 @@ export default {
         },
 
         displaySelection() {
-            return this.formattedOptions
-                .filter(option => this.selection.includes(option.id));
-        }
+            return this.formattedOptions.filter((option) => this.selection.includes(option.id));
+        },
     },
 
     created() {
@@ -139,10 +152,10 @@ export default {
          */
         deselect(id) {
             // remove item from selection
-            this.selection = this.selection.filter(selectedId => selectedId !== id)
+            this.selection = this.selection.filter((selectedId) => selectedId !== id);
 
             // remove id from expanded panels list
-            this.expandedPanels = this.expandedPanels.filter(panelId => panelId !== id)
+            this.expandedPanels = this.expandedPanels.filter((panelId) => panelId !== id);
         },
 
         /**
@@ -156,7 +169,7 @@ export default {
 
             if (this.expandedPanels.includes(selected.id)) {
                 // remove from expanded list
-                this.expandedPanels = this.expandedPanels.filter(id => id !== selected.id);
+                this.expandedPanels = this.expandedPanels.filter((id) => id !== selected.id);
             } else {
                 // add to expanded list
                 this.expandedPanels.push(selected.id);
@@ -168,7 +181,6 @@ export default {
 
 <style lang="scss">
 .application-type-select {
-
     // borderless flat button with just an icon
     .btn-close {
         background: none;
@@ -271,7 +283,7 @@ export default {
     .selection-display {
         .selection-panel {
             position: relative;
-            border-bottom: 1px solid #D0D0D0;
+            border-bottom: 1px solid #d0d0d0;
             padding: 6px 12px;
 
             .panel-definition {
