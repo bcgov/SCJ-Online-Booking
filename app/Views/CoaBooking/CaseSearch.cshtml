@@ -286,7 +286,7 @@
                                                 Registry - Chambers Hearings
                                             </a>.
                                         </p>
-                                        <div id="Chambers_TimeRequired" class="btn-radio-group mt-3">
+                                        <div id="Chambers_IsHalfHour" class="btn-radio-group mt-3">
                                             <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @((Model.IsHalfHour ?? false) == true ? "active" : "") @(showingDates ? "disabled" : "")">
                                                 <input type="radio" asp-for="IsHalfHour" value="true" disabled="@(showingDates && Model.IsHalfHour == false)" /> Half hour
                                             </label>

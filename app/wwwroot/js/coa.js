@@ -146,9 +146,9 @@ $(document).ready(function () {
 
         //hearing type is chambers
         if (isAppeal === "false") {
-            var $Chambers_TimeRequired = $('#Chambers_TimeRequired input[type="radio"]:checked').val();
+            var $Chambers_IsHalfHour = $('#Chambers_IsHalfHour input[type="radio"]:checked').val();
             
-            if (($Chambers_TimeRequired === "true" || $Chambers_TimeRequired === "false") &&
+            if (($Chambers_IsHalfHour === "true" || $Chambers_IsHalfHour === "false") &&
                 validCaseSelection) {
                 $("#btnShowDates").css("display", "flex");
             } else {
