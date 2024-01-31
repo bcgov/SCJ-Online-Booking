@@ -78,7 +78,7 @@
                     {{ selected.definition }}
                 </div>
 
-                <button v-show="!disabled" class="btn-close" type="button" @click.stop="deselect(selected.id)">
+                <button v-if="!disabled" class="btn-close" type="button" @click.stop="deselect(selected.id)">
                     <i class="fas fa-times m-0"></i>
                 </button>
             </div>
