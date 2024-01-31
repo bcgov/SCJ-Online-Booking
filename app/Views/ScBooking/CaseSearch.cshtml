@@ -211,10 +211,11 @@ else
                     }
                 </div>
             </div>
-            <div id="VueAvailableTimes" class="availableTimesContainer">
-                <availabletimes :location-id="@Model.BookingRegistryId"
-                                :hearing-type="@Model.HearingTypeId">
-                </availabletimes>
+            <div id="VueHearingTimeSelect" class="availableTimesContainer">
+                <hearing-time-select
+                    :location-id="@Model.BookingRegistryId"
+                    :hearing-type="@Model.HearingTypeId"
+                ></hearing-time-select>
             </div>
             <div class="row">&nbsp;</div>
         }
