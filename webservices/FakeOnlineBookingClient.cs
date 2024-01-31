@@ -130,7 +130,11 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return CoAAvailableDatesFixture.Dates;
+            var result = CoAAvailableDatesFixture.Dates;
+            result.AvailableDates = result.AvailableDates
+                .Where(x => x.scheduleDate > DateTime.Now)
+                .ToArray();
+            return result;
         }
 
         public async Task<BookingHearingResult> CoAQueueHearingAsync(
@@ -145,7 +149,11 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
 
-            return CoAAvailableDatesFixture.ChambersDates;
+            var result = CoAAvailableDatesFixture.ChambersDates;
+            result.AvailableDates = result.AvailableDates
+                .Where(x => x.scheduleDate > DateTime.Now)
+                .ToArray();
+            return result;
         }
 
         public async Task<BookingHearingResult> CoAChambersQueueHearingAsync(CoAChambersBookingHearingInfo bookingInfo)
