@@ -195,11 +195,14 @@ export default {
         /**
          * Emits an array of selected options.
          */
-        emitSelection() {
+        async emitSelection() {
             const selection = this.options.filter((option) => {
                 const optionId = String(option.hearingTypeID);
                 return this.selection.includes(optionId);
             });
+
+            // wait for the DOM to update
+            await this.$nextTick();
 
             this.$emit("select", selection);
         },
