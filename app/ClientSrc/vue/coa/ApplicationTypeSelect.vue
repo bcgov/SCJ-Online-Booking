@@ -196,7 +196,10 @@ export default {
          * Emits an array of selected options.
          */
         emitSelection() {
-            const selection = this.options.filter((option) => this.selection.includes(option.id));
+            const selection = this.options.filter((option) => {
+                const optionId = String(option.hearingTypeID);
+                return this.selection.includes(optionId);
+            });
 
             this.$emit("select", selection);
         },
