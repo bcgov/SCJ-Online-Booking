@@ -147,14 +147,14 @@ $(document).ready(function () {
         //hearing type is chambers
         if (isAppeal === "false") {
             // validate at least one application type is selected
-            const selectedInputTypes = $('input[name="SelectedApplicationTypes"]').length > 0;
+            const selectedApplicationTypes = $('input[name="SelectedApplicationTypes"]').length > 0;
 
             var $Chambers_IsHalfHour = $('#Chambers_IsHalfHour input[type="radio"]:checked').val();
 
             if (
                 ($Chambers_IsHalfHour === "true" || $Chambers_IsHalfHour === "false") &&
                 validCaseSelection &&
-                selectedInputTypes
+                selectedApplicationTypes
             ) {
                 $("#btnShowDates").css("display", "flex");
             } else {
