@@ -263,15 +263,15 @@
                                         </label>
 
                                         @{
-                                            var availableDates = Json.Serialize(Model.ChambersApplicationTypes);
-                                            var selectedTypesJson = Json.Serialize(Model.SelectedApplicationTypes);
-                                            var applicationTypeSelectDisabled = Json.Serialize(Model.Step3Complete);
+                                            string availableDates = Json.Serialize(Model.ChambersApplicationTypes).ToString();
+                                            string selectedTypesJson = Json.Serialize(Model.SelectedApplicationTypes).ToString();
+                                            string applicationTypeSelectDisabled = Json.Serialize(Model.Step3Complete).ToString();
                                         }
 
                                         <div id="VueApplicationTypeSelect">
                                             <application-type-select
-                                                :options="@availableDates.ToString()"
-                                                :initial-selection="@selectedTypesJson.ToString()"
+                                                :options="@availableDates"
+                                                :initial-selection="@selectedTypesJson"
                                                 :disabled="@applicationTypeSelectDisabled"
                                                 v-on:select="onApplicationTypeChange"
                                             />
