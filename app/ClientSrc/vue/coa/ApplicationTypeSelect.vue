@@ -6,6 +6,7 @@
             @click="showModal"
             type="button"
             class="btn btn-radio btn-radio--secondary"
+            :class="{ 'disabled': disabled }"
         >
             Choose Application Type(s)
         </button>
@@ -77,7 +78,7 @@
                     {{ selected.definition }}
                 </div>
 
-                <button class="btn-close" type="button" @click.stop="deselect(selected.id)">
+                <button v-show="!disabled" class="btn-close" type="button" @click.stop="deselect(selected.id)">
                     <i class="fas fa-times m-0"></i>
                 </button>
             </div>
