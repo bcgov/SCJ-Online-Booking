@@ -1,16 +1,15 @@
 import Vue from "vue";
-import AvailableTimes from "./availabletimes.vue";
+import HearingTimeSelect from "./HearingTimeSelect.vue";
 
 import "es6-promise/auto"; // ES6 Promises Polyfill for IE11 support
 
 Vue.config.devtools = false;
 Vue.config.productionTip = false;
 
-Vue.component("availabletimes", AvailableTimes);
+Vue.component("HearingTimeSelect", HearingTimeSelect);
 
-if ($('#VueAvailableTimes').length) {
+if ($('#VueHearingTimeSelect').length) {
     let vue = new Vue({
-        el: "#VueAvailableTimes"
+        el: "#VueHearingTimeSelect"
     });
 }
-

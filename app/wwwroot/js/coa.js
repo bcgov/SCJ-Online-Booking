@@ -146,10 +146,16 @@ $(document).ready(function () {
 
         //hearing type is chambers
         if (isAppeal === "false") {
+            // validate at least one application type is selected
+            const selectedApplicationTypes = $('input[name="SelectedApplicationTypes"]').length > 0;
+
             var $Chambers_IsHalfHour = $('#Chambers_IsHalfHour input[type="radio"]:checked').val();
-            
-            if (($Chambers_IsHalfHour === "true" || $Chambers_IsHalfHour === "false") &&
-                validCaseSelection) {
+
+            if (
+                ($Chambers_IsHalfHour === "true" || $Chambers_IsHalfHour === "false") &&
+                validCaseSelection &&
+                selectedApplicationTypes
+            ) {
                 $("#btnShowDates").css("display", "flex");
             } else {
                 $("#btnShowDates").hide();
@@ -188,3 +194,35 @@ $(document).ready(function () {
         $("#btnSelectDate").show();
     });
 });
+
+/**
+ * Handle "Application types" selection change.
+ *
+ * @param {Array} selection - Selected application types
+ */
+function onApplicationTypeChange(selection) {
+    // if any of the selected application types require a full hour,
+    // disable the half hour duration button
+    const hourNeeded = selection.some(({ timeline }) => timeline === "One Hour");
+
+    $timelineRadios = $('input[name="IsHalfHour"]');
+    $halfHourRadio = $('input[name="IsHalfHour"][value="true"]');
+    $halfHourLabel = $halfHourRadio.parent("label");
+    $fullHourLabel = $('input[name="IsHalfHour"][value="false"]').parent('label');
+    $halfHourNotice = $('.notice-half-hour-required');
+
+    if (hourNeeded) {
+        // select "One Hour" radio button
+        $timelineRadios.val(['false'])
+        $halfHourLabel.toggleClass("active", false);
+        $fullHourLabel.toggleClass("active", true);
+    }
+
+    // disable "Half Hour" radio button
+    $halfHourRadio.prop("disabled", hourNeeded);
+    $halfHourLabel.toggleClass("disabled", hourNeeded);
+    $halfHourNotice.toggle(hourNeeded);
+
+    // trigger a radio button change handler to show/hide the "Show dates" button as needed
+    $('input[type="radio"]').eq(0).trigger("change");
+};

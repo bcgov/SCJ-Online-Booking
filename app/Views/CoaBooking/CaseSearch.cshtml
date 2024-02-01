@@ -257,11 +257,25 @@
                         {
                             <div class="preliminary_questions preliminary_questions--Chambers">
                                 <div class="row search-info-row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label class="application_type can-wrap">
                                             Please select the application type(s) for this chambers hearing.
                                         </label>
-                                        @Html.DropDownListFor(x => x.SelectedApplicationTypes, new MultiSelectList(Model.ChambersApplicationTypes, "HearingTypeID", "ApplicationTypeName", Model.SelectedApplicationTypes))
+
+                                        @{
+                                            string availableDates = Json.Serialize(Model.ChambersApplicationTypes).ToString();
+                                            string selectedTypesJson = Json.Serialize(Model.SelectedApplicationTypes).ToString();
+                                            string applicationTypeSelectDisabled = Json.Serialize(Model.Step3Complete).ToString();
+                                        }
+
+                                        <div id="VueApplicationTypeSelect">
+                                            <application-type-select
+                                                :options="@availableDates"
+                                                :initial-selection="@selectedTypesJson"
+                                                :disabled="@applicationTypeSelectDisabled"
+                                                v-on:select="onApplicationTypeChange"
+                                            />
+                                        </div>
 
                                         <span class="text-danger" asp-validation-for="SelectedApplicationTypes"></span>
 
@@ -296,6 +310,11 @@
                                             </label>
                                         </div>
                                         <span class="text-danger" asp-validation-for="IsHalfHour"></span>
+
+                                        <div class="alert alert-info notice-half-hour-required mt-4" style="display: none;">
+                                            <i class="fas fa-info-circle"></i>
+                                            The application type(s) you've chosen require one hour.
+                                        </div>
                                     </div>
                                 </div>
 
