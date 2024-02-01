@@ -139,10 +139,7 @@ namespace SCJ.Booking.MVC.Services
                 }
 
                 //check if hearing is chambers and populate the app types if it is
-                if (
-                    model.IsChambersHearing.GetValueOrDefault(false)
-                    && model.ChambersApplicationTypes == null
-                )
+                if (model.IsAppealHearing is false && model.ChambersApplicationTypes == null)
                 {
                     retval.ChambersApplicationTypes =
                         await _coaCacheService.GetChambersApplicationTypesAsync(model.CaseType);
@@ -229,8 +226,7 @@ namespace SCJ.Booking.MVC.Services
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
             List<DateTime> schedule;
-            bool isAppealHearing = bookingInfo.IsAppealHearing.GetValueOrDefault(true);
-            if (isAppealHearing)
+            if (bookingInfo.IsAppealHearing is true)
             {
                 schedule = (await _client.COAAvailableDatesAsync()).AvailableDates
                     .Select(x => x.scheduleDate)
@@ -267,7 +263,7 @@ namespace SCJ.Booking.MVC.Services
                 //build object to send to the API
                 BookingHearingResult result;
 
-                if (isAppealHearing)
+                if (bookingInfo.IsAppealHearing is true)
                 {
                     var bookInfo = new CoABookingHearingInfo
                     {
@@ -276,7 +272,7 @@ namespace SCJ.Booking.MVC.Services
                         RelatedCases = relatedCases,
                         email = $"{model.EmailAddress}",
                         hearingDate = DateTime.Parse($"{model.SelectedDate.Value}"),
-                        hearingLength = (bookingInfo.IsFullDay ?? false) ? "Full" : "Half",
+                        hearingLength = bookingInfo.IsFullDay is true ? "Full" : "Half",
                         phone = $"{model.Phone}",
                         hearingTypeId = bookingInfo.HearingTypeId,
                         requestedBy = $"{userDisplayName}"
@@ -299,8 +295,7 @@ namespace SCJ.Booking.MVC.Services
                         RelatedCases = relatedCases,
                         email = $"{model.EmailAddress}",
                         hearingDate = DateTime.Parse($"{model.SelectedDate.Value}"),
-                        hearingLength =
-                            (bookingInfo.IsHalfHour ?? false) ? "Half Hour" : "One Hour",
+                        hearingLength = bookingInfo.IsHalfHour is true ? "Half Hour" : "One Hour",
                         phone = $"{model.Phone}",
                         HearingTypeListID = string.Join("|", bookingInfo.SelectedApplicationTypes),
                         requestedBy = $"{userDisplayName}",
@@ -415,8 +410,8 @@ namespace SCJ.Booking.MVC.Services
                 CourtFileNumber = booking.CaseNumber,
                 RelatedCaseList = booking.RelatedCaseList,
                 CaseType = booking.CaseType,
-                TypeOfConference = booking.IsAppealHearing ?? true ? "Appeal" : "Chambers",
-                HearingLength = booking.IsFullDay ?? false ? "Full Day" : "Half Day",
+                TypeOfConference = booking.IsAppealHearing is true ? "Appeal" : "Chambers",
+                HearingLength = booking.IsFullDay is true ? "Full Day" : "Half Day",
                 Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? "",
                 RelatedCasesString = "",
                 SelectedApplicationTypeNames = await this.GetApplicationTypeNames(
@@ -426,9 +421,10 @@ namespace SCJ.Booking.MVC.Services
                 HearingTypeName = booking.HearingTypeName
             };
 
-            if (booking.IsAppealHearing.GetValueOrDefault(false))
+            // check if chambers hearing
+            if (booking.IsAppealHearing is false)
             {
-                viewModel.HearingLength = booking.IsHalfHour ?? true ? "Half Hour" : "One Hour";
+                viewModel.HearingLength = booking.IsHalfHour is true ? "Half Hour" : "One Hour";
             }
 
             if (booking.RelatedCaseList != null && booking.RelatedCaseList.Any())

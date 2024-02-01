@@ -66,7 +66,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 model.Results = await _coaBookingService.GetAvailableDates(
                     model.MinimumAvailabilityNeeded,
-                    model.IsAppealHearing.GetValueOrDefault(true)
+                    model.IsAppealHearing.GetValueOrDefault(false)
                 );
             }
 
@@ -104,7 +104,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 model.Results = await _coaBookingService.GetAvailableDates(
                     model.MinimumAvailabilityNeeded,
-                    model.IsAppealHearing.GetValueOrDefault(true)
+                    model.IsAppealHearing.GetValueOrDefault(false)
                 );
             }
 
@@ -171,10 +171,10 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseList = bookingInfo.CaseList,
                 SelectedCases = bookingInfo.SelectedCases,
                 RelatedCaseList = bookingInfo.RelatedCaseList,
-                IsAppealHearing = bookingInfo.IsAppealHearing.GetValueOrDefault(true)
+                IsAppealHearing = bookingInfo.IsAppealHearing.GetValueOrDefault(false)
             };
 
-            if (bookingInfo.IsAppealHearing.GetValueOrDefault(true))
+            if (bookingInfo.IsAppealHearing is true)
             {
                 model.IsFullDay = bookingInfo.IsFullDay;
                 model.FactumFiled = bookingInfo.FactumFiled;
