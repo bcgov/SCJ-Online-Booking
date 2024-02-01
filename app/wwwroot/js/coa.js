@@ -205,17 +205,20 @@ function onApplicationTypeChange(selection) {
     // disable the half hour duration button
     const hourNeeded = selection.some(({ timeline }) => timeline === "One Hour");
 
+    $timelineRadios = $('input[name="IsHalfHour"]');
     $halfHourRadio = $('input[name="IsHalfHour"][value="true"]');
     $halfHourLabel = $halfHourRadio.parent("label");
+    $fullHourLabel = $('input[name="IsHalfHour"][value="false"]').parent('label');
     $halfHourNotice = $('.notice-half-hour-required');
 
     if (hourNeeded) {
-        // deselect radio button
-        $halfHourRadio.prop("checked", false);
+        // select "One Hour" radio button
+        $timelineRadios.val(['false'])
         $halfHourLabel.toggleClass("active", false);
+        $fullHourLabel.toggleClass("active", true);
     }
 
-    // disable radio button
+    // disable "Half Hour" radio button
     $halfHourRadio.prop("disabled", hourNeeded);
     $halfHourLabel.toggleClass("disabled", hourNeeded);
     $halfHourNotice.toggle(hourNeeded);
