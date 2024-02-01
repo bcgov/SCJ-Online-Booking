@@ -112,7 +112,7 @@
                                                 <label class="mt-0 mb-2">
                                                     <input class="mr-2" type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(Model.Step2Complete || x.Case_Num == Model.CaseNumber)" data-main="@(x.Main)" />
                                                     @* If the field is disabled, add a hidden input to POST the disabled value *@
-                                                    @if (x.Case_Num == Model.CaseNumber)
+                                                    @if (x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))
                                                     {
                                                         <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
                                                     }
