@@ -44,7 +44,7 @@ namespace SCJ.Booking.MVC.ViewModels
                     return false;
                 }
 
-                if (IsValidCaseNumber is null or false)
+                if (IsValidCaseNumber is not true)
                 {
                     return false;
                 }
@@ -67,7 +67,7 @@ namespace SCJ.Booking.MVC.ViewModels
                 //true value means the hearing is an appeals hearing
                 if (IsAppealHearing is true)
                 {
-                    if (FactumFiled is null or false)
+                    if (FactumFiled is not true)
                     {
                         return false;
                     }
