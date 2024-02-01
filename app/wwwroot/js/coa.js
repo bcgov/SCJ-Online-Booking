@@ -207,6 +207,7 @@ function onApplicationTypeChange(selection) {
 
     $halfHourRadio = $('input[name="IsHalfHour"][value="true"]');
     $halfHourLabel = $halfHourRadio.parent("label");
+    $halfHourNotice = $('.notice-half-hour-required');
 
     if (hourNeeded) {
         // deselect radio button
@@ -217,6 +218,7 @@ function onApplicationTypeChange(selection) {
     // disable radio button
     $halfHourRadio.prop("disabled", hourNeeded);
     $halfHourLabel.toggleClass("disabled", hourNeeded);
+    $halfHourNotice.toggle(hourNeeded);
 
     // trigger a radio button change handler to show/hide the "Show dates" button as needed
     $('input[type="radio"]').eq(0).trigger("change");
