@@ -96,6 +96,7 @@ namespace SCJ.Booking.MVC
                 app.UseHsts();
             }
 
+            app.UseHttpLogging();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
