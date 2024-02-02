@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SCJ.Booking.MVC.Utils;
+using System.Linq;
 using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels
@@ -44,7 +44,7 @@ namespace SCJ.Booking.MVC.ViewModels
                     return false;
                 }
 
-                if (!(IsValidCaseNumber ?? false))
+                if (IsValidCaseNumber is not true)
                 {
                     return false;
                 }
@@ -58,14 +58,7 @@ namespace SCJ.Booking.MVC.ViewModels
             }
         }
 
-        public bool Step2Complete
-        {
-            get
-            {
-                var dateIsAgreed = DateIsAgreed ?? false;
-                return IsAppealHearing.HasValue && dateIsAgreed;
-            }
-        }
+        public bool Step2Complete => IsAppealHearing.HasValue && DateIsAgreed is true;
 
         public bool Step3Complete
         {
@@ -74,14 +67,12 @@ namespace SCJ.Booking.MVC.ViewModels
                 //true value means the hearing is an appeals hearing
                 if (IsAppealHearing is true)
                 {
-                    var factumFiled = FactumFiled ?? false;
-
-                    if (!factumFiled)
+                    if (FactumFiled is not true)
                     {
                         return false;
                     }
 
-                    if (IsFullDay is null)
+                    if (!IsFullDay.HasValue)
                     {
                         return false;
                     }
@@ -89,14 +80,12 @@ namespace SCJ.Booking.MVC.ViewModels
                 //false means chambers hearing
                 else
                 {
-                    if (SelectedApplicationTypes != null)
+                    if (SelectedApplicationTypes == null)
                     {
-                        if (SelectedApplicationTypes.Count <= 0)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    else
+
+                    if (!SelectedApplicationTypes.Any())
                     {
                         return false;
                     }
@@ -115,11 +104,11 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                if (IsAppealHearing.GetValueOrDefault(true))
+                if (IsAppealHearing is true)
                 {
-                    return IsFullDay.GetValueOrDefault(false) ? "Full Day" : "";
+                    return IsFullDay is true ? "Full Day" : "";
                 }
-                return IsFullHour.GetValueOrDefault(false) ? "One hour" : "";
+                return IsHalfHour is false ? "One hour" : "";
             }
         }
 
@@ -127,23 +116,19 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                if (IsAppealHearing.GetValueOrDefault(true))
+                if (IsAppealHearing is true)
                 {
-                    return IsFullDay.GetValueOrDefault(false) ? "a full day" : "a half day";
+                    return IsFullDay is true ? "a full day" : "a half day";
                 }
-                return IsFullHour.GetValueOrDefault(false) ? "one hour" : "half an hour";
+                return IsHalfHour is true ? "half an hour" : "one hour";
             }
         }
-
-        public bool? IsChambersHearing => !IsAppealHearing;
-
-        public bool? IsFullHour => !IsHalfHour;
 
         public string HearingRoomType
         {
             get
             {
-                if (IsAppealHearing.GetValueOrDefault(true))
+                if (IsAppealHearing.GetValueOrDefault(false))
                 {
                     return "Appeal Hearing";
                 }
