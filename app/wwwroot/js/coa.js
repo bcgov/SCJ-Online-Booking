@@ -24,12 +24,14 @@ $(document).ready(function () {
                     //If the main is not checked, and the current checked one is the main
                     $(".alert--related-cases").hide();
                     validCaseSelection = true;
+                    validateRequestForm();
                 }
 
                 else {
                     //If the main is not checked, and the current checked one is another sub
                     $(".alert--related-cases").show();
                     validCaseSelection = false;
+                    validateRequestForm();
                 }
             }
 
@@ -46,6 +48,7 @@ $(document).ready(function () {
                     //AND there are more than 1 sub options that are checked
                     $(".alert--related-cases").show();
                     validCaseSelection = false;
+                    validateRequestForm();
                 }
             }
 
@@ -55,6 +58,7 @@ $(document).ready(function () {
                     //AND there is only 1 other sub option that is checked
                     $(".alert--related-cases").hide();
                     validCaseSelection = true;
+                    validateRequestForm();
                 }
             }
 
@@ -173,21 +177,34 @@ $(document).ready(function () {
     });
 
 
-    //Submitting selected date for Coa
-    $('.btn-radio--hearing-type').click(function () {
-        if ($('.btn-radio--date-agreed.active input').val() == "true") {
-            $('#btnNext').show();
-        } else {
-            $('#btnNext').hide();
+    /**
+     * Validates the "Request" form and shows (or hides) the "Next" button.
+     */
+    function validateRequestForm() {
+        let valid = true;
+
+        // validate main + related file number selection
+        // (calculated on file number checkbox change)
+        if (!validCaseSelection) {
+            valid = false;
         }
-    });
-    $('.btn-radio--date-agreed input').click(function () {
-        if ($(this).val() == "true" && $('.btn-radio--hearing-type').hasClass('active')) {
-            $('#btnNext').show();
-        } else {
-            $('#btnNext').hide();
+
+        // hearing date agreed
+        if ($('input[name="IsAppealHearing"]:checked').length === 0) {
+            valid = false;
         }
-    });
+
+        // hearing date agreed
+        if ($('input[name="DateIsAgreed"]:checked').val() !== 'true') {
+            valid = false;
+        }
+
+        // show the "next" button if the form is valid
+        $('#btnNext').toggle(valid);
+    }
+
+    // Re-validate form on input change
+    $('input[name="IsAppealHearing"], input[name="DateIsAgreed"]').on('change', validateRequestForm);
 
     // show the "Confirm selection" button when a date is selected
     $('input[name="SelectedDate"]').change(function () {
