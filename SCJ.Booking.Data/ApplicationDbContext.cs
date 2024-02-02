@@ -11,6 +11,8 @@ namespace SCJ.Booking.Data
 
         public DbSet<BookingHistory> BookingHistory => Set<BookingHistory>();
 
+        public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
@@ -25,7 +27,5 @@ namespace SCJ.Booking.Data
                         }
                 );
         }
-
-        public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
     }
 }
