@@ -2,6 +2,21 @@ $(document).ready(function () {
 
     var validCaseSelection = true;
 
+    // prevent form submission until validation passes
+    let allowSubmit = false;
+
+    // allow form submission on the confirmation page
+    if ($("#CaseConfirmForm").length > 0) {
+        allowSubmit = true;
+    }
+
+    // prevent invalid/incomplete form submissions
+    // (pressing "enter" on the keyboard, etc.)
+    $("form").on("submit", () => allowSubmit);
+
+    // prevent clicks on disabled radio button labels
+    $("label.disabled, label.disabled input").on("click", () => false);
+
     // Give active style class to checked radio button input
     var $radiobtns = $('input[type="radio"]');
     $radiobtns.click(function () {
@@ -78,6 +93,8 @@ $(document).ready(function () {
         // skip if the input isn't more than the initial "CA"
         if ($(this).val().length <= 2) return;
 
+        allowSubmit = true;
+
         $('#btnNext').show();
         $('.btn-restart-search').show();
     })
@@ -142,14 +159,16 @@ $(document).ready(function () {
             if (($CriminalHearingTypeSelected || $Appeal_FactumFiled === "true") &&
                 ($Appeal_IsFullDay === "true" || $Appeal_IsFullDay === "false") &&
                 validCaseSelection) {
+                allowSubmit = true;
                 $("#btnShowDates").css("display", "flex");
             } else {
+                allowSubmit = false;
                 $("#btnShowDates").hide();
             }
         }
 
         //hearing type is chambers
-        if (isAppeal === "false") {
+        if (isAppeal === "false" && $("#Chambers_IsHalfHour").length) {
             // validate at least one application type is selected
             const selectedApplicationTypes = $('input[name="SelectedApplicationTypes"]').length > 0;
 
@@ -160,8 +179,10 @@ $(document).ready(function () {
                 validCaseSelection &&
                 selectedApplicationTypes
             ) {
+                allowSubmit = true;
                 $("#btnShowDates").css("display", "flex");
             } else {
+                allowSubmit = false;
                 $("#btnShowDates").hide();
             }
         }
@@ -189,7 +210,7 @@ $(document).ready(function () {
             valid = false;
         }
 
-        // hearing date agreed
+        // Appeal or Chambers
         if ($('input[name="IsAppealHearing"]:checked').length === 0) {
             valid = false;
         }
@@ -200,6 +221,7 @@ $(document).ready(function () {
         }
 
         // show the "next" button if the form is valid
+        allowSubmit = valid;
         $('#btnNext').toggle(valid);
     }
 
@@ -208,6 +230,7 @@ $(document).ready(function () {
 
     // show the "Confirm selection" button when a date is selected
     $('input[name="SelectedDate"]').change(function () {
+        allowSubmit = true;
         $("#btnSelectDate").show();
     });
 });
@@ -241,5 +264,5 @@ function onApplicationTypeChange(selection) {
     $halfHourNotice.toggle(hourNeeded);
 
     // trigger a radio button change handler to show/hide the "Show dates" button as needed
-    $('input[type="radio"]').eq(0).trigger("change");
+    $('input[name="IsHalfHour"]').eq(0).trigger("change");
 };
