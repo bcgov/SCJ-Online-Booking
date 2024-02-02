@@ -66,11 +66,6 @@ namespace SCJ.Booking.MVC
                         options => options.UseSqlite(connectionString)
                     );
                     break;
-                case ServiceConfig.DataProviderMysql:
-                    services.AddDbContext<ApplicationDbContext>(
-                        options => options.UseMySql(connectionString)
-                    );
-                    break;
                 default:
                     throw new ArgumentException(
                         "Unknown data provider",

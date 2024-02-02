@@ -1,6 +1,7 @@
 using System;
 using Community.Microsoft.Extensions.Caching.PostgreSql;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -62,6 +63,9 @@ namespace SCJ.Booking.MVC
                     options.TableName = "aspnet_cache";
                     options.CreateInfrastructure = true;
                 });
+
+                // Use a PostgreSQL table for session encryption keys
+                services.AddDataProtection().PersistKeysToDbContext<ApplicationDbContext>();
             }
 
             // this setting is needed because NTLM auth does not work by default on Unix
@@ -96,8 +100,6 @@ namespace SCJ.Booking.MVC
                 app.UseHsts();
             }
 
-            app.UseHttpLogging();
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
 

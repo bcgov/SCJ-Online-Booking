@@ -6,7 +6,7 @@ namespace SCJ.Booking.Data.Models
     {
         [StringLength(36)]
         [Required]
-        public string SmGovUserGuid { get; set; }
+        public string SmGovUserGuid { get; set; } = string.Empty;
 
         [Required]
         public long ContainerId { get; set; }
