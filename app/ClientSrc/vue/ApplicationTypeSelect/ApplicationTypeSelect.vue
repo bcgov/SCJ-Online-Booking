@@ -5,7 +5,7 @@
             :disabled="disabled"
             @click="showModal"
             type="button"
-            class="btn btn-radio btn-radio--secondary"
+            class="btn btn-radio btn-radio--secondary btn-launch-modal"
             :class="{ 'disabled': disabled }"
         >
             Choose Application Type(s)
@@ -48,9 +48,9 @@
         </dialog>
 
         <!-- expandable/removable panels to show the selection -->
-        <label class="application_type can-wrap"> Application type(s) selected: </label>
+        <div class="selection-display" v-if="displaySelection.length > 0">
+            <label class="application_type can-wrap"> Application type(s) selected: </label>
 
-        <div class="selection-display">
             <div
                 class="selection-panel"
                 :class="{
@@ -213,6 +213,10 @@ export default {
 
 <style lang="scss">
 .application-type-select {
+    .btn-launch-modal {
+        margin: 6px 0 12px;
+    }
+
     // borderless flat button with just an icon
     .btn-close {
         background: none;
@@ -271,7 +275,10 @@ export default {
                 min-height: 1.5em;
                 margin: 0;
                 padding: 0.5em 0;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+                }
 
                 input {
                     margin-right: 0.75em;
@@ -279,9 +286,14 @@ export default {
 
                 .label-text {
                     flex-grow: 1;
+                    margin: 4px 0 12px;
 
                     .option-label {
                         line-height: 1.5;
+                    }
+
+                    .option-definition {
+                        font-size: 14px;
                     }
                 }
             }
@@ -316,8 +328,11 @@ export default {
     .selection-display {
         .selection-panel {
             position: relative;
-            border-bottom: 1px solid #d0d0d0;
             padding: 6px 12px;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid #d0d0d0;
+            }
 
             .panel-definition {
                 display: none;
