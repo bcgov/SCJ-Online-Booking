@@ -69,14 +69,17 @@
                 </div>
                 @if (Model.IsAppealHearing)
                 {
-                    <div class="form-group">
-                        <label class="can-wrap">
-                            Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
-                        </label>
-                        <div>
-                            <span>@(Model.FactumFiled is true ? "Yes" : "No")</span>
+                    if (Model.CaseType == CoaCaseType.Civil)
+                    {
+                        <div class="form-group">
+                            <label class="can-wrap">
+                                Has the Appellant filed their factum and a copy of the entered order(s) being appealed? See Rule 32.
+                            </label>
+                            <div>
+                                <span>Yes</span>
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div class="form-group">
                         <label>How long will you require for your hearing?</label>
                         <div>
