@@ -74,22 +74,16 @@
                     margin: 15px;
                 }
 
-                @media(min-width: $breakpoint-md) and (max-width: $breakpoint-lg) {
-                    width: 210px;
-                    min-width: 210px;
-                    margin: 10px 15px;
-                }
-
-                @media(min-width: $breakpoint-lg) and (max-width: $breakpoint-xl) {
+                @media(min-width: $breakpoint-md) {
                     width: 210px;
                     min-width: 210px;
                     margin: 10px 15px;
                 }
 
                 @media(min-width: $breakpoint-xl) {
-                    width: 206px;
-                    min-width: 206px;
-                    margin: 10px;
+                    width: 240px;
+                    min-width: 240px;
+                    margin: 15px;
                 }
 
                 p {
