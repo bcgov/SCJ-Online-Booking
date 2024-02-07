@@ -5,7 +5,9 @@ images:
 app:
   env:
     environment: test
-  # use the test.justice.gov.bc.ca reverse proxy IP list, but to not commit to source control
+    aspNetCoreEnvironment: Test
+
+  # use the test.justice.gov.bc.ca reverse proxy IP list, but do not commit to source control
   allowedIPs: 1.2.3.4
 
 patroni:
