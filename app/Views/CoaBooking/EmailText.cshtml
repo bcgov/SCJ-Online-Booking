@@ -30,7 +30,7 @@ DATE OF HEARING:
 {
 @Html.Raw("- " + appTypeName + "\n")
 }
-@if (!string.IsNullOrEmpty(Model.HearingTypeName)) {
+@if (!string.IsNullOrEmpty(Model.HearingTypeName) && Model.TypeOfConference != "Chambers") {
 @Html.Raw("\nTYPE OF APPEAL HEARING:\n")
 @Html.Raw(Model.HearingTypeName + "\n")
 }
