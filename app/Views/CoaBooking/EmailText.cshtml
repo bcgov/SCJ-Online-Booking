@@ -4,7 +4,14 @@ Thank you.
 The booking for your hearing has been added to the booking queue.
 You will be contacted for further confirmation of this booking.
 
-The Court of Appeal has been hearing chambers applications using different methods. Any person who wishes to appear by Zoom must file the Request to Appear Remotely Form with their materials on the timelines in the Rules.
+@if (Model.TypeOfConference == "Chambers")
+{
+@Html.Raw("The Court of Appeal has been hearing chambers applications using different methods. Any person who wishes to appear by Zoom must file the Request to Appear Remotely Form with their materials on the timelines in the Rules.\n")
+}
+else
+{
+@Html.Raw("Appeal hearings are in person. If you wish to appear virtually using the Zoom platform, you must apply for and receive permission from the Court to appear by Zoom. The Request to Appear Remotely Form must be filed at least ten business days before the hearing and can be found here.\n")
+}
 https://www.bccourts.ca/Court_of_Appeal/documents/fillable_forms/request_to_appear_remotely.pdf
 
 For more information on Zoom hearings, please see the Court's Remote Appearances Practice Directive
