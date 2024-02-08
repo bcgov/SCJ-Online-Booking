@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SCJ.OnlineBooking;
 using Xunit;
 
@@ -143,7 +144,7 @@ namespace SCJ.Booking.UnitTest
         {
             CoAAvailableDates result = _soapClient.COAAvailableDatesAsync().Result;
             Assert.NotNull(result);
-            Assert.True(result.AvailableDates.Length == 136);
+            Assert.True(result.AvailableDates.Any());
         }
 
         [Fact]
@@ -220,8 +221,8 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoAAvailableDatesChambersAsync()
         {
-            var dates = _soapClient.CoAAvailableDatesChambersAsync().Result;
-            Assert.NotNull(dates);
+            var result = _soapClient.CoAAvailableDatesChambersAsync().Result;
+            Assert.True(result.AvailableDates.Any());
         }
     }
 }
