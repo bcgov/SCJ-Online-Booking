@@ -435,7 +435,9 @@ namespace SCJ.Booking.MVC.Services
                     + "\n";
             }
 
-            var template = $"CoaBooking/EmailText";
+            var template = booking.IsAppealHearing is true
+                ? "CoaBooking/Email-Appeal"
+                : "CoaBooking/Email-Chambers";
 
             //Render the email template
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

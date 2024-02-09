@@ -1,0 +1,38 @@
+@model EmailViewModel
+Thank you.
+
+The booking for your hearing has been added to the booking queue.
+You will be contacted for further confirmation of this booking.
+
+The Court of Appeal has been hearing chambers applications using different methods. Any person who wishes to appear by Zoom must file the Request to Appear Remotely Form with their materials on the timelines in the Rules.
+https://www.bccourts.ca/Court_of_Appeal/documents/fillable_forms/request_to_appear_remotely.pdf
+
+For more information on Zoom hearings, please see the Court's Remote Appearances Practice Directive https://www.bccourts.ca/Court_of_Appeal/practice_and_procedure/civil_and_criminal_practice_directives/PDF/(CandC)Remote_Appearances.pdf
+
+----
+COURT FILE NUMBER:
+@Model.CourtFileNumber
+@Html.Raw(Model.RelatedCasesString)
+CASE TYPE:
+@Model.CaseType
+
+TYPE OF HEARING:
+Chambers
+
+DATE OF HEARING:
+@Model.Date
+
+APPLICATION TYPE(S)
+@foreach (string appTypeName in Model.SelectedApplicationTypeNames)
+{
+@Html.Raw("- " + appTypeName + "\n")
+}
+
+LENGTH OF HEARING:
+@Model.HearingLength
+
+YOUR EMAIL ADDRESS:
+@Model.EmailAddress
+
+YOUR PHONE NUMBER:
+@Model.Phone
