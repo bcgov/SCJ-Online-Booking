@@ -2,6 +2,11 @@ $(document).ready(function () {
 
     var validCaseSelection = true;
 
+    // scroll the last "section" into view when a form page loads
+    if ($('.form-scroll-section').length) {
+        $('.form-scroll-section').last()[0].scrollIntoView();
+    }
+
     // prevent form submission until validation passes
     let allowSubmit = false;
 
