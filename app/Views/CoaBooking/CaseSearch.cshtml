@@ -133,7 +133,7 @@
 
                     <div class="preliminary_questions preliminary_questions--Civil">
                         <div id="" class="row search-info-row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 form-scroll-section">
                                 <label class="can-wrap">
                                     What hearing are you trying to book?
                                 </label>
@@ -181,7 +181,7 @@
                                 @if (Model.CaseType == CoaCaseType.Civil)
                                 {
                                     <div class="row search-info-row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 form-scroll-section">
                                             <label class="factum can-wrap">
                                                 Has the Appellant filed their factum and a copy of the entered order(s) being appealed?
                                                 See Rule 32.
@@ -365,7 +365,7 @@
 
     @if (showingDates)
     {
-        <div class="search-info">
+        <div class="search-info form-scroll-section">
             <div class="ml-4">
                 <h5>Available Dates for @Model.HearingRoomType</h5>
                 <p>Choose the date that works best for you. Each hearing is @Model.HearingLengthText long.</p>

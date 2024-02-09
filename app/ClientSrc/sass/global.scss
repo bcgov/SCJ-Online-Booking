@@ -17,6 +17,11 @@ html, body {
 html {
     font-size: 62.5%;
     -webkit-font-smoothing: antialiased;
+
+    // add scroll padding for views with a sticky nav header
+    @media (max-width: $breakpoint-lg) {
+        scroll-padding-top: 68px;
+    }
 }
 
 body {
@@ -190,6 +195,7 @@ div.invalid-field-message {
             padding: 0;
             overflow: hidden;
             display: flex;
+            gap: 2px;
             flex-direction: column;
             align-items: flex-start;
             margin: 5px 0 0 0;
@@ -201,7 +207,6 @@ div.invalid-field-message {
 
             li {
                 float: left;
-                margin: 2px;
                 a {
                     display: block;
                     text-align: center;
