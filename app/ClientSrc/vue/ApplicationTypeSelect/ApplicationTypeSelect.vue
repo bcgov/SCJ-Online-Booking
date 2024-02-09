@@ -286,7 +286,7 @@ export default {
 
                 .label-text {
                     flex-grow: 1;
-                    margin: 4px 0 12px;
+                    margin: 4px 0 6px;
 
                     .option-label {
                         line-height: 1.5;
