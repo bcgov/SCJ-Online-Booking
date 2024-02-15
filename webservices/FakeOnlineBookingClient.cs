@@ -11,6 +11,7 @@ namespace SCJ.OnlineBooking
     /// </summary>
     public class FakeOnlineBookingClient : IOnlineBooking
     {
+        // todo: added futureTrialHearing and fairUseSort
         public async Task<CourtFile[]> caseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
@@ -29,7 +30,9 @@ namespace SCJ.OnlineBooking
                         courtLevelCode = "S",
                         locationId = 9067.0001m,
                         physicalFileId = 3879m,
-                        styleOfCause = "DOE, Jane v TESTING, John"
+                        styleOfCause = "DOE, Jane v TESTING, John",
+                        fairUseSort = 1,
+                        futureTrialHearing = false
                     }
                 };
             }
@@ -46,7 +49,9 @@ namespace SCJ.OnlineBooking
                         courtLevelCode = "S",
                         locationId = 83.0001m,
                         physicalFileId = 2109m,
-                        styleOfCause = null
+                        styleOfCause = null,
+                        fairUseSort = 0,
+                        futureTrialHearing = true
                     },
                     new CourtFile
                     {
@@ -55,7 +60,9 @@ namespace SCJ.OnlineBooking
                         courtLevelCode = "S",
                         locationId = 83.0001m,
                         physicalFileId = 1063m,
-                        styleOfCause = "GILLESPIE, JANET"
+                        styleOfCause = "GILLESPIE, JANET",
+                        fairUseSort = 3,
+                        futureTrialHearing = false
                     }
                 };
             }
@@ -71,7 +78,9 @@ namespace SCJ.OnlineBooking
         }
 
         public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(
-            int locationID, int hearingTypeID)
+            int locationID,
+            int hearingTypeID
+        )
         {
             await Task.Delay(100);
             var result = ScAvailableDatesByLocationFixture.AvailableDatesResult;
@@ -138,7 +147,8 @@ namespace SCJ.OnlineBooking
         }
 
         public async Task<BookingHearingResult> CoAQueueHearingAsync(
-            CoABookingHearingInfo bookingInfo)
+            CoABookingHearingInfo bookingInfo
+        )
         {
             await Task.Delay(100);
 
@@ -156,7 +166,9 @@ namespace SCJ.OnlineBooking
             return result;
         }
 
-        public async Task<BookingHearingResult> CoAChambersQueueHearingAsync(CoAChambersBookingHearingInfo bookingInfo)
+        public async Task<BookingHearingResult> CoAChambersQueueHearingAsync(
+            CoAChambersBookingHearingInfo bookingInfo
+        )
         {
             await Task.Delay(100);
 
@@ -178,6 +190,59 @@ namespace SCJ.OnlineBooking
             }
 
             return null;
+        }
+
+        public async Task<FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync(
+            string locationID,
+            string formula
+        )
+        {
+            await Task.Delay(100);
+            if (string.IsNullOrEmpty(locationID) && string.IsNullOrEmpty(formula))
+            {
+                return ScFormulaLocationsFixture.Locations;
+            }
+
+            if (string.IsNullOrEmpty(locationID))
+            {
+                return ScFormulaLocationsFixture.Locations
+                    .Where(l => l.FormulaType == formula)
+                    .ToArray();
+            }
+
+            if (string.IsNullOrEmpty(formula))
+            {
+                return ScFormulaLocationsFixture.Locations
+                    .Where(l => l.LocationID == int.Parse(locationID))
+                    .ToArray();
+            }
+
+            return ScFormulaLocationsFixture.Locations
+                .Where(l => l.FormulaType == formula && l.LocationID == int.Parse(locationID))
+                .ToArray();
+        }
+
+        public async Task<AvailableTrialDatesResult> AvailableTrialDatesByLocationAsync(
+            AvailableTrialDatesRequestInfo requestInfo
+        )
+        {
+            await Task.Delay(100);
+            // todo: need to alter the response to match the request
+            return ScAvailableTrialDatesFixture.Dates;
+        }
+
+        public async Task<BookingHearingResult> BookTrialHearingAsync(
+            BookTrialHearingInfo bookingInfo
+        )
+        {
+            await Task.Delay(100);
+            return ScBookingHearingResultFixture.Success;
+        }
+
+        public async Task<string[]> GetAvailableBookingTypesAsync()
+        {
+            await Task.Delay(100);
+            return ScAvailableBookingTypesFixture.BookingTypes;
         }
     }
 }
