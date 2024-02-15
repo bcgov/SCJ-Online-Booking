@@ -29,6 +29,7 @@
     <xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
       <xs:import namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
       <xs:element name="caseNumberValid">
         <xs:complexType>
           <xs:sequence>
@@ -164,6 +165,61 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="AvailableTrialBookingFormulasByLocation">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="locationID" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="formula" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AvailableTrialBookingFormulasByLocationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="AvailableTrialBookingFormulasByLocationResult" nillable="true" type="q14:ArrayOfFormulaLocation" xmlns:q14="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AvailableTrialDatesByLocation">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="requestInfo" nillable="true" type="q15:AvailableTrialDatesRequestInfo" xmlns:q15="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AvailableTrialDatesByLocationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="AvailableTrialDatesByLocationResult" nillable="true" type="q16:AvailableTrialDatesResult" xmlns:q16="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BookTrialHearing">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="bookingInfo" nillable="true" type="q17:BookTrialHearingInfo" xmlns:q17="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BookTrialHearingResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="BookTrialHearingResult" nillable="true" type="q18:BookingHearingResult" xmlns:q18="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAvailableBookingTypes">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAvailableBookingTypesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetAvailableBookingTypesResult" nillable="true" type="q19:ArrayOfstring" xmlns:q19="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
     <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
       <xs:element name="anyType" nillable="true" type="xs:anyType"/>
@@ -218,6 +274,8 @@
           <xs:element minOccurs="0" name="courtClassCode" nillable="true" type="xs:string"/>
           <xs:element minOccurs="0" name="courtFileNumber" nillable="true" type="xs:string"/>
           <xs:element minOccurs="0" name="courtLevelCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="fairUseSort" type="xs:int"/>
+          <xs:element minOccurs="0" name="futureTrialHearing" type="xs:boolean"/>
           <xs:element minOccurs="0" name="locationId" nillable="true" type="xs:decimal"/>
           <xs:element minOccurs="0" name="physicalFileId" nillable="true" type="xs:decimal"/>
           <xs:element minOccurs="0" name="styleOfCause" nillable="true" type="xs:string"/>
@@ -343,8 +401,56 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="CoAChambersApplications" nillable="true" type="tns:CoAChambersApplications"/>
+      <xs:complexType name="ArrayOfFormulaLocation">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="FormulaLocation" nillable="true" type="tns:FormulaLocation"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfFormulaLocation" nillable="true" type="tns:ArrayOfFormulaLocation"/>
+      <xs:complexType name="FormulaLocation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BookingHearingCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="BookingLocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="EndDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="FairUseBookingPeriodEndDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="FairUseBookingPeriodStartDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="FairUseContactDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="FormulaType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="LocationCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="LocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="LocationName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="StartDate" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FormulaLocation" nillable="true" type="tns:FormulaLocation"/>
+      <xs:complexType name="AvailableTrialDates">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AvailablesDatesInfo" nillable="true" type="tns:ArrayOfAvailableTrialDatesInfo"/>
+          <xs:element minOccurs="0" name="BookingHearingCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="BookingLocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="FormulaType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="LocationCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="LocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="LocationName" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AvailableTrialDates" nillable="true" type="tns:AvailableTrialDates"/>
+      <xs:complexType name="ArrayOfAvailableTrialDatesInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AvailableTrialDatesInfo" nillable="true" type="tns:AvailableTrialDatesInfo"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAvailableTrialDatesInfo" nillable="true" type="tns:ArrayOfAvailableTrialDatesInfo"/>
+      <xs:complexType name="AvailableTrialDatesInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AvailableDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="AvailableQuantity" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AvailableTrialDatesInfo" nillable="true" type="tns:AvailableTrialDatesInfo"/>
     </xs:schema>
     <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking">
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
       <xs:complexType name="BookHearingInfo">
         <xs:sequence>
           <xs:element minOccurs="0" name="CEIS_Physical_File_ID" type="xs:decimal"/>
@@ -391,6 +497,47 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="CoAChambersBookingHearingInfo" nillable="true" type="tns:CoAChambersBookingHearingInfo"/>
+      <xs:complexType name="AvailableTrialDatesRequestInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BookingLocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="Courtclass" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="EndDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="FormulaType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="HearingLength" type="xs:int"/>
+          <xs:element minOccurs="0" name="LocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="StartDate" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AvailableTrialDatesRequestInfo" nillable="true" type="tns:AvailableTrialDatesRequestInfo"/>
+      <xs:complexType name="AvailableTrialDatesResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AvailableTrialDates" nillable="true" type="q1:AvailableTrialDates"
+            xmlns:q1="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AvailableTrialDatesResult" nillable="true" type="tns:AvailableTrialDatesResult"/>
+      <xs:complexType name="BookTrialHearingInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BookingLocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="CEIS_Physical_File_ID" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="CourtClass" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="FormulaType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="HearingDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="HearingLength" type="xs:int"/>
+          <xs:element minOccurs="0" name="HearingType" type="xs:int"/>
+          <xs:element minOccurs="0" name="LocationID" type="xs:int"/>
+          <xs:element minOccurs="0" name="RequestedBy" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BookTrialHearingInfo" nillable="true" type="tns:BookTrialHearingInfo"/>
+    </xs:schema>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+      <xs:complexType name="ArrayOfstring">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring"/>
     </xs:schema>
   </wsdl:types>
   <wsdl:message name="IOnlineBooking_caseNumberValid_InputMessage">
@@ -453,6 +600,30 @@
   <wsdl:message name="IOnlineBooking_CoAChambersApplicationsList_OutputMessage">
     <wsdl:part name="parameters" element="tns:CoAChambersApplicationsListResponse"/>
   </wsdl:message>
+  <wsdl:message name="IOnlineBooking_AvailableTrialBookingFormulasByLocation_InputMessage">
+    <wsdl:part name="parameters" element="tns:AvailableTrialBookingFormulasByLocation"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_AvailableTrialBookingFormulasByLocation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AvailableTrialBookingFormulasByLocationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_AvailableTrialDatesByLocation_InputMessage">
+    <wsdl:part name="parameters" element="tns:AvailableTrialDatesByLocation"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_AvailableTrialDatesByLocation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AvailableTrialDatesByLocationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_BookTrialHearing_InputMessage">
+    <wsdl:part name="parameters" element="tns:BookTrialHearing"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_BookTrialHearing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BookTrialHearingResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_GetAvailableBookingTypes_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableBookingTypes"/>
+  </wsdl:message>
+  <wsdl:message name="IOnlineBooking_GetAvailableBookingTypes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableBookingTypesResponse"/>
+  </wsdl:message>
   <wsdl:portType name="IOnlineBooking">
     <wsdl:operation name="caseNumberValid">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/caseNumberValid" message="tns:IOnlineBooking_caseNumberValid_InputMessage"/>
@@ -493,6 +664,22 @@
     <wsdl:operation name="CoAChambersApplicationsList">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsList" message="tns:IOnlineBooking_CoAChambersApplicationsList_InputMessage"/>
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsListResponse" message="tns:IOnlineBooking_CoAChambersApplicationsList_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="AvailableTrialBookingFormulasByLocation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocation" message="tns:IOnlineBooking_AvailableTrialBookingFormulasByLocation_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocationResponse" message="tns:IOnlineBooking_AvailableTrialBookingFormulasByLocation_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="AvailableTrialDatesByLocation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocation" message="tns:IOnlineBooking_AvailableTrialDatesByLocation_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocationResponse" message="tns:IOnlineBooking_AvailableTrialDatesByLocation_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="BookTrialHearing">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/BookTrialHearing" message="tns:IOnlineBooking_BookTrialHearing_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/BookTrialHearingResponse" message="tns:IOnlineBooking_BookTrialHearing_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableBookingTypes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypes" message="tns:IOnlineBooking_GetAvailableBookingTypes_InputMessage"/>
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypesResponse" message="tns:IOnlineBooking_GetAvailableBookingTypes_OutputMessage"/>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOnlineBooking" type="tns:IOnlineBooking">
@@ -581,6 +768,42 @@
     </wsdl:operation>
     <wsdl:operation name="CoAChambersApplicationsList">
       <soap:operation soapAction="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsList" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvailableTrialBookingFormulasByLocation">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvailableTrialDatesByLocation">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookTrialHearing">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/BookTrialHearing" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableBookingTypes">
+      <soap:operation soapAction="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypes" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>

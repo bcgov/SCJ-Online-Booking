@@ -24,6 +24,10 @@ namespace SCJ.OnlineBooking
         
         private string courtLevelCodeField;
         
+        private int fairUseSortField;
+        
+        private bool futureTrialHearingField;
+        
         private System.Nullable<decimal> locationIdField;
         
         private System.Nullable<decimal> physicalFileIdField;
@@ -66,6 +70,32 @@ namespace SCJ.OnlineBooking
             set
             {
                 this.courtLevelCodeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int fairUseSort
+        {
+            get
+            {
+                return this.fairUseSortField;
+            }
+            set
+            {
+                this.fairUseSortField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool futureTrialHearing
+        {
+            get
+            {
+                return this.futureTrialHearingField;
+            }
+            set
+            {
+                this.futureTrialHearingField = value;
             }
         }
         
@@ -1024,6 +1054,603 @@ namespace SCJ.OnlineBooking
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="FormulaLocation", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class FormulaLocation : object
+    {
+        
+        private string BookingHearingCodeField;
+        
+        private int BookingLocationIDField;
+        
+        private System.DateTime EndDateField;
+        
+        private System.Nullable<System.DateTime> FairUseBookingPeriodEndDateField;
+        
+        private System.Nullable<System.DateTime> FairUseBookingPeriodStartDateField;
+        
+        private System.Nullable<System.DateTime> FairUseContactDateField;
+        
+        private string FormulaTypeField;
+        
+        private string LocationCodeField;
+        
+        private int LocationIDField;
+        
+        private string LocationNameField;
+        
+        private System.DateTime StartDateField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string BookingHearingCode
+        {
+            get
+            {
+                return this.BookingHearingCodeField;
+            }
+            set
+            {
+                this.BookingHearingCodeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BookingLocationID
+        {
+            get
+            {
+                return this.BookingLocationIDField;
+            }
+            set
+            {
+                this.BookingLocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime EndDate
+        {
+            get
+            {
+                return this.EndDateField;
+            }
+            set
+            {
+                this.EndDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> FairUseBookingPeriodEndDate
+        {
+            get
+            {
+                return this.FairUseBookingPeriodEndDateField;
+            }
+            set
+            {
+                this.FairUseBookingPeriodEndDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> FairUseBookingPeriodStartDate
+        {
+            get
+            {
+                return this.FairUseBookingPeriodStartDateField;
+            }
+            set
+            {
+                this.FairUseBookingPeriodStartDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> FairUseContactDate
+        {
+            get
+            {
+                return this.FairUseContactDateField;
+            }
+            set
+            {
+                this.FairUseContactDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FormulaType
+        {
+            get
+            {
+                return this.FormulaTypeField;
+            }
+            set
+            {
+                this.FormulaTypeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LocationCode
+        {
+            get
+            {
+                return this.LocationCodeField;
+            }
+            set
+            {
+                this.LocationCodeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int LocationID
+        {
+            get
+            {
+                return this.LocationIDField;
+            }
+            set
+            {
+                this.LocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LocationName
+        {
+            get
+            {
+                return this.LocationNameField;
+            }
+            set
+            {
+                this.LocationNameField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime StartDate
+        {
+            get
+            {
+                return this.StartDateField;
+            }
+            set
+            {
+                this.StartDateField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDatesRequestInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
+    public partial class AvailableTrialDatesRequestInfo : object
+    {
+        
+        private int BookingLocationIDField;
+        
+        private string CourtclassField;
+        
+        private System.DateTime EndDateField;
+        
+        private string FormulaTypeField;
+        
+        private int HearingLengthField;
+        
+        private int LocationIDField;
+        
+        private System.DateTime StartDateField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BookingLocationID
+        {
+            get
+            {
+                return this.BookingLocationIDField;
+            }
+            set
+            {
+                this.BookingLocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Courtclass
+        {
+            get
+            {
+                return this.CourtclassField;
+            }
+            set
+            {
+                this.CourtclassField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime EndDate
+        {
+            get
+            {
+                return this.EndDateField;
+            }
+            set
+            {
+                this.EndDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FormulaType
+        {
+            get
+            {
+                return this.FormulaTypeField;
+            }
+            set
+            {
+                this.FormulaTypeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingLength
+        {
+            get
+            {
+                return this.HearingLengthField;
+            }
+            set
+            {
+                this.HearingLengthField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int LocationID
+        {
+            get
+            {
+                return this.LocationIDField;
+            }
+            set
+            {
+                this.LocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime StartDate
+        {
+            get
+            {
+                return this.StartDateField;
+            }
+            set
+            {
+                this.StartDateField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDatesResult", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
+    public partial class AvailableTrialDatesResult : object
+    {
+        
+        private SCJ.OnlineBooking.AvailableTrialDates AvailableTrialDatesField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SCJ.OnlineBooking.AvailableTrialDates AvailableTrialDates
+        {
+            get
+            {
+                return this.AvailableTrialDatesField;
+            }
+            set
+            {
+                this.AvailableTrialDatesField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDates", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class AvailableTrialDates : object
+    {
+        
+        private SCJ.OnlineBooking.AvailableTrialDatesInfo[] AvailablesDatesInfoField;
+        
+        private string BookingHearingCodeField;
+        
+        private int BookingLocationIDField;
+        
+        private string FormulaTypeField;
+        
+        private string LocationCodeField;
+        
+        private int LocationIDField;
+        
+        private string LocationNameField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SCJ.OnlineBooking.AvailableTrialDatesInfo[] AvailablesDatesInfo
+        {
+            get
+            {
+                return this.AvailablesDatesInfoField;
+            }
+            set
+            {
+                this.AvailablesDatesInfoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string BookingHearingCode
+        {
+            get
+            {
+                return this.BookingHearingCodeField;
+            }
+            set
+            {
+                this.BookingHearingCodeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BookingLocationID
+        {
+            get
+            {
+                return this.BookingLocationIDField;
+            }
+            set
+            {
+                this.BookingLocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FormulaType
+        {
+            get
+            {
+                return this.FormulaTypeField;
+            }
+            set
+            {
+                this.FormulaTypeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LocationCode
+        {
+            get
+            {
+                return this.LocationCodeField;
+            }
+            set
+            {
+                this.LocationCodeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int LocationID
+        {
+            get
+            {
+                return this.LocationIDField;
+            }
+            set
+            {
+                this.LocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LocationName
+        {
+            get
+            {
+                return this.LocationNameField;
+            }
+            set
+            {
+                this.LocationNameField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDatesInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class AvailableTrialDatesInfo : object
+    {
+        
+        private System.DateTime AvailableDateField;
+        
+        private int AvailableQuantityField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime AvailableDate
+        {
+            get
+            {
+                return this.AvailableDateField;
+            }
+            set
+            {
+                this.AvailableDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int AvailableQuantity
+        {
+            get
+            {
+                return this.AvailableQuantityField;
+            }
+            set
+            {
+                this.AvailableQuantityField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BookTrialHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
+    public partial class BookTrialHearingInfo : object
+    {
+        
+        private int BookingLocationIDField;
+        
+        private decimal CEIS_Physical_File_IDField;
+        
+        private string CourtClassField;
+        
+        private string FormulaTypeField;
+        
+        private System.DateTime HearingDateField;
+        
+        private int HearingLengthField;
+        
+        private int HearingTypeField;
+        
+        private int LocationIDField;
+        
+        private string RequestedByField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BookingLocationID
+        {
+            get
+            {
+                return this.BookingLocationIDField;
+            }
+            set
+            {
+                this.BookingLocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal CEIS_Physical_File_ID
+        {
+            get
+            {
+                return this.CEIS_Physical_File_IDField;
+            }
+            set
+            {
+                this.CEIS_Physical_File_IDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CourtClass
+        {
+            get
+            {
+                return this.CourtClassField;
+            }
+            set
+            {
+                this.CourtClassField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FormulaType
+        {
+            get
+            {
+                return this.FormulaTypeField;
+            }
+            set
+            {
+                this.FormulaTypeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime HearingDate
+        {
+            get
+            {
+                return this.HearingDateField;
+            }
+            set
+            {
+                this.HearingDateField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingLength
+        {
+            get
+            {
+                return this.HearingLengthField;
+            }
+            set
+            {
+                this.HearingLengthField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingType
+        {
+            get
+            {
+                return this.HearingTypeField;
+            }
+            set
+            {
+                this.HearingTypeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int LocationID
+        {
+            get
+            {
+                return this.LocationIDField;
+            }
+            set
+            {
+                this.LocationIDField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string RequestedBy
+        {
+            get
+            {
+                return this.RequestedByField;
+            }
+            set
+            {
+                this.RequestedByField = value;
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SCJ.OnlineBooking.IOnlineBooking")]
     public interface IOnlineBooking
@@ -1058,6 +1685,19 @@ namespace SCJ.OnlineBooking
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsList", ReplyAction="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsListResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocationResponse" +
+            "")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync(string locationID, string formula);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocationResponse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> AvailableTrialDatesByLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/BookTrialHearing", ReplyAction="http://tempuri.org/IOnlineBooking/BookTrialHearingResponse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookTrialHearingAsync(SCJ.OnlineBooking.BookTrialHearingInfo bookingInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypes", ReplyAction="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypesResponse")]
+        System.Threading.Tasks.Task<string[]> GetAvailableBookingTypesAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
@@ -1158,6 +1798,26 @@ namespace SCJ.OnlineBooking
         public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type)
         {
             return base.Channel.CoAChambersApplicationsListAsync(type);
+        }
+        
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync(string locationID, string formula)
+        {
+            return base.Channel.AvailableTrialBookingFormulasByLocationAsync(locationID, formula);
+        }
+        
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> AvailableTrialDatesByLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo)
+        {
+            return base.Channel.AvailableTrialDatesByLocationAsync(requestInfo);
+        }
+        
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookTrialHearingAsync(SCJ.OnlineBooking.BookTrialHearingInfo bookingInfo)
+        {
+            return base.Channel.BookTrialHearingAsync(bookingInfo);
+        }
+        
+        public System.Threading.Tasks.Task<string[]> GetAvailableBookingTypesAsync()
+        {
+            return base.Channel.GetAvailableBookingTypesAsync();
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
