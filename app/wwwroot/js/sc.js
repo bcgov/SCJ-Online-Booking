@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    // show additional questions for "Trial" booking type
+    if ($('input[name=HearingTypeId]:checked').length) {
+        showTrialFields();
+    }
 
     //Pre-filling input field based on selection of court class on the Supreme Court side
     $('#courtClassDropdown').change(function () {
@@ -19,7 +23,7 @@ $(document).ready(function () {
         }
     });
 
-    // hide the hearing type dropdown for CV-PTC
+    // show/hide extra fields for specific booking types
     $("input[name=HearingTypeId]").change(function () {
         var $courtClassDropdown = $("#courtClassDropdown");
 
@@ -36,12 +40,32 @@ $(document).ready(function () {
             $courtClassDropdown.show();
             $courtClassDropdown.prop('required', true);
         }
+
+        // show additional questions for "Trial" booking type
+        showTrialFields();
     });
+
+    $("input[name=IsHomeRegistry]").change(showTrialFields)
+    $("input[name=IsDifferentPlaceOfTrial]").change(showTrialFields)
 
     $("#dateBtn").click(function () {
         $('#datepicker').datepicker().focus();
     });
 });
+
+// Shows or hides the additional form fields for Trials
+function showTrialFields() {
+    const trialSelected = $('input[name=HearingTypeId]:checked').val() === "99999";
+    $('#trial-additional-fields').toggle(trialSelected);
+
+    const notHomeRegistry = $('input[name=IsHomeRegistry]:checked').val() === 'false';
+    $('#different-place-of-trial').toggle(notHomeRegistry);
+
+    const differentPlace = $('input[name=IsDifferentPlaceOfTrial]:checked').val() === 'true';
+    const notDifferentPlace = $('input[name=IsDifferentPlaceOfTrial]:checked').val() === 'false';
+    $('#trial-location').toggle(notHomeRegistry && differentPlace);
+    $('#trial-location-warning').toggle(notHomeRegistry && notDifferentPlace);
+}
 
 // Called by Vue when a time-slot is selected
 function validateCaseDate(containerId, bookingDate) {

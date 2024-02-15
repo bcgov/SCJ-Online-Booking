@@ -91,6 +91,10 @@ namespace SCJ.Booking.MVC.Services
                 LocationPrefix = bookingInfo.LocationPrefix,
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,
+                EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
+                IsHomeRegistry = bookingInfo.IsHomeRegistry,
+                IsDifferentPlaceOfTrial = bookingInfo.IsDifferentPlaceOfTrial,
+                TrialLocation = bookingInfo.TrialLocation,
                 Results = bookingInfo.Results,
                 BookingLocationName = bookingInfo.BookingLocationName,
                 BookingRegistryId = bookingInfo.BookingRegistryId,
@@ -324,6 +328,41 @@ namespace SCJ.Booking.MVC.Services
                     bookingInfo.BookingRegistryId,
                     bookingInfo.HearingTypeId
                 );
+            }
+
+            if (
+                model.EstimatedTrialLength.HasValue
+                && bookingInfo.EstimatedTrialLength != model.EstimatedTrialLength.Value
+            )
+            {
+                bookingInfo.EstimatedTrialLength = model.EstimatedTrialLength.Value;
+            }
+
+            if (
+                model.IsHomeRegistry.HasValue
+                && bookingInfo.IsHomeRegistry != model.IsHomeRegistry.Value
+            )
+            {
+                bookingInfo.IsHomeRegistry = model.IsHomeRegistry.Value;
+            }
+
+            if (
+                model.IsHomeRegistry == false
+                && model.IsDifferentPlaceOfTrial.HasValue
+                && bookingInfo.IsDifferentPlaceOfTrial != model.IsDifferentPlaceOfTrial.Value
+            )
+            {
+                bookingInfo.IsDifferentPlaceOfTrial = model.IsDifferentPlaceOfTrial.Value;
+            }
+
+            if (
+                model.IsHomeRegistry == false
+                && model.IsDifferentPlaceOfTrial == true
+                && (!string.IsNullOrWhiteSpace(model.TrialLocation))
+                && bookingInfo.TrialLocation != model.TrialLocation
+            )
+            {
+                bookingInfo.TrialLocation = model.TrialLocation;
             }
 
             if (model.ContainerId > 0)

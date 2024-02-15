@@ -8,7 +8,7 @@ namespace SCJ.Booking.MVC.ViewModels
         //Case number
         public string CaseNumber { get; set; }
 
-        //Conference type
+        //Hearing type
         public string HearingTypeName { get; set; }
 
         //Location for the booking
