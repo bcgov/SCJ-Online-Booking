@@ -20,9 +20,9 @@ namespace SCJ.Booking.MVC.Utils
         public int ContainerId { get; set; }
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
-        public int EstimatedTrialLength { get; set; }
-        public bool IsHomeRegistry { get; set; }
-        public bool IsLocationChangeFiled { get; set; }
+        public int? EstimatedTrialLength { get; set; }
+        public bool? IsHomeRegistry { get; set; }
+        public bool? IsLocationChangeFiled { get; set; }
         public string TrialLocation { get; set; }
         public string SelectedCaseDate { get; set; }
 
