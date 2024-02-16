@@ -93,7 +93,7 @@ namespace SCJ.Booking.MVC.Services
                 HearingTypeName = bookingInfo.HearingTypeName,
                 EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
                 IsHomeRegistry = bookingInfo.IsHomeRegistry,
-                IsDifferentPlaceOfTrial = bookingInfo.IsDifferentPlaceOfTrial,
+                IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
                 TrialLocation = bookingInfo.TrialLocation,
                 Results = bookingInfo.Results,
                 BookingLocationName = bookingInfo.BookingLocationName,
@@ -348,16 +348,16 @@ namespace SCJ.Booking.MVC.Services
 
             if (
                 model.IsHomeRegistry == false
-                && model.IsDifferentPlaceOfTrial.HasValue
-                && bookingInfo.IsDifferentPlaceOfTrial != model.IsDifferentPlaceOfTrial.Value
+                && model.IsLocationChangeFiled.HasValue
+                && bookingInfo.IsLocationChangeFiled != model.IsLocationChangeFiled.Value
             )
             {
-                bookingInfo.IsDifferentPlaceOfTrial = model.IsDifferentPlaceOfTrial.Value;
+                bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled.Value;
             }
 
             if (
                 model.IsHomeRegistry == false
-                && model.IsDifferentPlaceOfTrial == true
+                && model.IsLocationChangeFiled == true
                 && (!string.IsNullOrWhiteSpace(model.TrialLocation))
                 && bookingInfo.TrialLocation != model.TrialLocation
             )

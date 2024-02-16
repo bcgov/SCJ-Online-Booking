@@ -22,7 +22,7 @@ namespace SCJ.Booking.MVC.Utils
         public string HearingTypeName { get; set; }
         public int EstimatedTrialLength { get; set; }
         public bool IsHomeRegistry { get; set; }
-        public bool IsDifferentPlaceOfTrial { get; set; }
+        public bool IsLocationChangeFiled { get; set; }
         public string TrialLocation { get; set; }
         public string SelectedCaseDate { get; set; }
 

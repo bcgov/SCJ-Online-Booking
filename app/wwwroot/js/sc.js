@@ -46,7 +46,7 @@ $(document).ready(function () {
     });
 
     $("input[name=IsHomeRegistry]").change(showTrialFields)
-    $("input[name=IsDifferentPlaceOfTrial]").change(showTrialFields)
+    $("input[name=IsLocationChangeFiled]").change(showTrialFields)
 
     $("#dateBtn").click(function () {
         $('#datepicker').datepicker().focus();
@@ -61,8 +61,8 @@ function showTrialFields() {
     const notHomeRegistry = $('input[name=IsHomeRegistry]:checked').val() === 'false';
     $('#different-place-of-trial').toggle(notHomeRegistry);
 
-    const differentPlace = $('input[name=IsDifferentPlaceOfTrial]:checked').val() === 'true';
-    const notDifferentPlace = $('input[name=IsDifferentPlaceOfTrial]:checked').val() === 'false';
+    const differentPlace = $('input[name=IsLocationChangeFiled]:checked').val() === 'true';
+    const notDifferentPlace = $('input[name=IsLocationChangeFiled]:checked').val() === 'false';
     $('#trial-location').toggle(notHomeRegistry && differentPlace);
     $('#trial-location-warning').toggle(notHomeRegistry && notDifferentPlace);
 }

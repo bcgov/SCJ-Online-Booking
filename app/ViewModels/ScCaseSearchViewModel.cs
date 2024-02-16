@@ -26,7 +26,7 @@ namespace SCJ.Booking.MVC.ViewModels
             HearingTypeName = string.Empty;
             EstimatedTrialLength = null;
             IsHomeRegistry = null;
-            IsDifferentPlaceOfTrial = null;
+            IsLocationChangeFiled = null;
             TrialLocation = string.Empty;
         }
 
@@ -36,7 +36,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string HearingTypeName { get; set; }
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
-        public bool? IsDifferentPlaceOfTrial { get; set; }
+        public bool? IsLocationChangeFiled { get; set; }
         public string TrialLocation { get; set; }
 
         //Available dates

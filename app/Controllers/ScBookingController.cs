@@ -126,9 +126,9 @@ namespace SCJ.Booking.MVC.Controllers
 
                 if (model.IsHomeRegistry == false)
                 {
-                    if (model.IsDifferentPlaceOfTrial == null)
+                    if (model.IsLocationChangeFiled == null)
                     {
-                        ModelState.AddModelError("IsDifferentPlaceOfTrial", "Please choose an option.");
+                        ModelState.AddModelError("IsLocationChangeFiled", "Please choose an option.");
                     }
 
                     if (string.IsNullOrWhiteSpace(model.TrialLocation))
