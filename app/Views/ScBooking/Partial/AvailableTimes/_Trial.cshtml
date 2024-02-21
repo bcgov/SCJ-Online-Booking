@@ -1,0 +1,34 @@
+@model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
+
+@{
+    var availableDates = Json.Serialize(Model.AvailableDates).ToString();
+    @* Model.SelectedDate = Model.FirstAvailableDate; *@
+}
+
+<form method="post" id="availableTimesForm">
+
+  @Html.HiddenFor(m => m.HearingTypeId)
+  @Html.HiddenFor(m => m.EstimatedTrialLength)
+
+  <div id="VueTrialTimeSelect">
+    <trial-time-select-tabs>
+      <instant-book :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength" slot="instantBook"></instant-book>
+
+      <choose-availability slot="chooseAvailability"></choose-availability>
+    </trial-time-select-tabs>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="col-6 col-md-8 d-flex align-items-center text-link">
+        <span>
+            <i class="fas fa-long-arrow-alt-left"></i>
+            <a asp-action="BookingType">Step 2: Choose Your Booking Type</a>
+        </span>
+    </div>
+    <div class="col-6 col-md-4">
+        <button type="submit" class="btn btn-secondary btn-block">
+            Confirm Time
+        </button>
+    </div>
+</div>
+</form>

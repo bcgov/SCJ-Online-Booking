@@ -2,8 +2,6 @@
 
 @{
     ViewData["Title"] = "AvailableTimes";
-    var availableDates = Json.Serialize(Model.AvailableDates);
-    Model.SelectedDate = Model.FirstAvailableDate;
 }
 
 <div class="body-content--inner">
@@ -13,102 +11,59 @@
     </div>
     <hr />
     <h6>Step 3</h6>
-    <h2>Book Your Hearing</h2>
+    <h2>Choose Trial Date(s)</h2>
 
-    <form method="post" id="availableTimesForm">
-        <div style="margin-bottom: 30px">
-            <div class="uppercase-sm">File Number: @Model.FileNumber</div>
-            <h5>@Model.SelectedCourtFile?.styleOfCause</h5>
-            <p>@Model.SelectedCourtClassName</p>
-        </div>
-        <h6>Available Times in @Model.BookingLocationName</h6>
-        <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.
-        <br/>
-            @ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for
-            @Model.HearingLengthMinutes minutes only.
-        </p>
+    <div style="margin-bottom: 30px">
+        <div class="uppercase-sm">File Number: @Model.FileNumber</div>
+        <h5>@Model.SelectedCourtFile?.styleOfCause</h5>
+        <p>@Model.SelectedCourtClassName</p>
+    </div>
 
-        <div class="row no-gutters">
-            <div class="col-8 col-md-4 mx-auto">
-                <button type="button" id="datepicker" class="btn btn-quaternary btn-block">
-                    Choose a date
-                </button>
-            </div>
-        </div>
+    @if (@Model.HearingTypeId == @ScHearingType.TRIAL) {
+        <partial name="Partial/AvailableTimes/_Trial" model="Model"/>
 
-        <div id="VueHearingTimeSelect" class="availableTimesContainer">
-            <hearing-time-select
-                :location-id="@Model.BookingRegistryId"
-                :available-dates="@availableDates.ToString()"
-                :hearing-type="@Model.HearingTypeId"
-            ></hearing-time-select>
-        </div>
-
-        @for (int i = 0; i < Model.CourtFiles?.Length; i++)
-        {
-            @Html.HiddenFor(m => m.CourtFiles[i].courtClassCode)
-            @Html.HiddenFor(m => m.CourtFiles[i].courtFileNumber)
-            @Html.HiddenFor(m => m.CourtFiles[i].styleOfCause)
-            @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
-            @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
+        @section Styles {
+            <link rel="stylesheet" href="/scjob/dist/vue/TrialTimeSelect.js.css" asp-append-version="true"/>
         }
-        @for (int i = 0; i < Model.AvailableConferenceTypeIds?.Count; i++)
-        {
-            @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
-        }
-        @Html.HiddenFor(m => m.SelectedCaseId)
-        @Html.HiddenFor(m => m.LocationPrefix)
-        @Html.HiddenFor(m => m.HearingTypeName)
-        @Html.HiddenFor(m => m.BookingLocationName)
-        @Html.HiddenFor(m => m.BookingRegistryId)
-        @Html.HiddenFor(m => m.CaseRegistryId)
-        @Html.HiddenFor(m => m.HearingTypeId)
-        <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
-        <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
-        <div class="text-danger">
-            <span asp-validation-for="ContainerId"></span>
-        </div>
 
-        <div class="row no-gutters">
-            <div class="col-6 col-md-8 d-flex align-items-center text-link">
-                <span>
-                    <i class="fas fa-long-arrow-alt-left"></i>
-                    <a asp-action="BookingType">Step 2: Choose Your Booking Type</a>
-                </span>
-            </div>
-            <div class="col-6 col-md-4"> 
-                <button type="submit" class="btn btn-secondary btn-block">
-                    Confirm Time
-                </button>
-            </div>
-        </div>
-    </form>
+        @section Scripts {
+            <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
+            <script src="/scjob/dist/vue/TrialTimeSelect.js" asp-append-version="true"></script>
+        }
+    }
+    else
+    {
+        var availableDates = Json.Serialize(Model.AvailableDates);
+        Model.SelectedDate = Model.FirstAvailableDate;
+
+        @section Scripts {
+            <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
+            <script src="/scjob/dist/vue/HearingTimeSelect.js" asp-append-version="true"></script>
+            <script src="/scjob/dist/lib/bootstrap-datepicker.js" asp-append-version="true"></script>
+            <script type="text/javascript">
+                $('#datepicker').datepicker({
+                    format: 'yyyy-mm-dd',
+                    weekStart: 0,
+                    autoclose: true,
+                    todayHighlight: true,
+                    startDate: @Json.Serialize(Model.FirstAvailableDate),
+                    defaultViewDate: @Json.Serialize(Model.FirstAvailableDate),
+                    clearBtn: true,
+                    endDate: @Json.Serialize(Model.LastAvailableDate),
+                    datesDisabled: @Json.Serialize(Model.DisabledDates)
+                }).on('changeDate', function(event) {
+                    var selectedDate = event.format();
+                    var dates = @availableDates;
+                    if (dates) {
+                        var i = dates.toString().split(',').indexOf(selectedDate);
+                        $('#selectedDate').val(i);
+                        $("#slideBtn").click();
+                    }
+                    $("#datepicker").html(selectedDate);
+                });
+            </script>
+        }
+
+        <partial name="Partial/AvailableTimes/_Conference" model="Model"/>
+    }
 </div>
-
-@section Scripts {
-    <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
-    <script src="/scjob/dist/vue/HearingTimeSelect.js" asp-append-version="true"></script>
-    <script src="/scjob/dist/lib/bootstrap-datepicker.js" asp-append-version="true"></script>
-    <script type="text/javascript">
-        $('#datepicker').datepicker({
-            format: 'yyyy-mm-dd',
-            weekStart: 0,
-            autoclose: true,
-            todayHighlight: true,
-            startDate: @Json.Serialize(Model.FirstAvailableDate),
-            defaultViewDate: @Json.Serialize(Model.FirstAvailableDate),
-            clearBtn: true,
-            endDate: @Json.Serialize(Model.LastAvailableDate),
-            datesDisabled: @Json.Serialize(Model.DisabledDates) 
-        }).on('changeDate', function(event) {
-            var selectedDate = event.format();
-            var dates = @availableDates;
-            if (dates) {
-                var i = dates.toString().split(',').indexOf(selectedDate);
-                $('#selectedDate').val(i);
-                $("#slideBtn").click();
-            }
-            $("#datepicker").html(selectedDate);
-        });
-    </script>
-}
