@@ -12,6 +12,7 @@ namespace SCJ.Booking.MVC.Utils
         public const int TMC = 9090;
         public const int CPC = 9089;
         public const int JCC = 9005;
+        public const int TRIAL = 99999;
 
         public static string GetHearingType(int code)
         {
@@ -26,6 +27,7 @@ namespace SCJ.Booking.MVC.Utils
                 //{PTC, "CV-Pre-Trial Conference (CV-PTC)"},
                 //{TCH, "CV-Telephone Conference Hearing (CV-TCH)"},
 
+                { TRIAL, "Trial" },
                 { TMC, "Trial Management Conference (TMC)" },
                 { CPC, "Case Planning Conference (CPC)" },
                 { JCC, "Judicial Case Conference (JCC)" },
