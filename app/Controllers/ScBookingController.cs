@@ -85,12 +85,12 @@ namespace SCJ.Booking.MVC.Controllers
 
             await _scBookingService.SaveScBookingInfoAsync(model);
 
-            return RedirectToAction("ConferenceType");
+            return RedirectToAction("BookingType");
         }
 
         [HttpGet]
-        [Route("~/booking/sc/conference-type")]
-        public IActionResult ConferenceType()
+        [Route("~/booking/sc/booking-type")]
+        public IActionResult BookingType()
         {
             var model = _scBookingService.LoadSearchForm2();
 
@@ -103,12 +103,39 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpPost]
-        [Route("~/booking/sc/conference-type")]
-        public async Task<IActionResult> ConferenceType(ScCaseSearchViewModel model)
+        [Route("~/booking/sc/booking-type")]
+        public async Task<IActionResult> BookingType(ScCaseSearchViewModel model)
         {
             if (model.HearingTypeId == -1)
             {
-                ModelState.AddModelError("HearingTypeId", "Please choose a conference type.");
+                ModelState.AddModelError("HearingTypeId", "Please choose a booking type.");
+            }
+
+            // Extra fields for "Trial" booking type
+            if (model.HearingTypeId == 99999)
+            {
+                if (model.EstimatedTrialLength == null || model.EstimatedTrialLength == 0)
+                {
+                    ModelState.AddModelError("EstimatedTrialLength", "Provide the estimated length of your trial.");
+                }
+
+                if (model.IsHomeRegistry == null)
+                {
+                    ModelState.AddModelError("IsHomeRegistry", "Indicate if the trial is taking place in the home registry.");
+                }
+
+                if (model.IsHomeRegistry == false)
+                {
+                    if (model.IsLocationChangeFiled == null)
+                    {
+                        ModelState.AddModelError("IsLocationChangeFiled", "Please choose an option.");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(model.TrialLocation))
+                    {
+                        ModelState.AddModelError("TrialLocation", "Please choose a trial location.");
+                    }
+                }
             }
 
             if (!ModelState.IsValid)

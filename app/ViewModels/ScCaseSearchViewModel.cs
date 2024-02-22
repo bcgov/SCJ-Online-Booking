@@ -24,12 +24,20 @@ namespace SCJ.Booking.MVC.ViewModels
             CaseNumber = string.Empty;
             HearingTypeId = -1;
             HearingTypeName = string.Empty;
+            EstimatedTrialLength = null;
+            IsHomeRegistry = null;
+            IsLocationChangeFiled = null;
+            TrialLocation = string.Empty;
         }
 
         //Search fields
         public string CaseNumber { get; set; }
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
+        public int? EstimatedTrialLength { get; set; }
+        public bool? IsHomeRegistry { get; set; }
+        public bool? IsLocationChangeFiled { get; set; }
+        public string TrialLocation { get; set; }
 
         //Available dates
         public AvailableDatesByLocation Results { get; set; }

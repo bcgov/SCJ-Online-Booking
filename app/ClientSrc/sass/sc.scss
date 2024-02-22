@@ -4,6 +4,20 @@
 
 @import 'variables';
 
+// Step 2: "Choose booking type" fields
+input.EstimatedTrialLength {
+    width: 4em;
+}
+
+@media (min-width: $breakpoint-md) {
+    // limit width of select element blocks
+    .form-group {
+        select {
+            max-width: 350px;
+        }
+    }
+}
+
 /*Available Times slider*/
 .swiper-container {
     width: calc(100% - 60px);
