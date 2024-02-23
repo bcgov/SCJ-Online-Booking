@@ -11,7 +11,14 @@
     </div>
     <hr />
     <h6>Step 3</h6>
-    <h2>Choose Trial Date(s)</h2>
+
+    @if (@Model.HearingTypeId == @ScHearingType.TRIAL) {
+        <h2>Choose Trial Date(s)</h2>
+    }
+    else
+    {
+        <h2>Book Your Hearing</h2>
+    }
 
     <div style="margin-bottom: 30px">
         <div class="uppercase-sm">File Number: @Model.FileNumber</div>
