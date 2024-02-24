@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Tabs from "./Tabs";
 import RegularBooking from "./InstantBook";
-import ChooseAvailability from "./ChooseAvailability";
+import FairUseBooking from "./ChooseAvailability";
 
 import "es6-promise/auto"; // ES6 Promises Polyfill for IE11 support
 
@@ -10,7 +10,7 @@ Vue.config.productionTip = false;
 
 Vue.component("TrialTimeSelectTabs", Tabs);
 Vue.component("RegularBooking", RegularBooking);
-Vue.component("ChooseAvailability", ChooseAvailability);
+Vue.component("FairUseBooking", FairUseBooking);
 
 // Mount vue app if a container element exists
 if ($("#VueTrialTimeSelect").length) {

@@ -12,9 +12,15 @@
 
   <div id="VueTrialTimeSelect">
     <trial-time-select-tabs>
-      <regular-booking :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength" slot="regularBooking"></regular-booking>
+      <regular-booking
+        :dates="@availableDates"
+        :trial-length="@Model.EstimatedTrialLength"
+        slot="regularBooking"></regular-booking>
 
-      <choose-availability :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength" slot="chooseAvailability"></choose-availability>
+      <fair-use-booking
+        :dates="@availableDates"
+        :trial-length="@Model.EstimatedTrialLength"
+        slot="fairUseBooking"></fair-use-booking>
     </trial-time-select-tabs>
   </div>
 

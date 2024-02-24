@@ -1,5 +1,5 @@
 <template>
-  <div class="trial-time-select-choose-availability">
+  <div class="trial-time-select-fair-use-booking">
     <div class="dates-info content-pad mb-3">
       <div
         @click="showInfo = !showInfo"
@@ -155,7 +155,7 @@
 import { formatDate } from "./helpers.js";
 
 export default {
-  name: "ChooseAvailability",
+  name: "FairUseBooking",
 
   data: () => ({
     // show or hide extra "dates-info" text
