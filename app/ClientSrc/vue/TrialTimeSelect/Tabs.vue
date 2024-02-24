@@ -1,10 +1,10 @@
 <template>
   <div class="trial-time-select-tabs">
     <ul class="content-pad m-0">
-      <li :class="{ selected: tab === 'chooseAvailability' }">
+      <li :class="{ selected: tab === 'fairUseBooking' }">
         <label role="button">
           <div>
-            <input type="radio" value="chooseAvailability" v-model="tab" />
+            <input type="radio" value="fairUseBooking" v-model="tab" />
             <strong>Provide your availability for upcoming dates</strong>
           </div>
           <div>Choose up to five dates for a trial starting in the upcoming release of dates</div>
@@ -22,7 +22,7 @@
       </li>
     </ul>
 
-    <slot v-if="tab === 'chooseAvailability'" name="chooseAvailability" />
+    <slot v-if="tab === 'fairUseBooking'" name="fairUseBooking" />
     <slot v-if="tab === 'regularBooking'" name="regularBooking" />
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
   name: "TrialTimeSelectTabs",
 
   data: () => ({
-    tab: "chooseAvailability",
+    tab: "fairUseBooking",
   }),
 };
 </script>
