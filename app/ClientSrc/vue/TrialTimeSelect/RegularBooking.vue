@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { parseISO, format } from "date-fns";
+import { formatDate } from "./helpers.js";
 
 export default {
   name: "RegularBooking",
@@ -56,17 +56,7 @@ export default {
 
   computed: {
     formattedDates() {
-      return this.dates.map((isoDate) => {
-        const parsedDate = parseISO(isoDate);
-        const dayOfWeek = format(parsedDate, "EEEE");
-        const formattedDate = format(parsedDate, "MMMM dd, yyyy");
-
-        return {
-          isoDate,
-          dayOfWeek,
-          formattedDate,
-        };
-      });
+      return this.dates.map(formatDate);
     },
 
     visibleDates() {
