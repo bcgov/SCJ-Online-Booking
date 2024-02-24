@@ -560,6 +560,37 @@ div#progress-overlay {
     }
 }
 
+// clickable label "button"
+.label-button {
+    display: block;
+    border: 2px solid $blue-dark;
+    border-radius: 5px;
+    padding: 0.75em 1em;
+    transition: background-color ease 0.2s, color ease 0.2s;
+
+    &:hover {
+        background-color: $blue-medium;
+        color: $white;
+    }
+
+    &.selected {
+        background-color: $blue-dark;
+        color: $white;
+    }
+}
+
+// square icon button
+.btn-icon {
+    border: none;
+    background: none;
+    text-align: center;
+
+    // no margins on icon content
+    & > i {
+        margin: 0;
+    }
+}
+
 label {
     font-weight: 700;
 }
@@ -608,6 +639,10 @@ select, input {
 
 .col-centered {
     margin: 0 auto;
+}
+
+.content-pad {
+    padding: 1em;
 }
 
 /* Supreme Court side */
