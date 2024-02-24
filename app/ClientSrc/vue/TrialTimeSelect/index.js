@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Tabs from "./Tabs";
-import RegularBooking from "./InstantBook";
-import FairUseBooking from "./ChooseAvailability";
+import RegularBooking from "./RegularBooking";
+import FairUseBooking from "./FairUseBooking";
 
 import "es6-promise/auto"; // ES6 Promises Polyfill for IE11 support
 
