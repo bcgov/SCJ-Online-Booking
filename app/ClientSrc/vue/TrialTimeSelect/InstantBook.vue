@@ -1,5 +1,5 @@
 <template>
-  <div class="trial-time-select-instant-book content-pad">
+  <div class="trial-time-select-regular-booking content-pad">
     <h3 class="mt-0 mb-5">Choose trial start date (Trial length {{ trialLength }} days)</h3>
 
     <div class="mb-5">
@@ -33,7 +33,7 @@
 import { parseISO, format } from "date-fns";
 
 export default {
-  name: "InstantBook",
+  name: "RegularBooking",
 
   data: () => ({
     // number of visible dates from the full list

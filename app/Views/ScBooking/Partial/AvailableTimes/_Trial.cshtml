@@ -12,7 +12,7 @@
 
   <div id="VueTrialTimeSelect">
     <trial-time-select-tabs>
-      <instant-book :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength" slot="instantBook"></instant-book>
+      <regular-booking :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength" slot="regularBooking"></regular-booking>
 
       <choose-availability slot="chooseAvailability"></choose-availability>
     </trial-time-select-tabs>

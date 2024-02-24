@@ -11,10 +11,10 @@
         </label>
       </li>
 
-      <li :class="{ selected: tab === 'instantBook' }">
+      <li :class="{ selected: tab === 'regularBooking' }">
         <label role="button">
           <div>
-            <input type="radio" value="instantBook" v-model="tab" />
+            <input type="radio" value="regularBooking" v-model="tab" />
             <strong>Book currently available trial dates</strong>
           </div>
           <div>You can instantly book a trial date that is currently available in the system.</div>
@@ -23,7 +23,7 @@
     </ul>
 
     <slot v-if="tab === 'chooseAvailability'" name="chooseAvailability" />
-    <slot v-if="tab === 'instantBook'" name="instantBook" />
+    <slot v-if="tab === 'regularBooking'" name="regularBooking" />
   </div>
 </template>
 
