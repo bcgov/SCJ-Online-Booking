@@ -221,6 +221,11 @@ export default {
       };
     },
 
+    /**
+     * Adds a date to the selection.
+     *
+     * @param {string} isoDate - date string to remove
+     */
     select(isoDate) {
       // prevent adding duplicates
       if (this.selected.includes(isoDate)) return;
