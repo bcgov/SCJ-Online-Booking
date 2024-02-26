@@ -99,7 +99,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CaseNumberValid()
         {
-            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("VA23222").Result;
+            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("KEM111").Result;
 
             Assert.True(searchResults.Length > 0);
         }
@@ -170,11 +170,13 @@ namespace SCJ.Booking.UnitTest
             {
                 caseID = 37351,
                 email = "mike@olund.ca",
-                hearingDate = DateTime.Parse("2019/11/08 00:00:00.0000000"),
+                hearingDate = DateTime.Parse("2024/03/12 00:00:00.0000000"),
                 hearingLength = "Full",
                 phone = "778-865-7042",
                 hearingTypeId = 24,
-                requestedBy = "Mike Olund"
+                requestedBy = "Mike Olund",
+                MainCase = true,
+                RelatedCases = ""
             };
 
             _ = _soapClient.CoAQueueHearingAsync(booking).Result;
@@ -223,6 +225,76 @@ namespace SCJ.Booking.UnitTest
         {
             var result = _soapClient.CoAAvailableDatesChambersAsync().Result;
             Assert.True(result.AvailableDates.Any());
+        }
+
+        [Fact]
+        public void GetAvailableBookingTypesAsync()
+        {
+            var result = _soapClient.GetAvailableBookingTypesAsync().Result;
+            Assert.True(result.Length > 0);
+        }
+
+        [Fact]
+        public void BookTrialHearingAsync()
+        {
+            BookTrialHearingInfo bookingInfo = new BookTrialHearingInfo
+            {
+                CEIS_Physical_File_ID = 3879m,
+                RequestedBy = "John Smith 604-555-1212 somebody@email.com",
+                BookingLocationID = 1,
+                CourtClass = "E",
+                HearingDate = new DateTime(2025, 6, 22),
+                FormulaType = "Fair-Use", // Regular or Fair-Use
+                HearingLength = 5,
+                HearingType = 9001, // Unmet demand is 20538
+                LocationID = 41
+            };
+            var result = _soapClient.BookTrialHearingAsync(bookingInfo).Result;
+            Assert.True(
+                result.bookingResult.StartsWith("success", StringComparison.OrdinalIgnoreCase)
+            );
+        }
+
+        [Fact]
+        public void AvailableTrialBookingFormulasByLocationAsync()
+        {
+            var result = _soapClient.AvailableTrialBookingFormulasByLocationAsync("", "").Result;
+
+            Assert.True(result.Length > 0);
+        }
+
+        [Fact]
+        public void AvailableTrialDatesByLocationAsync_Regular()
+        {
+            AvailableTrialDatesRequestInfo regular = new AvailableTrialDatesRequestInfo
+            {
+                BookingLocationID = 41,
+                Courtclass = "E",
+                StartDate = DateTime.Parse("2024/08/01"), // these dates come from formulas by location
+                EndDate = DateTime.Parse("2026/01/31"),
+                HearingLength = 5,
+                FormulaType = "Regular",
+                LocationID = 1
+            };
+            var result = _soapClient.AvailableTrialDatesByLocationAsync(regular).Result;
+            Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
+        }
+
+        [Fact]
+        public void AvailableTrialDatesByLocationAsync_FairUse()
+        {
+            AvailableTrialDatesRequestInfo fairUse = new AvailableTrialDatesRequestInfo
+            {
+                BookingLocationID = 41,
+                Courtclass = "E",
+                StartDate = DateTime.Parse("2025/08/01"), // 18 months in the future
+                EndDate = DateTime.Parse("2025/08/31"), // these dates come from formulas by location
+                HearingLength = 5,
+                FormulaType = "Fair-Use",
+                LocationID = 1
+            };
+            var result = _soapClient.AvailableTrialDatesByLocationAsync(fairUse).Result;
+            Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
         }
     }
 }
