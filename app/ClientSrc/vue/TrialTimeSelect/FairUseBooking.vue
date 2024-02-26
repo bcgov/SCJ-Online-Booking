@@ -136,9 +136,9 @@
               v-for="date in formattedSelection"
               :key="date.isoDate"
             >
-              <button class="btn-icon grab-button" type="button">
+              <div class="btn-icon grab-button d-flex justify-content-center align-items-center">
                 <i class="fas fa-grip-horizontal" />
-              </button>
+              </div>
               <div class="label-button selected m-0">
                 <input type="hidden" :value="date.isoDate" name="SelectedDates" />
                 <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
@@ -350,10 +350,9 @@ a > i {
       padding: 0.25em 0;
     }
 
-    button {
-      width: 40px;
+    .btn-icon {
       height: 40px;
-      flex: 0 0;
+      flex: 0 0 40px;
       color: $blue-dark;
     }
 
