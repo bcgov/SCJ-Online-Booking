@@ -649,8 +649,7 @@ select, input {
     margin: 0 0 1em !important;
 }
 
-// non-Bootstrap styles for a vertical list of radio buttons or checkboxes with labels
-// (Bootstrap 4's `form-check` doesn't seem to render well in modern browsers)
+// non-Bootstrap styles for a vertical list of radio buttons or checkboxes nested in labels
 .check-group {
     label {
         display: block;
