@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
@@ -7,6 +8,7 @@ using SCJ.Booking.MVC.ViewModels;
 namespace SCJ.Booking.MVC.Controllers
 {
     [Route("booking/sc/[action]")]
+    [Authorize]
     public class ScBookingController : Controller
     {
         //Services
