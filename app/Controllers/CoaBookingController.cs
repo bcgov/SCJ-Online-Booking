@@ -5,10 +5,12 @@ using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SCJ.Booking.MVC.Controllers
 {
     [Route("booking/coa/[action]")]
+    [Authorize]
     public class CoaBookingController : Controller
     {
         //Services
