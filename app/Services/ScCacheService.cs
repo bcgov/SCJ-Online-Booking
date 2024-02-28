@@ -15,6 +15,7 @@ namespace SCJ.Booking.MVC.Services
     {
         private const string ScLocationInfoKey = "SC_LOCATION_INFO";
         private const string ScRegistryDropdownKey = "SC_REGISTRY_DROPDOWN";
+        private const string ScAvailableBookingTypes = "SC_AVAILABLE_BOOKING_TYPES";
 
         // services
         private readonly IConfiguration _configuration;
@@ -104,6 +105,25 @@ namespace SCJ.Booking.MVC.Services
             await SaveObjectAsync(ScLocationInfoKey, locations, CacheSlidingExpirySeconds);
 
             return locations;
+        }
+
+        /// <summary>
+        ///     Gets a cached list of Supreme Court booking types
+        /// </summary>
+        public async Task<string[]> GetAvailableBookingTypesAsync()
+        {
+            if (await ExistsAsync(ScAvailableBookingTypes))
+            {
+                return await GetObjectAsync<string[]>(ScAvailableBookingTypes);
+            }
+
+            IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
+
+            string[] bookingTypes = await client.GetAvailableBookingTypesAsync();
+
+            await SaveObjectAsync(ScAvailableBookingTypes, bookingTypes, CacheSlidingExpirySeconds);
+
+            return bookingTypes;
         }
     }
 }
