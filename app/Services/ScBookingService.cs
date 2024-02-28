@@ -231,6 +231,12 @@ namespace SCJ.Booking.MVC.Services
             return await GetConferenceTypesAsync(model.CaseLocationName);
         }
 
+        public async Task<string[]> GetAvailableBookingTypes()
+        {
+            // test...
+            return await _cache.GetAvailableBookingTypesAsync();
+        }
+
         public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
         {
             // Load locations from cache
