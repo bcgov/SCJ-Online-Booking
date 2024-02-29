@@ -66,7 +66,7 @@ ul {
     color: $blue-light;
 
     li {
-      padding: 1em;
+      display: flex;
       border: 1px solid $blue-light;
       border-radius: 14px;
 
@@ -77,6 +77,7 @@ ul {
 
       label {
         margin: 0;
+        padding: 1em;
       }
 
       input {
