@@ -91,32 +91,37 @@
         <div
           class="list-info-header d-flex justify-content-between align-items-center mb-4 d-md-none"
         >
-          <h6 class="text-secondary">[0]/5 selected</h6>
+          <h6 class="text-secondary">{{ selected.length }}/5 selected</h6>
           <a class="scroll-link" @click.prevent href="#"
             >See my choices <i class="fas fa-long-arrow-alt-down"
           /></a>
         </div>
+
+        <div class="alert alert-warning m-0" v-if="selected.length >= 5">
+          <i class="fa fa-exclamation-triangle" />
+          Remove a chosen date before adding another.
+        </div>
       </div>
 
       <div class="mb-5 dates-list content-pad select-dates">
-        <label
+        <div
           class="label-button date-button"
           :class="dateClasses(date)"
           role="button"
           v-for="date in visibleDates"
           :key="date.isoDate"
+          @click="select(date.isoDate)"
         >
-          <input class="d-none" type="checkbox" :value="date.isoDate" v-model="selected" />
           <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
           <strong>{{ date.formattedDate }}</strong>
-        </label>
+        </div>
       </div>
 
       <div class="dates-intro content-pad selected-dates-intro">
         <h6>Your Availability</h6>
         <p class="mb-3">You can reorder dates to indicate your preference.</p>
         <div class="list-info-header d-flex justify-content-between align-items-center mb-4">
-          <h6 class="text-secondary">[0]/5 selected</h6>
+          <h6 class="text-secondary">{{ selected.length }}/5 selected</h6>
           <a class="scroll-link d-md-none" @click.prevent href="#"
             >Select more dates <i class="fas fa-long-arrow-alt-up"
           /></a>
@@ -125,22 +130,26 @@
 
       <div class="mb-5 dates-list content-pad selected-dates">
         <div class="draggable-dates">
-          <div
-            class="date-wrap date-button d-flex justify-content-stretch align-items-center"
-            v-for="date in formattedSelection"
-            :key="date.isoDate"
-          >
-            <button class="btn-icon grab-button" type="button">
-              <i class="fas fa-grip-horizontal" />
-            </button>
-            <label class="label-button selected m-0">
-              <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
-              <strong>{{ date.formattedDate }}</strong>
-            </label>
-            <button @click="unselect(date.isoDate)" class="btn-icon delete-button" type="button">
-              <i class="fas fa-trash" />
-            </button>
-          </div>
+          <draggable v-model="selected" handle=".grab-button" direction="vertical">
+            <div
+              class="date-wrap date-button d-flex justify-content-stretch align-items-center"
+              v-for="date in formattedSelection"
+              :key="date.isoDate"
+            >
+              <div class="btn-icon grab-button d-flex justify-content-center align-items-center">
+                <i class="fas fa-grip-horizontal" />
+              </div>
+              <div class="label-button selected m-0">
+                <input type="hidden" :value="date.isoDate" name="SelectedDates" />
+                <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
+                <strong>{{ date.formattedDate }}</strong>
+              </div>
+              <button @click="unselect(date.isoDate)" class="btn-icon delete-button" type="button">
+                <i class="fas fa-trash" />
+              </button>
+            </div>
+          </draggable>
+
           <div class="alert alert-warning" v-if="formattedSelection.length === 0">
             <i class="fa fa-exclamation-triangle" />
             Choose at least one starting date for your trial.
@@ -152,10 +161,16 @@
 </template>
 
 <script>
+import draggable from "vuedraggable";
+
 import { formatDate } from "./helpers.js";
 
 export default {
   name: "FairUseBooking",
+
+  components: {
+    draggable,
+  },
 
   data: () => ({
     // show or hide extra "dates-info" text
@@ -204,6 +219,21 @@ export default {
       return {
         selected: this.selected.includes(date.isoDate),
       };
+    },
+
+    /**
+     * Adds a date to the selection.
+     *
+     * @param {string} isoDate - date string to remove
+     */
+    select(isoDate) {
+      // prevent adding duplicates
+      if (this.selected.includes(isoDate)) return;
+
+      // prevent adding more than 5
+      if (this.selected.length >= 5) return;
+
+      this.selected.push(isoDate);
     },
 
     /**
@@ -314,10 +344,21 @@ a > i {
 .dates-list {
   .date-wrap {
     gap: 0.5em;
+    background: $white;
 
-    button {
-      width: 40px;
+    &.sortable-ghost {
+      opacity: 0.5;
+    }
+
+    &.sortable-drag {
+      border-radius: 8px;
+      padding: 0.25em 0;
+    }
+
+    .btn-icon {
       height: 40px;
+      flex: 0 0 40px;
+      color: $blue-dark;
     }
 
     .label-button {

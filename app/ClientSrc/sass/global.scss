@@ -562,6 +562,7 @@ div#progress-overlay {
 
 // clickable label "button"
 .label-button {
+    user-select: none;
     display: block;
     border: 2px solid $blue-dark;
     border-radius: 5px;
