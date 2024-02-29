@@ -232,7 +232,7 @@ namespace SCJ.Booking.MVC.Services
         }
 
         // Returns booking types from the cache
-        public async Task<string[]> GetAvailableBookingTypes()
+        public async Task<List<string>> GetAvailableBookingTypes()
         {
             return await _cache.GetAvailableBookingTypesAsync();
         }

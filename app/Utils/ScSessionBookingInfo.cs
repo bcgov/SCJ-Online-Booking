@@ -37,7 +37,7 @@ namespace SCJ.Booking.MVC.Utils
         public string SelectedCourtClassName { get; set; }
         public AvailableDatesByLocation Results { get; set; }
         public List<int> AvailableConferenceTypeIds { get; set; }
-        public string[] AvailableBookingTypes { get; set; }
+        public List<string> AvailableBookingTypes { get; set; }
 
         public int HearingLengthMinutes
         {
