@@ -641,12 +641,11 @@ namespace SCJ.Booking.MVC.Services
             //Render the email template
             string template = booking.HearingTypeId switch
             {
-                //ScHearingType.AWS => "ScBooking/Email-CV-AWS",
-                //ScHearingType.JMC => "ScBooking/Email-JMC",
-                //ScHearingType.PTC => "ScBooking/Email-CV-PTC",
-                //ScHearingType.TCH => "ScBooking/Email-CV-TCH",
-                ScHearingType.TMC
-                    => "ScBooking/Email-TMC",
+                ScHearingType.AWS => "ScBooking/Email-CV-AWS",
+                ScHearingType.JMC => "ScBooking/Email-JMC",
+                ScHearingType.PTC => "ScBooking/Email-CV-PTC",
+                ScHearingType.TCH => "ScBooking/Email-CV-TCH",
+                ScHearingType.TMC => "ScBooking/Email-TMC",
                 ScHearingType.CPC => "ScBooking/Email-CPC",
                 ScHearingType.JCC => "ScBooking/Email-JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
