@@ -46,49 +46,48 @@
 
         <div class="row no-gutters">
             <div class="form-group booking-type-selection bg-white rounded p-3 p-sm-4">
-                <h6>Choose your booking type</h6>
-                <div class="btn-radio-group form-group">
+                <h6 class="form-section-label">Choose your booking type</h6>
+                <div class="booking-types check-group">
 
-                    <div class="form-check">
+                    <label>
                         <input
                             asp-for="HearingTypeId"
-                            class="form-check-input"
                             type="radio"
                             id="Trial"
                             name="HearingTypeId"
                             value="@ScHearingType.TRIAL"
                         />
-                        <label for="Trial" class="form-check-label">Trial</label>
-                    </div>
+                        Trial
+                    </label>
 
                     @foreach (var hearingTypeId in Model.AvailableConferenceTypeIds)
                     {
                         if (hearingTypeId == ScHearingType.CPC)
                         {
-                            <div class="form-check">
-                                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
-                                id="CPC" name="HearingTypeId"
-                                value="@ScHearingType.CPC">
-                                <label for="CPC" class="form-check-label">Case Planning Conference (CPC)</label>
-                            </div>
+                            <label>
+                                <input asp-for="HearingTypeId" type="radio"
+                                    id="CPC" name="HearingTypeId"
+                                    value="@ScHearingType.CPC">
+                                Case Planning Conference (CPC)
+                            </label>
                         }
                         else if (hearingTypeId == ScHearingType.JCC)
                         {
-                            <div class="form-check">
-                                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                            <label>
+                                <input asp-for="HearingTypeId" type="radio"
                                     id="JCC" name="HearingTypeId"
                                     value="@ScHearingType.JCC">
-                                <label for="JCC" class="form-check-label">Judicial Case Conference (JCC)</label>
-                            </div>
+                                Judicial Case Conference (JCC)
+                            </label>
                         }
                         else if (hearingTypeId == ScHearingType.TMC)
                         {
-                            <div class="form-check">
-                                <input asp-for="HearingTypeId" class="form-check-input" type="radio"
+                            <label>
+                                <input asp-for="HearingTypeId" type="radio"
                                     id="TMC" name="HearingTypeId"
                                     value="@ScHearingType.TMC">
-                                <label for="TMC" class="form-check-label">Trial Management Conference (TMC)</label>
-                            </div>
+                                Trial Management Conference (TMC)
+                            </label>
                         }
                     }
                 </div>
@@ -104,9 +103,9 @@
 
                 <div id="trial-additional-fields" class="mt-4" style="display: none;">
                     <div class="form-group mb-5">
-                        <h6 class="mt-3 mb-4">
+                        <label for="EstimatedTrialLength" class="form-section-label">
                             Estimated length of trial
-                        </h6>
+                        </label>
 
                         <div>
                             <input
@@ -124,22 +123,20 @@
                     </div>
 
                     <div class="form-group btn-radio-group mb-5">
-                        <h6 class="mt-3 mb-4">
+                        <h6 class="form-section-label">
                             Is the trial taking place in the home registry?
                         </h6>
 
-                        <div class="form-check">
-                            <input id="IsHomeRegistry--Yes" asp-for="IsHomeRegistry" class="form-check-input mr-3"
-                                type="radio" name="IsHomeRegistry" value="true">
-                            <label for="IsHomeRegistry--Yes" class="form-check-label">
+                        <div class="check-group">
+                            <label>
+                                <input id="IsHomeRegistry--Yes" asp-for="IsHomeRegistry"
+                                    type="radio" name="IsHomeRegistry" value="true">
                                 Yes
                             </label>
-                        </div>
 
-                        <div class="form-check">
-                            <input id="IsHomeRegistry--No" asp-for="IsHomeRegistry" class="form-check-input mr-3"
-                                type="radio" name="IsHomeRegistry" value="false">
-                            <label for="IsHomeRegistry--No" class="form-check-label">
+                            <label>
+                                <input id="IsHomeRegistry--No" asp-for="IsHomeRegistry"
+                                    type="radio" name="IsHomeRegistry" value="false">
                                 No
                             </label>
                         </div>
@@ -150,24 +147,22 @@
                     </div>
 
                     <div id="different-place-of-trial" class="form-group btn-radio-group mb-5">
-                        <h6 class="mt-3 mb-4">
+                        <h6 class="form-section-label">
                             Do you have an entered court order changing the place of trial or is a different place of
                             trial stated on the initiating documents (e.g. Notice of Civil Claim, Notice of Family
                             Claim)?
                         </h6>
 
-                        <div class="form-check">
-                            <input id="IsLocationChangeFiled--Yes" asp-for="IsLocationChangeFiled"
-                                class="form-check-input mr-3" type="radio" name="IsLocationChangeFiled" value="true">
-                            <label for="IsLocationChangeFiled--Yes" class="form-check-label">
+                        <div class="check-group">
+                            <label>
+                                <input id="IsLocationChangeFiled--Yes" asp-for="IsLocationChangeFiled"
+                                    type="radio" name="IsLocationChangeFiled" value="true">
                                 Yes
                             </label>
-                        </div>
 
-                        <div class="form-check">
-                            <input id="IsLocationChangeFiled--No" asp-for="IsLocationChangeFiled"
-                                class="form-check-input mr-3" type="radio" name="IsLocationChangeFiled" value="false">
-                            <label for="IsLocationChangeFiled--No" class="form-check-label">
+                            <label>
+                                <input id="IsLocationChangeFiled--No" asp-for="IsLocationChangeFiled"
+                                    type="radio" name="IsLocationChangeFiled" value="false">
                                 No
                             </label>
                         </div>
@@ -184,9 +179,9 @@
                     </div>
 
                     <div id="trial-location" class="form-group mb-5">
-                        <h6 class="mt-3 mb-4">
+                        <label for="TrialLocation" class="form-section-label">
                             Where will the trial be held?
-                        </h6>
+                        </label>
 
                         <select
                             asp-for="TrialLocation"

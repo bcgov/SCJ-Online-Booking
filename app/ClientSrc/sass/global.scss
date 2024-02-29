@@ -645,6 +645,22 @@ select, input {
     padding: 1em;
 }
 
+.form-section-label {
+    margin: 0 0 1em !important;
+}
+
+// non-Bootstrap styles for a vertical list of radio buttons or checkboxes nested in labels
+.check-group {
+    label {
+        display: block;
+        margin: 0 0 0.5em;
+    }
+
+    input {
+        margin: 0 0.2em 0 0;
+    }
+}
+
 /* Supreme Court side */
 .booking-type-selection {
     margin-top: 16px;
@@ -652,33 +668,6 @@ select, input {
     label {
         @media (min-width: $breakpoint-md) {
             white-space: nowrap;
-        }
-    }
-
-    .btn-radio-group {
-        width: 100%;
-        position: relative;
-        margin: 8px 0 12px;
-
-        .form-check {
-            position: initial;
-
-            input.form-check-input {
-                margin-top: 0.6rem;
-            }
-
-            label {
-                font-weight: 400;
-                font-size: 1.6rem;
-                margin-top: 0;
-                margin-left: 8px;
-            }
-        }
-
-        .invalid-feedback {
-            position: absolute;
-            width: 100%;
-            left: 0;
         }
     }
 }
