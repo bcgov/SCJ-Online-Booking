@@ -110,17 +110,16 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Gets a cached list of Supreme Court booking types
         /// </summary>
-        public async Task<List<string>> GetAvailableBookingTypesAsync()
+        public async Task<string[]> GetAvailableBookingTypesAsync()
         {
             if (await ExistsAsync(ScAvailableBookingTypes))
             {
-                return await GetObjectAsync<List<string>>(ScAvailableBookingTypes);
+                return await GetObjectAsync<string[]>(ScAvailableBookingTypes);
             }
 
             IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
 
-            string[] bookingTypesArray = await client.GetAvailableBookingTypesAsync();
-            List<string> bookingTypes = bookingTypesArray.ToList();
+            string[] bookingTypes = await client.GetAvailableBookingTypesAsync();
 
             await SaveObjectAsync(ScAvailableBookingTypes, bookingTypes, CacheSlidingExpirySeconds);
 

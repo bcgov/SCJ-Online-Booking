@@ -234,7 +234,10 @@ namespace SCJ.Booking.MVC.Services
         // Returns booking types from the cache
         public async Task<List<string>> GetAvailableBookingTypes()
         {
-            return await _cache.GetAvailableBookingTypesAsync();
+            var supportedTypes = ScHearingType.HearingTypeIdMap.Keys.Select(keyName => keyName);
+            return (await _cache.GetAvailableBookingTypesAsync())
+                .Intersect(supportedTypes)
+                .ToList();
         }
 
         public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
