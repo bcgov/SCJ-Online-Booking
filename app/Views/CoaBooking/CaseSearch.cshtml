@@ -3,7 +3,7 @@
 @model CoaCaseSearchViewModel
 
 @{
-    ViewData["Title"] = "Request an Appeal or a Chambers Hearing Date";
+    ViewData["Title"] = "Request an appeal or a chambers hearing date";
     bool showingDates = Model.Results != null && Model.Results.Any();
 }
 
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 form-group">
-                        <label asp-for="CaseNumber">What is the Court File Number for the case?</label>
+                        <label asp-for="CaseNumber">What is the court file number for the case?</label>
                         <div class="align-tooltip">
                             <div>
                                 @if (Model.Step1Complete)
@@ -300,10 +300,8 @@
                                     <div class="col-md-6">
                                         <label>How long will you require for your chambers hearing?</label>
                                         <p>
-                                            If you require more than 1 hour, please contact the
-                                            <a target="_blank" href="https://www.bccourts.ca/court_of_appeal/court_locations_and_contacts.aspx">
-                                                Registry - Chambers Hearings
-                                            </a>.
+                                            If you require more than 1 hour, please select one hour below and contact the
+                                            <a target="_blank" href="https://www.bccourts.ca/court_of_appeal/court_locations_and_contacts.aspx">Registry - Chambers Hearings</a>.
                                         </p>
                                         <div id="Chambers_IsHalfHour" class="btn-radio-group mt-3">
                                             <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @(Model.IsHalfHour is true ? "active" : "") @(showingDates ? "disabled" : "")">
