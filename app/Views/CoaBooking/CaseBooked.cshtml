@@ -26,6 +26,7 @@
 @if (!SessionService.CoaBookingInfo.IsBooked)
 {
     <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
         @SessionService.CoaBookingInfo.FriendlyError
     </div>
 }
