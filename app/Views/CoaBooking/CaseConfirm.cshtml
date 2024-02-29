@@ -1,13 +1,14 @@
 @model CoaCaseConfirmViewModel
 
 @{
-    ViewData["Title"] = "Confirm Your Request";
+    ViewData["Title"] = "Confirm your request";
 }
 
 <div class="row screen-intro">
     <div class="col-md-12 paragraph">
         <h1>@ViewData["Title"]</h1>
         <p>The selected date will be reserved for your @(Model.IsAppealHearing ? "appeal" : "chambers") hearing.</p>
+        <p>The day before the hearing, the parties will be contacted by the scheduler and given a precise time for the hearing.</p>
         <p>Check that the following information is accurate before confirming your booking.</p>
     </div>
 </div>
