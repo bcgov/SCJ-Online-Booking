@@ -114,7 +114,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             // Extra fields for "Trial" booking type
-            if (model.HearingTypeId == 99999)
+            if (model.HearingTypeId == 9001)
             {
                 if (model.EstimatedTrialLength == null || model.EstimatedTrialLength == 0)
                 {

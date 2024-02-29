@@ -48,50 +48,24 @@
             <div class="form-group booking-type-selection bg-white rounded p-3 p-sm-4">
                 <h6 class="form-section-label">Choose your booking type</h6>
 
-                <p>test: @Model.AvailableBookingTypes.ToString()</p>
-
                 <div class="booking-types check-group">
-
-                    <label>
-                        <input
-                            asp-for="HearingTypeId"
-                            type="radio"
-                            id="Trial"
-                            name="HearingTypeId"
-                            value="@ScHearingType.TRIAL"
-                        />
-                        Trial
-                    </label>
-
-                    @foreach (var hearingTypeId in Model.AvailableConferenceTypeIds)
+                    @foreach (var bookingType in Model.AvailableBookingTypes)
                     {
-                        if (hearingTypeId == ScHearingType.CPC)
-                        {
-                            <label>
-                                <input asp-for="HearingTypeId" type="radio"
-                                    id="CPC" name="HearingTypeId"
-                                    value="@ScHearingType.CPC">
-                                Case Planning Conference (CPC)
-                            </label>
-                        }
-                        else if (hearingTypeId == ScHearingType.JCC)
-                        {
-                            <label>
-                                <input asp-for="HearingTypeId" type="radio"
-                                    id="JCC" name="HearingTypeId"
-                                    value="@ScHearingType.JCC">
-                                Judicial Case Conference (JCC)
-                            </label>
-                        }
-                        else if (hearingTypeId == ScHearingType.TMC)
-                        {
-                            <label>
-                                <input asp-for="HearingTypeId" type="radio"
-                                    id="TMC" name="HearingTypeId"
-                                    value="@ScHearingType.TMC">
-                                Trial Management Conference (TMC)
-                            </label>
-                        }
+                        <label>
+                            @{
+                                // translate between hearing type IDs and titles
+                                var hearingTypeId = @ScHearingType.HearingTypeIdMap[bookingType];
+                                var hearingTypeName = @ScHearingType.HearingTypeNameMap[hearingTypeId];
+                            }
+
+                            <input
+                                asp-for="HearingTypeId"
+                                type="radio"
+                                name="HearingTypeId"
+                                value="@hearingTypeId"
+                            />
+                            @hearingTypeName
+                        </label>
                     }
                 </div>
 
