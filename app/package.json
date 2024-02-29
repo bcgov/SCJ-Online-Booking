@@ -29,7 +29,8 @@
         "spin": "0.0.1",
         "vue": "^2.7.16",
         "vue-awesome-swiper": "^4.1.1",
-        "vue-template-compiler": "^2.7.16"
+        "vue-template-compiler": "^2.7.16",
+        "vuedraggable": "^2.24.3"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",
