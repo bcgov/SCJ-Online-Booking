@@ -1,3 +1,4 @@
+@model IndexViewModel
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 
@@ -26,19 +27,32 @@
     <div class="col-12 col-md-10 mx-auto">
         <div class="row no-gutters justify-content-around">
             <div class="col-12 col-lg-5 court-option-box bg-white rounded">
-                <h2 class="text-center">Court of Appeal</h2>
-                <p>
-                    You can book either appeal hearings or chambers hearings for your civil or criminal cases.
-                </p>
+                <div>
+                    <h2 class="text-center">Court of Appeal</h2>
+                    <p>
+                        You can book either appeal hearings or chambers hearings for your civil or criminal cases.
+                    </p>
+                </div>
                 <a class="btn btn-primary btn-block" href="/scjob/booking/coa/CaseSearch">Log in with BCeID</a>
             </div>
             <div class="col-12 col-lg-5 court-option-box bg-white rounded mt-4 mt-lg-0">
                 <h2 class="text-center">Supreme Court</h2>
-                <p>
-                    You can book select conference hearings online. Please check the
-                    <a href="https://www.bccourts.ca/supreme_court/scheduling/" target="_blank" rel="noopener">Supreme Court Scheduling website</a>
-                    <i class="fa fa-external-link-alt"></i> for specific available hearing types.
-                </p>
+
+                <div>
+                    <p>
+                        You can now book the following hearings online
+                    </p>
+
+                    <ul>
+                        @foreach (var bookingType in Model.AvailableBookingTypes)
+                        {
+                            var bookingTypeName = (bookingType == "Trials") ? bookingType : bookingType + "s";
+
+                            <li>@bookingTypeName</li>
+                        }
+                    </ul>
+                </div>
+
                 <a class="btn btn-primary btn-block" href="/scjob/booking/sc">Log in with BCeID</a>
             </div>
         </div>

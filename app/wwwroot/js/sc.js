@@ -55,7 +55,7 @@ $(document).ready(function () {
 
 // Shows or hides the additional form fields for Trials
 function showTrialFields() {
-    const trialSelected = $('input[name=HearingTypeId]:checked').val() === "99999";
+    const trialSelected = $('input[name=HearingTypeId]:checked').val() === "9001";
     $('#trial-additional-fields').toggle(trialSelected);
 
     const notHomeRegistry = $('input[name=IsHomeRegistry]:checked').val() === 'false';
