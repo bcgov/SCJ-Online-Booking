@@ -220,7 +220,9 @@ $(document).ready(function () {
         }
 
         // hearing date agreed
-        if ($('input[name="DateIsAgreed"]:checked').val() !== "true") {
+        if ($('input[name="DateIsAgreed"]:checked').length === 0) {
+            valid = false;
+        } else if ($('input[name="DateIsAgreed"]:checked').val() !== "true") {
             // for appeal hearings, date must be agreed upon
             const IsAppealHearingVal = $('input[name="IsAppealHearing"]:checked').val() === "true";
             if (IsAppealHearingVal) {
