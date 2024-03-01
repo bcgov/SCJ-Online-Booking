@@ -140,17 +140,16 @@ $(document).ready(function () {
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
     $('.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]').change(function () {
-        var isAppeal = $('#IsAppealHearing:checked').val();
-        var $radioBtnGroup = $(this).parent().parent();
-        
-        if ($radioBtnGroup.hasClass("preliminary_questions__radio")) {
-            var $radioBtnValue = $(this).val();
-            if ($radioBtnValue === "false" && !$(this).parent().hasClass('disabled')) {
-                $radioBtnGroup.siblings(".alert--preliminary_question").show();
-                $radioBtnGroup.siblings(".notice--preliminary_question").hide();
-            } else if ($radioBtnValue === "true" && !$(this).parent().hasClass('disabled')) {
-                $radioBtnGroup.siblings(".alert--preliminary_question").hide();
-                $radioBtnGroup.siblings(".notice--preliminary_question").show();
+        const isAppeal = $("#IsAppealHearing:checked").val();
+        const isDateAgreed = $('input[name="DateIsAgreed"]:checked').val();
+
+        // show warning alert if the date hasn't been agreed upon
+        const $dateAgreedAlerts = $(".alert--preliminary_question").hide();
+        if (isDateAgreed === "false") {
+            if (isAppeal === "true") {
+                $dateAgreedAlerts.filter(".appeal").show();
+            } else {
+                $dateAgreedAlerts.filter(".chambers").show();
             }
         }
 
@@ -221,8 +220,12 @@ $(document).ready(function () {
         }
 
         // hearing date agreed
-        if ($('input[name="DateIsAgreed"]:checked').val() !== 'true') {
-            valid = false;
+        if ($('input[name="DateIsAgreed"]:checked').val() !== "true") {
+            // for appeal hearings, date must be agreed upon
+            const IsAppealHearingVal = $('input[name="IsAppealHearing"]:checked').val() === "true";
+            if (IsAppealHearingVal) {
+                valid = false;
+            }
         }
 
         // show the "next" button if the form is valid
