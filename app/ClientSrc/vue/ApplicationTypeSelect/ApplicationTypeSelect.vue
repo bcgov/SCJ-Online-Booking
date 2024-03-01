@@ -8,7 +8,7 @@
             class="btn btn-radio btn-radio--secondary btn-launch-modal"
             :class="{ 'disabled': disabled }"
         >
-            Choose Application Type(s)
+            Choose application type(s)
         </button>
 
         <!-- modal dialog with selection options -->
