@@ -142,9 +142,23 @@ $(document).ready(function () {
     $('.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]').change(function () {
         const isAppeal = $("#IsAppealHearing:checked").val();
         const isDateAgreed = $('input[name="DateIsAgreed"]:checked').val();
+        var $radioBtnGroup = $(this).parent().parent();
+
+        // show notices for "preliminary question" radio buttons
+        if ($radioBtnGroup.hasClass("preliminary_questions__radio")) {
+            console.log('factummmm');
+            var $radioBtnValue = $(this).val();
+            if ($radioBtnValue === "false" && !$(this).parent().hasClass('disabled')) {
+                $radioBtnGroup.siblings(".alert--preliminary_question").show();
+                $radioBtnGroup.siblings(".notice--preliminary_question").hide();
+            } else if ($radioBtnValue === "true" && !$(this).parent().hasClass('disabled')) {
+                $radioBtnGroup.siblings(".alert--preliminary_question").hide();
+                $radioBtnGroup.siblings(".notice--preliminary_question").show();
+            }
+        }
 
         // show warning alert if the date hasn't been agreed upon
-        const $dateAgreedAlerts = $(".alert--preliminary_question").hide();
+        const $dateAgreedAlerts = $(".alert--preliminary_question.appeal, .alert--preliminary_question.chambers").hide();
         if (isDateAgreed === "false") {
             if (isAppeal === "true") {
                 $dateAgreedAlerts.filter(".appeal").show();
