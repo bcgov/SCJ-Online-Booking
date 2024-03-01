@@ -231,6 +231,7 @@ namespace SCJ.Booking.MVC.ViewModels
             get { return LocationPrefix + " " + SelectedFileNumber; }
         }
         public List<int> AvailableConferenceTypeIds { get; set; }
+        public List<string> AvailableBookingTypes { get; set; }
 
         public string GetCourtClass(string value)
         {

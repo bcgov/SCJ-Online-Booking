@@ -90,7 +90,7 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         [Route("~/booking/sc/booking-type")]
-        public IActionResult BookingType()
+        public async Task<IActionResult> BookingType()
         {
             var model = _scBookingService.LoadSearchForm2();
 
@@ -98,6 +98,8 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 return RedirectToAction("Index");
             }
+
+            model.AvailableBookingTypes = await _scBookingService.GetAvailableBookingTypes();
 
             return View(model);
         }
@@ -112,7 +114,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             // Extra fields for "Trial" booking type
-            if (model.HearingTypeId == 99999)
+            if (model.HearingTypeId == 9001)
             {
                 if (model.EstimatedTrialLength == null || model.EstimatedTrialLength == 0)
                 {

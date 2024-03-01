@@ -231,6 +231,15 @@ namespace SCJ.Booking.MVC.Services
             return await GetConferenceTypesAsync(model.CaseLocationName);
         }
 
+        // Returns booking types from the cache
+        public async Task<List<string>> GetAvailableBookingTypes()
+        {
+            var supportedTypes = ScHearingType.HearingTypeIdMap.Keys.Select(keyName => keyName);
+            return (await _cache.GetAvailableBookingTypesAsync())
+                .Intersect(supportedTypes)
+                .ToList();
+        }
+
         public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
         {
             // Load locations from cache
@@ -635,12 +644,11 @@ namespace SCJ.Booking.MVC.Services
             //Render the email template
             string template = booking.HearingTypeId switch
             {
-                //ScHearingType.AWS => "ScBooking/Email-CV-AWS",
-                //ScHearingType.JMC => "ScBooking/Email-JMC",
-                //ScHearingType.PTC => "ScBooking/Email-CV-PTC",
-                //ScHearingType.TCH => "ScBooking/Email-CV-TCH",
-                ScHearingType.TMC
-                    => "ScBooking/Email-TMC",
+                ScHearingType.AWS => "ScBooking/Email-CV-AWS",
+                ScHearingType.JMC => "ScBooking/Email-JMC",
+                ScHearingType.PTC => "ScBooking/Email-CV-PTC",
+                ScHearingType.TCH => "ScBooking/Email-CV-TCH",
+                ScHearingType.TMC => "ScBooking/Email-TMC",
                 ScHearingType.CPC => "ScBooking/Email-CPC",
                 ScHearingType.JCC => "ScBooking/Email-JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),

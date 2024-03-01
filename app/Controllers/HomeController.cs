@@ -1,14 +1,29 @@
+using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.ViewModels;
+using SCJ.Booking.MVC.Services;
 
 namespace SCJ.Booking.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        //Services
+        private readonly ScBookingService _scBookingService;
+        //Constructor
+        public HomeController(ScBookingService scBookingService)
         {
-            return View();
+            _scBookingService = scBookingService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            return View(
+                new IndexViewModel
+                {
+                    AvailableBookingTypes = await _scBookingService.GetAvailableBookingTypes()
+                }
+            );
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
