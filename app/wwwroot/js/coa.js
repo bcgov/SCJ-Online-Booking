@@ -140,29 +140,29 @@ $(document).ready(function () {
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
     $('.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]').change(function () {
-        const isAppeal = $("#IsAppealHearing:checked").val();
+        const isAppeal = $('input[name="IsAppealHearing"]:checked').val();
         const isDateAgreed = $('input[name="DateIsAgreed"]:checked').val();
-        var $radioBtnGroup = $(this).parent().parent();
+        const isFactumFiled = $('input[name="FactumFiled"]:checked').val();
 
         // show notices for "preliminary question" radio buttons
-        if ($radioBtnGroup.hasClass("preliminary_questions__radio")) {
-            console.log('factummmm');
-            var $radioBtnValue = $(this).val();
-            if ($radioBtnValue === "false" && !$(this).parent().hasClass('disabled')) {
-                $radioBtnGroup.siblings(".alert--preliminary_question").show();
-                $radioBtnGroup.siblings(".notice--preliminary_question").hide();
-            } else if ($radioBtnValue === "true" && !$(this).parent().hasClass('disabled')) {
-                $radioBtnGroup.siblings(".alert--preliminary_question").hide();
-                $radioBtnGroup.siblings(".notice--preliminary_question").show();
+        if (!$("#Appeal_FactumFiled > label").hasClass("disabled")) {
+            if (isFactumFiled === "false") {
+                $(".alert--preliminary_question.factumFiled").show();
+                $(".notice--preliminary_question.factumFiled").hide();
+                console.log("factum b");
+            } else if (isFactumFiled === "true") {
+                console.log("factum a");
+                $(".alert--preliminary_question.factumFiled").hide();
+                $(".notice--preliminary_question.factumFiled").show();
             }
         }
 
         // show warning alert if the date hasn't been agreed upon
         const $dateAgreedAlerts = $(".alert--preliminary_question.appeal, .alert--preliminary_question.chambers").hide();
-        if (isDateAgreed === "false") {
+        if (isDateAgreed === "false" && !$("#DateIsAgreed > label").hasClass("disabled")) {
             if (isAppeal === "true") {
                 $dateAgreedAlerts.filter(".appeal").show();
-            } else {
+            } else if (isAppeal === "false") {
                 $dateAgreedAlerts.filter(".chambers").show();
             }
         }
