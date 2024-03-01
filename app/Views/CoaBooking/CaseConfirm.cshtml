@@ -65,7 +65,19 @@
                 <div class="form-group">
                     <label>Is the hearing date agreed upon by all parties?</label>
                     <div>
-                        <span>@(Model.DateIsAgreed is true ? "Yes" : "No")</span>
+                        @if (Model.IsAppealHearing) {
+                            <span>@(Model.DateIsAgreed is true ? "Yes" : "No")</span>
+                        } else {
+                            @* Chambers hearings: show a notice if the dates aren't agreed *@
+                            if (Model.DateIsAgreed is true) {
+                                <span>Yes</span>
+                            } else {
+                                <span>
+                                    No. You should communicate with the other person(s) responding
+                                    to this application to ensure they are available on the requested date.
+                                </span>
+                            }
+                        }
                     </div>
                 </div>
                 @if (Model.IsAppealHearing)
