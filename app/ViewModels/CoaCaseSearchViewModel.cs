@@ -58,7 +58,7 @@ namespace SCJ.Booking.MVC.ViewModels
             }
         }
 
-        public bool Step2Complete => IsAppealHearing.HasValue && DateIsAgreed is true;
+        public bool Step2Complete => IsAppealHearing.HasValue && DateIsAgreed.HasValue;
 
         public bool Step3Complete
         {
