@@ -1,14 +1,17 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SCJ.Booking.MVC.Controllers
 {
     [Route("booking/coa/[action]")]
+    [Authorize]
     public class CoaBookingController : Controller
     {
         //Services
@@ -204,33 +207,12 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            string userGuid;
-            string userDisplayName;
-
-            if (_coaBookingService.IsLocalDevEnvironment)
-            {
-                // use fake SiteMinder header values for local development
-                userGuid = "072cfc73-e3b9-437b-8012-0b0945f09879";
-                userDisplayName = "Matthew Begbie";
-            }
-            else
-            {
-                //read smgov_userguid SiteMinder header
-                userGuid = HttpContext.Request.Headers.ContainsKey("smgov_userguid")
-                    ? HttpContext.Request.Headers["smgov_userguid"].ToString()
-                    : string.Empty;
-
-                //read smgov_userdisplayname SiteMinder header
-                userDisplayName = HttpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
-                    ? HttpContext.Request.Headers["smgov_userdisplayname"].ToString()
-                    : string.Empty;
-            }
+            ClaimsPrincipal user = HttpContext.User;
 
             //make booking
             CoaCaseConfirmViewModel result = await _coaBookingService.BookCourtCase(
                 model,
-                userGuid,
-                userDisplayName
+                HttpContext.User
             );
 
             return Redirect(

@@ -13,10 +13,10 @@ namespace SCJ.Booking.UnitTest
 
             // To connect these tests to the real API:
             //  1. Comment out the line above that creates a FakeOnlineBookingClient
-            //  2. Uncomment the 2 lines below
-            //  3. Add 3 system environment variables API_ENDPOINT, API_USERNAME, API_PASSWORD
-            //  4. Restart visual studio
+            //  2. Uncomment the 3 lines below
+            //  3. Add 3 settings to test/.env : API_ENDPOINT, API_USERNAME, API_PASSWORD and change USE_FAKE_API to false
 
+            // new EnvLoader().Load();
             // IConfiguration configuration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
             // _soapClient = OnlineBookingClientFactory.GetClient(configuration);
         }
