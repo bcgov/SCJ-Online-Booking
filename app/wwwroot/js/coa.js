@@ -140,17 +140,30 @@ $(document).ready(function () {
     //Display Show Available Dates button when all fields are correctly selected
     //and display errors for required preliminary questions
     $('.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]').change(function () {
-        var isAppeal = $('#IsAppealHearing:checked').val();
-        var $radioBtnGroup = $(this).parent().parent();
-        
-        if ($radioBtnGroup.hasClass("preliminary_questions__radio")) {
-            var $radioBtnValue = $(this).val();
-            if ($radioBtnValue === "false" && !$(this).parent().hasClass('disabled')) {
-                $radioBtnGroup.siblings(".alert--preliminary_question").show();
-                $radioBtnGroup.siblings(".notice--preliminary_question").hide();
-            } else if ($radioBtnValue === "true" && !$(this).parent().hasClass('disabled')) {
-                $radioBtnGroup.siblings(".alert--preliminary_question").hide();
-                $radioBtnGroup.siblings(".notice--preliminary_question").show();
+        const isAppeal = $('input[name="IsAppealHearing"]:checked').val();
+        const isDateAgreed = $('input[name="DateIsAgreed"]:checked').val();
+        const isFactumFiled = $('input[name="FactumFiled"]:checked').val();
+
+        // show notices for "preliminary question" radio buttons
+        if (!$("#Appeal_FactumFiled > label").hasClass("disabled")) {
+            if (isFactumFiled === "false") {
+                $(".alert--preliminary_question.factumFiled").show();
+                $(".notice--preliminary_question.factumFiled").hide();
+                console.log("factum b");
+            } else if (isFactumFiled === "true") {
+                console.log("factum a");
+                $(".alert--preliminary_question.factumFiled").hide();
+                $(".notice--preliminary_question.factumFiled").show();
+            }
+        }
+
+        // show warning alert if the date hasn't been agreed upon
+        const $dateAgreedAlerts = $(".alert--preliminary_question.appeal, .alert--preliminary_question.chambers").hide();
+        if (isDateAgreed === "false" && !$("#DateIsAgreed > label").hasClass("disabled")) {
+            if (isAppeal === "true") {
+                $dateAgreedAlerts.filter(".appeal").show();
+            } else if (isAppeal === "false") {
+                $dateAgreedAlerts.filter(".chambers").show();
             }
         }
 
@@ -221,8 +234,14 @@ $(document).ready(function () {
         }
 
         // hearing date agreed
-        if ($('input[name="DateIsAgreed"]:checked').val() !== 'true') {
+        if ($('input[name="DateIsAgreed"]:checked').length === 0) {
             valid = false;
+        } else if ($('input[name="DateIsAgreed"]:checked').val() !== "true") {
+            // for appeal hearings, date must be agreed upon
+            const IsAppealHearingVal = $('input[name="IsAppealHearing"]:checked').val() === "true";
+            if (IsAppealHearingVal) {
+                valid = false;
+            }
         }
 
         // show the "next" button if the form is valid
