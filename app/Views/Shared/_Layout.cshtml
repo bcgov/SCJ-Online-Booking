@@ -1,100 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="BC Courts Booking System"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="BC Courts Booking System" />
     <title>@ViewData["Title"] - BC Courts Booking System</title>
-    <link rel="stylesheet" href="/scjob/dist/css/bootstrap.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="/scjob/dist/css/fontawesome.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="/scjob/dist/css/BCSans.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="/scjob/dist/css/swiper.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="/scjob/dist/css/bootstrap.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/scjob/dist/css/fontawesome.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/scjob/dist/css/BCSans.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/scjob/dist/css/swiper.css" asp-append-version="true" />
     <link rel="stylesheet" href="/scjob/dist/css/bootstrap-datepicker3.standalone.css" asp-append-version="true" />
-    <link rel="stylesheet" href="/scjob/dist/css/global.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="/scjob/dist/css/global.css" asp-append-version="true" />
     <link rel="icon" href="/scjob/favicon.ico" type="image/x-icon" />
     @RenderSection("Styles", false)
 </head>
+
 <body>
-<div class="main">
-    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
-    <div class="header-logo-div">
-        <div class="container">
-            <a class="header-logo" href="/scjob">
-                <img src="https://www.courts.gov.bc.ca/images/logo-wordmark.gif" alt="The Courts of British Columbia" />
-            </a>
+    <div class="main">
+        <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+        <div class="header-logo-div">
+            <div class="container">
+                <a class="header-logo" href="/scjob">
+                    <img src="https://www.courts.gov.bc.ca/images/logo-wordmark.gif"
+                        alt="The Courts of British Columbia" />
+                </a>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark header-nav">
+            <div class="container" id="scj-header-nav">
+                <span class="app-name">
+                    @if (ViewBag.CourtName == "supreme")
+                    {
+                        <a href="/scjob/booking/sc">
+                            BC Courts Online Booking System
+                            <span class="d-none d-sm-inline-block">-</span>
+                            <br class="d-sm-none" />
+                            Supreme Court
+                        </a>
+                    }
+
+
+                    else if (ViewBag.CourtName == "coa")
+                    {
+                        <a href="/scjob/booking/coa/Restart">
+                            BC Courts Online Booking System
+                            <span class="d-none d-sm-inline-block">-</span>
+                            <br class="d-sm-none" />
+                            Court of Appeal
+                        </a>
+                    }
+
+                    else
+                    {
+                        <a href="/scjob">BC Courts Online Booking System</a>
+                    }
+                </span>
+                @RenderSection("NavBar", false)
+            </div>
+        </nav>
+        <div id="content" class="container body-content">
+            @RenderBody()
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-dark header-nav">
-        <div class="container" id="scj-header-nav">
-            <span class="app-name">
-                @if (ViewBag.CourtName == "supreme")
-                {
-                    <a href="/scjob/booking/sc">
-                        BC Courts Online Booking System
-                        <span class="d-none d-sm-inline-block">-</span>
-                        <br class="d-sm-none" />
-                        Supreme Court
-                    </a>
-                }
+    <footer class="footer">
+        <nav class="footer-nav">
+            <div class="container">
+                <ul class="footer-nav-items">
+                    <li class="nav-item">
+                        <a href="/scjob">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.courts.gov.bc.ca/Privacy%20Statement.html" target="_blank"
+                            rel="noopener">Disclaimer, Copyright and Privacy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.bccourts.ca/contact_us.aspx">Contact Us</a>
+                    </li>
+                </ul>
+                <span class="copyright">&copy; @DateTime.Now.Year - British Columbia Superior Courts</span>
+            </div>
+        </nav>
+    </footer>
 
-
-                else if (ViewBag.CourtName == "coa")
-                {
-                    <a href="/scjob/booking/coa/Restart">
-                        BC Courts Online Booking System
-                        <span class="d-none d-sm-inline-block">-</span>
-                        <br class="d-sm-none" />
-                        Court of Appeal
-                    </a>
-                }
-
-                else
-                {
-                    <a href="/scjob">BC Courts Online Booking System</a>
-                }
-            </span>
-            @RenderSection("NavBar", false)
-        </div>
-    </nav>
-    <div id="content" class="container body-content">
-        @RenderBody()
+    <div id="progress-overlay" style="display: none">
+        <div id="progress-overlay-spinner"></div>
     </div>
-</div>
-<footer class="footer">
-    <nav class="footer-nav">
-        <div class="container">
-            <ul class="footer-nav-items">
-                <li class="nav-item">
-                    <a href="/scjob">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://www.courts.gov.bc.ca/Privacy%20Statement.html" target="_blank" rel="noopener">Disclaimer, Copyright and Privacy</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://www.bccourts.ca/contact_us.aspx">Contact Us</a>
-                </li>
-            </ul>
-            <span class="copyright">&copy; @DateTime.Now.Year - British Columbia Superior Courts</span>
-        </div>
-    </nav>
-</footer>
 
-<div id="progress-overlay" style="display: none"><div id="progress-overlay-spinner"></div></div>
+    <environment include="Development">
+        <script src="/scjob/dist/lib/jquery.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/lib/bootstrap.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="/scjob/dist/lib/jquery.min.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/lib/bootstrap.min.js" asp-append-version="true"></script>
+    </environment>
+    <script src="/scjob/dist/lib/spin.min.js" asp-append-version="true"></script>
+    <script src="/scjob/js/jquery.spin.js" asp-append-version="true"></script>
+    <script src="/scjob/js/site.js" asp-append-version="true"></script>
 
-<environment include="Development">
-    <script src="/scjob/dist/lib/jquery.js" asp-append-version="true"></script>
-    <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
-    <script src="/scjob/dist/lib/bootstrap.js" asp-append-version="true"></script>
-</environment>
-<environment exclude="Development">
-    <script src="/scjob/dist/lib/jquery.min.js" asp-append-version="true"></script>
-    <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
-    <script src="/scjob/dist/lib/bootstrap.min.js" asp-append-version="true"></script>
-</environment>
-<script src="/scjob/dist/lib/spin.min.js" asp-append-version="true"></script>
-<script src="/scjob/js/jquery.spin.js" asp-append-version="true"></script>
-<script src="/scjob/js/site.js" asp-append-version="true"></script>
-
-@RenderSection("Scripts", false)
+    @RenderSection("Scripts", false)
 </body>
+
 </html>

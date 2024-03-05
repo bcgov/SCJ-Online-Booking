@@ -58,12 +58,7 @@
                                 var hearingTypeName = @ScHearingType.HearingTypeNameMap[hearingTypeId];
                             }
 
-                            <input
-                                asp-for="HearingTypeId"
-                                type="radio"
-                                name="HearingTypeId"
-                                value="@hearingTypeId"
-                            />
+                            <input asp-for="HearingTypeId" type="radio" name="HearingTypeId" value="@hearingTypeId" />
                             @hearingTypeName
                         </label>
                     }
@@ -74,7 +69,8 @@
                 </div>
 
                 <p>
-                    <a href="https://www.bccourts.ca/supreme_court/scheduling" target="_blank" rel="noopener">Contact the applicable Supreme Court scheduling office</a>
+                    <a href="https://www.bccourts.ca/supreme_court/scheduling" target="_blank" rel="noopener">Contact
+                        the applicable Supreme Court scheduling office</a>
                     <i class="fa fa-external-link-alt"></i> by telephone for conference types not listed.
                 </p>
 
@@ -85,12 +81,8 @@
                         </label>
 
                         <div>
-                            <input
-                                class="mr-2 form-control d-inline-block EstimatedTrialLength"
-                                type="number"
-                                min="1"
-                                asp-for="EstimatedTrialLength"
-                            />
+                            <input class="mr-2 form-control d-inline-block EstimatedTrialLength" type="number" min="1"
+                                asp-for="EstimatedTrialLength" />
                             <span>days</span>
 
                             <div class="mt-2">
@@ -106,14 +98,14 @@
 
                         <div class="check-group">
                             <label>
-                                <input id="IsHomeRegistry--Yes" asp-for="IsHomeRegistry"
-                                    type="radio" name="IsHomeRegistry" value="true">
+                                <input id="IsHomeRegistry--Yes" asp-for="IsHomeRegistry" type="radio"
+                                    name="IsHomeRegistry" value="true">
                                 Yes
                             </label>
 
                             <label>
-                                <input id="IsHomeRegistry--No" asp-for="IsHomeRegistry"
-                                    type="radio" name="IsHomeRegistry" value="false">
+                                <input id="IsHomeRegistry--No" asp-for="IsHomeRegistry" type="radio"
+                                    name="IsHomeRegistry" value="false">
                                 No
                             </label>
                         </div>
@@ -132,14 +124,14 @@
 
                         <div class="check-group">
                             <label>
-                                <input id="IsLocationChangeFiled--Yes" asp-for="IsLocationChangeFiled"
-                                    type="radio" name="IsLocationChangeFiled" value="true">
+                                <input id="IsLocationChangeFiled--Yes" asp-for="IsLocationChangeFiled" type="radio"
+                                    name="IsLocationChangeFiled" value="true">
                                 Yes
                             </label>
 
                             <label>
-                                <input id="IsLocationChangeFiled--No" asp-for="IsLocationChangeFiled"
-                                    type="radio" name="IsLocationChangeFiled" value="false">
+                                <input id="IsLocationChangeFiled--No" asp-for="IsLocationChangeFiled" type="radio"
+                                    name="IsLocationChangeFiled" value="false">
                                 No
                             </label>
                         </div>
@@ -151,7 +143,8 @@
 
                     <div id="trial-location-warning" class="alert alert-danger" role="alert">
                         <i class="fas fa-ban"></i>
-                        You must have an entered court order changing the place of trial or have a different place of trial
+                        You must have an entered court order changing the place of trial or have a different place of
+                        trial
                         stated on the initiating document (eg. Notice of Civil Claim, Notice of Family Claim).
                     </div>
 
@@ -160,12 +153,8 @@
                             Where will the trial be held?
                         </label>
 
-                        <select
-                            asp-for="TrialLocation"
-                            asp-items="SelectListService.SupremeLocations"
-                            class="form-control TrialLocation"
-                            id="TrialLocation"
-                        >
+                        <select asp-for="TrialLocation" asp-items="SelectListService.SupremeLocations"
+                            class="form-control TrialLocation" id="TrialLocation">
                             <option value="">-- Pick a registry --</option>
                         </select>
 

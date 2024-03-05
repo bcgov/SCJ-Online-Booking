@@ -9,7 +9,8 @@
 
 @section NavBar
 {
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse collapse">
@@ -22,7 +23,7 @@
 }
 
 <div class="body-content--inner">
-@RenderBody()
+    @RenderBody()
 </div>
 
 @section Scripts {
@@ -33,6 +34,6 @@
 
 @section Styles {
     @RenderSection("Styles", false)
-    <link rel="stylesheet" href="/scjob/dist/css/coa.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="/scjob/dist/vue/ApplicationTypeSelect.js.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="/scjob/dist/css/coa.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/scjob/dist/vue/ApplicationTypeSelect.js.css" asp-append-version="true" />
 }

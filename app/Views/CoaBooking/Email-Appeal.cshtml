@@ -21,9 +21,10 @@ Appeal
 
 DATE OF HEARING:
 @Model.Date
-@if (!string.IsNullOrEmpty(Model.HearingTypeName)) {
-@Html.Raw("\nTYPE OF APPEAL HEARING:\n")
-@Html.Raw(Model.HearingTypeName + "\n")
+@if (!string.IsNullOrEmpty(Model.HearingTypeName))
+{
+  @Html.Raw("\nTYPE OF APPEAL HEARING:\n")
+  @Html.Raw(Model.HearingTypeName + "\n")
 }
 
 LENGTH OF HEARING:

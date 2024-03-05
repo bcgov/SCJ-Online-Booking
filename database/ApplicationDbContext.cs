@@ -6,8 +6,8 @@ namespace SCJ.Booking.Data
 {
     public class ApplicationDbContext : DbContext, IDataProtectionKeyContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) { }
 
         public DbSet<BookingHistory> BookingHistory => Set<BookingHistory>();
 
@@ -17,15 +17,12 @@ namespace SCJ.Booking.Data
         {
             modelBuilder
                 .Entity<BookingHistory>()
-                .HasKey(
-                    b =>
-                        new
-                        {
-                            b.SmGovUserGuid,
-                            b.ContainerId,
-                            b.Timestamp
-                        }
-                );
+                .HasKey(b => new
+                {
+                    b.SmGovUserGuid,
+                    b.ContainerId,
+                    b.Timestamp
+                });
         }
     }
 }
