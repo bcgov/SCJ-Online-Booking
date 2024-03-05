@@ -21,5 +21,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public string StyleOfCause { get; internal set; }
         public List<string> SelectedApplicationTypeNames { get; set; }
         public string HearingTypeName { get; set; }
+        public bool DateIsAgreed { get; set; }
     }
 }
