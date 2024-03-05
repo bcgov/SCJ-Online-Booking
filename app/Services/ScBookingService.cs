@@ -110,14 +110,13 @@ namespace SCJ.Booking.MVC.Services
             {
                 var locations = await _cache.GetLocationsAsync();
                 result = locations
-                    .Where(
-                        x =>
-                            x.locationName == caseLocationName
-                            && (
-                                x.bookingHearingTypeID == ScHearingType.TMC
-                                || x.bookingHearingTypeID == ScHearingType.CPC
-                                || x.bookingHearingTypeID == ScHearingType.JCC
-                            )
+                    .Where(x =>
+                        x.locationName == caseLocationName
+                        && (
+                            x.bookingHearingTypeID == ScHearingType.TMC
+                            || x.bookingHearingTypeID == ScHearingType.CPC
+                            || x.bookingHearingTypeID == ScHearingType.JCC
+                        )
                     )
                     .Select(x => x.bookingHearingTypeID)
                     .Distinct()
@@ -603,13 +602,12 @@ namespace SCJ.Booking.MVC.Services
 
             //get all entries for logged-in user
             //booked on today
-            List<BookingHistory> hearingsBookedForToday = _dbContext.BookingHistory
-                .Where(
-                    b =>
-                        b.SmGovUserGuid == userGuid
-                        && b.Timestamp.Day == today.Day
-                        && b.Timestamp.Month == today.Month
-                        && b.Timestamp.Year == today.Year
+            List<BookingHistory> hearingsBookedForToday = _dbContext
+                .BookingHistory.Where(b =>
+                    b.SmGovUserGuid == userGuid
+                    && b.Timestamp.Day == today.Day
+                    && b.Timestamp.Month == today.Month
+                    && b.Timestamp.Year == today.Year
                 )
                 .ToList();
 

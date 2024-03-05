@@ -8,8 +8,8 @@ Vue.config.productionTip = false;
 
 Vue.component("HearingTimeSelect", HearingTimeSelect);
 
-if ($('#VueHearingTimeSelect').length) {
-    let vue = new Vue({
-        el: "#VueHearingTimeSelect"
-    });
+if ($("#VueHearingTimeSelect").length) {
+  let vue = new Vue({
+    el: "#VueHearingTimeSelect",
+  });
 }

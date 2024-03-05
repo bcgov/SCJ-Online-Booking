@@ -10,11 +10,11 @@ Vue.component("ApplicationTypeSelect", ApplicationTypeSelect);
 
 // Mount vue app if a container element exists
 if ($("#VueApplicationTypeSelect").length) {
-    new Vue({
-        el: "#VueApplicationTypeSelect",
-        methods: {
-            // bring functions (from /js/coa.js) into the vue app scope
-            onApplicationTypeChange,
-        },
-    });
+  new Vue({
+    el: "#VueApplicationTypeSelect",
+    methods: {
+      // bring functions (from /js/coa.js) into the vue app scope
+      onApplicationTypeChange,
+    },
+  });
 }

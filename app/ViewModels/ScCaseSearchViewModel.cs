@@ -1,8 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-using SCJ.OnlineBooking;
-using System.Collections.Generic;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
@@ -69,8 +69,8 @@ namespace SCJ.Booking.MVC.ViewModels
                 var result = DateTime.Now.ToString(format);
                 if (Results?.AvailableDates != null)
                 {
-                    result = Results.AvailableDates
-                        .Select(x => x.Date_Time.Date)
+                    result = Results
+                        .AvailableDates.Select(x => x.Date_Time.Date)
                         .OrderBy(x => x)
                         .FirstOrDefault()
                         .ToString(format);
@@ -85,8 +85,8 @@ namespace SCJ.Booking.MVC.ViewModels
                 var result = DateTime.Now.ToString(format);
                 if (Results?.AvailableDates != null)
                 {
-                    result = Results.AvailableDates
-                        .Select(x => x.Date_Time.Date)
+                    result = Results
+                        .AvailableDates.Select(x => x.Date_Time.Date)
                         .OrderBy(x => x)
                         .LastOrDefault()
                         .ToString(format);
@@ -120,13 +120,12 @@ namespace SCJ.Booking.MVC.ViewModels
                                     1,
                                     DateTime.DaysInMonth(yearAndMonth.Item1, yearAndMonth.Item2)
                                 )
-                                .Select(
-                                    day =>
-                                        new DateTime(
-                                            yearAndMonth.Item1,
-                                            yearAndMonth.Item2,
-                                            day
-                                        ).ToString(format)
+                                .Select(day =>
+                                    new DateTime(
+                                        yearAndMonth.Item1,
+                                        yearAndMonth.Item2,
+                                        day
+                                    ).ToString(format)
                                 )
                         );
                     }
@@ -203,10 +202,9 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 return CourtFiles
-                    ?.Where(
-                        x =>
-                            string.IsNullOrWhiteSpace(SelectedCourtClass)
-                            || x.courtClassCode == SelectedCourtClass
+                    ?.Where(x =>
+                        string.IsNullOrWhiteSpace(SelectedCourtClass)
+                        || x.courtClassCode == SelectedCourtClass
                     )
                     .ToList();
             }

@@ -47,23 +47,23 @@ namespace SCJ.Booking.MVC
             switch (provider)
             {
                 case ServiceConfig.DataProviderMemory:
-                    services.AddDbContext<ApplicationDbContext>(
-                        options => options.UseInMemoryDatabase("Scratch")
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseInMemoryDatabase("Scratch")
                     );
                     break;
                 case ServiceConfig.DataProviderSqlServer:
-                    services.AddDbContext<ApplicationDbContext>(
-                        options => options.UseSqlServer(connectionString)
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(connectionString)
                     );
                     break;
                 case ServiceConfig.DataProviderNpgsql:
-                    services.AddDbContext<ApplicationDbContext>(
-                        options => options.UseNpgsql(connectionString)
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseNpgsql(connectionString)
                     );
                     break;
                 case ServiceConfig.DataProviderSqlite:
-                    services.AddDbContext<ApplicationDbContext>(
-                        options => options.UseSqlite(connectionString)
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlite(connectionString)
                     );
                     break;
                 default:

@@ -10,8 +10,10 @@
 
 @* Returns a class name if the field has any validation errors. *@
 @functions {
-    string GetValidationClass(string fieldName, string errorClass = "input-validation-error", string validClass = "") {
-        if (ViewData.ModelState.ContainsKey(fieldName) && ViewData.ModelState[fieldName].Errors.Any()) {
+    string GetValidationClass(string fieldName, string errorClass = "input-validation-error", string validClass = "")
+    {
+        if (ViewData.ModelState.ContainsKey(fieldName) && ViewData.ModelState[fieldName].Errors.Any())
+        {
             return errorClass;
         }
         return validClass;
@@ -35,7 +37,8 @@
 
 <form method="post" id="CaseSearchForm">
     <input type="hidden" id="CaseType" name="CaseType" value="@Model.CaseType" />
-    <input type="hidden" id="IsValidCaseNumber" name="IsValidCaseNumber" value="@Convert.ToString(Model.IsValidCaseNumber.Value)" />
+    <input type="hidden" id="IsValidCaseNumber" name="IsValidCaseNumber"
+        value="@Convert.ToString(Model.IsValidCaseNumber.Value)" />
     <!-- Search filter-->
     <div class="row search-container">
         <div class="col col-md-12">
@@ -47,7 +50,9 @@
                             <select class="form-control registryOptions" id="hearingLocation" disabled>
                                 <option value="Vancouver">Vancouver </option>
                             </select>
-                            <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>Online booking is currently active for Vancouver hearing dates only.</p>" aria-label="Online Booking is currently active for Vancouver Hearing dates only.">
+                            <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
+                                title="<p>Online booking is currently active for Vancouver hearing dates only.</p>"
+                                aria-label="Online Booking is currently active for Vancouver Hearing dates only.">
                                 <i class="fas fa-question-circle"></i>
                             </span>
                         </div>
@@ -61,7 +66,8 @@
                                     <input class="form-control caseNumber" asp-for="CaseNumber" disabled="@(true)" />
                                     <input type="hidden" asp-for="CaseNumber" value="@Model.CaseNumber" />
                                 }
-                                else if (Model.CaseNumber != null && Model.CaseNumber != "CA" && Model.IsValidCaseNumber is not true)
+                                else if (Model.CaseNumber != null && Model.CaseNumber != "CA" && Model.IsValidCaseNumber
+                                is not true)
                                 {
                                     <input class="form-control caseNumber" asp-for="CaseNumber" />
                                 }
@@ -70,7 +76,9 @@
                                     <input class="form-control caseNumber" asp-for="CaseNumber" value="CA" />
                                 }
                             </div>
-                            <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true" title="<p>The court file number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p><p>Please ensure that you have confirmed your court file number.</p>" aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA. Please ensure that you have confirmed your court file number.">
+                            <span class="pl-2" tabindex="0" data-toggle="tooltip" data-html="true"
+                                title="<p>The court file number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA.</p><p>Please ensure that you have confirmed your court file number.</p>"
+                                aria-label="The Court File Number is often in the format of CA##### (ex. CA12345). Please remove any leading zeros (0) before the number and CA. Please ensure that you have confirmed your court file number.">
                                 <i class="fas fa-question-circle"></i>
                             </span>
                         </div>
@@ -92,7 +100,9 @@
                                         {
                                             <li>
                                                 <label>
-                                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(true)" data-main="@(x.Main)" />
+                                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num"
+                                                        checked="@((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))"
+                                                        disabled="@(true)" data-main="@(x.Main)" />
 
                                                     @if ((Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))
                                                     {
@@ -110,9 +120,13 @@
                                         {
                                             <li>
                                                 <label>
-                                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num" checked="@(x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))" disabled="@(Model.Step2Complete || x.Case_Num == Model.CaseNumber)" data-main="@(x.Main)" />
+                                                    <input type="checkbox" name="SelectedCases" value="@x.Case_Num"
+                                                        checked="@(x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))"
+                                                        disabled="@(Model.Step2Complete || x.Case_Num == Model.CaseNumber)"
+                                                        data-main="@(x.Main)" />
                                                     @* If the field is disabled, add a hidden input to POST the disabled value *@
-                                                    @if (x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null && Model.SelectedCases.Contains(x.Case_Num)))
+                                                    @if (x.Case_Num == Model.CaseNumber || (Model.SelectedCases != null &&
+                                                   Model.SelectedCases.Contains(x.Case_Num)))
                                                     {
                                                         <input type="hidden" name="SelectedCases" value="@x.Case_Num" checked />
                                                     }
@@ -125,7 +139,9 @@
 
                                 <div class="alert alert-warning  alert--related-cases">
                                     <i class="fa fa-exclamation-triangle"></i>
-                                    Only one related file number can be requested in a hearing unless the main file number is also included. If you require assistance for your booking, please contact the scheduler at 604-660-2865.
+                                    Only one related file number can be requested in a hearing unless the main file number is
+                                    also included. If you require assistance for your booking, please contact the scheduler at
+                                    604-660-2865.
                                 </div>
                             </div>
                         </div>
@@ -138,12 +154,18 @@
                                     What hearing are you trying to book?
                                 </label>
                                 <div class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @(Model.IsAppealHearing is true ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
-                                        <input type="radio" asp-for="IsAppealHearing" value="true" checked="@(Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Appeal
+                                    <label
+                                        class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @(Model.IsAppealHearing is true ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                        <input type="radio" asp-for="IsAppealHearing" value="true"
+                                            checked="@(Model.IsAppealHearing)"
+                                            readonly="@(Model.Step2Complete ? "readonly" : "")" /> Appeal
                                     </label>
 
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @(Model.IsAppealHearing is false ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
-                                        <input type="radio" asp-for="IsAppealHearing" value="false" checked="@(!Model.IsAppealHearing)" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Chambers
+                                    <label
+                                        class="btn btn-radio btn-radio--secondary btn-radio--hearing-type @GetValidationClass("IsAppealHearing") @(Model.IsAppealHearing is false ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                        <input type="radio" asp-for="IsAppealHearing" value="false"
+                                            checked="@(!Model.IsAppealHearing)"
+                                            readonly="@(Model.Step2Complete ? "readonly" : "")" /> Chambers
                                     </label>
                                 </div>
                                 <span class="text-danger" asp-validation-for="IsAppealHearing"></span>
@@ -152,12 +174,16 @@
                             <div class="col-md-6">
                                 <label class="can-wrap">Is the hearing date agreed upon by all parties?</label>
                                 <div id="DateIsAgreed" class="btn-radio-group preliminary_questions__radio">
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @(Model.DateIsAgreed is true ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
-                                        <input type="radio" asp-for="DateIsAgreed" value="true" readonly="@(Model.Step2Complete ? "readonly" : "")" /> Yes
+                                    <label
+                                        class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @(Model.DateIsAgreed is true ? "active" : "") @(Model.Step2Complete ? "disabled" : "")">
+                                        <input type="radio" asp-for="DateIsAgreed" value="true"
+                                            readonly="@(Model.Step2Complete ? "readonly" : "")" /> Yes
                                     </label>
 
-                                    <label class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @(Model.DateIsAgreed is false ? "active" : "") @(showingDates || Model.Step2Complete  ? "disabled" : "")">
-                                        <input type="radio" asp-for="DateIsAgreed" value="false" readonly="@(Model.Step2Complete ? "readonly" : "")" /> No
+                                    <label
+                                        class="btn btn-radio btn-radio--secondary btn-radio--date-agreed @GetValidationClass("DateIsAgreed") @(Model.DateIsAgreed is false ? "active" : "") @(showingDates || Model.Step2Complete  ? "disabled" : "")">
+                                        <input type="radio" asp-for="DateIsAgreed" value="false"
+                                            readonly="@(Model.Step2Complete ? "readonly" : "")" /> No
                                     </label>
                                 </div>
 
@@ -280,12 +306,9 @@
                                         }
 
                                         <div id="VueApplicationTypeSelect">
-                                            <application-type-select
-                                                :options="@availableDates"
-                                                :initial-selection="@selectedTypesJson"
-                                                :disabled="@applicationTypeSelectDisabled"
-                                                v-on:select="onApplicationTypeChange"
-                                            ></application-type-select>
+                                            <application-type-select :options="@availableDates"
+                                                :initial-selection="@selectedTypesJson" :disabled="@applicationTypeSelectDisabled"
+                                                v-on:select="onApplicationTypeChange"></application-type-select>
                                         </div>
 
                                         <span class="text-danger" asp-validation-for="SelectedApplicationTypes"></span>
@@ -297,15 +320,21 @@
                                         <label>How long will you require for your chambers hearing?</label>
                                         <p>
                                             If you require more than 1 hour, please select one hour below and contact the
-                                            <a target="_blank" href="https://www.bccourts.ca/court_of_appeal/court_locations_and_contacts.aspx">Registry - Chambers Hearings</a>.
+                                            <a target="_blank"
+                                                href="https://www.bccourts.ca/court_of_appeal/court_locations_and_contacts.aspx">Registry
+                                                - Chambers Hearings</a>.
                                         </p>
                                         <div id="Chambers_IsHalfHour" class="btn-radio-group mt-3">
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @(Model.IsHalfHour is true ? "active" : "") @(showingDates ? "disabled" : "")">
-                                                <input type="radio" asp-for="IsHalfHour" value="true" disabled="@(showingDates && Model.IsHalfHour == false)" /> Half hour
+                                            <label
+                                                class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @(Model.IsHalfHour is true ? "active" : "") @(showingDates ? "disabled" : "")">
+                                                <input type="radio" asp-for="IsHalfHour" value="true"
+                                                    disabled="@(showingDates && Model.IsHalfHour == false)" /> Half hour
                                             </label>
 
-                                            <label class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @(Model.IsHalfHour is false ? "active" : "") @(showingDates ? "disabled" : "")">
-                                                <input type="radio" asp-for="IsHalfHour" value="false" disabled="@(showingDates && Model.IsHalfHour == true)" /> One hour
+                                            <label
+                                                class="btn btn-radio btn-radio--secondary btn-radio--time_required @GetValidationClass("IsHalfHour") @(Model.IsHalfHour is false ? "active" : "") @(showingDates ? "disabled" : "")">
+                                                <input type="radio" asp-for="IsHalfHour" value="false"
+                                                    disabled="@(showingDates && Model.IsHalfHour == true)" /> One hour
                                             </label>
                                         </div>
                                         <span class="text-danger" asp-validation-for="IsHalfHour"></span>
@@ -328,19 +357,24 @@
                 <div class="row">
                     <div class="col-12 d-flex">
                         @* Hide the "Restart" button initially, until the File Number field changes *@
-                        <a class="btn btn-restart-search mr-auto mt-2 mb-5" href="/scjob/booking/coa/Restart" style="display: @(Model.Step1Complete ? "block" : "none");">Restart Search</a>
+                        <a class="btn btn-restart-search mr-auto mt-2 mb-5" href="/scjob/booking/coa/Restart"
+                            style="display: @(Model.Step1Complete ? "block" : "none");">Restart Search</a>
 
                         @if (!Model.Step1Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="SearchCases"
+                                class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Next</button>
                         }
                         else if (!Model.Step2Complete)
                         {
-                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Next</button>
+                            <button type="submit" id="btnNext" name="SubmitButton" value="HearingType"
+                                class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Next</button>
                         }
                         else
                         {
-                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates" class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Show Available Dates</button>
+                            <button type="submit" id="btnShowDates" name="SubmitButton" value="GetDates"
+                                class="btn btn-primary btn-hearing-confirmation mt-2 mb-5" style='display: none;'>Show Available
+                                Dates</button>
                         }
                     </div>
                 </div>
@@ -378,7 +412,8 @@
                             <div class="availableDates__month__days">
                                 @foreach (var day in days)
                                 {
-                                    <input type="radio" id="@("Date" + optionIndex)" asp-for="SelectedDate" value="@day.ToString("yyyy-MM-dd")" />
+                                    <input type="radio" id="@("Date" + optionIndex)" asp-for="SelectedDate"
+                                        value="@day.ToString("yyyy-MM-dd")" />
                                     <label for="@("Date" + optionIndex)" class="availableDate">
                                         <p>@day.ToString("dddd")</p>
                                         <p>@day.ToString("MMMM d, yyyy")</p>

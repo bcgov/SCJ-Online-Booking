@@ -14,18 +14,21 @@
             {
                 <h2>@ViewData["Title"]</h2>
                 <p class="mb-3">
-                    Your @hearingType has been scheduled for the date and time below. 
+                    Your @hearingType has been scheduled for the date and time below.
                 </p>
                 <p class="mb-3">
                     @if (@hearingType == "TMC")
                     {
                         <span>Please file a requisition to secure @hearingType date.</span>
-                    } else {
+                    }
+                    else
+                    {
                         <span>Please file a Notice of @hearingType to secure the date.</span>
                     }
                     <span>
                         Consult the
-                        <a href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/" target="_blank" rel="noopener">Supreme Court Rules</a>
+                        <a href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/"
+                            target="_blank" rel="noopener">Supreme Court Rules</a>
                         <i class="fa fa-external-link-alt"></i> for additional details.
                     </span>
                     <strong>
@@ -55,17 +58,19 @@
                     <div class="col">
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <i class="fas fa-exclamation-triangle"></i>
-                            Please logout and login again, your session was lost. 
+                            Please logout and login again, your session was lost.
                         </div>
                     </div>
                 </div>
             }
-            else {
+            else
+            {
                 <div class="row no-gutters">
                     <div class="col">
                         <div class="form-group" style="margin-bottom: 8px">
                             <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
-                            <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</h5>
+                            <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause
+                            </h5>
                             <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
                         </div>
                         <div class="form-group" style="margin-bottom: 8px">
@@ -91,7 +96,7 @@
                 <p>Log out of the BC Courts Booking System</p>
             </a>
         </div>
-        <div class="col-6 col-md-4"> 
+        <div class="col-6 col-md-4">
             <a class="btn btn-primary btn-block" href="/scjob/booking/sc" role="button">
                 Book Another Hearing
             </a>

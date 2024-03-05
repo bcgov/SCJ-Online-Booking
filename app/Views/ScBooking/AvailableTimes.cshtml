@@ -12,7 +12,8 @@
     <hr />
     <h6>Step 3</h6>
 
-    @if (@Model.HearingTypeId == @ScHearingType.TRIAL) {
+    @if (@Model.HearingTypeId == @ScHearingType.TRIAL)
+    {
         <h2>Choose Trial Date(s)</h2>
     }
     else
@@ -26,16 +27,17 @@
         <p>@Model.SelectedCourtClassName</p>
     </div>
 
-    @if (@Model.HearingTypeId == @ScHearingType.TRIAL) {
-        <partial name="Partial/AvailableTimes/_Trial" model="Model"/>
+    @if (@Model.HearingTypeId == @ScHearingType.TRIAL)
+    {
+        <partial name="Partial/AvailableTimes/_Trial" model="Model" />
 
         @section Styles {
-            <link rel="stylesheet" href="/scjob/dist/vue/TrialTimeSelect.js.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="/scjob/dist/vue/TrialTimeSelect.js.css" asp-append-version="true" />
         }
 
         @section Scripts {
-            <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
-            <script src="/scjob/dist/vue/TrialTimeSelect.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/vue/TrialTimeSelect.js" asp-append-version="true"></script>
         }
     }
     else
@@ -44,21 +46,21 @@
         Model.SelectedDate = Model.FirstAvailableDate;
 
         @section Scripts {
-            <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
-            <script src="/scjob/dist/vue/HearingTimeSelect.js" asp-append-version="true"></script>
-            <script src="/scjob/dist/lib/bootstrap-datepicker.js" asp-append-version="true"></script>
-            <script type="text/javascript">
-                $('#datepicker').datepicker({
-                    format: 'yyyy-mm-dd',
-                    weekStart: 0,
-                    autoclose: true,
-                    todayHighlight: true,
-                    startDate: @Json.Serialize(Model.FirstAvailableDate),
-                    defaultViewDate: @Json.Serialize(Model.FirstAvailableDate),
-                    clearBtn: true,
-                    endDate: @Json.Serialize(Model.LastAvailableDate),
-                    datesDisabled: @Json.Serialize(Model.DisabledDates)
-                }).on('changeDate', function(event) {
+        <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/vue/HearingTimeSelect.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/lib/bootstrap-datepicker.js" asp-append-version="true"></script>
+        <script type="text/javascript">
+            $('#datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                weekStart: 0,
+                autoclose: true,
+                todayHighlight: true,
+                startDate: @Json.Serialize(Model.FirstAvailableDate),
+                defaultViewDate: @Json.Serialize(Model.FirstAvailableDate),
+                clearBtn: true,
+                endDate: @Json.Serialize(Model.LastAvailableDate),
+                datesDisabled: @Json.Serialize(Model.DisabledDates)
+                    }).on('changeDate', function (event) {
                     var selectedDate = event.format();
                     var dates = @availableDates;
                     if (dates) {
@@ -68,9 +70,9 @@
                     }
                     $("#datepicker").html(selectedDate);
                 });
-            </script>
+        </script>
         }
 
-        <partial name="Partial/AvailableTimes/_Conference" model="Model"/>
+        <partial name="Partial/AvailableTimes/_Conference" model="Model" />
     }
 </div>

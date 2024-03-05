@@ -6,8 +6,8 @@
     ViewData["Title"] = "Your Request Has Been Sent";
 }
 
-    <div class="row screen-intro">
-        <div class="col-md-12 paragraph">
+<div class="row screen-intro">
+    <div class="col-md-12 paragraph">
         @if (SessionService.CoaBookingInfo.IsBooked)
         {
             <h1>@ViewData["Title"]</h1>
@@ -20,27 +20,27 @@
             <p>There was an error confirming your booking.</p>
             <p>The following message was returned by the scheduling system.</p>
         }
-        </div>
     </div>
+</div>
 
 @if (!SessionService.CoaBookingInfo.IsBooked)
 {
     <div class="alert alert-danger">
-        <i class="fas fa-exclamation-circle"></i>
-        @SessionService.CoaBookingInfo.FriendlyError
-    </div>
+    <i class="fas fa-exclamation-circle"></i>
+    @SessionService.CoaBookingInfo.FriendlyError
+</div>
 }
 else
 {
     <div class="row booking-confirmation">
-        <div class="content col-md-6">
-            @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
+    <div class="content col-md-6">
+        @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
             {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <i class="fas fa-exclamation-triangle"></i>
-                            Please logout and login again, your session was lost. 
+                            Please logout and login again, your session was lost.
                         </div>
                     </div>
                 </div>

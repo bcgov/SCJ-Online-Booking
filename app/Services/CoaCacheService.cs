@@ -1,8 +1,8 @@
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
-using System.Threading.Tasks;
 using Serilog;
 
 namespace SCJ.Booking.MVC.Services
@@ -15,7 +15,8 @@ namespace SCJ.Booking.MVC.Services
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
 
-        public CoaCacheService(IDistributedCache cache, IConfiguration configuration) : base(cache)
+        public CoaCacheService(IDistributedCache cache, IConfiguration configuration)
+            : base(cache)
         {
             _configuration = configuration;
             _logger = LogHelper.GetLogger(configuration);

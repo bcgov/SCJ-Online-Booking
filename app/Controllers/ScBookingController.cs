@@ -120,24 +120,36 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 if (model.EstimatedTrialLength == null || model.EstimatedTrialLength == 0)
                 {
-                    ModelState.AddModelError("EstimatedTrialLength", "Provide the estimated length of your trial.");
+                    ModelState.AddModelError(
+                        "EstimatedTrialLength",
+                        "Provide the estimated length of your trial."
+                    );
                 }
 
                 if (model.IsHomeRegistry == null)
                 {
-                    ModelState.AddModelError("IsHomeRegistry", "Indicate if the trial is taking place in the home registry.");
+                    ModelState.AddModelError(
+                        "IsHomeRegistry",
+                        "Indicate if the trial is taking place in the home registry."
+                    );
                 }
 
                 if (model.IsHomeRegistry == false)
                 {
                     if (model.IsLocationChangeFiled == null)
                     {
-                        ModelState.AddModelError("IsLocationChangeFiled", "Please choose an option.");
+                        ModelState.AddModelError(
+                            "IsLocationChangeFiled",
+                            "Please choose an option."
+                        );
                     }
 
                     if (string.IsNullOrWhiteSpace(model.TrialLocation))
                     {
-                        ModelState.AddModelError("TrialLocation", "Please choose a trial location.");
+                        ModelState.AddModelError(
+                            "TrialLocation",
+                            "Please choose a trial location."
+                        );
                     }
                 }
             }

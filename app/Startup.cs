@@ -218,8 +218,8 @@ namespace SCJ.Booking.MVC
             var platform = new Platform();
 
             using (
-                IServiceScope serviceScope = app.ApplicationServices
-                    .GetRequiredService<IServiceScopeFactory>()
+                IServiceScope serviceScope = app
+                    .ApplicationServices.GetRequiredService<IServiceScopeFactory>()
                     .CreateScope()
             )
             {
