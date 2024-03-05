@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.ViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -44,6 +46,19 @@ namespace SCJ.Booking.MVC.Controllers
         public IActionResult NotAuthorized()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Route("~/Logout")]
+        public IActionResult Logout()
+        {
+            return new SignOutResult(
+                new[]
+                {
+                    OpenIdConnectDefaults.AuthenticationScheme,
+                    CookieAuthenticationDefaults.AuthenticationScheme
+                }
+            );
         }
     }
 }
