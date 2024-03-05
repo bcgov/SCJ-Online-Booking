@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.MVC.ViewModels;
@@ -14,6 +15,7 @@ namespace SCJ.Booking.MVC.Controllers
     ///     REST API's for the Superior Courts Booking app
     /// </summary>
     [ApiController]
+    [Authorize]
     public class ApiController : Controller
     {
         //API Client

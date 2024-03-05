@@ -4,7 +4,9 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Azure.Identity" Version="1.10.4" />
+        <PackageReference Include="IdentityModel" Version="6.2.0" />
         <PackageReference Include="MailKit" Version="3.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.27" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="6.0.26" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.26">
             <PrivateAssets>all</PrivateAssets>
@@ -36,7 +38,7 @@
         <None Remove="wwwroot\templates\**" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\SCJ.Booking.Data\SCJ.Booking.Data.csproj" />
+        <ProjectReference Include="..\database\SCJ.Booking.Data.csproj" />
         <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
     </ItemGroup>
     <ItemGroup>
