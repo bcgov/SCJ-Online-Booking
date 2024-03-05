@@ -19,6 +19,17 @@ CASE TYPE:
 TYPE OF HEARING:
 Chambers
 
+DATE AGREED UPON:
+@if (Model.DateIsAgreed is true)
+{
+  @Html.Raw("Yes\n")
+}
+else
+{
+  @Html.Raw("No\n")
+  @Html.Raw("(You should communicate with the other person(s) responding to this application to ensure they are available on the requested date.)\n")
+}
+
 DATE OF HEARING:
 @Model.Date
 
