@@ -19,6 +19,16 @@ CASE TYPE:
 TYPE OF HEARING:
 Appeal
 
+DATE AGREED UPON:
+@if (Model.DateIsAgreed is true)
+{
+  @Html.Raw("Yes\n")
+}
+else
+{
+  @Html.Raw("No\n")
+}
+
 DATE OF HEARING:
 @Model.Date
 @if (!string.IsNullOrEmpty(Model.HearingTypeName)) {
