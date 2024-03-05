@@ -36,7 +36,7 @@
         <None Remove="wwwroot\templates\**" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\SCJ.Booking.Data\SCJ.Booking.Data.csproj" />
+        <ProjectReference Include="..\database\SCJ.Booking.Data.csproj" />
         <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
     </ItemGroup>
     <ItemGroup>

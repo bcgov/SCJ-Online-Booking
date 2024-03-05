@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{C72F
 		openshift\jenkins\deploy-to-test-Jenkinsfile = openshift\jenkins\deploy-to-test-Jenkinsfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCJ.Booking.Data", "SCJ.Booking.Data\SCJ.Booking.Data.csproj", "{B0621E37-FF9F-41CE-9392-18A5655ABC23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCJ.Booking.Data", "database\SCJ.Booking.Data.csproj", "{B0621E37-FF9F-41CE-9392-18A5655ABC23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
