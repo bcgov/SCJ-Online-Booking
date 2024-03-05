@@ -20,7 +20,8 @@ namespace SCJ.Booking.MVC.Services
         // services
         private readonly IConfiguration _configuration;
 
-        public ScCacheService(IDistributedCache cache, IConfiguration configuration) : base(cache)
+        public ScCacheService(IDistributedCache cache, IConfiguration configuration)
+            : base(cache)
         {
             _configuration = configuration;
         }
@@ -31,8 +32,8 @@ namespace SCJ.Booking.MVC.Services
         public async Task<int?> GetBookingLocationIdAsync(int caseLocationId, int hearingTypeId)
         {
             return (await GetLocationsAsync())
-                .FirstOrDefault(
-                    l => l.bookingHearingTypeID == hearingTypeId && l.locationID == caseLocationId
+                .FirstOrDefault(l =>
+                    l.bookingHearingTypeID == hearingTypeId && l.locationID == caseLocationId
                 )
                 ?.bookingLocationID;
         }

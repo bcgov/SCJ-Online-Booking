@@ -84,8 +84,8 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
             var result = ScAvailableDatesByLocationFixture.AvailableDatesResult;
-            result.AvailableDates = result.AvailableDates
-                .Where(x => x.Date_Time > DateTime.Now)
+            result.AvailableDates = result
+                .AvailableDates.Where(x => x.Date_Time > DateTime.Now)
                 .ToArray();
             return result;
         }
@@ -140,8 +140,8 @@ namespace SCJ.OnlineBooking
             await Task.Delay(100);
 
             var result = CoAAvailableDatesFixture.Dates;
-            result.AvailableDates = result.AvailableDates
-                .Where(x => x.scheduleDate > DateTime.Now)
+            result.AvailableDates = result
+                .AvailableDates.Where(x => x.scheduleDate > DateTime.Now)
                 .ToArray();
             return result;
         }
@@ -160,8 +160,8 @@ namespace SCJ.OnlineBooking
             await Task.Delay(100);
 
             var result = CoAAvailableDatesFixture.ChambersDates;
-            result.AvailableDates = result.AvailableDates
-                .Where(x => x.scheduleDate > DateTime.Now)
+            result.AvailableDates = result
+                .AvailableDates.Where(x => x.scheduleDate > DateTime.Now)
                 .ToArray();
             return result;
         }
@@ -205,20 +205,22 @@ namespace SCJ.OnlineBooking
 
             if (string.IsNullOrEmpty(locationID))
             {
-                return ScFormulaLocationsFixture.Locations
-                    .Where(l => l.FormulaType == formula)
+                return ScFormulaLocationsFixture
+                    .Locations.Where(l => l.FormulaType == formula)
                     .ToArray();
             }
 
             if (string.IsNullOrEmpty(formula))
             {
-                return ScFormulaLocationsFixture.Locations
-                    .Where(l => l.LocationID == int.Parse(locationID))
+                return ScFormulaLocationsFixture
+                    .Locations.Where(l => l.LocationID == int.Parse(locationID))
                     .ToArray();
             }
 
-            return ScFormulaLocationsFixture.Locations
-                .Where(l => l.FormulaType == formula && l.LocationID == int.Parse(locationID))
+            return ScFormulaLocationsFixture
+                .Locations.Where(l =>
+                    l.FormulaType == formula && l.LocationID == int.Parse(locationID)
+                )
                 .ToArray();
         }
 

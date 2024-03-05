@@ -169,15 +169,12 @@ namespace SCJ.Booking.MVC.Services
             {
                 var availableChambersDates = await _client.CoAAvailableDatesChambersAsync();
                 // convert chambers dates to appeal dates (these could have been the same type in the first place)
-                dates = availableChambersDates.AvailableDates
-                    .Select(
-                        date =>
-                            new ShedulesInfo
-                            {
-                                scheduleDate = date.scheduleDate,
-                                availability = date.availability
-                            }
-                    )
+                dates = availableChambersDates
+                    .AvailableDates.Select(date => new ShedulesInfo
+                    {
+                        scheduleDate = date.scheduleDate,
+                        availability = date.availability
+                    })
                     .ToArray();
             }
             return GroupAvailableDates(dates, availability);
@@ -228,14 +225,14 @@ namespace SCJ.Booking.MVC.Services
             List<DateTime> schedule;
             if (bookingInfo.IsAppealHearing is true)
             {
-                schedule = (await _client.COAAvailableDatesAsync()).AvailableDates
-                    .Select(x => x.scheduleDate)
+                schedule = (await _client.COAAvailableDatesAsync())
+                    .AvailableDates.Select(x => x.scheduleDate)
                     .ToList();
             }
             else
             {
-                schedule = (await _client.CoAAvailableDatesChambersAsync()).AvailableDates
-                    .Select(x => x.scheduleDate)
+                schedule = (await _client.CoAAvailableDatesChambersAsync())
+                    .AvailableDates.Select(x => x.scheduleDate)
                     .ToList();
             }
 
@@ -243,8 +240,8 @@ namespace SCJ.Booking.MVC.Services
             if (IsTimeStillAvailable(schedule, bookingInfo.SelectedDate.Value))
             {
                 //Fetch final main case file after ruling out selection of cases with main case and related cases
-                var finalCase = bookingInfo.CaseList
-                    .Where(x => x.Case_Num == bookingInfo.CaseNumber)
+                var finalCase = bookingInfo
+                    .CaseList.Where(x => x.Case_Num == bookingInfo.CaseNumber)
                     .First();
                 var relatedCases = "";
                 if (
@@ -253,8 +250,8 @@ namespace SCJ.Booking.MVC.Services
                     && model.RelatedCaseList.Count > 0
                 )
                 {
-                    var relatedCaseIDList = bookingInfo.CaseList
-                        .Where(x => model.RelatedCaseList.Contains(x.Case_Num))
+                    var relatedCaseIDList = bookingInfo
+                        .CaseList.Where(x => model.RelatedCaseList.Contains(x.Case_Num))
                         .Select(x => x.CaseId)
                         .ToList();
                     relatedCases = string.Join("|", relatedCaseIDList);

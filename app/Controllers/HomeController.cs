@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.MVC.Services;
+using SCJ.Booking.MVC.ViewModels;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -10,6 +10,7 @@ namespace SCJ.Booking.MVC.Controllers
     {
         //Services
         private readonly ScBookingService _scBookingService;
+
         //Constructor
         public HomeController(ScBookingService scBookingService)
         {

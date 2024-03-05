@@ -43,8 +43,8 @@ namespace SCJ.Booking.MVC.Controllers
             );
 
             // sort the available times chronologically
-            IOrderedEnumerable<ContainerInfo> dates = soapResult.AvailableDates.OrderBy(
-                d => d.Date_Time
+            IOrderedEnumerable<ContainerInfo> dates = soapResult.AvailableDates.OrderBy(d =>
+                d.Date_Time
             );
 
             // create the return object
@@ -84,8 +84,8 @@ namespace SCJ.Booking.MVC.Controllers
                         ContainerId = item.ContainerID,
                         StartDateTime = item.Date_Time,
                         Start = item.Date_Time.ToString("h:mm tt").ToLower(),
-                        End = item.Date_Time
-                            .AddMinutes(soapResult.BookingDetails.detailBookingLength)
+                        End = item
+                            .Date_Time.AddMinutes(soapResult.BookingDetails.detailBookingLength)
                             .ToString("h:mm tt")
                             .ToLower()
                     }
