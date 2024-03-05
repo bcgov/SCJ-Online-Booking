@@ -60,7 +60,8 @@ namespace SCJ.Booking.MVC.Services
 
                 var saveToSentItems = true;
 
-                await graphClient.Users[_senderEmail]
+                await graphClient
+                    .Users[_senderEmail]
                     .SendMail(message, saveToSentItems)
                     .Request()
                     .PostAsync();

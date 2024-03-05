@@ -14,7 +14,7 @@ Vue.component("FairUseBooking", FairUseBooking);
 
 // Mount vue app if a container element exists
 if ($("#VueTrialTimeSelect").length) {
-    new Vue({
-        el: "#VueTrialTimeSelect",
-    });
+  new Vue({
+    el: "#VueTrialTimeSelect",
+  });
 }

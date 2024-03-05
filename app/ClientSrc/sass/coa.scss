@@ -2,148 +2,150 @@
 * Court of Appeal styles
 */
 
-@import 'variables';
+@import "variables";
 
 .body-content {
-    &--inner {
-        max-width: 850px;
-    }
+  &--inner {
+    max-width: 850px;
+  }
 }
 
 .search-info {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .content-section {
-    background-color: $white;
-    padding: 24px 24px 36px;
+  background-color: $white;
+  padding: 24px 24px 36px;
 }
 
 .availableDates {
-    &__month {
-        margin: 40px 0 30px;
+  &__month {
+    margin: 40px 0 30px;
 
-        &.hidden {
-            display: none;
-        }
-
-        &__days {
-            display: flex;
-            flex-wrap: wrap;
-
-            input[type="radio"] {
-                opacity: 0;
-                position: fixed;
-                width: 0;
-
-                &:checked + label {
-                    background-color: $blue-dark;
-
-                    p {
-                        color: $white;
-                    }
-                }
-            }
-
-            label.availableDate {
-                width: 240px;
-                min-width: 240px;
-                display: inline-block;
-                text-align: center;
-                border-radius: 0.5rem;
-                padding: 16px;
-                margin: 20px auto;
-                cursor: pointer;
-                text-align: center;
-                text-decoration: none;
-                background-color: $white;
-                border: 2px solid $blue-dark;
-
-                &:hover {
-                    background-color: $blue-medium;
-                    transition: all 0.2s ease-in-out;
-
-                    p {
-                        color: $white;
-                    }
-                }
-
-                @media(min-width: 568px) {
-                    width: 240px;
-                    min-width: 240px;
-                    margin: 15px;
-                }
-
-                @media(min-width: $breakpoint-md) {
-                    width: 210px;
-                    min-width: 210px;
-                    margin: 10px 15px;
-                }
-
-                @media(min-width: $breakpoint-xl) {
-                    width: 240px;
-                    min-width: 240px;
-                    margin: 15px;
-                }
-
-                p {
-                    margin-bottom: 0;
-                    font-weight: 700;
-                    color: $black;
-                }
-            }
-        }
+    &.hidden {
+      display: none;
     }
+
+    &__days {
+      display: flex;
+      flex-wrap: wrap;
+
+      input[type="radio"] {
+        opacity: 0;
+        position: fixed;
+        width: 0;
+
+        &:checked + label {
+          background-color: $blue-dark;
+
+          p {
+            color: $white;
+          }
+        }
+      }
+
+      label.availableDate {
+        width: 240px;
+        min-width: 240px;
+        display: inline-block;
+        text-align: center;
+        border-radius: 0.5rem;
+        padding: 16px;
+        margin: 20px auto;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        background-color: $white;
+        border: 2px solid $blue-dark;
+
+        &:hover {
+          background-color: $blue-medium;
+          transition: all 0.2s ease-in-out;
+
+          p {
+            color: $white;
+          }
+        }
+
+        @media (min-width: 568px) {
+          width: 240px;
+          min-width: 240px;
+          margin: 15px;
+        }
+
+        @media (min-width: $breakpoint-md) {
+          width: 210px;
+          min-width: 210px;
+          margin: 10px 15px;
+        }
+
+        @media (min-width: $breakpoint-xl) {
+          width: 240px;
+          min-width: 240px;
+          margin: 15px;
+        }
+
+        p {
+          margin-bottom: 0;
+          font-weight: 700;
+          color: $black;
+        }
+      }
+    }
+  }
 }
 
 h6 {
-    &.h3--month {
-        font-weight: 700;
-        font-size: 1.4em;
-        margin-bottom: 1rem;
-    }
+  &.h3--month {
+    font-weight: 700;
+    font-size: 1.4em;
+    margin-bottom: 1rem;
+  }
 }
 
 #btnShowDates {
-    display: none;
+  display: none;
 }
 
 #btnShowMore {
-    margin: 0 auto 60px auto;
+  margin: 0 auto 60px auto;
 }
 
 .btn-restart-search {
-    border: 1px solid $grey-dark;
-    color: $grey-dark;
+  border: 1px solid $grey-dark;
+  color: $grey-dark;
 
-    &:hover, &:active, &:focus {
-        color: $grey-dark !important;
-    }
+  &:hover,
+  &:active,
+  &:focus {
+    color: $grey-dark !important;
+  }
 
-    &::before {
-        display: inline-block;
-        font-family: "Font Awesome 5 Free";
-        content: "\f30a";
-        margin-right: 10px;
-    }
+  &::before {
+    display: inline-block;
+    font-family: "Font Awesome 5 Free";
+    content: "\f30a";
+    margin-right: 10px;
+  }
 }
 
 .preliminary_questions__radio,
 #Appeal_IsFullDay,
 #Chambers_IsHalfHour {
-    .btn {
-        display: inline-block;
-        margin-top: 0;
-        margin-bottom: 10px
-    }
+  .btn {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
 }
 
 label.factum {
-    max-width: 90%;
+  max-width: 90%;
 }
 
 select#HearingTypeId {
-    height: 44px;
-    font-size: 1.6rem;
-    max-width: 250px;
+  height: 44px;
+  font-size: 1.6rem;
+  max-width: 250px;
 }

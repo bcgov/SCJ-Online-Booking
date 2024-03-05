@@ -1,10 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SCJ.Booking.MVC.Controllers
 {

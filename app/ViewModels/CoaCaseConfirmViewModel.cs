@@ -1,7 +1,7 @@
-using SCJ.OnlineBooking;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
