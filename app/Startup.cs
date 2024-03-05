@@ -36,7 +36,7 @@ namespace SCJ.Booking.MVC
             var oidcRealmUri =
                 $"{Configuration["Keycloak:Domain"]}/auth/realms/{Configuration["Keycloak:Realm"]}";
             string oidcClientId = Configuration["Keycloak:ClientId"];
-            string oidcClientSecret = Configuration["Keycloak:ClientSecret"];
+            string oidcClientSecret = Configuration["KEYCLOAK_CLIENT_SECRET"];
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -143,11 +143,20 @@ namespace SCJ.Booking.MVC
                         {
                             // add a parameter to the keycloak redirect querystring
                             ctx.ProtocolMessage.SetParameter("kc_idp_hint", "bceid");
+                            // change the redirect_uri to the reverse proxy
+                            if (ctx.Request.Headers.Keys.Contains("X-Forwarded-Host"))
+                            {
+                                var host = ctx.Request.Headers["X-Forwarded-Host"][0];
+                                ctx.ProtocolMessage.SetParameter(
+                                    "redirect_uri",
+                                    $"https://{host}/signin-oidc"
+                                );
+                            }
                             return Task.FromResult(0);
                         },
                         OnRedirectToIdentityProviderForSignOut = ctx =>
                         {
-                            // change the post-logout redirect uri to the reverse proxy
+                            // change the post-logout redirect_uri to the reverse proxy
                             if (ctx.Request.Headers.Keys.Contains("X-Forwarded-Host"))
                             {
                                 var host = ctx.Request.Headers["X-Forwarded-Host"][0];
@@ -161,7 +170,7 @@ namespace SCJ.Booking.MVC
                         OnRemoteFailure = ctx =>
                         {
                             var logger = new SerilogLoggerFactory().CreateLogger<Startup>();
-                            logger.LogWarning("WorkBC KC OnRemoteFailure redirect to '/'");
+                            logger.LogWarning("SCJOB KC OnRemoteFailure redirect to '/'");
                             logger.LogWarning(ctx.Failure?.ToString() ?? "ctx.Failure is null");
                             ctx.Response.Redirect("/");
                             ctx.HandleResponse();
