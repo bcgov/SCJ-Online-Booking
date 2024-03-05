@@ -1,5 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using Community.Microsoft.Extensions.Caching.PostgreSql;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -8,8 +11,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using SCJ.Booking.Data;
 using SCJ.Booking.MVC.Services;
+using SCJ.Booking.MVC.Utils;
+using SerilogLoggerFactory = Serilog.Extensions.Logging.SerilogLoggerFactory;
 
 namespace SCJ.Booking.MVC
 {
@@ -25,6 +33,11 @@ namespace SCJ.Booking.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var oidcRealmUri =
+                $"{Configuration["Keycloak:Domain"]}/auth/realms/{Configuration["Keycloak:Realm"]}";
+            string oidcClientId = Configuration["Keycloak:ClientId"];
+            string oidcClientSecret = Configuration["Keycloak:ClientSecret"];
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -73,6 +86,90 @@ namespace SCJ.Booking.MVC
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                })
+                .AddCookie(options =>
+                {
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.LoginPath = "/home/NotAuthorized";
+                    options.AccessDeniedPath = "/home/NotAuthorized";
+                    options.Events = new CookieAuthenticationEvents
+                    {
+                        // check if the access token needs to be refreshed, and refresh it if needed
+                        OnValidatePrincipal = async ctx =>
+                        {
+                            await OpenIdConnectHelper.HandleOidcRefreshToken(
+                                ctx,
+                                oidcRealmUri,
+                                oidcClientId,
+                                oidcClientSecret
+                            );
+                        }
+                    };
+                })
+                .AddOpenIdConnect(options =>
+                {
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.Authority = oidcRealmUri;
+                    options.RequireHttpsMetadata = true;
+                    options.ClientId = oidcClientId;
+                    options.ClientSecret = oidcClientSecret;
+                    options.ResponseType = OpenIdConnectResponseType.Code;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.SaveTokens = true;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        ValidateIssuer = true
+                    };
+                    options.Events = new OpenIdConnectEvents
+                    {
+                        OnTokenValidated = ctx =>
+                        {
+                            // add extra job board admin claims
+                            OpenIdConnectHelper.HandleUserLogin(ctx);
+                            return Task.CompletedTask;
+                        },
+                        OnRedirectToIdentityProvider = ctx =>
+                        {
+                            // add a parameter to the keycloak redirect querystring
+                            ctx.ProtocolMessage.SetParameter("kc_idp_hint", "bceid");
+                            return Task.FromResult(0);
+                        },
+                        OnRedirectToIdentityProviderForSignOut = ctx =>
+                        {
+                            // change the post-logout redirect uri to the reverse proxy
+                            if (ctx.Request.Headers.Keys.Contains("X-Forwarded-Host"))
+                            {
+                                var host = ctx.Request.Headers["X-Forwarded-Host"][0];
+                                ctx.ProtocolMessage.SetParameter(
+                                    "post_logout_redirect_uri",
+                                    $"https://{host}/"
+                                );
+                            }
+                            return Task.FromResult(0);
+                        },
+                        OnRemoteFailure = ctx =>
+                        {
+                            var logger = new SerilogLoggerFactory().CreateLogger<Startup>();
+                            logger.LogWarning("WorkBC KC OnRemoteFailure redirect to '/'");
+                            logger.LogWarning(ctx.Failure?.ToString() ?? "ctx.Failure is null");
+                            ctx.Response.Redirect("/");
+                            ctx.HandleResponse();
+                            return Task.FromResult(0);
+                        }
+                    };
+                });
+
             //services
             services.AddTransient<ScBookingService>();
             services.AddTransient<CoaBookingService>();
@@ -102,6 +199,7 @@ namespace SCJ.Booking.MVC
 
             app.UseStaticFiles();
             app.UseSession();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

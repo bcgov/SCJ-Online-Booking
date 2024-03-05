@@ -27,6 +27,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Route("~/Error")]
         public IActionResult Error()
         {
             return View(
@@ -35,6 +36,13 @@ namespace SCJ.Booking.MVC.Controllers
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 }
             );
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Route("~/NotAuthorized")]
+        public IActionResult NotAuthorized()
+        {
+            return View();
         }
     }
 }
