@@ -415,7 +415,8 @@ namespace SCJ.Booking.MVC.Services
                     booking.CaseType,
                     booking.SelectedApplicationTypes
                 ),
-                HearingTypeName = booking.HearingTypeName
+                HearingTypeName = booking.HearingTypeName,
+                DateIsAgreed = booking.DateIsAgreed ?? false
             };
 
             // check if chambers hearing
