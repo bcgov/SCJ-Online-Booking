@@ -20,4 +20,9 @@
     "editor.maxTokenizationLineLength": 2500,
     "editor.inlineSuggest.suppressSuggestions": false
   },
+
+  "[aspnetcorerazor]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
 }
