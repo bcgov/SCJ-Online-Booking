@@ -1,3 +1,4 @@
+using DotEnv.Core;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -12,6 +13,7 @@ namespace SCJ.Booking.MVC
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
+            new EnvLoader().Load();
             return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
         }
     }
