@@ -1,6 +1,6 @@
-using SCJ.OnlineBooking;
 using System;
 using System.Collections.Generic;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Utils
 {
@@ -19,11 +19,12 @@ namespace SCJ.Booking.MVC.Utils
 
         public int ContainerId { get; set; }
         public int HearingTypeId { get; set; }
+        public string BookingFormula { get; set; }
         public string HearingTypeName { get; set; }
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
-        public string TrialLocation { get; set; }
+        public int TrialLocation { get; set; }
         public string SelectedCaseDate { get; set; }
 
         //The result string returned by the SOAP API when the hearing was booked

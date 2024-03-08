@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
@@ -78,6 +79,14 @@ namespace SCJ.Booking.MVC.Services
         {
             var bookingInfo = _session.ScBookingInfo;
 
+            // Previously-selected "regular booking" trial date
+            string trialDate =
+                bookingInfo.FullDate.ToString("yyyy") == "0001"
+                    ? ""
+                    : bookingInfo.FullDate.ToString("yyyy-MM-dd");
+
+            // @TODO: trialDates list for "fair use" booking
+
             //Model instance
             return new ScCaseSearchViewModel
             {
@@ -99,6 +108,8 @@ namespace SCJ.Booking.MVC.Services
                 BookingLocationName = bookingInfo.BookingLocationName,
                 BookingRegistryId = bookingInfo.BookingRegistryId,
                 AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
+                BookingFormula = bookingInfo.BookingFormula,
+                SelectedTrialDate = trialDate,
             };
         }
 
@@ -239,6 +250,11 @@ namespace SCJ.Booking.MVC.Services
                 .ToList();
         }
 
+        public async Task<string> GetLocationName(int registryId)
+        {
+            return await _cache.GetLocationNameAsync(registryId);
+        }
+
         public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
         {
             // Load locations from cache
@@ -363,13 +379,24 @@ namespace SCJ.Booking.MVC.Services
                 bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled.Value;
             }
 
+            // set trial location:
             if (
+                model.IsHomeRegistry == true
+                && bookingInfo.CaseRegistryId > 0
+                && bookingInfo.TrialLocation != bookingInfo.CaseRegistryId
+            )
+            {
+                // home registry
+                bookingInfo.TrialLocation = bookingInfo.CaseRegistryId;
+            }
+            else if (
                 model.IsHomeRegistry == false
                 && model.IsLocationChangeFiled == true
-                && (!string.IsNullOrWhiteSpace(model.TrialLocation))
+                && model.TrialLocation > 0
                 && bookingInfo.TrialLocation != model.TrialLocation
             )
             {
+                // somewhere besides the home registry
                 bookingInfo.TrialLocation = model.TrialLocation;
             }
 
@@ -392,11 +419,16 @@ namespace SCJ.Booking.MVC.Services
                 {
                     bookingInfo.ContainerId = model.ContainerId;
                 }
+            }
 
-                if (bookingInfo.FullDate != model.FullDate)
-                {
-                    bookingInfo.FullDate = model.FullDate;
-                }
+            if (bookingInfo.FullDate != model.FullDate)
+            {
+                bookingInfo.FullDate = model.FullDate;
+            }
+
+            if (bookingInfo.BookingFormula != model.BookingFormula)
+            {
+                bookingInfo.BookingFormula = model.BookingFormula;
             }
 
             _session.ScBookingInfo = bookingInfo;
@@ -541,6 +573,43 @@ namespace SCJ.Booking.MVC.Services
                 model.IsBooked = false;
                 bookingInfo.IsBooked = false;
             }
+
+            // save the booking info back to the session
+            _session.ScBookingInfo = bookingInfo;
+
+            return model;
+        }
+
+        /// <summary>
+        ///     Book trial
+        /// </summary>
+        public async Task<ScCaseConfirmViewModel> BookTrial(
+            ScCaseConfirmViewModel model,
+            string userGuid,
+            string userDisplayName
+        )
+        {
+            //if the user could not be detected return
+            if (string.IsNullOrWhiteSpace(userGuid))
+            {
+                return model;
+            }
+
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+
+            // @TODO: check if timeslot is available? else return error
+
+            // @TODO: book hearing? trial?
+
+            // @TODO: store user info in session for next booking
+
+            // @TODO: save to DB
+
+            // update model
+            model.IsBooked = true;
+            bookingInfo.IsBooked = true;
+
+            // @TODO: send email
 
             // save the booking info back to the session
             _session.ScBookingInfo = bookingInfo;
@@ -696,6 +765,32 @@ namespace SCJ.Booking.MVC.Services
             };
 
             return numbers[registryId];
+        }
+
+        public async Task<List<string>> GetAvailableTrialDatesAsync(string formulaType)
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            AvailableTrialDatesRequestInfo trialDatesRequestInfo =
+                new AvailableTrialDatesRequestInfo
+                {
+                    LocationID = bookingInfo.TrialLocation,
+                    BookingLocationID = bookingInfo.TrialLocation, // @TODO: use correct value
+                    Courtclass = bookingInfo.SelectedCourtClass,
+                    FormulaType = formulaType,
+                    StartDate = DateTime.Parse("2024/8/01"), // dynamic? 18 months from now?
+                    EndDate = DateTime.Parse("2024/11/25"),
+                    HearingLength = bookingInfo.EstimatedTrialLength ?? 1, // @TODO: this shouldn't be null
+                };
+
+            AvailableTrialDatesResult availableDates =
+                await _client.AvailableTrialDatesByLocationAsync(trialDatesRequestInfo);
+
+            // var test = availableDates // @TODO: get dates list
+            // convert to a list of state strings? or DateTime objects?
+
+            // @TODO: return it
+            return new List<string>();
         }
     }
 }

@@ -10,6 +10,10 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Hearing type
         public string HearingTypeName { get; set; }
+        public int HearingTypeId { get; set; }
+
+        //Booking time formula ("fairUseBooking" or "regularBooking")
+        public string BookingFormula { get; set; }
 
         //Location for the booking
         public string CaseLocationName { get; set; }
@@ -52,5 +56,10 @@ namespace SCJ.Booking.MVC.ViewModels
 
         public string BookingLocationName { get; set; }
         public int BookingRegistryId { get; set; }
+
+        public int? EstimatedTrialLength { get; set; }
+
+        public int TrialLocation { get; set; }
+        public string TrialLocationName { get; set; }
     }
 }

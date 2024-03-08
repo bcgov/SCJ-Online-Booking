@@ -34,7 +34,7 @@
                     <label for="CaseRegistryId">Choose the registry where the file was created</label>
                     <select asp-for="CaseRegistryId" class="form-control registryOptions"
                             asp-items="SelectListService.SupremeLocations" required>
-                        <option value="">-- Pick a registry --</option>
+                        <option value="-1">-- Pick a registry --</option>
                     </select>
                     <span asp-validation-for="CaseRegistryId" class="text-danger"></span>
 

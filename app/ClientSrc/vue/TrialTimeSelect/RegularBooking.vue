@@ -10,7 +10,13 @@
         v-for="date in visibleDates"
         :key="date.isoDate"
       >
-        <input class="d-none" type="radio" :value="date.isoDate" v-model="selected" />
+        <input
+          name="SelectedTrialDate"
+          class="d-none"
+          type="radio"
+          :value="date.isoDate"
+          v-model="selected"
+        />
         <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
         <strong>{{ date.formattedDate }}</strong>
       </label>
@@ -52,6 +58,18 @@ export default {
       type: Number,
       default: 0,
     },
+
+    initialValue: {
+      type: String,
+      default: "",
+    },
+  },
+
+  // set initial value, if provided
+  created() {
+    if (this.dates.includes(this.initialValue)) {
+      this.selected = this.initialValue;
+    }
   },
 
   computed: {
