@@ -16,6 +16,7 @@ namespace SCJ.Booking.MVC.Services
         private const string ScLocationInfoKey = "SC_LOCATION_INFO";
         private const string ScRegistryDropdownKey = "SC_REGISTRY_DROPDOWN";
         private const string ScAvailableBookingTypes = "SC_AVAILABLE_BOOKING_TYPES";
+        private const string ScAvailableBookingFormulas = "SC_AVAILABLE_BOOKING_FORMULAS";
 
         // services
         private readonly IConfiguration _configuration;
@@ -125,6 +126,25 @@ namespace SCJ.Booking.MVC.Services
             await SaveObjectAsync(ScAvailableBookingTypes, bookingTypes, CacheSlidingExpirySeconds);
 
             return bookingTypes;
+        }
+
+        /// <summary>
+        ///     Gets a cached list of trial booking formulas
+        /// </summary>
+        public async Task<FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync()
+        {
+            if (await ExistsAsync(ScAvailableBookingFormulas))
+            {
+                return await GetObjectAsync<FormulaLocation[]>(ScAvailableBookingFormulas);
+            }
+
+            var client = OnlineBookingClientFactory.GetClient(_configuration);
+
+            var formulas = await client.AvailableTrialBookingFormulasByLocationAsync("", "");
+
+            await SaveObjectAsync(ScAvailableBookingFormulas, formulas, CacheSlidingExpirySeconds);
+
+            return formulas;
         }
     }
 }
