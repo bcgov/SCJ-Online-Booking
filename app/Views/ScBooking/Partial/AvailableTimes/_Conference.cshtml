@@ -7,7 +7,7 @@
 
 <h6>Available Times in @Model.BookingLocationName</h6>
 <p>Please choose a time below for your <b>@Model.HearingTypeName</b>.
-<br/>
+    <br />
     @ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for
     @Model.HearingLengthMinutes minutes only.
 </p>
@@ -22,11 +22,8 @@
     </div>
 
     <div id="VueHearingTimeSelect" class="availableTimesContainer">
-        <hearing-time-select
-            :location-id="@Model.BookingRegistryId"
-            :available-dates="@availableDates.ToString()"
-            :hearing-type="@Model.HearingTypeId"
-        ></hearing-time-select>
+        <hearing-time-select :location-id="@Model.BookingRegistryId" :available-dates="@availableDates.ToString()"
+            :hearing-type="@Model.HearingTypeId"></hearing-time-select>
     </div>
 
     @for (int i = 0; i < Model.CourtFiles?.Length; i++)
@@ -48,8 +45,8 @@
     @Html.HiddenFor(m => m.BookingRegistryId)
     @Html.HiddenFor(m => m.CaseRegistryId)
     @Html.HiddenFor(m => m.HearingTypeId)
-    <input type="hidden" asp-for="SelectedCaseDate" id="hidDate"/>
-    <input type="hidden" asp-for="ContainerId" id="hidContainerId"/>
+    <input type="hidden" asp-for="SelectedCaseDate" id="hidDate" />
+    <input type="hidden" asp-for="ContainerId" id="hidContainerId" />
     <div class="text-danger">
         <span asp-validation-for="ContainerId"></span>
     </div>

@@ -1,8 +1,7 @@
 @model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
 
 @{
-    var availableDates = Json.Serialize(Model.AvailableDates).ToString();
-    @* Model.SelectedDate = Model.FirstAvailableDate; *@
+  string availableDates = Json.Serialize(Model.AvailableDates).ToString();
 }
 
 <form method="post" id="availableTimesForm">
@@ -11,30 +10,31 @@
   @Html.HiddenFor(m => m.EstimatedTrialLength)
 
   <div id="VueTrialTimeSelect">
-    <trial-time-select-tabs>
-      <regular-booking
-        :dates="@availableDates"
-        :trial-length="@Model.EstimatedTrialLength"
-        slot="regularBooking"></regular-booking>
+    <trial-time-select-tabs initial-tab="@Model.BookingFormula.ToString()">
+      <regular-booking :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength"
+        initial-value="@Model.SelectedTrialDate" slot="regularBooking"></regular-booking>
 
-      <fair-use-booking
-        :dates="@availableDates"
-        :trial-length="@Model.EstimatedTrialLength"
+      <fair-use-booking :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength"
         slot="fairUseBooking"></fair-use-booking>
     </trial-time-select-tabs>
   </div>
 
+  <div class="content-pad bg-white">
+    <span asp-validation-for="SelectedTrialDate" class="text-danger"></span>
+    <span asp-validation-for="SelectedTrialDates" class="text-danger"></span>
+  </div>
+
   <div class="row no-gutters">
     <div class="col-6 col-md-8 d-flex align-items-center text-link">
-        <span>
-            <i class="fas fa-long-arrow-alt-left"></i>
-            <a asp-action="BookingType">Step 2: Choose Your Booking Type</a>
-        </span>
+      <span>
+        <i class="fas fa-long-arrow-alt-left"></i>
+        <a asp-action="BookingType">Step 2: Choose Your Booking Type</a>
+      </span>
     </div>
     <div class="col-6 col-md-4">
-        <button type="submit" class="btn btn-secondary btn-block">
-            Confirm Time
-        </button>
+      <button type="submit" class="btn btn-secondary btn-block">
+        Confirm Time
+      </button>
     </div>
-</div>
+  </div>
 </form>

@@ -22,6 +22,8 @@
       </li>
     </ul>
 
+    <input type="hidden" name="BookingFormula" :value="tab" />
+
     <slot v-if="tab === 'fairUseBooking'" name="fairUseBooking" />
     <slot v-if="tab === 'regularBooking'" name="regularBooking" />
   </div>
@@ -31,9 +33,23 @@
 export default {
   name: "TrialTimeSelectTabs",
 
+  props: {
+    initialTab: {
+      type: String,
+      default: "fairUseBooking",
+    },
+  },
+
   data: () => ({
     tab: "fairUseBooking",
   }),
+
+  // set initial value, if provided
+  created() {
+    if (this.initialTab) {
+      this.tab = this.initialTab;
+    }
+  },
 };
 </script>
 
