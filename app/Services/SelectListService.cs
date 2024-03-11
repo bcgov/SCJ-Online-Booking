@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -42,6 +43,25 @@ namespace SCJ.Booking.MVC.Services
                     "Id",
                     "Value"
                 );
+            }
+        }
+
+        /// <summary>
+        ///     Supreme Court classes
+        /// </summary>
+        public static IEnumerable<SelectListItem> ScCourtClasses
+        {
+            get
+            {
+                var items = (
+                    from DictionaryEntry item in ScCourtClass.CourtClasses
+                    select new SelectListItem
+                    {
+                        Value = item.Key.ToString(),
+                        Text = $"{item.Key} – {item.Value}"
+                    }
+                );
+                return new SelectList(items, "Value", "Text");
             }
         }
     }

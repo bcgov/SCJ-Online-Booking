@@ -53,19 +53,8 @@
                 <label for="courtClassDropdown" id="courtClassLabel">
                     Choose the court class (Optional)
                 </label> @* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
-                <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" aria-label="Court classes">
+                <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" aria-label="Court classes" asp-items="SelectListService.ScCourtClasses">
                     <option value="">-- Pick a class --</option>
-                    <option value="B">B – Bankruptcy</option>
-                    <option value="E">E – Family Law Proceedings</option>
-                    <option value="H">H – Foreclosure</option>
-                    <option value="L">L – Enforcement/Legislated Statute</option>
-                    <option value="M">M – Motor Vehicle Accidents</option>
-                    <option value="N">N – Adoption</option>
-                    <option value="P">P – Probate</option>
-                    <option value="S">S – Supreme Civil (General)</option>
-                    <option value="V">V – Caveat</option>
-                    <option value="D">D – Divorce</option>
-                    <option value="C">C – Small Claims</option>
                 </select>
             </div>
             <div class="form-group hideMsgClass" @hideMsgClass>
@@ -145,7 +134,7 @@
                                                 File Number: @Html.DisplayFor(m => m.LocationPrefix) @fileNumber
                                             </div>
                                             <h5>@courtCase?.styleOfCause</h5>
-                                            <p>@Model.GetCourtClass(courtCase.courtClassCode)</p>
+                                            <p>@ScCourtClass.GetCourtClass(courtCase.courtClassCode)</p>
                                         </label>
                                     </div>
                             }
