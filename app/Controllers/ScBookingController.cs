@@ -1,9 +1,11 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -144,7 +146,7 @@ namespace SCJ.Booking.MVC.Controllers
                         );
                     }
 
-                    if (string.IsNullOrWhiteSpace(model.TrialLocation))
+                    if (model.TrialLocation == -1)
                     {
                         ModelState.AddModelError(
                             "TrialLocation",
@@ -156,6 +158,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.AvailableBookingTypes = await _scBookingService.GetAvailableBookingTypes();
                 return View(model);
             }
 
@@ -166,7 +169,7 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         [Route("~/booking/sc/available-times")]
-        public IActionResult AvailableTimes()
+        public async Task<IActionResult> AvailableTimesAsync()
         {
             var model = _scBookingService.LoadSearchForm2();
 
@@ -174,6 +177,11 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 return RedirectToAction("Index");
             }
+
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+
+            // @TODO: if trial booking, get list of available trial dates
+            var test = await _scBookingService.GetAvailableTrialDatesAsync("Regular"); // @TODO: dynamic booking formula type
 
             return View(model);
         }
@@ -184,11 +192,33 @@ namespace SCJ.Booking.MVC.Controllers
         {
             model.Results = _session.ScBookingInfo.Results;
 
-            if (model.ContainerId == -1)
+            // Require ContainerId value for non-trial hearing types
+            if (model.HearingTypeId != ScHearingType.TRIAL && model.ContainerId == -1)
             {
                 ModelState.AddModelError(
                     "ContainerId",
                     "Please choose from one of the available times."
+                );
+            }
+
+            if (
+                model.BookingFormula == "regularBooking"
+                && string.IsNullOrWhiteSpace(model.SelectedTrialDate)
+            )
+            {
+                ModelState.AddModelError(
+                    "SelectedTrialDate",
+                    "Please choose from one of the available times."
+                );
+            }
+            else if (
+                model.BookingFormula == "fairUseBooking"
+                && model.SelectedTrialDates.Length == 0
+            )
+            {
+                ModelState.AddModelError(
+                    "SelectedTrialDates",
+                    "Please choose from the available times."
                 );
             }
 
@@ -203,33 +233,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult CaseSearch()
-        {
-            return View(_scBookingService.LoadSearchForm());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CaseSearch(ScCaseSearchViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            model = await _scBookingService.GetSearchResults(model);
-
-            //test if the user selected a time-slot that is available
-            if (model != null && model.ContainerId > 0 && !model.TimeSlotExpired)
-            {
-                //go to confirmation screen
-                return new RedirectResult("/scjob/booking/sc/CaseConfirm");
-            }
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult CaseConfirm()
+        public async Task<IActionResult> CaseConfirmAsync()
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
@@ -241,6 +245,10 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             var user = _session.GetUserInformation();
 
+            string locationName = await _scBookingService.GetLocationName(
+                bookingInfo.TrialLocation
+            );
+
             //Time-slot is still available
             var model = new ScCaseConfirmViewModel
             {
@@ -250,6 +258,11 @@ namespace SCJ.Booking.MVC.Controllers
                 CaseLocationName = $"{bookingInfo.CaseLocationName} Law Courts",
                 BookingLocationName = $"{bookingInfo.BookingLocationName} Law Courts",
                 HearingTypeName = bookingInfo.HearingTypeName,
+                HearingTypeId = bookingInfo.HearingTypeId,
+                EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
+                TrialLocation = bookingInfo.TrialLocation,
+                TrialLocationName = locationName,
+                BookingFormula = bookingInfo.BookingFormula,
                 ContainerId = bookingInfo.ContainerId,
                 CaseRegistryId = bookingInfo.CaseRegistryId,
                 BookingRegistryId = bookingInfo.BookingRegistryId,
@@ -291,14 +304,41 @@ namespace SCJ.Booking.MVC.Controllers
                     : string.Empty;
             }
 
-            //make booking
-            var result = await _scBookingService.BookCourtCase(model, userGuid, userDisplayName);
+            // book trial or court case and redirect to "booked" page
+            if (model.HearingTypeId == ScHearingType.TRIAL)
+            {
+                var result = await _scBookingService.BookTrial(model, userGuid, userDisplayName);
 
-            return Redirect($"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
+                // @TODO: specific page for trials?
+                return Redirect($"/scjob/booking/sc/TrialBooked?booked={result.IsBooked}");
+            }
+            else
+            {
+                var result = await _scBookingService.BookCourtCase(
+                    model,
+                    userGuid,
+                    userDisplayName
+                );
+
+                return Redirect($"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
+            }
         }
 
         [HttpGet]
         public IActionResult CaseBooked()
+        {
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+
+            if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TrialBooked()
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 

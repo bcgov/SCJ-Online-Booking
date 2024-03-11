@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using SCJ.Booking.MVC.Utils;
 using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels
@@ -27,17 +28,20 @@ namespace SCJ.Booking.MVC.ViewModels
             EstimatedTrialLength = null;
             IsHomeRegistry = null;
             IsLocationChangeFiled = null;
-            TrialLocation = string.Empty;
+            TrialLocation = -1;
+            BookingFormula = string.Empty;
+            AvailableTrialDates = new List<DateTime> { };
         }
 
         //Search fields
         public string CaseNumber { get; set; }
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
+        public string BookingFormula { get; set; }
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
-        public string TrialLocation { get; set; }
+        public int TrialLocation { get; set; }
 
         //Available dates
         public AvailableDatesByLocation Results { get; set; }
@@ -173,6 +177,33 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 var result = DateTime.MinValue;
+
+                // trial booking
+                if (HearingTypeId == ScHearingType.TRIAL)
+                {
+                    string dateFormat = "yyyy-MM-dd";
+
+                    if (BookingFormula == "regularBooking")
+                    {
+                        DateTime.TryParseExact(
+                            SelectedTrialDate,
+                            dateFormat,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.None,
+                            out DateTime parsedDate
+                        );
+
+                        return parsedDate;
+                    }
+                    else if (BookingFormula == "fairUseBooking")
+                    {
+                        Console.WriteLine(SelectedTrialDates);
+                    }
+
+                    return result;
+                }
+
+                // conference hearing booking
                 if (
                     !string.IsNullOrWhiteSpace(SelectedCaseDate)
                     && long.TryParse(SelectedCaseDate, out long ticks)
@@ -230,6 +261,10 @@ namespace SCJ.Booking.MVC.ViewModels
         }
         public List<int> AvailableConferenceTypeIds { get; set; }
         public List<string> AvailableBookingTypes { get; set; }
+        public List<DateTime> AvailableTrialDates { get; set; }
+
+        public string SelectedTrialDate { get; set; }
+        public string[] SelectedTrialDates { get; set; } = new string[0];
 
         public string GetCourtClass(string value)
         {

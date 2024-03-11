@@ -2,7 +2,7 @@
 @model ScCaseConfirmViewModel
 
 @{
-    ViewData["Title"] = "Complete Your Booking";
+    ViewData["Title"] = (Model.HearingTypeId == ScHearingType.TRIAL) ? "Review Your Request" : "Complete Your Booking";
 }
 
 <div class="body-content--inner">
@@ -20,80 +20,20 @@
 
     <div class="row no-gutters booking-confirmation">
         <div class="col">
-            <h4>Review Booking Details</h4>
-
-            <form method="post" class="form-horizontal needs-validation" role="form"
-                  novalidate autocomplete="off">
-                <input type="hidden" asp-for="HearingTypeName" />
-                <input type="hidden" asp-for="CaseLocationName" />
-                <input type="hidden" asp-for="CaseNumber" />
-                <input type="hidden" asp-for="Date" />
-                <input type="hidden" asp-for="Time" />
-                <input type="hidden" asp-for="FullDate" />
-                @Html.HiddenFor(m => m.BookingLocationName)
-                @Html.HiddenFor(m => m.BookingRegistryId)
-                @Html.HiddenFor(m => m.CaseRegistryId)
-                @Html.HiddenFor(m => m.ContainerId)
-
-                <div class="row no-gutters justify-content-between  booking-confirmation--details">
-                    <div class="col-12 col-md-6">
-                        <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
-                        <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</h5>
-                        <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <small><i class="fas fa-gavel"></i>@Model.HearingTypeName</small>
-                        <small><i class="fas fa-calendar-alt"></i>@Model.Date</small>
-                        <small><i class="far fa-clock"></i>@Model.Time</small>
-                    </div>
-                </div>
-
-                <h4>Provide Your Contact Information</h4>
-                <p>
-                    We will contact you regarding this booking. Please provide the following
-                    contact information.
-                </p>
-                <div class="row no-gutters justify-content-between form-group" style="margin-top: 16px;">
-                    <div class="col-12 col-md-6 pr-0 pr-md-2">
-                        <label asp-for="EmailAddress" class="small-label">
-                            <small>Email address:</small>
-                        </label>
-                        <input type="email" asp-for="EmailAddress" required class="form-control" />
-                        <div class="invalid-field-message text-danger">
-                            @Html.ValidationMessageFor(model => model.EmailAddress)
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 pl-0 pl-md-2">
-                        <label asp-for="Phone" class="small-label">
-                            <small>Phone number (format: xxx-xxx-xxxx):</small>
-                        </label>
-                        <input type="tel" asp-for="Phone" required class="form-control phone-input"
-                            pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
-                        <div class="invalid-field-message text-danger">
-                            @Html.ValidationMessageFor(model => model.Phone)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row no-gutters">
-                    <div class="col-6 col-md-8 d-flex align-items-center text-link">
-                        <span>
-                            <i class="fas fa-arrow-left"></i>
-                            <a asp-action="AvailableTimes">Step 3: Book Your Hearing</a>
-                       </span>
-                    </div>
-                    <div class="col-6 col-md-4">
-                        <button type="submit" class="btn btn-secondary btn-block progress-spinner" id="btnSearch">
-                            Confirm Booking
-                        </button>
-                    </div>
-                </div>
-            </form>
+            @if (@Model.HearingTypeId == @ScHearingType.TRIAL)
+            {
+                <partial name="Partial/CaseConfirm/_Trial" model="Model" />
+            }
+            else
+            {
+                <partial name="Partial/CaseConfirm/_Conference" model="Model" />
+            }
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
