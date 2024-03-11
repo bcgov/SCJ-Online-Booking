@@ -767,7 +767,7 @@ namespace SCJ.Booking.MVC.Services
             return numbers[registryId];
         }
 
-        public async Task<List<string>> GetAvailableTrialDatesAsync(string formulaType)
+        public async Task<List<DateTime>> GetAvailableTrialDatesAsync(string formulaType)
         {
             var bookingInfo = _session.ScBookingInfo;
 
@@ -786,11 +786,9 @@ namespace SCJ.Booking.MVC.Services
             AvailableTrialDatesResult availableDates =
                 await _client.AvailableTrialDatesByLocationAsync(trialDatesRequestInfo);
 
-            // var test = availableDates // @TODO: get dates list
-            // convert to a list of state strings? or DateTime objects?
-
-            // @TODO: return it
-            return new List<string>();
+            return availableDates
+                .AvailableTrialDates.AvailablesDatesInfo.Select(d => d.AvailableDate)
+                .ToList();
         }
     }
 }

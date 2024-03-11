@@ -30,7 +30,7 @@ namespace SCJ.Booking.MVC.ViewModels
             IsLocationChangeFiled = null;
             TrialLocation = -1;
             BookingFormula = string.Empty;
-            AvailableTrialDates = new List<string> { "2020-04-14" }; // @TODO: get available dates for trials
+            AvailableTrialDates = new List<DateTime> { };
         }
 
         //Search fields
@@ -261,7 +261,7 @@ namespace SCJ.Booking.MVC.ViewModels
         }
         public List<int> AvailableConferenceTypeIds { get; set; }
         public List<string> AvailableBookingTypes { get; set; }
-        public List<string> AvailableTrialDates { get; set; }
+        public List<DateTime> AvailableTrialDates { get; set; }
 
         public string SelectedTrialDate { get; set; }
         public string[] SelectedTrialDates { get; set; } = new string[0];
