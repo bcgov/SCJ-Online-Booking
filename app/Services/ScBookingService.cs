@@ -807,6 +807,11 @@ namespace SCJ.Booking.MVC.Services
                 courtClassCode
             );
 
+            if (formula == null)
+            {
+                return new List<DateTime>();
+            }
+
             AvailableTrialDatesRequestInfo trialDatesRequestInfo =
                 new AvailableTrialDatesRequestInfo
                 {
