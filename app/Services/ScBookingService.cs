@@ -319,7 +319,10 @@ namespace SCJ.Booking.MVC.Services
                 bookingInfo.FileNumber = model.FileNumber;
             }
 
-            if (bookingInfo.SelectedCourtClassName != model.SelectedCourtClassName)
+            if (
+                model.Cases != null
+                && bookingInfo.SelectedCourtClassName != model.SelectedCourtClassName
+            )
             {
                 bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
             }
