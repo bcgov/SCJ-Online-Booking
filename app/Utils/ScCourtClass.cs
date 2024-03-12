@@ -24,6 +24,11 @@ namespace SCJ.Booking.MVC.Utils
 
         public static string GetCourtClass(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
             if (CourtClasses.Contains(value.ToUpper()))
             {
                 return CourtClasses[value.ToUpper()]?.ToString();
