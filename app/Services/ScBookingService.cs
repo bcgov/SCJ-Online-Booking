@@ -805,8 +805,8 @@ namespace SCJ.Booking.MVC.Services
             var courtClassCode = bookingInfo.SelectedCourtFile.courtClassCode;
 
             var formula = await GetFormulaLocationAsync(
-                bookingInfo.BookingFormula,
-                bookingInfo.BookingRegistryId,
+                formulaType,
+                bookingInfo.TrialLocation,
                 courtClassCode
             );
 
@@ -818,7 +818,7 @@ namespace SCJ.Booking.MVC.Services
             AvailableTrialDatesRequestInfo trialDatesRequestInfo =
                 new AvailableTrialDatesRequestInfo
                 {
-                    LocationID = bookingInfo.BookingRegistryId,
+                    LocationID = bookingInfo.TrialLocation,
                     BookingLocationID = formula.BookingLocationID,
                     Courtclass = courtClassCode,
                     FormulaType = formulaType,
