@@ -253,7 +253,7 @@ namespace SCJ.Booking.MVC.ViewModels
         }
         public string SelectedCourtClassName
         {
-            get { return GetCourtClass(SelectedCourtFile?.courtClassCode); }
+            get { return ScCourtClass.GetCourtClass(SelectedCourtFile?.courtClassCode); }
         }
         public string FileNumber
         {
@@ -265,35 +265,5 @@ namespace SCJ.Booking.MVC.ViewModels
 
         public string SelectedTrialDate { get; set; }
         public string[] SelectedTrialDates { get; set; } = new string[0];
-
-        public string GetCourtClass(string value)
-        {
-            switch (value)
-            {
-                case "B":
-                    return "Bankruptcy";
-                case "E":
-                    return "Family Law Proceedings";
-                case "H":
-                    return "Foreclosure";
-                case "L":
-                    return "Enforcement/Legislated Statute";
-                case "M":
-                    return "Motor Vehicle Accidents";
-                case "N":
-                    return "Adoption";
-                case "P":
-                    return "Probate";
-                case "S":
-                    return "Supreme Civil (General)";
-                case "V":
-                    return "Caveat";
-                case "D":
-                    return "Divorce";
-                case "C":
-                    return "Small Claims";
-            }
-            return $"Unknown Court Class for {value}?";
-        }
     }
 }
