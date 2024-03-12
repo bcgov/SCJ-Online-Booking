@@ -178,9 +178,6 @@ namespace SCJ.Booking.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
-
-            // @TODO: if trial booking, get list of available trial dates
             model.AvailableRegularTrialDates = await _scBookingService.GetAvailableTrialDatesAsync(
                 ScFormulaType.RegularBooking
             );
