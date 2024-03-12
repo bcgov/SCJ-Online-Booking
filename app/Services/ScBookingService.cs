@@ -320,7 +320,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             if (
-                model.Cases != null
+                model.CourtFiles != null
                 && bookingInfo.SelectedCourtClassName != model.SelectedCourtClassName
             )
             {
