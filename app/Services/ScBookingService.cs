@@ -766,19 +766,61 @@ namespace SCJ.Booking.MVC.Services
             return numbers[registryId];
         }
 
+        public async Task<FormulaLocation> GetFormulaLocationAsync(
+            string formula,
+            int locationId,
+            string courtClass
+        )
+        {
+            var formulas = await _cache.AvailableTrialBookingFormulasByLocationAsync();
+
+            // look for a special formula location for the specific courtClass
+            var result = formulas.FirstOrDefault(f =>
+                f.FormulaType == formula
+                && f.LocationID == locationId
+                && f.BookingHearingCode == courtClass
+            );
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            // if there isn't a special formula location then use the general one
+            var all = new[] { "All", "All Other" };
+
+            return formulas.FirstOrDefault(f =>
+                f.FormulaType == formula
+                && f.LocationID == locationId
+                && all.Contains(f.BookingHearingCode)
+            );
+        }
+
         public async Task<List<DateTime>> GetAvailableTrialDatesAsync(string formulaType)
         {
             var bookingInfo = _session.ScBookingInfo;
+            var courtClassCode = bookingInfo.SelectedCourtFile.courtClassCode;
+
+            var formula = await GetFormulaLocationAsync(
+                bookingInfo.BookingFormula,
+                bookingInfo.BookingRegistryId,
+                courtClassCode
+            );
+
+            if (formula == null)
+            {
+                return new List<DateTime>();
+            }
 
             AvailableTrialDatesRequestInfo trialDatesRequestInfo =
                 new AvailableTrialDatesRequestInfo
                 {
-                    LocationID = bookingInfo.TrialLocation,
-                    BookingLocationID = bookingInfo.TrialLocation, // @TODO: use correct value
-                    Courtclass = bookingInfo.SelectedCourtClass,
+                    LocationID = bookingInfo.BookingRegistryId,
+                    BookingLocationID = formula.BookingLocationID,
+                    Courtclass = courtClassCode,
                     FormulaType = formulaType,
-                    StartDate = DateTime.Parse("2024/8/01"), // dynamic? 18 months from now?
-                    EndDate = DateTime.Parse("2024/11/25"),
+                    StartDate = formula.StartDate, // dynamic? 18 months from now?
+                    EndDate = formula.EndDate,
                     HearingLength = bookingInfo.EstimatedTrialLength ?? 1, // @TODO: this shouldn't be null
                 };
 
