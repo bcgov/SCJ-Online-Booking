@@ -178,10 +178,13 @@ namespace SCJ.Booking.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+            model.AvailableRegularTrialDates = await _scBookingService.GetAvailableTrialDatesAsync(
+                ScFormulaType.RegularBooking
+            );
 
-            // @TODO: if trial booking, get list of available trial dates
-            var test = await _scBookingService.GetAvailableTrialDatesAsync("Regular"); // @TODO: dynamic booking formula type
+            model.AvailableFairUseTrialDates = await _scBookingService.GetAvailableTrialDatesAsync(
+                ScFormulaType.FairUseBooking
+            );
 
             return View(model);
         }
@@ -265,7 +268,7 @@ namespace SCJ.Booking.MVC.Controllers
                 BookingFormula = bookingInfo.BookingFormula,
                 ContainerId = bookingInfo.ContainerId,
                 CaseRegistryId = bookingInfo.CaseRegistryId,
-                BookingRegistryId = bookingInfo.BookingRegistryId,
+                HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
                 FullDate = bookingInfo.FullDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone

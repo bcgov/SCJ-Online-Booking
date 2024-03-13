@@ -55,7 +55,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string Phone { get; set; }
 
         public string BookingLocationName { get; set; }
-        public int BookingRegistryId { get; set; }
+        public int HearingBookingRegistryId { get; set; }
 
         public int? EstimatedTrialLength { get; set; }
 

@@ -22,7 +22,7 @@
     </div>
 
     <div id="VueHearingTimeSelect" class="availableTimesContainer">
-        <hearing-time-select :location-id="@Model.BookingRegistryId" :available-dates="@availableDates.ToString()"
+        <hearing-time-select :location-id="@Model.HearingBookingRegistryId" :available-dates="@availableDates.ToString()"
             :hearing-type="@Model.HearingTypeId"></hearing-time-select>
     </div>
 
@@ -42,7 +42,7 @@
     @Html.HiddenFor(m => m.LocationPrefix)
     @Html.HiddenFor(m => m.HearingTypeName)
     @Html.HiddenFor(m => m.BookingLocationName)
-    @Html.HiddenFor(m => m.BookingRegistryId)
+    @Html.HiddenFor(m => m.HearingBookingRegistryId)
     @Html.HiddenFor(m => m.CaseRegistryId)
     @Html.HiddenFor(m => m.HearingTypeId)
     <input type="hidden" asp-for="SelectedCaseDate" id="hidDate" />

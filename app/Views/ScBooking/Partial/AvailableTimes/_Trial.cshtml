@@ -1,7 +1,10 @@
 @model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
 
 @{
-  string availableDates = Json.Serialize(Model.AvailableDates).ToString();
+    var regularDateStrings = Model.AvailableRegularTrialDates.Select(d => d.ToString("yyyy-MM-dd"));
+    var fairUseDateStrings = Model.AvailableFairUseTrialDates.Select(d => d.ToString("yyyy-MM-dd"));
+    string availableRegular = Json.Serialize(regularDateStrings).ToString();
+    string availableFairUse = Json.Serialize(fairUseDateStrings).ToString();
 }
 
 <form method="post" id="availableTimesForm">
@@ -11,10 +14,10 @@
 
   <div id="VueTrialTimeSelect">
     <trial-time-select-tabs initial-tab="@Model.BookingFormula.ToString()">
-      <regular-booking :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength"
+      <regular-booking :dates="@availableRegular" :trial-length="@Model.EstimatedTrialLength"
         initial-value="@Model.SelectedTrialDate" slot="regularBooking"></regular-booking>
 
-      <fair-use-booking :dates="@availableDates" :trial-length="@Model.EstimatedTrialLength"
+      <fair-use-booking :dates="@availableFairUse" :trial-length="@Model.EstimatedTrialLength"
         slot="fairUseBooking"></fair-use-booking>
     </trial-time-select-tabs>
   </div>
