@@ -646,7 +646,7 @@ namespace SCJ.Booking.MVC.Services
                 // @TODO: book trial in API
                 var formula = await GetFormulaLocationAsync(
                     bookingInfo.BookingFormula,
-                    bookingInfo.TrialLocation,
+                    bookingInfo.HearingBookingRegistryId,
                     bookingInfo.SelectedCourtFile.courtClassCode
                 );
 
