@@ -96,9 +96,9 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/booking-type")]
         public async Task<IActionResult> BookingType()
         {
-            var model = _scBookingService.LoadSearchForm2();
+            var model = _scBookingService.LoadBookingTypeForm();
 
-            if (string.IsNullOrEmpty(model.CaseNumber))
+            if (string.IsNullOrEmpty(model.SessionInfo.CaseNumber))
             {
                 return RedirectToAction("Index");
             }
@@ -110,7 +110,7 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpPost]
         [Route("~/booking/sc/booking-type")]
-        public async Task<IActionResult> BookingType(ScCaseSearchViewModel model)
+        public async Task<IActionResult> BookingType(ScBookingTypeViewModel model)
         {
             if (model.HearingTypeId == -1)
             {
@@ -159,10 +159,11 @@ namespace SCJ.Booking.MVC.Controllers
             if (!ModelState.IsValid)
             {
                 model.AvailableBookingTypes = await _scBookingService.GetAvailableBookingTypes();
+                model.SessionInfo = _session.ScBookingInfo;
                 return View(model);
             }
 
-            await _scBookingService.SaveScBookingInfoAsync(model);
+            await _scBookingService.SaveScBookingTypeFormAsync(model);
 
             return RedirectToAction("AvailableTimes");
         }
