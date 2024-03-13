@@ -19,7 +19,7 @@ namespace SCJ.Booking.MVC.ViewModels
             CaseLocationName = string.Empty;
             CaseRegistryId = -1;
             BookingLocationName = string.Empty;
-            BookingRegistryId = -1;
+            HearingBookingRegistryId = -1;
             ContainerId = -1;
             SelectedCaseDate = string.Empty;
             CaseNumber = string.Empty;
@@ -30,7 +30,7 @@ namespace SCJ.Booking.MVC.ViewModels
             IsLocationChangeFiled = null;
             TrialLocation = -1;
             BookingFormula = string.Empty;
-            AvailableTrialDates = new List<DateTime> { };
+            AvailableRegularTrialDates = new List<DateTime> { };
         }
 
         //Search fields
@@ -156,7 +156,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string CaseLocationName { get; set; }
 
         // Id of the registry where hearings are booked for the selected registry (varies based on HearingTypeId)
-        public int BookingRegistryId { get; set; }
+        public int HearingBookingRegistryId { get; set; }
 
         // Name of the registry where hearings are booked for the selected registry (varies based on HearingTypeId)
         public string BookingLocationName { get; set; }
@@ -261,7 +261,8 @@ namespace SCJ.Booking.MVC.ViewModels
         }
         public List<int> AvailableConferenceTypeIds { get; set; }
         public List<string> AvailableBookingTypes { get; set; }
-        public List<DateTime> AvailableTrialDates { get; set; }
+        public List<DateTime> AvailableRegularTrialDates { get; set; }
+        public List<DateTime> AvailableFairUseTrialDates { get; set; }
 
         public string SelectedTrialDate { get; set; }
         public string[] SelectedTrialDates { get; set; } = new string[0];
