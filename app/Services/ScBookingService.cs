@@ -108,7 +108,7 @@ namespace SCJ.Booking.MVC.Services
                 HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
                 AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
                 BookingFormula = bookingInfo.BookingFormula,
-                SelectedTrialDate = trialDate,
+                SelectedRegularTrialDate = trialDate,
             };
         }
 
@@ -327,7 +327,11 @@ namespace SCJ.Booking.MVC.Services
                 bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
             }
 
-            bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
+            if (model.SelectedCourtFile != null)
+            {
+                bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
+            }
+
             bookingInfo.AvailableConferenceTypeIds = model.AvailableConferenceTypeIds;
 
             //set hearing type name
@@ -426,6 +430,19 @@ namespace SCJ.Booking.MVC.Services
             if (bookingInfo.FullDate != model.FullDate)
             {
                 bookingInfo.FullDate = model.FullDate;
+            }
+
+            if (bookingInfo.SelectedRegularTrialDate != model.SelectedRegularTrialDate)
+            {
+                bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
+            }
+
+            if (
+                model.SelectedFairUseTrialDates.Count > 0
+                && bookingInfo.SelectedFairUseTrialDates != model.SelectedFairUseTrialDates
+            )
+            {
+                bookingInfo.SelectedFairUseTrialDates = model.SelectedFairUseTrialDates;
             }
 
             if (bookingInfo.BookingFormula != model.BookingFormula)
@@ -599,19 +616,73 @@ namespace SCJ.Booking.MVC.Services
 
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
-            // @TODO: check if timeslot is available? else return error
+            model.IsBooked = false;
+            bookingInfo.IsBooked = false;
 
-            // @TODO: book hearing? trial?
+            // check if timeslot is available
+            if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
+            {
+                // Available dates
+                List<DateTime> availableTrialDates = await GetAvailableTrialDatesAsync(
+                    ScFormulaType.RegularBooking
+                );
 
-            // @TODO: store user info in session for next booking
+                // check if selected date exists in the available dates
+                DateTime selectedDate = DateTime.ParseExact(
+                    bookingInfo.SelectedRegularTrialDate,
+                    "yyyy-MM-dd",
+                    System.Globalization.CultureInfo.InvariantCulture
+                );
 
-            // @TODO: save to DB
+                bool dateAvailable = availableTrialDates.Contains(selectedDate);
+
+                // thow an exception if the date is no longer available
+                if (!dateAvailable)
+                {
+                    // @TODO: throw some exception?
+                    return model;
+                }
+
+                // @TODO: book trial in API
+                var formula = await GetFormulaLocationAsync(
+                    bookingInfo.BookingFormula,
+                    bookingInfo.HearingBookingRegistryId,
+                    bookingInfo.SelectedCourtFile.courtClassCode
+                );
+
+                BookTrialHearingInfo requestPayload = new BookTrialHearingInfo
+                {
+                    BookingLocationID = formula.BookingLocationID,
+                    CEIS_Physical_File_ID = bookingInfo.CaseId,
+                    CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
+                    FormulaType = bookingInfo.BookingFormula,
+                    HearingDate = selectedDate,
+                    HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
+                    HearingType = bookingInfo.HearingTypeId,
+                    LocationID = bookingInfo.TrialLocation,
+                    RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
+                };
+                BookingHearingResult bookingResult = await _client.BookTrialHearingAsync(
+                    requestPayload
+                );
+
+                // @TODO: save to DB?
+
+                // @TODO: send email (SCJ-149)
+            }
+
+            // store user info in session for next booking
+            var userInfo = new SessionUserInfo
+            {
+                Phone = model.Phone,
+                Email = model.EmailAddress,
+                ContactName = $"{userDisplayName}"
+            };
+            _session.UserInfo = userInfo;
 
             // update model
             model.IsBooked = true;
             bookingInfo.IsBooked = true;
-
-            // @TODO: send email
 
             // save the booking info back to the session
             _session.ScBookingInfo = bookingInfo;
@@ -802,7 +873,7 @@ namespace SCJ.Booking.MVC.Services
         public async Task<List<DateTime>> GetAvailableTrialDatesAsync(string formulaType)
         {
             var bookingInfo = _session.ScBookingInfo;
-            var courtClassCode = bookingInfo.SelectedCourtFile.courtClassCode;
+            var courtClassCode = bookingInfo.SelectedCourtFile.courtClassCode ?? "";
 
             var formula = await GetFormulaLocationAsync(
                 formulaType,

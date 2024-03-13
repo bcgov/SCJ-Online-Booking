@@ -1,10 +1,11 @@
 @model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
 
 @{
-    var regularDateStrings = Model.AvailableRegularTrialDates.Select(d => d.ToString("yyyy-MM-dd"));
-    var fairUseDateStrings = Model.AvailableFairUseTrialDates.Select(d => d.ToString("yyyy-MM-dd"));
-    string availableRegular = Json.Serialize(regularDateStrings).ToString();
-    string availableFairUse = Json.Serialize(fairUseDateStrings).ToString();
+  List<string> regularDatesList = Model.AvailableRegularTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+  string availableRegularDates = Json.Serialize(regularDatesList).ToString();
+
+  List<string> fairUseDatesList = Model.AvailableFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+  string availableFairUseDates = Json.Serialize(regularDatesList).ToString();
 }
 
 <form method="post" id="availableTimesForm">
@@ -14,17 +15,17 @@
 
   <div id="VueTrialTimeSelect">
     <trial-time-select-tabs initial-tab="@Model.BookingFormula.ToString()">
-      <regular-booking :dates="@availableRegular" :trial-length="@Model.EstimatedTrialLength"
-        initial-value="@Model.SelectedTrialDate" slot="regularBooking"></regular-booking>
+      <regular-booking :dates="@availableRegularDates" :trial-length="@Model.EstimatedTrialLength"
+        initial-value="@Model.SelectedRegularTrialDate" slot="regularBooking"></regular-booking>
 
-      <fair-use-booking :dates="@availableFairUse" :trial-length="@Model.EstimatedTrialLength"
+      <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.EstimatedTrialLength"
         slot="fairUseBooking"></fair-use-booking>
     </trial-time-select-tabs>
   </div>
 
   <div class="content-pad bg-white">
-    <span asp-validation-for="SelectedTrialDate" class="text-danger"></span>
-    <span asp-validation-for="SelectedTrialDates" class="text-danger"></span>
+    <span asp-validation-for="SelectedRegularTrialDate" class="text-danger"></span>
+    <span asp-validation-for="SelectedFairUseTrialDates" class="text-danger"></span>
   </div>
 
   <div class="row no-gutters">

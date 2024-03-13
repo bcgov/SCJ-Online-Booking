@@ -31,6 +31,7 @@ namespace SCJ.Booking.MVC.ViewModels
             TrialLocation = -1;
             BookingFormula = string.Empty;
             AvailableRegularTrialDates = new List<DateTime> { };
+            AvailableFairUseTrialDates = new List<DateTime> { };
         }
 
         //Search fields
@@ -183,10 +184,10 @@ namespace SCJ.Booking.MVC.ViewModels
                 {
                     string dateFormat = "yyyy-MM-dd";
 
-                    if (BookingFormula == "regularBooking")
+                    if (BookingFormula == ScFormulaType.RegularBooking)
                     {
                         DateTime.TryParseExact(
-                            SelectedTrialDate,
+                            SelectedRegularTrialDate,
                             dateFormat,
                             System.Globalization.CultureInfo.InvariantCulture,
                             System.Globalization.DateTimeStyles.None,
@@ -195,9 +196,9 @@ namespace SCJ.Booking.MVC.ViewModels
 
                         return parsedDate;
                     }
-                    else if (BookingFormula == "fairUseBooking")
+                    else if (BookingFormula == ScFormulaType.FairUseBooking)
                     {
-                        Console.WriteLine(SelectedTrialDates);
+                        Console.WriteLine(SelectedFairUseTrialDates);
                     }
 
                     return result;
@@ -264,7 +265,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public List<DateTime> AvailableRegularTrialDates { get; set; }
         public List<DateTime> AvailableFairUseTrialDates { get; set; }
 
-        public string SelectedTrialDate { get; set; }
-        public string[] SelectedTrialDates { get; set; } = new string[0];
+        public string SelectedRegularTrialDate { get; set; }
+        public List<string> SelectedFairUseTrialDates { get; set; } = new List<string>();
     }
 }

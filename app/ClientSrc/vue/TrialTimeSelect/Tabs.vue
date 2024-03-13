@@ -1,20 +1,20 @@
 <template>
   <div class="trial-time-select-tabs">
     <ul class="content-pad m-0">
-      <li :class="{ selected: tab === 'fairUseBooking' }">
+      <li :class="{ selected: tab === 'Fair-Use' }">
         <label role="button">
           <div>
-            <input type="radio" value="fairUseBooking" v-model="tab" />
+            <input type="radio" value="Fair-Use" v-model="tab" />
             <strong>Provide your availability for upcoming dates</strong>
           </div>
           <div>Choose up to five dates for a trial starting in the upcoming release of dates</div>
         </label>
       </li>
 
-      <li :class="{ selected: tab === 'regularBooking' }">
+      <li :class="{ selected: tab === 'Regular' }">
         <label role="button">
           <div>
-            <input type="radio" value="regularBooking" v-model="tab" />
+            <input type="radio" value="Regular" v-model="tab" />
             <strong>Book currently available trial dates</strong>
           </div>
           <div>You can instantly book a trial date that is currently available in the system.</div>
@@ -24,8 +24,8 @@
 
     <input type="hidden" name="BookingFormula" :value="tab" />
 
-    <slot v-if="tab === 'fairUseBooking'" name="fairUseBooking" />
-    <slot v-if="tab === 'regularBooking'" name="regularBooking" />
+    <slot v-if="tab === 'Fair-Use'" name="fairUseBooking" />
+    <slot v-if="tab === 'Regular'" name="regularBooking" />
   </div>
 </template>
 
@@ -36,12 +36,12 @@ export default {
   props: {
     initialTab: {
       type: String,
-      default: "fairUseBooking",
+      default: "Fair-Use",
     },
   },
 
   data: () => ({
-    tab: "fairUseBooking",
+    tab: "Fair-Use",
   }),
 
   // set initial value, if provided
