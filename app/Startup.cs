@@ -133,11 +133,10 @@ namespace SCJ.Booking.MVC
                     };
                     options.Events = new OpenIdConnectEvents
                     {
-                        OnTokenValidated = ctx =>
+                        OnTokenValidated = async ctx =>
                         {
-                            // add extra job board admin claims
-                            OpenIdConnectHelper.HandleUserLogin(ctx);
-                            return Task.CompletedTask;
+                            // add extra user oidc claims and save the user to our db
+                            await OpenIdConnectHelper.HandleUserLogin(ctx);
                         },
                         OnRedirectToIdentityProvider = ctx =>
                         {
