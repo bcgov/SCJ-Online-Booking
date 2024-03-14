@@ -1,21 +1,95 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SCJ.Booking.Data;
+using SCJ.Booking.Data.Models;
 
 namespace SCJ.Booking.MVC.Utils
 {
     public class OpenIdConnectHelper
     {
+        private const string BceidUserGuidClaim = "bceid_user_guid";
+        private const string IdentityProviderClaim = "identity_provider";
+        private const string EmailClaim =
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+        private const string NameClaim =
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname";
+
         /// <summary>
         ///     This is a placeholder for code that needs to be called after OnTokenValidated
         /// </summary>
-        public static void HandleUserLogin(TokenValidatedContext tokenCtx)
+        public static async Task HandleUserLogin(TokenValidatedContext tokenCtx)
         {
-            // add any code that needs to execute when the use logs in here
+            string idp = tokenCtx.Principal.FindFirstValue(IdentityProviderClaim);
+
+            if (idp == "bceidboth")
+            {
+                string guid = tokenCtx.Principal.FindFirstValue(BceidUserGuidClaim);
+                string email = tokenCtx.Principal.FindFirstValue(EmailClaim);
+                string displayName = tokenCtx.Principal.FindFirstValue(NameClaim);
+
+                //Get EF context
+                var dbCtx =
+                    tokenCtx.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
+
+                OidcUser user = await dbCtx.Users.FirstOrDefaultAsync(u =>
+                    u.CredentialType == OidcUser.CredentialTypeLookup.KeycloakBceid
+                    && u.UniqueIdentifier == guid
+                );
+
+                long userId;
+
+                if (user == null)
+                {
+                    var newUser = new OidcUser
+                    {
+                        CredentialType = OidcUser.CredentialTypeLookup.KeycloakBceid,
+                        UniqueIdentifier = guid,
+                        LastLogin = DateTime.Now
+                    };
+
+                    await dbCtx.Users.AddAsync(newUser);
+
+                    userId = await dbCtx.SaveChangesAsync();
+                }
+                else
+                {
+                    userId = user.Id;
+                    if (
+                        !user.LastLogin.HasValue
+                        || user.LastLogin.Value < DateTime.Now.AddMinutes(-1)
+                    )
+                    {
+                        user.LastLogin = DateTime.Now;
+
+                        dbCtx.Users.Update(user);
+                        await dbCtx.SaveChangesAsync();
+                    }
+                }
+
+                var claims = new List<Claim>
+                {
+                    new(ClaimTypes.Sid, userId.ToString()),
+                    new(ClaimTypes.Email, email),
+                    new(ClaimTypes.Name, displayName),
+                };
+
+                var appIdentity = new ClaimsIdentity(claims);
+
+                if (tokenCtx.Principal != null)
+                {
+                    tokenCtx.Principal.AddIdentity(appIdentity);
+                }
+            }
         }
 
         /// <summary>

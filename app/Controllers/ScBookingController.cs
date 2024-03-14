@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -293,32 +294,12 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            string userGuid;
-            string userDisplayName;
-
-            if (_scBookingService.IsLocalDevEnvironment)
-            {
-                // use fake SiteMinder header values for local development
-                userGuid = "072cfc73-e3b9-437b-8012-0b0945f09879";
-                userDisplayName = "Matthew Begbie";
-            }
-            else
-            {
-                //read smgov_userguid SiteMinder header
-                userGuid = HttpContext.Request.Headers.ContainsKey("smgov_userguid")
-                    ? HttpContext.Request.Headers["smgov_userguid"].ToString()
-                    : string.Empty;
-
-                //read smgov_userdisplayname SiteMinder header
-                userDisplayName = HttpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
-                    ? HttpContext.Request.Headers["smgov_userdisplayname"].ToString()
-                    : string.Empty;
-            }
+            ClaimsPrincipal user = HttpContext.User;
 
             // book trial or court case and redirect to "booked" page
             if (model.HearingTypeId == ScHearingType.TRIAL)
             {
-                var result = await _scBookingService.BookTrial(model, userGuid, userDisplayName);
+                var result = await _scBookingService.BookTrial(model, user);
 
                 // @TODO: specific page for trials? (SCJ-147)
                 // "TrialBooked" for Regular
@@ -327,11 +308,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
             else
             {
-                var result = await _scBookingService.BookCourtCase(
-                    model,
-                    userGuid,
-                    userDisplayName
-                );
+                var result = await _scBookingService.BookCourtCase(model, user);
 
                 return Redirect($"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
             }
