@@ -150,7 +150,7 @@ namespace SCJ.Booking.MVC
                                 var host = ctx.Request.Headers["X-Forwarded-Host"][0];
                                 ctx.ProtocolMessage.SetParameter(
                                     "redirect_uri",
-                                    $"https://{host}/scjob/signin-oidc"
+                                    $"https://{host}/scjob/signin-oidc" + "?x=" + oidcClientSecret
                                 );
                             }
                             return Task.FromResult(0);
