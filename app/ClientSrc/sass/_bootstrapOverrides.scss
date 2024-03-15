@@ -372,9 +372,32 @@ hr {
 }
 
 // alerts
-.alert-info {
-  background: $white;
-  color: #666;
-  border: 1px solid #666;
-  padding: 0.75em 1em;
+.alert {
+  // larger dismiss/close button
+  .close {
+    font-size: 1.5em;
+  }
+
+  // custom colors for "info" alerts
+  &-info {
+    background: $white;
+    color: #666;
+    border: 1px solid #666;
+    padding: 0.75em 1em;
+  }
+
+  // display alerts as a floating banner on small screens
+  &.sm-banner {
+    @media (max-width: ($breakpoint-md - 1px)) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      min-height: 4em;
+      border-radius: 0;
+
+      // display over the top menu
+      z-index: 10000;
+    }
+  }
 }
