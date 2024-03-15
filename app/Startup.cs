@@ -145,12 +145,12 @@ namespace SCJ.Booking.MVC
                             // add a parameter to the keycloak redirect querystring
                             ctx.ProtocolMessage.SetParameter("kc_idp_hint", "bceid");
                             // change the redirect_uri to the reverse proxy
-                            if (ctx.Request.Headers.ContainsKey("X-Forwarded-Host"))
+                            string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx);
+                            if (proxyHost != null)
                             {
-                                var host = ctx.Request.Headers["X-Forwarded-Host"][0];
                                 ctx.ProtocolMessage.SetParameter(
                                     "redirect_uri",
-                                    $"https://{host}/scjob/signin-oidc"
+                                    $"https://{proxyHost}/scjob/signin-oidc"
                                 );
                             }
                             return Task.FromResult(0);
@@ -158,12 +158,12 @@ namespace SCJ.Booking.MVC
                         OnRedirectToIdentityProviderForSignOut = ctx =>
                         {
                             // change the post-logout redirect_uri to the reverse proxy
-                            if (ctx.Request.Headers.ContainsKey("X-Forwarded-Host"))
+                            string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx);
+                            if (proxyHost != null)
                             {
-                                var host = ctx.Request.Headers["X-Forwarded-Host"][0];
                                 ctx.ProtocolMessage.SetParameter(
                                     "post_logout_redirect_uri",
-                                    $"https://{host}/scjob"
+                                    $"https://{proxyHost}/scjob"
                                 );
                             }
                             return Task.FromResult(0);
