@@ -129,6 +129,7 @@ ul {
   }
 }
 
+// minimal tab styles on small screens
 @media (max-width: ($breakpoint-md - 1px)) {
   ul {
     background: $white;
@@ -158,7 +159,7 @@ ul {
   }
 }
 
-// use tab styles on larger screens
+// large tab styles on larger screens
 @include breakpoint(md) {
   ul {
     color: $blue-light;
