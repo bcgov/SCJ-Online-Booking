@@ -125,6 +125,8 @@ namespace SCJ.Booking.MVC
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.SaveTokens = true;
+                    options.NonceCookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
