@@ -9,7 +9,12 @@ namespace SCJ.Booking.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(name: "LastLogin", table: "Users", nullable: true);
+            migrationBuilder.AddColumn<DateTime>(
+                name: "LastLogin",
+                table: "Users",
+                type: "timestamp with time zone",
+                nullable: true
+            );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

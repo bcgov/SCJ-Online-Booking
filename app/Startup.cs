@@ -171,9 +171,9 @@ namespace SCJ.Booking.MVC
                         OnRemoteFailure = ctx =>
                         {
                             var logger = new SerilogLoggerFactory().CreateLogger<Startup>();
-                            logger.LogWarning("SCJOB KC OnRemoteFailure redirect to '/'");
+                            logger.LogWarning("SCJOB KC OnRemoteFailure redirect to '/scjob'");
                             logger.LogWarning(ctx.Failure?.ToString() ?? "ctx.Failure is null");
-                            ctx.Response.Redirect("/");
+                            ctx.Response.Redirect("/scjob");
                             ctx.HandleResponse();
                             return Task.FromResult(0);
                         }
