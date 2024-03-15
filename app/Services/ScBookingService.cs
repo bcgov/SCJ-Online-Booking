@@ -334,78 +334,6 @@ namespace SCJ.Booking.MVC.Services
 
             bookingInfo.AvailableConferenceTypeIds = model.AvailableConferenceTypeIds;
 
-            //set hearing type name
-            if (
-                model.HearingTypeId > 0
-                && ScHearingType.HearingTypeNameMap.ContainsKey(model.HearingTypeId)
-                && bookingInfo.HearingTypeId != model.HearingTypeId
-            )
-            {
-                bookingInfo.HearingTypeId = model.HearingTypeId;
-                bookingInfo.HearingTypeName = ScHearingType.HearingTypeNameMap[model.HearingTypeId];
-
-                bookingInfo.HearingBookingRegistryId =
-                    await _cache.GetBookingLocationIdAsync(
-                        bookingInfo.CaseRegistryId,
-                        bookingInfo.HearingTypeId
-                    ) ?? bookingInfo.CaseRegistryId;
-
-                bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
-                    bookingInfo.HearingBookingRegistryId
-                );
-
-                bookingInfo.Results = await _client.AvailableDatesByLocationAsync(
-                    bookingInfo.HearingBookingRegistryId,
-                    bookingInfo.HearingTypeId
-                );
-            }
-
-            if (
-                model.EstimatedTrialLength.HasValue
-                && bookingInfo.EstimatedTrialLength != model.EstimatedTrialLength.Value
-            )
-            {
-                bookingInfo.EstimatedTrialLength = model.EstimatedTrialLength.Value;
-            }
-
-            if (
-                model.IsHomeRegistry.HasValue
-                && bookingInfo.IsHomeRegistry != model.IsHomeRegistry.Value
-            )
-            {
-                bookingInfo.IsHomeRegistry = model.IsHomeRegistry.Value;
-            }
-
-            if (
-                model.IsHomeRegistry == false
-                && model.IsLocationChangeFiled.HasValue
-                && bookingInfo.IsLocationChangeFiled != model.IsLocationChangeFiled.Value
-            )
-            {
-                bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled.Value;
-            }
-
-            // set trial location:
-            if (
-                model.IsHomeRegistry == true
-                && bookingInfo.CaseRegistryId > 0
-                && bookingInfo.TrialLocation != bookingInfo.CaseRegistryId
-            )
-            {
-                // home registry
-                bookingInfo.TrialLocation = bookingInfo.CaseRegistryId;
-            }
-            else if (
-                model.IsHomeRegistry == false
-                && model.IsLocationChangeFiled == true
-                && model.TrialLocation > 0
-                && bookingInfo.TrialLocation != model.TrialLocation
-            )
-            {
-                // somewhere besides the home registry
-                bookingInfo.TrialLocation = model.TrialLocation;
-            }
-
             if (model.ContainerId > 0)
             {
                 if (
@@ -909,6 +837,105 @@ namespace SCJ.Booking.MVC.Services
             return availableDates
                 .AvailableTrialDates.AvailablesDatesInfo.Select(d => d.AvailableDate)
                 .ToList();
+        }
+
+        public async Task SaveScBookingTypeFormAsync(ScBookingTypeViewModel model)
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            bookingInfo.AvailableConferenceTypeIds = model.AvailableConferenceTypeIds;
+
+            //set hearing type name
+            if (
+                model.HearingTypeId > 0
+                && ScHearingType.HearingTypeNameMap.ContainsKey(model.HearingTypeId)
+                && bookingInfo.HearingTypeId != model.HearingTypeId
+            )
+            {
+                bookingInfo.HearingTypeId = model.HearingTypeId;
+                bookingInfo.HearingTypeName = ScHearingType.HearingTypeNameMap[model.HearingTypeId];
+
+                bookingInfo.HearingBookingRegistryId =
+                    await _cache.GetBookingLocationIdAsync(
+                        bookingInfo.CaseRegistryId,
+                        bookingInfo.HearingTypeId
+                    ) ?? bookingInfo.CaseRegistryId;
+
+                bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
+                    bookingInfo.HearingBookingRegistryId
+                );
+
+                bookingInfo.Results = await _client.AvailableDatesByLocationAsync(
+                    bookingInfo.HearingBookingRegistryId,
+                    bookingInfo.HearingTypeId
+                );
+            }
+
+            if (
+                model.EstimatedTrialLength.HasValue
+                && bookingInfo.EstimatedTrialLength != model.EstimatedTrialLength.Value
+            )
+            {
+                bookingInfo.EstimatedTrialLength = model.EstimatedTrialLength.Value;
+            }
+
+            if (
+                model.IsHomeRegistry.HasValue
+                && bookingInfo.IsHomeRegistry != model.IsHomeRegistry.Value
+            )
+            {
+                bookingInfo.IsHomeRegistry = model.IsHomeRegistry.Value;
+            }
+
+            if (
+                model.IsHomeRegistry == false
+                && model.IsLocationChangeFiled.HasValue
+                && bookingInfo.IsLocationChangeFiled != model.IsLocationChangeFiled.Value
+            )
+            {
+                bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled.Value;
+            }
+
+            // set trial location:
+            if (
+                model.IsHomeRegistry == true
+                && bookingInfo.CaseRegistryId > 0
+                && bookingInfo.TrialLocation != bookingInfo.CaseRegistryId
+            )
+            {
+                // home registry
+                bookingInfo.TrialLocation = bookingInfo.CaseRegistryId;
+            }
+            else if (
+                model.IsHomeRegistry == false
+                && model.IsLocationChangeFiled == true
+                && model.TrialLocation > 0
+                && bookingInfo.TrialLocation != model.TrialLocation
+            )
+            {
+                // somewhere besides the home registry
+                bookingInfo.TrialLocation = model.TrialLocation;
+            }
+
+            _session.ScBookingInfo = bookingInfo;
+        }
+
+        public ScBookingTypeViewModel LoadBookingTypeForm()
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            //Model instance
+            return new ScBookingTypeViewModel
+            {
+                HearingTypeId = bookingInfo.HearingTypeId,
+                HearingTypeName = bookingInfo.HearingTypeName,
+                EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
+                IsHomeRegistry = bookingInfo.IsHomeRegistry,
+                IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
+                TrialLocation = bookingInfo.TrialLocation,
+                AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
+                SessionInfo = bookingInfo
+            };
         }
     }
 }

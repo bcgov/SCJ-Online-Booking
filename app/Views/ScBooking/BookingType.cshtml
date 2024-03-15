@@ -1,6 +1,6 @@
 @inject SelectListService SelectListService
 
-@model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
+@model SCJ.Booking.MVC.ViewModels.ScBookingTypeViewModel
 
 @{
     ViewData["Title"] = "BookingType";
@@ -21,27 +21,15 @@
     <h2>Choose Your Booking Type</h2>
 
     <form method="post">
-        @Html.HiddenFor(m => m.FullCaseNumber)
-        @Html.HiddenFor(m => m.SelectedCaseId)
-        @Html.HiddenFor(m => m.SelectedCourtClass)
-        @Html.HiddenFor(m => m.LocationPrefix)
         @for (int i = 0; i < Model.AvailableConferenceTypeIds.Count; i++)
         {
             @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
         }
-        @for (int i = 0; i < Model.CourtFiles?.Length; i++)
-        {
-            @Html.HiddenFor(m => m.CourtFiles[i].courtClassCode)
-            @Html.HiddenFor(m => m.CourtFiles[i].courtFileNumber)
-            @Html.HiddenFor(m => m.CourtFiles[i].styleOfCause)
-            @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
-            @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
-        }
 
         <div>
-            <div class="uppercase-sm">File Number: @Model.FileNumber</div>
-            <h5 style="margin-bottom: 4px">@Model.SelectedCourtFile?.styleOfCause</h5>
-            <p>@Model.SelectedCourtClassName</p>
+            <div class="uppercase-sm">File Number: @Model.SessionInfo.FileNumber</div>
+            <h5 style="margin-bottom: 4px">@Model.SessionInfo.SelectedCourtFile?.styleOfCause</h5>
+            <p>@Model.SessionInfo.SelectedCourtClassName</p>
         </div>
 
         <div class="row no-gutters">
