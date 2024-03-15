@@ -12,6 +12,8 @@
     <p>Starting: @Model.Date</p>
 
     <p>Trial location: @Model.TrialLocationName</p>
+
+    <span class="text-danger" asp-validation-for="SelectedRegularTrialDate"></span>
 </div>
 
 <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
