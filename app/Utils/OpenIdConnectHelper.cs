@@ -154,5 +154,23 @@ namespace SCJ.Booking.MVC.Utils
                 }
             }
         }
+
+        /// <summary>
+        ///     Helper method for getting redirect urls
+        /// </summary>
+        public static string GetProxyHost(RedirectContext ctx)
+        {
+            if (ctx.Request.Headers.ContainsKey("X-Forwarded-Server"))
+            {
+                return ctx.Request.Headers["X-Forwarded-Server"][0];
+            }
+
+            if (ctx.Request.Headers.ContainsKey("X-Forwarded-Host"))
+            {
+                return ctx.Request.Headers["X-Forwarded-Host"][0];
+            }
+
+            return null;
+        }
     }
 }
