@@ -1,5 +1,9 @@
 <template>
   <div class="trial-time-select-fair-use-booking">
+    <div class="d-md-none mb-3 content-pad">
+      Choose up to five dates for a trial starting in the upcoming release of dates.
+    </div>
+
     <div class="dates-info content-pad mb-3">
       <div
         @click="showInfo = !showInfo"
@@ -78,26 +82,41 @@
     </div>
 
     <div class="content-pad">
-      <h3 class="mt-0 mb-3">Choose trial start date (Trial length {{ trialLength }} days)</h3>
+      <h3 class="mt-0 mb-3">Choose trial start dates (Trial length {{ trialLength }} days)</h3>
+
+      <slot v-if="dates.length === 0" name="noDatesError" />
     </div>
 
-    <div class="column-container">
+    <div class="column-container" v-if="dates.length > 0">
       <div class="dates-intro content-pad select-dates-intro">
         <h6>[January 2024]</h6>
         <p class="mb-3">
-          Choose up to 5 starting dates. Some dates are not available due to statutory holidays or
-          court closures.
+          Choose up to {{ maxSelectionSize }} starting dates. Some dates are not available due to
+          statutory holidays or court closures.
         </p>
         <div
+          ref="availableDates"
           class="list-info-header d-flex justify-content-between align-items-center mb-4 d-md-none"
         >
-          <h6 class="text-secondary">{{ selected.length }}/5 selected</h6>
-          <a class="scroll-link" @click.prevent href="#"
+          <h6 class="text-secondary">{{ selected.length }}/{{ maxSelectionSize }} selected</h6>
+          <a class="scroll-link" @click.prevent="scrollTo('selectedDates')" href="#"
             >See my choices <i class="fas fa-long-arrow-alt-down"
           /></a>
         </div>
 
-        <div class="alert alert-warning m-0" v-if="selected.length >= 5">
+        <div
+          class="alert sm-banner alert-warning m-0"
+          v-if="selected.length >= maxSelectionSize && !selectionSizeAlertHidden"
+        >
+          <button
+            type="button"
+            class="close d-md-none"
+            aria-label="Close"
+            @click="selectionSizeAlertHidden = true"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+
           <i class="fa fa-exclamation-triangle" />
           Remove a chosen date before adding another.
         </div>
@@ -120,9 +139,12 @@
       <div class="dates-intro content-pad selected-dates-intro">
         <h6>Your Availability</h6>
         <p class="mb-3">You can reorder dates to indicate your preference.</p>
-        <div class="list-info-header d-flex justify-content-between align-items-center mb-4">
-          <h6 class="text-secondary">{{ selected.length }}/5 selected</h6>
-          <a class="scroll-link d-md-none" @click.prevent href="#"
+        <div
+          ref="selectedDates"
+          class="list-info-header d-flex justify-content-between align-items-center mb-4"
+        >
+          <h6 class="text-secondary">{{ selected.length }}/{{ maxSelectionSize }} selected</h6>
+          <a class="scroll-link d-md-none" @click.prevent="scrollTo('availableDates')" href="#"
             >Select more dates <i class="fas fa-long-arrow-alt-up"
           /></a>
         </div>
@@ -177,6 +199,8 @@ export default {
     showInfo: false,
 
     selected: [],
+    maxSelectionSize: 5,
+    selectionSizeAlertHidden: false,
   }),
 
   props: {
@@ -227,11 +251,14 @@ export default {
      * @param {string} isoDate - date string to remove
      */
     select(isoDate) {
+      // reset "hidden" flag for the "selection full" alert
+      this.selectionSizeAlertHidden = false;
+
       // prevent adding duplicates
       if (this.selected.includes(isoDate)) return;
 
-      // prevent adding more than 5
-      if (this.selected.length >= 5) return;
+      // prevent adding more than maxSelectionSize
+      if (this.selected.length >= this.maxSelectionSize) return;
 
       this.selected.push(isoDate);
     },
@@ -243,6 +270,15 @@ export default {
      */
     unselect(isoDate) {
       this.selected = this.selected.filter((date) => date !== isoDate);
+    },
+
+    /**
+     * Scrolls a ref element into view.
+     *
+     * @param {string} refName - name in this component's $refs
+     */
+    scrollTo(refName) {
+      this.$refs[refName].scrollIntoView({ behavior: "smooth" });
     },
   },
 };

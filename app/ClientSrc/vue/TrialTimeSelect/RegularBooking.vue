@@ -1,8 +1,14 @@
 <template>
   <div class="trial-time-select-regular-booking content-pad">
-    <h3 class="mt-0 mb-5">Choose trial start date (Trial length {{ trialLength }} days)</h3>
+    <div class="d-md-none mb-3">
+      You can instantly book a trial date that is currently available in the system.
+    </div>
+
+    <h3 class="mt-0 mb-5">Choose trial start date (Trial length {{ trialLengthDisplay }})</h3>
 
     <div class="mb-5">
+      <slot v-if="dates.length === 0" name="noDatesError" />
+
       <label
         class="label-button"
         :class="{ selected: selected === date.isoDate }"
@@ -79,6 +85,12 @@ export default {
 
     visibleDates() {
       return this.formattedDates.slice(0, this.numShowing);
+    },
+
+    trialLengthDisplay() {
+      const days = this.trialLength === 1 ? "day" : "days";
+
+      return `${this.trialLength} ${days}`;
     },
   },
 };
