@@ -16,10 +16,22 @@
   <div id="VueTrialTimeSelect">
     <trial-time-select-tabs initial-tab="@Model.BookingFormula.ToString()">
       <regular-booking :dates="@availableRegularDates" :trial-length="@Model.EstimatedTrialLength"
-        initial-value="@Model.SelectedRegularTrialDate" slot="regularBooking"></regular-booking>
+        initial-value="@Model.SelectedRegularTrialDate" slot="regularBooking">
+        <div slot="noDatesError" class="alert alert-danger" role="alert">
+          <i class="fa fa-ban"></i>
+          There are currently no trial dates available at @Model.BookingLocationName. Try again at a later
+          time as more dates become available in the system.
+        </div>
+      </regular-booking>
 
       <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.EstimatedTrialLength"
-        slot="fairUseBooking"></fair-use-booking>
+        slot="fairUseBooking">
+        <div slot="noDatesError" class="alert alert-danger" role="alert">
+          <i class="fa fa-ban"></i>
+          There are no dates set for the upcoming release. You can instantly book a trial date that is
+          currently available in the system instead.
+        </div>
+      </fair-use-booking>
     </trial-time-select-tabs>
   </div>
 
