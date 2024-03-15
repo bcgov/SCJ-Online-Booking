@@ -101,7 +101,11 @@ namespace SCJ.Booking.Data.Migrations
                 {
                     Id = table
                         .Column<long>(type: "integer", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Sqlite:Autoincrement", true)
+                        .Annotation(
+                            "Npgsql:ValueGenerationStrategy",
+                            NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                        ),
                     CredentialType = table.Column<ushort>(type: "integer", nullable: false),
                     UniqueIdentifier = table.Column<string>(type: "text", nullable: false)
                 },
