@@ -9,7 +9,7 @@
     </div>
 </div>
 
-@if (@Model.BookingFormula == "fairUseBooking")
+@if (@Model.BookingFormula == ScFormulaType.FairUseBooking)
 {
     <partial name="Partial/CaseConfirm/_FairUseBooking" model="Model" />
 }

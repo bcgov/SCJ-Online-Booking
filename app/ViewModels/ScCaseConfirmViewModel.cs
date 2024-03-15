@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SCJ.Booking.MVC.ViewModels
@@ -12,7 +13,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string HearingTypeName { get; set; }
         public int HearingTypeId { get; set; }
 
-        //Booking time formula ("fairUseBooking" or "regularBooking")
+        //Booking time formula (from ScFormulaType)
         public string BookingFormula { get; set; }
 
         //Location for the booking
@@ -20,6 +21,8 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //Date for the booking
         public string Date { get; set; }
+        public string SelectedRegularTrialDate { get; set; }
+        public List<string> SelectedFairUseTrialDates { get; set; } = new List<string>();
 
         //Time for booking
         public string Time { get; set; }

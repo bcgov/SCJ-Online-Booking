@@ -118,7 +118,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             // Extra fields for "Trial" booking type
-            if (model.HearingTypeId == 9001)
+            if (model.HearingTypeId == ScHearingType.TRIAL)
             {
                 if (model.EstimatedTrialLength == null || model.EstimatedTrialLength == 0)
                 {
@@ -178,13 +178,21 @@ namespace SCJ.Booking.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            model.AvailableRegularTrialDates = await _scBookingService.GetAvailableTrialDatesAsync(
-                ScFormulaType.RegularBooking
-            );
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
-            model.AvailableFairUseTrialDates = await _scBookingService.GetAvailableTrialDatesAsync(
-                ScFormulaType.FairUseBooking
-            );
+            // Trial bookings: get lists of available trial dates
+            if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
+            {
+                model.AvailableRegularTrialDates =
+                    await _scBookingService.GetAvailableTrialDatesAsync(
+                        ScFormulaType.RegularBooking
+                    );
+
+                model.AvailableFairUseTrialDates =
+                    await _scBookingService.GetAvailableTrialDatesAsync(
+                        ScFormulaType.FairUseBooking
+                    );
+            }
 
             return View(model);
         }
@@ -205,22 +213,22 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             if (
-                model.BookingFormula == "regularBooking"
-                && string.IsNullOrWhiteSpace(model.SelectedTrialDate)
+                model.BookingFormula == ScFormulaType.RegularBooking
+                && string.IsNullOrWhiteSpace(model.SelectedRegularTrialDate)
             )
             {
                 ModelState.AddModelError(
-                    "SelectedTrialDate",
+                    "SelectedRegularTrialDate",
                     "Please choose from one of the available times."
                 );
             }
             else if (
-                model.BookingFormula == "fairUseBooking"
-                && model.SelectedTrialDates.Length == 0
+                model.BookingFormula == ScFormulaType.FairUseBooking
+                && model.SelectedFairUseTrialDates.Count == 0
             )
             {
                 ModelState.AddModelError(
-                    "SelectedTrialDates",
+                    "SelectedFairUseTrialDates",
                     "Please choose from the available times."
                 );
             }
@@ -312,7 +320,9 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 var result = await _scBookingService.BookTrial(model, userGuid, userDisplayName);
 
-                // @TODO: specific page for trials?
+                // @TODO: specific page for trials? (SCJ-147)
+                // "TrialBooked" for Regular
+                // ReviewSubmission for Fair-Use
                 return Redirect($"/scjob/booking/sc/TrialBooked?booked={result.IsBooked}");
             }
             else
