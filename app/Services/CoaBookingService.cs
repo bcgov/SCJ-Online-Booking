@@ -260,7 +260,7 @@ namespace SCJ.Booking.MVC.Services
                 //build object to send to the API
                 BookingHearingResult result;
 
-                string userDisplayName = user.FindFirst(ClaimTypes.Name)?.Value ?? "";
+                string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
                 if (bookingInfo.IsAppealHearing is true)

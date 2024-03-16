@@ -428,7 +428,7 @@ namespace SCJ.Booking.MVC.Services
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
-                string userDisplayName = user.FindFirst(ClaimTypes.Name)?.Value ?? "";
+                string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
                 //build object to send to the API
@@ -551,7 +551,7 @@ namespace SCJ.Booking.MVC.Services
             model.IsBooked = false;
             bookingInfo.IsBooked = false;
 
-            string userDisplayName = user.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
             long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
             // check if timeslot is available
