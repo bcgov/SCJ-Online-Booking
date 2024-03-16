@@ -34,8 +34,6 @@ namespace SCJ.Booking.MVC.Utils
             if (idp == "bceidboth")
             {
                 string guid = tokenCtx.Principal.FindFirstValue(BceidUserGuidClaim);
-                string email = tokenCtx.Principal.FindFirstValue(EmailClaim);
-                string displayName = tokenCtx.Principal.FindFirstValue(NameClaim);
 
                 //Get EF context
                 var dbCtx =
@@ -76,19 +74,11 @@ namespace SCJ.Booking.MVC.Utils
                     }
                 }
 
-                var claims = new List<Claim>
-                {
-                    new(ClaimTypes.Sid, userId.ToString()),
-                    new(ClaimTypes.Email, email),
-                    new(ClaimTypes.Name, displayName),
-                };
+                var claims = new List<Claim> { new(ClaimTypes.Sid, userId.ToString()), };
 
                 var appIdentity = new ClaimsIdentity(claims);
 
-                if (tokenCtx.Principal != null)
-                {
-                    tokenCtx.Principal.AddIdentity(appIdentity);
-                }
+                tokenCtx.Principal?.AddIdentity(appIdentity);
             }
         }
 
