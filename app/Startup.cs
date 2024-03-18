@@ -181,7 +181,7 @@ namespace SCJ.Booking.MVC
                             {
                                 ctx.ProtocolMessage.SetParameter(
                                     "post_logout_redirect_uri",
-                                    $"https://{proxyHost}/scjob"
+                                    $"https://{proxyHost}/scjob/signout-callback-oidc"
                                 );
                             }
                             return Task.FromResult(0);
