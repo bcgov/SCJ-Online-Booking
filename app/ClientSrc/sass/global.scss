@@ -35,6 +35,11 @@ body {
   background-color: $grey-medium;
 }
 
+// hide vue components until they mount
+[v-cloak] {
+  display: none;
+}
+
 .main {
   flex: 1 0 auto;
 
