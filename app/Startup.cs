@@ -135,20 +135,26 @@ namespace SCJ.Booking.MVC
                     };
                     options.Events = new OpenIdConnectEvents
                     {
-                        OnTokenValidated = async ctx =>
+                        OnTokenResponseReceived = c =>
                         {
                             // only store the id_token (for logout) not the other tokens
-                            // that would be included by options.SaveTokens
-                            ctx.Properties.StoreTokens(
+                            // that would be included by options.SaveTokens. This makes the cookie
+                            // much smaller
+                            c.Properties.StoreTokens(
                                 new[]
                                 {
                                     new AuthenticationToken
                                     {
                                         Name = "id_token",
-                                        Value = ctx.ProtocolMessage.IdToken
+                                        Value = c.TokenEndpointResponse.IdToken
                                     }
                                 }
                             );
+                            c.Properties.IsPersistent = true;
+                            return Task.CompletedTask;
+                        },
+                        OnTokenValidated = async ctx =>
+                        {
                             // add extra user oidc claims and save the user to our db
                             await OpenIdConnectHelper.HandleUserLogin(ctx);
                         },
