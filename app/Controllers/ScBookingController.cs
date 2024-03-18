@@ -300,12 +300,23 @@ namespace SCJ.Booking.MVC.Controllers
             // book trial or court case and redirect to "booked" page
             if (model.HearingTypeId == ScHearingType.TRIAL)
             {
-                var result = await _scBookingService.BookTrial(model, user);
+                try
+                {
+                    var result = await _scBookingService.BookTrial(model, user);
 
-                // @TODO: specific page for trials? (SCJ-147)
-                // "TrialBooked" for Regular
-                // ReviewSubmission for Fair-Use
-                return Redirect($"/scjob/booking/sc/TrialBooked?booked={result.IsBooked}");
+                    // @TODO: specific page for trials? (SCJ-147)
+                    // "TrialBooked" for Regular
+                    // ReviewSubmission for Fair-Use
+                    return Redirect($"/scjob/booking/sc/TrialBooked?booked={result.IsBooked}");
+                }
+                catch (InvalidOperationException ex)
+                {
+                    string errorMessage = ex.Message;
+
+                    ModelState.AddModelError("SelectedRegularTrialDate", errorMessage);
+
+                    return View(model);
+                }
             }
             else
             {

@@ -574,11 +574,12 @@ namespace SCJ.Booking.MVC.Services
                 // thow an exception if the date is no longer available
                 if (!dateAvailable)
                 {
-                    // @TODO: throw some exception?
-                    return model;
+                    throw new InvalidOperationException(
+                        "The date you selected is no longer available."
+                    );
                 }
 
-                // @TODO: book trial in API
+                // book trial in API
                 var formula = await GetFormulaLocationAsync(
                     bookingInfo.BookingFormula,
                     bookingInfo.TrialLocation,
