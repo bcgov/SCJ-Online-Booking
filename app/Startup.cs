@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Community.Microsoft.Extensions.Caching.PostgreSql;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -124,7 +125,6 @@ namespace SCJ.Booking.MVC
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
-                    options.SaveTokens = true;
                     options.NonceCookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
 
@@ -137,6 +137,18 @@ namespace SCJ.Booking.MVC
                     {
                         OnTokenValidated = async ctx =>
                         {
+                            // only store the id_token (for logout) not the other tokens
+                            // that would be included by options.SaveTokens
+                            ctx.Properties.StoreTokens(
+                                new[]
+                                {
+                                    new AuthenticationToken
+                                    {
+                                        Name = "id_token",
+                                        Value = ctx.ProtocolMessage.IdToken
+                                    }
+                                }
+                            );
                             // add extra user oidc claims and save the user to our db
                             await OpenIdConnectHelper.HandleUserLogin(ctx);
                         },
