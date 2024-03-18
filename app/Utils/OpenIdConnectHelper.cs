@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SCJ.Booking.Data;
@@ -148,16 +147,16 @@ namespace SCJ.Booking.MVC.Utils
         /// <summary>
         ///     Helper method for getting redirect urls
         /// </summary>
-        public static string GetProxyHost(RedirectContext ctx)
+        public static string GetProxyHost(HttpRequest request)
         {
-            if (ctx.Request.Headers.ContainsKey("X-Forwarded-Server"))
+            if (request.Headers.ContainsKey("X-Forwarded-Server"))
             {
-                return ctx.Request.Headers["X-Forwarded-Server"][0];
+                return request.Headers["X-Forwarded-Server"][0];
             }
 
-            if (ctx.Request.Headers.ContainsKey("X-Forwarded-Host"))
+            if (request.Headers.ContainsKey("X-Forwarded-Host"))
             {
-                return ctx.Request.Headers["X-Forwarded-Host"][0];
+                return request.Headers["X-Forwarded-Host"][0];
             }
 
             return null;

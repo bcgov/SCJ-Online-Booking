@@ -163,7 +163,7 @@ namespace SCJ.Booking.MVC
                             // add a parameter to the keycloak redirect querystring
                             ctx.ProtocolMessage.SetParameter("kc_idp_hint", "bceid");
                             // change the redirect_uri to the reverse proxy
-                            string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx);
+                            string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx.Request);
                             if (proxyHost != null)
                             {
                                 ctx.ProtocolMessage.SetParameter(
@@ -176,13 +176,23 @@ namespace SCJ.Booking.MVC
                         OnRedirectToIdentityProviderForSignOut = ctx =>
                         {
                             // change the post-logout redirect_uri to the reverse proxy
-                            string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx);
+                            string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx.Request);
                             if (proxyHost != null)
                             {
                                 ctx.ProtocolMessage.SetParameter(
                                     "post_logout_redirect_uri",
                                     $"https://{proxyHost}/scjob/signout-callback-oidc"
                                 );
+                            }
+                            return Task.FromResult(0);
+                        },
+                        OnSignedOutCallbackRedirect = ctx =>
+                        {
+                            // change the post-logout redirect_uri to the reverse proxy
+                            string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx.Request);
+                            if (proxyHost != null)
+                            {
+                                ctx.Properties.RedirectUri = $"https://{proxyHost}/scjob";
                             }
                             return Task.FromResult(0);
                         },
