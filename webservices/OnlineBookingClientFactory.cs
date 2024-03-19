@@ -12,8 +12,9 @@ namespace SCJ.Booking.RemoteAPIs
         public static IOnlineBooking GetClient(IConfiguration configuration)
         {
             string env = configuration["TAG_NAME"] ?? string.Empty;
+            bool useFakeApi = (configuration["USE_FAKE_API"] ?? string.Empty).ToLower() == "true";
 
-            if (env.ToLower().Equals("localdev"))
+            if (env.ToLower().Equals("localdev") && useFakeApi)
             {
                 return new FakeOnlineBookingClient();
             }

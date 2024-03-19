@@ -58,6 +58,10 @@
     </nav>
     <div id="content" class="container body-content">
         @RenderBody()
+	</div>
+	<form asp-controller="Home" asp-action="Logout" method="post" id="logout_form"></form>
+    <div id="progress-overlay" style="display: none">
+        <div id="progress-overlay-spinner"></div>
     </div>
 </div>
 <footer class="footer">
