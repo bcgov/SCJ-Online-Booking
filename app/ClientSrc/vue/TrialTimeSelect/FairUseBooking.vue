@@ -162,7 +162,7 @@
                 <i class="fas fa-grip-horizontal" />
               </div>
               <div class="label-button selected m-0">
-                <input type="hidden" :value="date.isoDate" name="SelectedDates" />
+                <input type="hidden" :value="date.isoDate" name="SelectedFairUseTrialDates" />
                 <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
                 <strong>{{ date.formattedDate }}</strong>
               </div>
@@ -213,6 +213,11 @@ export default {
       type: Number,
       default: 0,
     },
+
+    initialValue: {
+      type: Array,
+      default: () => [],
+    },
   },
 
   computed: {
@@ -229,6 +234,13 @@ export default {
         return !this.selected.includes(date.isoDate);
       }); // temporary
     },
+  },
+
+  // set initial value, if provided
+  created() {
+    if (this.initialValue.length > 0) {
+      this.selected = this.initialValue.filter((date) => this.dates.includes(date));
+    }
   },
 
   // expand "Key Dates" info box by default on larger screens

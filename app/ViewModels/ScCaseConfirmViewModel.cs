@@ -22,7 +22,7 @@ namespace SCJ.Booking.MVC.ViewModels
         //Date for the booking
         public string Date { get; set; }
         public string SelectedRegularTrialDate { get; set; }
-        public List<string> SelectedFairUseTrialDates { get; set; } = new List<string>();
+        public List<DateTime> SelectedFairUseTrialDates { get; set; }
 
         //Time for booking
         public string Time { get; set; }

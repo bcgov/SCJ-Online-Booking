@@ -281,7 +281,8 @@ namespace SCJ.Booking.MVC.Controllers
                 HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
                 FullDate = bookingInfo.FullDate,
                 EmailAddress = user.Email,
-                Phone = user.Phone
+                Phone = user.Phone,
+                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
             };
 
             return View(model);

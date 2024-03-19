@@ -1,6 +1,17 @@
 @inject SessionService SessionService
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
 
+@if (@Model.BookingFormula == ScFormulaType.FairUseBooking)
+{
+    <p class="mb-4">Please review the following information to ensure that it is accurate. Dates are not guaranteed at this
+    stage, you
+    are submitting a request.</p>
+}
+else
+{
+    <p class="mb-4">Review the following information to ensure that it is accurate before completing your booking.</p>
+}
+
 <div class="row no-gutters justify-content-between booking-confirmation--details">
     <div class="col-12">
         <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
