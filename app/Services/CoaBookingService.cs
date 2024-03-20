@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.ServiceModel;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -212,12 +213,11 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<CoaCaseConfirmViewModel> BookCourtCase(
             CoaCaseConfirmViewModel model,
-            string userGuid,
-            string userDisplayName
+            ClaimsPrincipal user
         )
         {
             //if the user could not be detected return
-            if (string.IsNullOrWhiteSpace(userGuid))
+            if (user == null)
             {
                 return model;
             }
@@ -262,6 +262,9 @@ namespace SCJ.Booking.MVC.Services
 
                 //build object to send to the API
                 BookingHearingResult result;
+
+                string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
+                long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
                 if (bookingInfo.IsAppealHearing is true)
                 {
@@ -319,17 +322,23 @@ namespace SCJ.Booking.MVC.Services
                     //create database entry
                     DbSet<BookingHistory> bookingHistory = _dbContext.Set<BookingHistory>();
 
-                    bookingHistory.Add(
+                    var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                    await bookingHistory.AddAsync(
                         new BookingHistory
                         {
-                            ContainerId = 0, // ContainerId is used for Supreme Court
-                            SmGovUserGuid = userGuid,
-                            Timestamp = DateTime.Now
+                            CourtLevel = "COA",
+                            User = oidcUser,
+                            Timestamp = DateTime.Now,
+                            CoaCaseType = bookingInfo.CaseType,
+                            CoaConferenceType = bookingInfo.IsAppealHearing is true
+                                ? "Appeal"
+                                : "Chambers",
                         }
                     );
 
                     //save to DB
-                    _dbContext.SaveChanges();
+                    await _dbContext.SaveChangesAsync();
 
                     //update model
                     model.IsBooked = true;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
@@ -381,12 +382,11 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<ScCaseConfirmViewModel> BookCourtCase(
             ScCaseConfirmViewModel model,
-            string userGuid,
-            string userDisplayName
+            ClaimsPrincipal user
         )
         {
             //if the user could not be detected return
-            if (string.IsNullOrWhiteSpace(userGuid))
+            if (user == null)
             {
                 return model;
             }
@@ -402,6 +402,9 @@ namespace SCJ.Booking.MVC.Services
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
+                string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
+                long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
+
                 //build object to send to the API
                 var bookInfo = new BookHearingInfo
                 {
@@ -437,12 +440,14 @@ namespace SCJ.Booking.MVC.Services
                 {
                     //create database entry
                     DbSet<BookingHistory> bookingHistory = _dbContext.Set<BookingHistory>();
+                    var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-                    bookingHistory.Add(
+                    await bookingHistory.AddAsync(
                         new BookingHistory
                         {
-                            ContainerId = bookingInfo.ContainerId,
-                            SmGovUserGuid = userGuid,
+                            User = oidcUser,
+                            CourtLevel = "SC",
+                            ScHearingType = bookingInfo.HearingTypeId,
                             Timestamp = DateTime.UtcNow
                         }
                     );
@@ -527,41 +532,21 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Read the database and get the total number of hearings left for the day
         /// </summary>
-        public int GetUserHearingsTotalRemaining()
+        public int GetUserHearingsTotalRemaining(ClaimsPrincipal user)
         {
-            //get user GUID
-            string userGuid;
-
-            if (!IsLocalDevEnvironment)
-            {
-                //try and read the header
-                if (_httpContext.Request.Headers.ContainsKey("smgov_userguid"))
-                {
-                    userGuid = _httpContext.Request.Headers["smgov_userguid"].ToString();
-                }
-                else
-                {
-                    return MaxHearingsPerDay;
-                }
-            }
-            else
-            {
-                //Dummy user guid
-                userGuid = "B8C1EC79-6464-4C62-BF33-05FC00CC21A0";
-            }
+            long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
             //today's date
             var today = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
 
             //get all entries for logged-in user
             //booked on today
-            List<BookingHistory> hearingsBookedForToday = _dbContext.BookingHistory
-                .Where(
-                    b =>
-                        b.SmGovUserGuid == userGuid
-                        && b.Timestamp.Day == today.Day
-                        && b.Timestamp.Month == today.Month
-                        && b.Timestamp.Year == today.Year
+            List<BookingHistory> hearingsBookedForToday = _dbContext
+                .BookingHistory.Where(b =>
+                    b.User.Id == userId
+                    && b.Timestamp.Day == today.Day
+                    && b.Timestamp.Month == today.Month
+                    && b.Timestamp.Year == today.Year
                 )
                 .ToList();
 

@@ -19,7 +19,9 @@
                 <span>@Service.GetHearingsRemaining()</span>
             </li>
             <li class="nav-item ml-5">
-                <a href="@Configuration["AppSettings:LogoutUrl"]">LOGOUT</a>
+                <a href="#" onclick="event.preventDefault();document.getElementById('logout_form').submit();">
+                    LOGOUT
+                </a>
             </li>
         </ul>
     </div>

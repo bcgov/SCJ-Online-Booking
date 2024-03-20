@@ -1,4 +1,7 @@
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Utils;
@@ -7,6 +10,7 @@ using SCJ.Booking.MVC.ViewModels;
 namespace SCJ.Booking.MVC.Controllers
 {
     [Route("booking/sc/[action]")]
+    [Authorize]
     public class ScBookingController : Controller
     {
         //Services
@@ -226,30 +230,10 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            string userGuid;
-            string userDisplayName;
-
-            if (_scBookingService.IsLocalDevEnvironment)
-            {
-                // use fake SiteMinder header values for local development
-                userGuid = "072cfc73-e3b9-437b-8012-0b0945f09879";
-                userDisplayName = "Matthew Begbie";
-            }
-            else
-            {
-                //read smgov_userguid SiteMinder header
-                userGuid = HttpContext.Request.Headers.ContainsKey("smgov_userguid")
-                    ? HttpContext.Request.Headers["smgov_userguid"].ToString()
-                    : string.Empty;
-
-                //read smgov_userdisplayname SiteMinder header
-                userDisplayName = HttpContext.Request.Headers.ContainsKey("smgov_userdisplayname")
-                    ? HttpContext.Request.Headers["smgov_userdisplayname"].ToString()
-                    : string.Empty;
-            }
+            ClaimsPrincipal user = HttpContext.User;
 
             //make booking
-            var result = await _scBookingService.BookCourtCase(model, userGuid, userDisplayName);
+            var result = await _scBookingService.BookCourtCase(model, user);
 
             return Redirect($"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
         }

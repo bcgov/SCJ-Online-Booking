@@ -11,21 +11,17 @@ namespace SCJ.Booking.Data
 
         public DbSet<BookingHistory> BookingHistory => Set<BookingHistory>();
 
+        public DbSet<OidcUser> Users => Set<OidcUser>();
+
         public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Entity<BookingHistory>()
-                .HasKey(
-                    b =>
-                        new
-                        {
-                            b.SmGovUserGuid,
-                            b.ContainerId,
-                            b.Timestamp
-                        }
-                );
+                .Entity<OidcUser>()
+                .HasIndex(u => new { u.UniqueIdentifier, u.CredentialType })
+                .IsUnique();
+
         }
     }
 }

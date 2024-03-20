@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DotEnv.Core" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 	<PackageReference Include="ObjectDumper.NET" Version="3.3.13" />
 	<PackageReference Include="xunit" Version="2.4.1" />
