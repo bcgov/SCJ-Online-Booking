@@ -2,10 +2,18 @@
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
 
 <h4>Provide Your Contact Information</h4>
-<p>
-    We will contact you regarding this booking. Please provide the following
-    contact information.
-</p>
+
+@if (@Model.BookingFormula == ScFormulaType.FairUseBooking)
+{
+    <p>Please provide the following contact information. Your email address will be used to let you know whether a trial
+    date is set for your case, and your phone number may be used later for booking and coordination purposes.</p>
+}
+else
+{
+    <p>We will contact you regarding this booking. Please provide the following
+    contact information.</p>
+}
+
 <div class="row no-gutters justify-content-between form-group" style="margin-top: 16px;">
     <div class="col-12 col-md-6 pr-0 pr-md-2">
         <label asp-for="EmailAddress" class="small-label">

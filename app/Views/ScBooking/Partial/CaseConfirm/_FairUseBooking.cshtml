@@ -1,15 +1,28 @@
 @inject SessionService SessionService
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
 
-<p>fair use booking partial</p>
+@{
+    // convert DateTimes to formatted strings
+    List<string> formattedDates = Model.SelectedFairUseTrialDates
+    .Select(date => date.ToString("dddd, MMMM dd, yyyy"))
+    .ToList();
+}
 
-<p>test @Model.BookingFormula</p>
-
-<div class="content-pad bg-white">
+<div class="content-pad bg-white mb-4">
     <p class="mb-4"><b>Your availability for when to start your trial (listed in order of preference):</b></p>
 
     <ol>
-        <li class="mb-3">test</li>
-        <li class="mb-3">test</li>
+        @foreach (var dateString in formattedDates)
+        {
+            <li>@dateString</li>
+        }
     </ol>
 </div>
+
+<form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+
+    @Html.HiddenFor(m => m.HearingTypeId)
+
+    <partial name="Partial/CaseConfirm/_ContactForm" model="Model" />
+
+</form>

@@ -180,28 +180,20 @@ namespace SCJ.Booking.MVC.ViewModels
                 var result = DateTime.MinValue;
 
                 // trial booking
-                if (HearingTypeId == ScHearingType.TRIAL)
+                if (
+                    HearingTypeId == ScHearingType.TRIAL
+                    && BookingFormula == ScFormulaType.RegularBooking
+                )
                 {
-                    string dateFormat = "yyyy-MM-dd";
+                    DateTime.TryParseExact(
+                        SelectedRegularTrialDate,
+                        "yyyy-MM-dd",
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.None,
+                        out DateTime parsedDate
+                    );
 
-                    if (BookingFormula == ScFormulaType.RegularBooking)
-                    {
-                        DateTime.TryParseExact(
-                            SelectedRegularTrialDate,
-                            dateFormat,
-                            System.Globalization.CultureInfo.InvariantCulture,
-                            System.Globalization.DateTimeStyles.None,
-                            out DateTime parsedDate
-                        );
-
-                        return parsedDate;
-                    }
-                    else if (BookingFormula == ScFormulaType.FairUseBooking)
-                    {
-                        Console.WriteLine(SelectedFairUseTrialDates);
-                    }
-
-                    return result;
+                    return parsedDate;
                 }
 
                 // conference hearing booking
@@ -266,6 +258,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public List<DateTime> AvailableFairUseTrialDates { get; set; }
 
         public string SelectedRegularTrialDate { get; set; }
-        public List<string> SelectedFairUseTrialDates { get; set; } = new List<string>();
+        public List<DateTime> SelectedFairUseTrialDates { get; set; } = new List<DateTime>();
     }
 }

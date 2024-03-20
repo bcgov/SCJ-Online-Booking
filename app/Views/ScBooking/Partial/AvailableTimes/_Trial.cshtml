@@ -5,7 +5,10 @@
   string availableRegularDates = Json.Serialize(regularDatesList).ToString();
 
   List<string> fairUseDatesList = Model.AvailableFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
-  string availableFairUseDates = Json.Serialize(regularDatesList).ToString();
+  string availableFairUseDates = Json.Serialize(fairUseDatesList).ToString();
+
+  List<string> selectedFairUseList = Model.SelectedFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+  string selectedFairUseDateStrings = Json.Serialize(selectedFairUseList).ToString();
 }
 
 <form method="post" id="availableTimesForm">
@@ -25,7 +28,7 @@
       </regular-booking>
 
       <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.EstimatedTrialLength"
-        slot="fairUseBooking">
+        :initial-value="@selectedFairUseDateStrings" slot="fairUseBooking">
         <div slot="noDatesError" class="alert alert-danger" role="alert">
           <i class="fa fa-ban"></i>
           There are no dates set for the upcoming release. You can instantly book a trial date that is

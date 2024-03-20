@@ -85,8 +85,6 @@ namespace SCJ.Booking.MVC.Services
                     ? ""
                     : bookingInfo.FullDate.ToString("yyyy-MM-dd");
 
-            // @TODO: trialDates list for "fair use" booking
-
             //Model instance
             return new ScCaseSearchViewModel
             {
@@ -110,6 +108,7 @@ namespace SCJ.Booking.MVC.Services
                 AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
                 BookingFormula = bookingInfo.BookingFormula,
                 SelectedRegularTrialDate = trialDate,
+                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
             };
         }
 
@@ -555,7 +554,14 @@ namespace SCJ.Booking.MVC.Services
             long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
             // check if timeslot is available
-            if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
+            if (bookingInfo.BookingFormula == ScFormulaType.FairUseBooking)
+            {
+                // @TODO: save to DB
+                var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                // @TODO: send email (SCJ-148)
+            }
+            else if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
             {
                 // Available dates
                 List<DateTime> availableTrialDates = await GetAvailableTrialDatesAsync(
@@ -602,7 +608,7 @@ namespace SCJ.Booking.MVC.Services
                     requestPayload
                 );
 
-                // @TODO: save to DB?
+                // @TODO: save to DB
                 var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
                 // @TODO: send email (SCJ-149)
