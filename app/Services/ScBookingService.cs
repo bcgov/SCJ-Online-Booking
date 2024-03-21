@@ -552,8 +552,9 @@ namespace SCJ.Booking.MVC.Services
 
                 // send email
                 string emailBody = await GetTrialEmailBody();
+                string locationPrefix = bookingInfo.LocationPrefix;
                 string fileNumber = bookingInfo.FileNumber;
-                string EmailSubject = $"Trial booking request for {fileNumber}";
+                string EmailSubject = $"Trial booking request for {locationPrefix} {fileNumber}";
                 await SendEmail(model.EmailAddress, EmailSubject, emailBody);
             }
             else if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
@@ -606,7 +607,14 @@ namespace SCJ.Booking.MVC.Services
                 // @TODO: save to DB
                 var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-                // @TODO: send email (SCJ-149)
+                // send email
+                string emailBody = await GetTrialEmailBody();
+                string locationPrefix = bookingInfo.LocationPrefix;
+                string fileNumber = bookingInfo.FileNumber;
+                string startDate = selectedDate.ToString("MMMM dd, yyyy");
+                string EmailSubject =
+                    $"Trial booking for {locationPrefix} {fileNumber} starting on {startDate}";
+                await SendEmail(model.EmailAddress, EmailSubject, emailBody);
             }
 
             // update model
@@ -722,6 +730,18 @@ namespace SCJ.Booking.MVC.Services
                 .SelectedFairUseTrialDates.Select(date => date.ToString("dddd, MMMM dd, yyyy"))
                 .ToList();
 
+            string regularDateString = "";
+            if (booking.SelectedRegularTrialDate != null)
+            {
+                regularDateString = DateTime
+                    .ParseExact(
+                        booking.SelectedRegularTrialDate,
+                        "yyyy-MM-dd",
+                        System.Globalization.CultureInfo.InvariantCulture
+                    )
+                    .ToString("dddd, MMMM dd, yyyy");
+            }
+
             string trialLengthFormatted =
                 booking.EstimatedTrialLength == 1
                     ? "1 day"
@@ -751,7 +771,7 @@ namespace SCJ.Booking.MVC.Services
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
                 TrialLocationName = await GetLocationName(booking.TrialLocation),
-                RegularDate = booking.SelectedRegularTrialDate,
+                RegularDate = regularDateString,
                 FairUseDates = fairUseDateStrings,
                 ResultDate = resultDate,
             };
@@ -761,6 +781,7 @@ namespace SCJ.Booking.MVC.Services
                     ? "ScBooking/Email-Trial-FairUse"
                     : "ScBooking/Email-Trial-Regular";
 
+            // @TODO: html email body?
             return await _viewRenderService.RenderToStringAsync(template, viewModel);
         }
 
