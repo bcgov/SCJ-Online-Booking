@@ -1,0 +1,31 @@
+@model TrialEmailViewModel
+The request for trial dates has been submitted to the Online Booking System.
+
+Once the booking period closes, the Online Booking system will notify you whether a trial date has been reserved
+tentatively for this case. You will receive an update via email by @Model.ResultDate.
+
+----
+COURT FILE
+File number: @Model.LocationPrefix @Model.CourtFileNumber
+@Model.StyleOfCause
+@Model.CourtClassName
+Trial length: @Model.TrialLength
+Trial location: @Model.TrialLocationName
+
+REQUESTED TRIAL DATES
+You are submitting a request for one of the following trial dates (listed in order of priority):
+@{
+  int counter = 1;
+  foreach (var formattedDate in @Model.FairUseDates)
+  {
+    <text>@counter. @formattedDate
+    </text>
+    counter++;
+  }
+}
+
+CONTACT INFORMATION
+Email: @Model.EmailAddress
+Phone number: @Model.Phone
+
+To learn more about this process, please visit bccourts.ca or call Supreme Court Scheduling at 604-660-2853.
