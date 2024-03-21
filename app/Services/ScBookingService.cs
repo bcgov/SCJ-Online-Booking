@@ -24,7 +24,6 @@ namespace SCJ.Booking.MVC.Services
         public const int MaxHearingsPerDay = int.MaxValue;
         public readonly bool IsLocalDevEnvironment;
 
-        private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly ApplicationDbContext _dbContext;
         private readonly HttpContext _httpContext;
@@ -484,27 +483,11 @@ namespace SCJ.Booking.MVC.Services
                     model.IsBooked = true;
                     bookingInfo.IsBooked = true;
 
-                    var emailBody = await GetEmailBody();
+                    var emailBody = await GetConferenceEmailBody();
+                    const string EmailSubject = "BC Courts Booking Confirmation";
 
                     //send email
-                    if (!IsLocalDevEnvironment)
-                    {
-                        await _mailService.ExchangeSendEmail(
-                            model.EmailAddress,
-                            EmailSubject,
-                            emailBody
-                        );
-                    }
-                    else
-                    {
-                        var fromEmail = _configuration["FROM_EMAIL"];
-                        await _mailService.SendGridSendEmail(
-                            fromEmail,
-                            model.EmailAddress,
-                            EmailSubject,
-                            emailBody
-                        );
-                    }
+                    await SendEmail(model.EmailAddress, EmailSubject, emailBody);
 
                     //clear booking info session
                     _session.ScBookingInfo = null;
@@ -553,13 +536,25 @@ namespace SCJ.Booking.MVC.Services
             string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
             long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
-            // check if timeslot is available
+            // store user info in session for next booking
+            var userInfo = new SessionUserInfo
+            {
+                Phone = model.Phone,
+                Email = model.EmailAddress,
+                ContactName = $"{userDisplayName}"
+            };
+            _session.UserInfo = userInfo;
+
             if (bookingInfo.BookingFormula == ScFormulaType.FairUseBooking)
             {
                 // @TODO: save to DB
                 var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-                // @TODO: send email (SCJ-148)
+                // send email
+                string emailBody = await GetTrialEmailBody();
+                string fileNumber = bookingInfo.FileNumber;
+                string EmailSubject = $"Trial booking request for {fileNumber}";
+                await SendEmail(model.EmailAddress, EmailSubject, emailBody);
             }
             else if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
             {
@@ -613,15 +608,6 @@ namespace SCJ.Booking.MVC.Services
 
                 // @TODO: send email (SCJ-149)
             }
-
-            // store user info in session for next booking
-            var userInfo = new SessionUserInfo
-            {
-                Phone = model.Phone,
-                Email = model.EmailAddress,
-                ContactName = $"{userDisplayName}"
-            };
-            _session.UserInfo = userInfo;
 
             // update model
             model.IsBooked = true;
@@ -683,7 +669,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Renders the template for the email body to a string (~/Views/ScBooking/Email.cshtml)
         /// </summary>
-        private async Task<string> GetEmailBody()
+        private async Task<string> GetConferenceEmailBody()
         {
             //user information
             SessionUserInfo user = _session.GetUserInformation();
@@ -717,6 +703,64 @@ namespace SCJ.Booking.MVC.Services
                 ScHearingType.JCC => "ScBooking/Email-JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
             };
+            return await _viewRenderService.RenderToStringAsync(template, viewModel);
+        }
+
+        /// <summary>
+        ///     Renders the template for the email body to a string
+        /// </summary>
+        private async Task<string> GetTrialEmailBody()
+        {
+            // user information
+            SessionUserInfo user = _session.GetUserInformation();
+
+            // booking information
+            var booking = _session.ScBookingInfo;
+
+            // format fair use dates
+            List<string> fairUseDateStrings = booking
+                .SelectedFairUseTrialDates.Select(date => date.ToString("dddd, MMMM dd, yyyy"))
+                .ToList();
+
+            string trialLengthFormatted =
+                booking.EstimatedTrialLength == 1
+                    ? "1 day"
+                    : booking.EstimatedTrialLength.ToString() + " days";
+
+            // get formula details from the API to use in the template
+            var formula = await GetFormulaLocationAsync(
+                booking.BookingFormula,
+                booking.TrialLocation,
+                booking.SelectedCourtFile.courtClassCode
+            );
+
+            // lottery date, when users will be notified (@TODO: confirm & handle null date?)
+            string resultDate =
+                formula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
+
+            // set ViewModel for the email
+            var viewModel = new TrialEmailViewModel
+            {
+                EmailAddress = user.Email,
+                Phone = user.Phone,
+                LocationPrefix = booking.LocationPrefix,
+                CourtFileNumber = booking.FileNumber,
+                StyleOfCause = booking.SelectedCourtFile.styleOfCause,
+                CourtClassName = booking.SelectedCourtClassName,
+                TrialLength = trialLengthFormatted,
+                CaseLocationName = booking.CaseLocationName,
+                BookingLocationName = booking.BookingLocationName,
+                TrialLocationName = await GetLocationName(booking.TrialLocation),
+                RegularDate = booking.SelectedRegularTrialDate,
+                FairUseDates = fairUseDateStrings,
+                ResultDate = resultDate,
+            };
+
+            var template =
+                (booking.BookingFormula == ScFormulaType.FairUseBooking)
+                    ? "ScBooking/Email-Trial-FairUse"
+                    : "ScBooking/Email-Trial-Regular";
+
             return await _viewRenderService.RenderToStringAsync(template, viewModel);
         }
 
@@ -932,6 +976,19 @@ namespace SCJ.Booking.MVC.Services
                 AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
                 SessionInfo = bookingInfo
             };
+        }
+
+        private async Task SendEmail(string toEmail, string subject, string body)
+        {
+            if (!IsLocalDevEnvironment)
+            {
+                await _mailService.ExchangeSendEmail(toEmail, subject, body);
+            }
+            else
+            {
+                var fromEmail = _configuration["FROM_EMAIL"];
+                await _mailService.SendGridSendEmail(fromEmail, toEmail, subject, body);
+            }
         }
     }
 }
