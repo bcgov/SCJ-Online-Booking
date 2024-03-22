@@ -9,6 +9,11 @@
 
   List<string> selectedFairUseList = Model.SelectedFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
   string selectedFairUseDateStrings = Json.Serialize(selectedFairUseList).ToString();
+
+  string fairUseStartDate = Model.FairUseStartDate?.ToString("dddd, MMMM dd, yyyy");
+  string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
+  string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd, MMMM dd, yyyy");
+  string fairUseEndTime = Model.FairUseEndDate?.ToString("h:mm tt").ToLower();
 }
 
 <form method="post" id="availableTimesForm">
@@ -37,8 +42,8 @@
       </fair-use-booking>
 
       <template slot="fairUseDisabledAlert">
-        Booking period for the next release of upcoming dates starts [start date] [start time] and
-        ends [end date] [end time].
+        Booking period for the next release of upcoming dates starts @fairUseStartDate @fairUseStartTime and
+        ends @fairUseEndDate @fairUseEndTime.
       </template>
     </trial-time-select-tabs>
   </div>
