@@ -45,12 +45,8 @@
 
     <div class="column-container" v-if="dates.length > 0">
       <div class="dates-intro content-pad select-dates-intro">
-        <!-- @TODO: what is this one? -->
-        <h6>[January 2024]</h6>
-        <p class="mb-3">
-          Choose up to {{ maxSelectionSize }} starting dates. Some dates are not available due to
-          statutory holidays or court closures.
-        </p>
+        <slot name="dateSelectionHeader" :max-selection-size="maxSelectionSize" />
+
         <div
           ref="availableDates"
           class="list-info-header d-flex justify-content-between align-items-center mb-4 d-md-none"

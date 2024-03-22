@@ -88,6 +88,14 @@
             Scheduling at 604-660-2853.
           </p>
         </template>
+
+        <template slot="dateSelectionHeader" slot-scope="{ maxSelectionSize }">
+          <h6>@fairUseStartDate</h6>
+          <p class="mb-3">
+            Choose up to {{ maxSelectionSize }} starting dates. Some dates are not available due to
+            statutory holidays or court closures.
+          </p>
+        </template>
       </fair-use-booking>
 
       <template slot="fairUseDisabledAlert">
