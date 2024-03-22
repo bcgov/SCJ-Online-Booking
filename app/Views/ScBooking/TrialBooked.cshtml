@@ -1,11 +1,10 @@
 @using Microsoft.Extensions.Configuration
 @inject SessionService SessionService
+@inject ScBookingService BookingService
 @inject IConfiguration Configuration
 
 @{
-    ViewData["Title"] = "Your Booking is Confirmed";
-
-    var hearingType = ScHearingType.GetHearingType(SessionService.ScBookingInfo.HearingTypeId);
+    ViewData["Title"] = "Your Booking is Reserved Tenatively";
 }
 <div class="body-content--inner">
     <div class="row no-gutters">
@@ -13,30 +12,10 @@
             @if (SessionService.ScBookingInfo.IsBooked)
             {
                 <h2>@ViewData["Title"]</h2>
-                <p class="mb-3">
-                    Your @hearingType has been scheduled for the date and time below.
-                </p>
-                <p class="mb-3">
-                    @if (@hearingType == "TMC")
-                    {
-                        <span>Please file a requisition to secure @hearingType date.</span>
-                    }
-                    else
-                    {
-                        <span>Please file a Notice of @hearingType to secure the date.</span>
-                    }
-                    <span>
-                        Consult the
-                        <a href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/"
-                            target="_blank" rel="noopener">Supreme Court Rules</a>
-                        <i class="fa fa-external-link-alt"></i> for additional details.
-                    </span>
-                    <strong>
-                        Please ensure to provide all email addresses and phone numbers for counsel or
-                        self-represented parties in your filed document.
-                    </strong>
-                </p>
-                <p class="mb-0">The following information will be sent to you by email.</p>
+
+                <p class="mb-3">Please file a Notice of Trial within 30 days to confirm this trial.</p>
+
+                <p class="mb-3">The following information will be sent to you by email.</p>
             }
             else
             {
@@ -51,55 +30,63 @@
     </div>
 
     <div class="row no-gutters booking-confirmation">
-        <div class="col-md-6">
-            @if (string.IsNullOrEmpty(SessionService?.UserInfo?.ContactName))
-            {
-                <div class="row no-gutters">
-                    <div class="col">
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            Please logout and login again, your session was lost.
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="row no-gutters">
-                    <div class="col">
-                        <div class="form-group" style="margin-bottom: 8px">
-                            <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
-                            <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause
-                            </h5>
-                            <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 8px">
-                            <h6>Hearing Date</h6>
-                            <p>@SessionService.ScBookingInfo.DateFriendlyName</p>
-                            <p>@SessionService.ScBookingInfo.TimeSlotFriendlyName</p>
-                        </div>
-                        <div class="form-group">
-                            <h6>Contact Information</h6>
-                            <p>@SessionService.UserInfo.Email</p>
-                            <p>@SessionService.UserInfo.Phone</p>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
+        <div class="col-12">
 
-    <div class="row no-gutters">
-        <div class="col-6 col-md-8 text-link">
-            <h6>Finished booking?</h6>
-            <a href="@Configuration["AppSettings:LogoutUrl"]">
-                <p>Log out of the BC Courts Booking System</p>
-            </a>
-        </div>
-        <div class="col-6 col-md-4">
-            <a class="btn btn-primary btn-block" href="/scjob/booking/sc" role="button">
-                Book Another Hearing
-            </a>
+            <div class="row no-gutters justify-content-between booking-confirmation--details">
+                <div class="col-12">
+                    <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.LocationPrefix
+                        @SessionService.ScBookingInfo.FileNumber</div>
+                    <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</h5>
+                    <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h2>Trial Details</h2>
+
+                @{
+                    var trialLength = SessionService.ScBookingInfo.EstimatedTrialLength;
+
+                    var trialDateObj = DateTime.ParseExact(
+                    SessionService.ScBookingInfo.SelectedRegularTrialDate,
+                    "yyyy-MM-dd",
+                    System.Globalization.CultureInfo.InvariantCulture
+                    );
+                    var trialDate = trialDateObj.ToString("dddd, MMMM dd, yyyy");
+
+                    var trialLocation = await BookingService.GetLocationName(SessionService.ScBookingInfo.TrialLocation);
+                }
+                <p>Trial length: @trialLength @(trialLength == 1 ? "day" : "days")</p>
+
+                <p>Starting: @trialDate</p>
+
+                <p class="mb-3">Location: @trialLocation</p>
+            </div>
+
+            <div class="mb-4">
+                <h2>Contact Information</h2>
+
+                <p>Email: @SessionService.UserInfo.Email</p>
+
+                <p>Phone number: @SessionService.UserInfo.Phone</p>
+            </div>
+
+            <div class="mb-4">
+                <a class="btn btn-primary d-inline-block mt-0" href="/scjob/booking/sc" role="button">
+                    Make Another Booking
+                </a>
+            </div>
+
+            <div class="mb-4">
+                <p>Finished booking?</p>
+
+                <p>
+                    @* @TODO: logout url? *@
+                    <a href="@Configuration["AppSettings:LogoutUrl"]">
+                        <p>Log out of the BC Courts Booking System</p>
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 </div>
