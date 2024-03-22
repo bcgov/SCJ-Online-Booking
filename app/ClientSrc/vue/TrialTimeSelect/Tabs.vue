@@ -42,9 +42,8 @@
         </button>
 
         <i class="fa fa-exclamation-triangle" />
-        <!-- @TODO: populate start/end dates -->
-        Booking period for the next release of upcoming dates starts [start date] [start time] and
-        ends [end date] [end time].
+
+        <slot name="fairUseDisabledAlert" />
       </div>
 
       <slot v-if="tab === 'Fair-Use'" name="fairUseBooking" />

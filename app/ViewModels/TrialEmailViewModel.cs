@@ -15,7 +15,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string CaseLocationName { get; set; }
         public string BookingLocationName { get; set; }
         public string TrialLocationName { get; set; }
-        public string ResultDate { get; set; } // @TODO: ??
+        public string ResultDate { get; set; }
 
         // selected single date for regular trial bookings
         public string RegularDate { get; set; }
