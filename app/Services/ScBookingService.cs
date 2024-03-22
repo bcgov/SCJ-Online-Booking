@@ -117,6 +117,10 @@ namespace SCJ.Booking.MVC.Services
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
                 FairUseStartDate = formula?.FairUseBookingPeriodStartDate,
                 FairUseEndDate = formula?.FairUseBookingPeriodEndDate,
+                // lottery date, when users will be notified (@TODO: confirm & handle null date?)
+                FairUseResultDate = formula?.FairUseContactDate,
+                // date when the notice of trial must be filed (@TODO: confirm & handle null date?)
+                FairUseNoticeDate = formula?.FairUseBookingPeriodEndDate,
             };
         }
 

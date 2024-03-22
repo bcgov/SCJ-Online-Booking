@@ -34,6 +34,8 @@ namespace SCJ.Booking.MVC.ViewModels
             AvailableFairUseTrialDates = new List<DateTime> { };
             FairUseStartDate = null;
             FairUseEndDate = null;
+            FairUseResultDate = null;
+            FairUseNoticeDate = null;
         }
 
         //Search fields
@@ -264,5 +266,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         public DateTime? FairUseStartDate { get; set; }
         public DateTime? FairUseEndDate { get; set; }
+        public DateTime? FairUseResultDate { get; set; }
+        public DateTime? FairUseNoticeDate { get; set; }
     }
 }

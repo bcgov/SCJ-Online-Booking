@@ -14,6 +14,9 @@
   string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
   string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd, MMMM dd, yyyy");
   string fairUseEndTime = Model.FairUseEndDate?.ToString("h:mm tt").ToLower();
+
+  string resultContactDate = Model.FairUseResultDate?.ToString("dddd, MMMM dd, yyyy");
+  string noticeOfTrialDate = Model.FairUseNoticeDate?.ToString("dddd, MMMM dd, yyyy");
 }
 
 <form method="post" id="availableTimesForm">
@@ -44,7 +47,7 @@
           <div class="step">
             <span class="number">1</span>
             <div class="description">
-              <h4>[Start Date] [Start time]</h4>
+              <h4>@fairUseStartDate @fairUseStartTime</h4>
               <p>Period to provide trial availability opens.</p>
             </div>
           </div>
@@ -52,7 +55,7 @@
           <div class="step">
             <span class="number">2</span>
             <div class="description">
-              <h4>[End date] [End time]</h4>
+              <h4>@fairUseEndDate @fairUseEndTime</h4>
               <p>
                 Period to provide trial date availability closes. The system will begin to set trial
                 dates.
@@ -63,7 +66,7 @@
           <div class="step">
             <span class="number">3</span>
             <div class="description">
-              <h4>[Result date]</h4>
+              <h4>@resultContactDate</h4>
               <p>You will receive an email with the results of your request.</p>
             </div>
           </div>
@@ -71,7 +74,7 @@
           <div class="step">
             <span class="number">4</span>
             <div class="description">
-              <h4>[Notice of Trial date]</h4>
+              <h4>@noticeOfTrialDate</h4>
               <p>
                 If a trial date is set for your case, you must file your Notice of Trial by [Notice of
                 Trial date] to secure the trial date.
