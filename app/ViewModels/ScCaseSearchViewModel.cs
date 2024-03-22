@@ -32,6 +32,8 @@ namespace SCJ.Booking.MVC.ViewModels
             BookingFormula = string.Empty;
             AvailableRegularTrialDates = new List<DateTime> { };
             AvailableFairUseTrialDates = new List<DateTime> { };
+            FairUseStartDate = null;
+            FairUseEndDate = null;
         }
 
         //Search fields
@@ -259,5 +261,8 @@ namespace SCJ.Booking.MVC.ViewModels
 
         public string SelectedRegularTrialDate { get; set; }
         public List<DateTime> SelectedFairUseTrialDates { get; set; } = new List<DateTime>();
+
+        public DateTime? FairUseStartDate { get; set; }
+        public DateTime? FairUseEndDate { get; set; }
     }
 }

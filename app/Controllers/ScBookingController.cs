@@ -37,9 +37,9 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         [Route("~/booking/sc/select-case")]
-        public IActionResult SelectCase()
+        public async Task<IActionResult> SelectCaseAsync()
         {
-            var model = _scBookingService.LoadSearchForm2();
+            var model = await _scBookingService.LoadSearchForm2Async();
             return View("Index", model);
         }
 
@@ -173,7 +173,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/available-times")]
         public async Task<IActionResult> AvailableTimesAsync()
         {
-            var model = _scBookingService.LoadSearchForm2();
+            var model = await _scBookingService.LoadSearchForm2Async();
 
             if (string.IsNullOrEmpty(model.CaseNumber))
             {
