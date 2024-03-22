@@ -26,51 +26,7 @@
         <strong>The time of your submission has no bearing on the result of your request.</strong>
       </p>
 
-      <div v-if="showInfo" class="expand-content">
-        <div class="step">
-          <span class="number">1</span>
-          <div class="description">
-            <h4>[Start date] [Start time]</h4>
-            <p>Period to provide trial availability opens.</p>
-          </div>
-        </div>
-
-        <div class="step">
-          <span class="number">2</span>
-          <div class="description">
-            <h4>[End date] [End time]</h4>
-            <p>
-              Period to provide trial date availability closes. The system will begin to set trial
-              dates.
-            </p>
-          </div>
-        </div>
-
-        <div class="step">
-          <span class="number">3</span>
-          <div class="description">
-            <h4>[Result date]</h4>
-            <p>You will receive an email with the results of your request.</p>
-          </div>
-        </div>
-
-        <div class="step">
-          <span class="number">4</span>
-          <div class="description">
-            <h4>[Notice of Trial date]</h4>
-            <p>
-              If a trial date is set for your case, you must file your Notice of Trial by [Notice of
-              Trial date] to secure the trial date.
-            </p>
-          </div>
-        </div>
-
-        <p class="mb-3">
-          To learn more about this process, please visit
-          <a target="_blank" href="https://www.bccourts.ca/">bccourts.ca</a> or call Supreme Court
-          Scheduling at 604-660-2853.
-        </p>
-      </div>
+      <div v-if="showInfo" class="expand-content"><slot name="datesInfo" /></div>
 
       <a
         @click.prevent="showInfo = !showInfo"
@@ -89,6 +45,7 @@
 
     <div class="column-container" v-if="dates.length > 0">
       <div class="dates-intro content-pad select-dates-intro">
+        <!-- @TODO: what is this one? -->
         <h6>[January 2024]</h6>
         <p class="mb-3">
           Choose up to {{ maxSelectionSize }} starting dates. Some dates are not available due to
