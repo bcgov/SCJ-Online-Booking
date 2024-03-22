@@ -305,10 +305,16 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     var result = await _scBookingService.BookTrial(model, user);
 
-                    // @TODO: specific page for trials? (SCJ-147)
-                    // "TrialBooked" for Regular
-                    // ReviewSubmission for Fair-Use
-                    return Redirect($"/scjob/booking/sc/TrialBooked?booked={result.IsBooked}");
+                    if (_session.ScBookingInfo.BookingFormula == ScFormulaType.RegularBooking)
+                    {
+                        // Redirect to "TrialBooked" page for Regular
+                        return Redirect("/scjob/booking/sc/TrialBooked");
+                    }
+                    else
+                    {
+                        // Redirect to "RequestSubmitted" page for Fair-Use
+                        return Redirect("/scjob/booking/sc/RequestSubmitted");
+                    }
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -342,6 +348,19 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         public IActionResult TrialBooked()
+        {
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+
+            if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult RequestSubmitted()
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 

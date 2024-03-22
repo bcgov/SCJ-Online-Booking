@@ -1,0 +1,69 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@inject ScBookingService BookingService
+@inject SessionService SessionService
+
+@{
+    ViewData["Title"] = "Your Request is Submitted";
+
+    var formula = await BookingService.GetFormulaLocationAsync(
+    SessionService.ScBookingInfo.BookingFormula,
+    SessionService.ScBookingInfo.TrialLocation,
+    SessionService.ScBookingInfo.SelectedCourtFile.courtClassCode
+    );
+
+    string endTime = formula.EndDate.ToString("h:mm tt").ToLower();
+    string endDate = formula.EndDate.ToString("dddd, MMMM dd, yyyy");
+
+    // lottery date, when users will be notified (@TODO: confirm & handle null date?)
+    string resultDate = formula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
+}
+<div class="body-content--inner">
+    <div class="row no-gutters">
+        <div class="col">
+            @if (SessionService.ScBookingInfo.IsBooked)
+            {
+                <h2>@ViewData["Title"]</h2>
+
+                <p class="mb-3">Your request for trial dates has been submitted to the Online Booking System.</p>
+
+                <p class="mb-3">The current booking period closes @endTime @endDate. Once the booking period has closed,
+                    the Online Booking System will confirm whether a trial date has been set to for case. You will receive
+                    an update via email by @resultDate.</p>
+            }
+            else
+            {
+                <h2>Booking Could Not Be Completed</h2>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    @SessionService.ScBookingInfo.FriendlyError
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row no-gutters booking-confirmation">
+        <div class="col-12">
+            <div class="mb-4">
+                <a class="btn btn-primary d-inline-block mt-0" href="/scjob/booking/sc" role="button">
+                    Make Another Booking
+                </a>
+            </div>
+
+            <div class="mb-4">
+                <p>Finished booking?</p>
+
+                <p>
+                    @* @TODO: logout url? *@
+                    <a href="@Configuration["AppSettings:LogoutUrl"]">
+                        <p>Log out of the BC Courts Booking System</p>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    SessionService.ScBookingInfo = null;
+}
