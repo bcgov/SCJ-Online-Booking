@@ -74,7 +74,7 @@ namespace SCJ.Booking.MVC.Services
             return new ScCaseSearchViewModel();
         }
 
-        public ScCaseSearchViewModel LoadSearchForm2()
+        public async Task<ScCaseSearchViewModel> LoadSearchForm2Async()
         {
             var bookingInfo = _session.ScBookingInfo;
 
@@ -83,6 +83,13 @@ namespace SCJ.Booking.MVC.Services
                 bookingInfo.FullDate.ToString("yyyy") == "0001"
                     ? ""
                     : bookingInfo.FullDate.ToString("yyyy-MM-dd");
+
+            // Get formula values for fair use booking from the API
+            var formula = await GetFormulaLocationAsync(
+                ScFormulaType.FairUseBooking,
+                bookingInfo.TrialLocation,
+                bookingInfo.SelectedCourtFile.courtClassCode
+            );
 
             //Model instance
             return new ScCaseSearchViewModel
@@ -108,6 +115,12 @@ namespace SCJ.Booking.MVC.Services
                 BookingFormula = bookingInfo.BookingFormula,
                 SelectedRegularTrialDate = trialDate,
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
+                FairUseStartDate = formula?.FairUseBookingPeriodStartDate,
+                FairUseEndDate = formula?.FairUseBookingPeriodEndDate,
+                // lottery date, when users will be notified (@TODO: confirm & handle null date?)
+                FairUseResultDate = formula?.FairUseContactDate,
+                // date when the notice of trial must be filed (@TODO: confirm & handle null date?)
+                FairUseNoticeDate = formula?.FairUseBookingPeriodEndDate,
             };
         }
 

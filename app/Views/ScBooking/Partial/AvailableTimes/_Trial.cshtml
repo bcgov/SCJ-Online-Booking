@@ -9,6 +9,14 @@
 
   List<string> selectedFairUseList = Model.SelectedFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
   string selectedFairUseDateStrings = Json.Serialize(selectedFairUseList).ToString();
+
+  string fairUseStartDate = Model.FairUseStartDate?.ToString("dddd, MMMM dd, yyyy");
+  string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
+  string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd, MMMM dd, yyyy");
+  string fairUseEndTime = Model.FairUseEndDate?.ToString("h:mm tt").ToLower();
+
+  string resultContactDate = Model.FairUseResultDate?.ToString("dddd, MMMM dd, yyyy");
+  string noticeOfTrialDate = Model.FairUseNoticeDate?.ToString("dddd, MMMM dd, yyyy");
 }
 
 <form method="post" id="availableTimesForm">
@@ -34,7 +42,66 @@
           There are no dates set for the upcoming release. You can instantly book a trial date that is
           currently available in the system instead.
         </div>
+
+        <template slot="datesInfo">
+          <div class="step">
+            <span class="number">1</span>
+            <div class="description">
+              <h4>@fairUseStartDate @fairUseStartTime</h4>
+              <p>Period to provide trial availability opens.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span class="number">2</span>
+            <div class="description">
+              <h4>@fairUseEndDate @fairUseEndTime</h4>
+              <p>
+                Period to provide trial date availability closes. The system will begin to set trial
+                dates.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span class="number">3</span>
+            <div class="description">
+              <h4>@resultContactDate</h4>
+              <p>You will receive an email with the results of your request.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span class="number">4</span>
+            <div class="description">
+              <h4>@noticeOfTrialDate</h4>
+              <p>
+                If a trial date is set for your case, you must file your Notice of Trial by [Notice of
+                Trial date] to secure the trial date.
+              </p>
+            </div>
+          </div>
+
+          <p class="mb-3">
+            To learn more about this process, please visit
+            <a target="_blank" href="https://www.bccourts.ca/">bccourts.ca</a> or call Supreme Court
+            Scheduling at 604-660-2853.
+          </p>
+        </template>
+
+        <template slot="dateSelectionHeader" slot-scope="{ maxSelectionSize }">
+          <h6>@fairUseStartDate</h6>
+          <p class="mb-3">
+            Choose up to {{ maxSelectionSize }} starting dates. Some dates are not available due to
+            statutory holidays or court closures.
+          </p>
+        </template>
       </fair-use-booking>
+
+      <template slot="fairUseDisabledAlert">
+        Booking period for the next release of upcoming dates starts @fairUseStartDate @fairUseStartTime and
+        ends @fairUseEndDate @fairUseEndTime.
+      </template>
     </trial-time-select-tabs>
   </div>
 
