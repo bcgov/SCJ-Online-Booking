@@ -17,17 +17,32 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     new AvailableTrialDatesInfo
                     {
-                        AvailableDate = DateTime.Parse("2025-08-11T00:00:00.0000000"),
+                        AvailableDate = DateTime.Parse("2025-12-06T00:00:00.0000000"),
                         AvailableQuantity = 4
                     },
                     new AvailableTrialDatesInfo
                     {
-                        AvailableDate = DateTime.Parse("2025-08-18T00:00:00.0000000"),
+                        AvailableDate = DateTime.Parse("2025-12-08T00:00:00.0000000"),
                         AvailableQuantity = 4
                     },
                     new AvailableTrialDatesInfo
                     {
-                        AvailableDate = DateTime.Parse("2025-08-25T00:00:00.0000000"),
+                        AvailableDate = DateTime.Parse("2025-12-10T00:00:00.0000000"),
+                        AvailableQuantity = 4
+                    },
+                    new AvailableTrialDatesInfo
+                    {
+                        AvailableDate = DateTime.Parse("2025-12-11T00:00:00.0000000"),
+                        AvailableQuantity = 4
+                    },
+                    new AvailableTrialDatesInfo
+                    {
+                        AvailableDate = DateTime.Parse("2025-12-18T00:00:00.0000000"),
+                        AvailableQuantity = 4
+                    },
+                    new AvailableTrialDatesInfo
+                    {
+                        AvailableDate = DateTime.Parse("2025-12-25T00:00:00.0000000"),
                         AvailableQuantity = 4
                     }
                 },
