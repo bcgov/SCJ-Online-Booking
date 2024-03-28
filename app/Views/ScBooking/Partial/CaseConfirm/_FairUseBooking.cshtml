@@ -1,9 +1,8 @@
-@inject SessionService SessionService
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
 
 @{
     // convert DateTimes to formatted strings
-    List<string> formattedDates = Model.SelectedFairUseTrialDates
+    List<string> formattedDates = Model.SessionInfo.SelectedFairUseTrialDates
     .Select(date => date.ToString("dddd, MMMM dd, yyyy"))
     .ToList();
 }
@@ -20,8 +19,6 @@
 </div>
 
 <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
-
-    @Html.HiddenFor(m => m.HearingTypeId)
 
     <partial name="Partial/CaseConfirm/_ContactForm" model="Model" />
 

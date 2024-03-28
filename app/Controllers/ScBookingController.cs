@@ -237,6 +237,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.SessionInfo = _session.ScBookingInfo;
                 return View(model);
             }
 
@@ -265,24 +266,13 @@ namespace SCJ.Booking.MVC.Controllers
             //Time-slot is still available
             var model = new ScCaseConfirmViewModel
             {
-                CaseNumber = bookingInfo.CaseNumber,
                 Date = bookingInfo.DateFriendlyName,
                 Time = bookingInfo.TimeSlotFriendlyName,
-                CaseLocationName = $"{bookingInfo.CaseLocationName} Law Courts",
-                BookingLocationName = $"{bookingInfo.BookingLocationName} Law Courts",
-                HearingTypeName = bookingInfo.HearingTypeName,
-                HearingTypeId = bookingInfo.HearingTypeId,
-                EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
-                TrialLocation = bookingInfo.TrialLocation,
                 TrialLocationName = locationName,
-                BookingFormula = bookingInfo.BookingFormula,
-                ContainerId = bookingInfo.ContainerId,
-                CaseRegistryId = bookingInfo.CaseRegistryId,
-                HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
                 FullDate = bookingInfo.FullDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone,
-                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
+                SessionInfo = bookingInfo
             };
 
             return View(model);
@@ -291,21 +281,23 @@ namespace SCJ.Booking.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CaseConfirm(ScCaseConfirmViewModel model)
         {
+            var bookingInfo = _session.ScBookingInfo;
             if (!ModelState.IsValid)
             {
+                model.SessionInfo = bookingInfo;
                 return View(model);
             }
 
             ClaimsPrincipal user = HttpContext.User;
 
             // book trial or court case and redirect to "booked" page
-            if (model.HearingTypeId == ScHearingType.TRIAL)
+            if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
             {
                 try
                 {
                     var result = await _scBookingService.BookTrial(model, user);
 
-                    if (_session.ScBookingInfo.BookingFormula == ScFormulaType.RegularBooking)
+                    if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
                     {
                         // Redirect to "TrialBooked" page for Regular
                         return Redirect("/scjob/booking/sc/TrialBooked");
@@ -319,9 +311,8 @@ namespace SCJ.Booking.MVC.Controllers
                 catch (InvalidOperationException ex)
                 {
                     string errorMessage = ex.Message;
-
                     ModelState.AddModelError("SelectedRegularTrialDate", errorMessage);
-
+                    model.SessionInfo = bookingInfo;
                     return View(model);
                 }
             }

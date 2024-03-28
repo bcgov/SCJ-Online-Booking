@@ -2,7 +2,7 @@
 @model ScCaseConfirmViewModel
 
 @{
-    ViewData["Title"] = (Model.HearingTypeId == ScHearingType.TRIAL) ? "Review Your Request" : "Complete Your Booking";
+    ViewData["Title"] = (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL) ? "Review Your Request" : "Complete Your Booking";
 }
 
 <div class="body-content--inner">
@@ -16,7 +16,7 @@
 
     <div class="row no-gutters booking-confirmation">
         <div class="col">
-            @if (@Model.HearingTypeId == @ScHearingType.TRIAL)
+            @if (@Model.SessionInfo.HearingTypeId == @ScHearingType.TRIAL)
             {
                 <partial name="Partial/CaseConfirm/_Trial" model="Model" />
             }

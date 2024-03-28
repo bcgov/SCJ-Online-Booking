@@ -1,4 +1,3 @@
-@inject SessionService SessionService
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
 
 <p>
@@ -9,25 +8,14 @@
 <h4>Review Booking Details</h4>
 
 <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
-    <input type="hidden" asp-for="HearingTypeName" />
-    <input type="hidden" asp-for="CaseLocationName" />
-    <input type="hidden" asp-for="CaseNumber" />
-    <input type="hidden" asp-for="Date" />
-    <input type="hidden" asp-for="Time" />
-    <input type="hidden" asp-for="FullDate" />
-    @Html.HiddenFor(m => m.BookingLocationName)
-    @Html.HiddenFor(m => m.HearingBookingRegistryId)
-    @Html.HiddenFor(m => m.CaseRegistryId)
-    @Html.HiddenFor(m => m.ContainerId)
-
     <div class="row no-gutters justify-content-between booking-confirmation--details">
         <div class="col-12 col-md-6">
-            <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
-            <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</h5>
-            <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
+            <div class="uppercase-sm">File Number: @Model.SessionInfo.FileNumber</div>
+            <h5 style="margin-bottom: 4px">@Model.SessionInfo.SelectedCourtFile?.styleOfCause</h5>
+            <p>@Model.SessionInfo.SelectedCourtClassName</p>
         </div>
         <div class="col-12 col-md-6">
-            <small><i class="fas fa-gavel"></i>@Model.HearingTypeName</small>
+            <small><i class="fas fa-gavel"></i>@Model.SessionInfo.HearingTypeName</small>
             <small><i class="fas fa-calendar-alt"></i>@Model.Date</small>
             <small><i class="far fa-clock"></i>@Model.Time</small>
         </div>

@@ -24,7 +24,7 @@
   @Html.HiddenFor(m => m.HearingTypeId)
 
   <div id="VueTrialTimeSelect" v-cloak>
-    <trial-time-select-tabs initial-tab="@Model.BookingFormula.ToString()">
+    <trial-time-select-tabs initial-tab="@Model.BookingFormula">
       <regular-booking :dates="@availableRegularDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
         initial-value="@Model.SelectedRegularTrialDate" slot="regularBooking">
         <div slot="noDatesError" class="alert alert-danger" role="alert">
