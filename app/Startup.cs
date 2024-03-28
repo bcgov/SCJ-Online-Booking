@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Community.Microsoft.Extensions.Caching.PostgreSql;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -100,19 +101,6 @@ namespace SCJ.Booking.MVC
                     options.Cookie.SameSite = SameSiteMode.Lax;
                     options.LoginPath = "/home/NotAuthorized";
                     options.AccessDeniedPath = "/home/NotAuthorized";
-                    options.Events = new CookieAuthenticationEvents
-                    {
-                        // check if the access token needs to be refreshed, and refresh it if needed
-                        OnValidatePrincipal = async ctx =>
-                        {
-                            await OpenIdConnectHelper.HandleOidcRefreshToken(
-                                ctx,
-                                oidcRealmUri,
-                                oidcClientId,
-                                oidcClientSecret
-                            );
-                        }
-                    };
                 })
                 .AddOpenIdConnect(options =>
                 {
@@ -145,7 +133,7 @@ namespace SCJ.Booking.MVC
                                 {
                                     new AuthenticationToken
                                     {
-                                        Name = "id_token",
+                                        Name = OidcConstants.TokenTypeIdentifiers.IdentityToken,
                                         Value = c.TokenEndpointResponse.IdToken
                                     }
                                 }
