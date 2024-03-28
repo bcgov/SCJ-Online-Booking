@@ -73,13 +73,13 @@ namespace SCJ.Booking.MVC.Controllers
                         Date = date,
                         Weekday = date.DayOfWeek.ToString(),
                         FormattedDate = date.ToString("MMMM dd, yyyy"),
-                        Times = new List<ScAvailableTimeViewModel>()
+                        Times = new List<HearingTime>()
                     };
                 }
 
                 // add the timeslot to the day grouping
                 day.Times.Add(
-                    new ScAvailableTimeViewModel
+                    new HearingTime
                     {
                         ContainerId = item.ContainerID,
                         StartDateTime = item.Date_Time,

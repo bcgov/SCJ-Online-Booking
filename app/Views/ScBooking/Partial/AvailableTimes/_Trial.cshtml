@@ -1,4 +1,4 @@
-@model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
+@model SCJ.Booking.MVC.ViewModels.ScAvailableTimesViewModel
 
 @{
   List<string> regularDatesList = Model.AvailableRegularTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
@@ -22,20 +22,19 @@
 <form method="post" id="availableTimesForm">
 
   @Html.HiddenFor(m => m.HearingTypeId)
-  @Html.HiddenFor(m => m.EstimatedTrialLength)
 
   <div id="VueTrialTimeSelect" v-cloak>
     <trial-time-select-tabs initial-tab="@Model.BookingFormula.ToString()">
-      <regular-booking :dates="@availableRegularDates" :trial-length="@Model.EstimatedTrialLength"
+      <regular-booking :dates="@availableRegularDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
         initial-value="@Model.SelectedRegularTrialDate" slot="regularBooking">
         <div slot="noDatesError" class="alert alert-danger" role="alert">
           <i class="fa fa-ban"></i>
-          There are currently no trial dates available at @Model.BookingLocationName. Try again at a later
+          There are currently no trial dates available at @Model.SessionInfo.BookingLocationName. Try again at a later
           time as more dates become available in the system.
         </div>
       </regular-booking>
 
-      <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.EstimatedTrialLength"
+      <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
         :initial-value="@selectedFairUseDateStrings" slot="fairUseBooking">
         <div slot="noDatesError" class="alert alert-danger" role="alert">
           <i class="fa fa-ban"></i>
