@@ -6,9 +6,9 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
     {
         // this is the partial list of locations copied from the dev environment.
         // staging and production will have more locations.
-        public static Location[] All =
+        internal static Location[] All =
         {
-            new Location
+            new()
             {
                 locationCode = "KA",
                 locationID = 17,
@@ -16,7 +16,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 17,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationCode = "VA",
                 locationID = 1,
@@ -24,7 +24,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 1,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationCode = "VI",
                 locationID = 2,
@@ -32,7 +32,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 2,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationID = 6,
                 locationName = "Cranbrook",
@@ -40,7 +40,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationID = 13,
                 locationName = "Fort St. John",
@@ -48,7 +48,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationID = 18,
                 locationName = "Kelowna",
@@ -56,7 +56,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationID = 24,
                 locationName = "Powell River",
@@ -64,7 +64,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationID = 4,
                 locationName = "Prince George",
@@ -72,7 +72,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationID = 33,
                 locationName = "Williams Lake",
@@ -80,7 +80,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9090
             },
-            new Location
+            new()
             {
                 locationCode = "KA",
                 locationID = 17,
@@ -88,7 +88,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 17,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationCode = "VA",
                 locationID = 1,
@@ -96,7 +96,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 1,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationCode = "VI",
                 locationID = 2,
@@ -104,7 +104,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 2,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationID = 6,
                 locationName = "Cranbrook",
@@ -112,7 +112,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationID = 13,
                 locationName = "Fort St. John",
@@ -120,7 +120,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationID = 18,
                 locationName = "Kelowna",
@@ -128,7 +128,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationID = 24,
                 locationName = "Powell River",
@@ -136,7 +136,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationID = 4,
                 locationName = "Prince George",
@@ -144,7 +144,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationID = 33,
                 locationName = "Williams Lake",
@@ -152,7 +152,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9005
             },
-            new Location
+            new()
             {
                 locationCode = "KA",
                 locationID = 17,
@@ -160,7 +160,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 17,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationCode = "VA",
                 locationID = 1,
@@ -168,7 +168,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 1,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationCode = "VI",
                 locationID = 2,
@@ -176,7 +176,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 2,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationID = 6,
                 locationName = "Cranbrook",
@@ -184,7 +184,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationID = 13,
                 locationName = "Fort St. John",
@@ -192,7 +192,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationID = 18,
                 locationName = "Kelowna",
@@ -200,7 +200,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationID = 24,
                 locationName = "Powell River",
@@ -208,7 +208,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationID = 4,
                 locationName = "Prince George",
@@ -216,7 +216,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationID = 33,
                 locationName = "Williams Lake",
@@ -224,7 +224,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9104
             },
-            new Location
+            new()
             {
                 locationCode = "KA",
                 locationID = 17,
@@ -232,7 +232,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 17,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationCode = "VA",
                 locationID = 1,
@@ -240,7 +240,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 1,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationCode = "VI",
                 locationID = 2,
@@ -248,7 +248,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 2,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationID = 6,
                 locationName = "Cranbrook",
@@ -256,7 +256,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationID = 13,
                 locationName = "Fort St. John",
@@ -264,7 +264,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationID = 18,
                 locationName = "Kelowna",
@@ -272,7 +272,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 18,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationID = 24,
                 locationName = "Powell River",
@@ -280,7 +280,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationID = 4,
                 locationName = "Prince George",
@@ -288,7 +288,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 bookingLocationID = 4,
                 bookingHearingTypeID = 9089
             },
-            new Location
+            new()
             {
                 locationID = 33,
                 locationName = "Williams Lake",

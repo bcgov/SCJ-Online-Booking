@@ -4,29 +4,31 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
     public static class ScBookingHearingResultFixture
     {
-        public static BookingHearingResult SupremeCourtFailure = new BookingHearingResult
-        {
-            // Failure messages always start with "Fail"
+        internal static BookingHearingResult SupremeCourtFailure =
+            new()
+            {
+                // Failure messages always start with "Fail"
 
-            // this message is returned when the date is too close in the future.
-            // MicroServe has agreed to change the messages to something more user friendly before launch,
-            // based on feedback from OpenRoad QA/UX
-            bookingResult =
-                "Fail - The date for filing the Plaintiff's Civil Trial Brief has passed for booking this date.\n"
-        };
+                // this message is returned when the date is too close in the future.
+                // MicroServe has agreed to change the messages to something more user friendly before launch,
+                // based on feedback from OpenRoad QA/UX
+                bookingResult =
+                    "Fail - The date for filing the Plaintiff's Civil Trial Brief has passed for booking this date.\n"
+            };
 
+        internal static BookingHearingResult Success =
+            new()
+            {
+                // Success messages always start with "Success"
 
-        public static BookingHearingResult Success = new BookingHearingResult
-        {
-            // Success messages always start with "Success"
+                bookingResult = "Success - Hearing Booked"
+            };
 
-            bookingResult = "Success - Hearing Booked"
-        };
-
-        public static BookingHearingResult CoAFailure = new BookingHearingResult
-        {
-            bookingResult =
-                "Fail - Booking could not be completed. Please contact scheduling or select a different date/time."
-        };
+        internal static BookingHearingResult CoAFailure =
+            new()
+            {
+                bookingResult =
+                    "Fail - Booking could not be completed. Please contact scheduling or select a different date/time."
+            };
     }
 }
