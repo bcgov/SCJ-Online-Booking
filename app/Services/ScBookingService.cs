@@ -567,7 +567,7 @@ namespace SCJ.Booking.MVC.Services
                 string emailBody = await GetTrialEmailBody();
                 string locationPrefix = bookingInfo.LocationPrefix;
                 string fileNumber = bookingInfo.FileNumber;
-                string EmailSubject = $"Trial booking request for {locationPrefix} {fileNumber}";
+                string EmailSubject = $"Trial booking request for {fileNumber}";
                 await SendEmail(model.EmailAddress, EmailSubject, emailBody);
             }
             else if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
@@ -625,8 +625,7 @@ namespace SCJ.Booking.MVC.Services
                 string locationPrefix = bookingInfo.LocationPrefix;
                 string fileNumber = bookingInfo.FileNumber;
                 string startDate = selectedDate.ToString("MMMM dd, yyyy");
-                string EmailSubject =
-                    $"Trial booking for {locationPrefix} {fileNumber} starting on {startDate}";
+                string EmailSubject = $"Trial booking for {fileNumber} starting on {startDate}";
                 await SendEmail(model.EmailAddress, EmailSubject, emailBody);
             }
 
