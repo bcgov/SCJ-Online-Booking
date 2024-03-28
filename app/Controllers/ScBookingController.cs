@@ -37,9 +37,9 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpGet]
         [Route("~/booking/sc/select-case")]
-        public async Task<IActionResult> SelectCaseAsync()
+        public IActionResult SelectCaseAsync()
         {
-            var model = await _scBookingService.LoadSearchForm2Async();
+            var model = _scBookingService.ReloadSearchForm();
             return View("Index", model);
         }
 
@@ -74,7 +74,7 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpPost]
         [Route("~/booking/sc/case-selected")]
-        public async Task<IActionResult> CaseSelectedAsync(ScCaseSearchViewModel model)
+        public IActionResult CaseSelectedAsync(ScCaseSearchViewModel model)
         {
             model.IsConfirmingCase = true;
 
@@ -88,7 +88,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View("Index", model);
             }
 
-            await _scBookingService.SaveScBookingInfoAsync(model);
+            _scBookingService.SaveScBookingInfo(model);
 
             return RedirectToAction("BookingType");
         }

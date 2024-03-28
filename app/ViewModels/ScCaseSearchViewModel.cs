@@ -14,38 +14,20 @@ namespace SCJ.Booking.MVC.ViewModels
         public ScCaseSearchViewModel()
         {
             //Default values
-            TimeSlotExpired = false;
             CaseLocationName = string.Empty;
             CaseRegistryId = -1;
             BookingLocationName = string.Empty;
-            HearingBookingRegistryId = -1;
             CaseNumber = string.Empty;
-            HearingTypeId = -1;
-            HearingTypeName = string.Empty;
-            EstimatedTrialLength = null;
-            IsHomeRegistry = null;
-            IsLocationChangeFiled = null;
-            TrialLocation = -1;
         }
 
         //Search fields
         public string CaseNumber { get; set; }
-        public int HearingTypeId { get; set; }
-        public string HearingTypeName { get; set; }
-        public string BookingFormula { get; set; }
-        public int? EstimatedTrialLength { get; set; }
-        public bool? IsHomeRegistry { get; set; }
-        public bool? IsLocationChangeFiled { get; set; }
-        public int TrialLocation { get; set; }
 
         //Indicates if the case number is valid or not
         public bool IsValidCaseNumber
         {
             get { return (CourtFiles?.Length ?? 0) > 0; }
         }
-
-        //Indicates if the time slot expired
-        public bool TimeSlotExpired { get; set; }
 
         // Selected Registry ID
         [Required(ErrorMessage = "Please select the registry where the file was created.")]
@@ -54,14 +36,8 @@ namespace SCJ.Booking.MVC.ViewModels
         // Selected Registry Name
         public string CaseLocationName { get; set; }
 
-        // Id of the registry where hearings are booked for the selected registry (varies based on HearingTypeId)
-        public int HearingBookingRegistryId { get; set; }
-
         // Name of the registry where hearings are booked for the selected registry (varies based on HearingTypeId)
         public string BookingLocationName { get; set; }
-
-        //Used when the time slot expired eg. January 7 from 2:45pm to 3:15pm
-        public string TimeSlotFriendlyName { get; set; }
 
         //Selected court class in dropdown
         public string SelectedCourtClass { get; set; }

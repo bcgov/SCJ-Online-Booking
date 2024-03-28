@@ -71,22 +71,9 @@ namespace SCJ.Booking.MVC.Services
             return new ScCaseSearchViewModel();
         }
 
-        public async Task<ScCaseSearchViewModel> LoadSearchForm2Async()
+        public ScCaseSearchViewModel ReloadSearchForm()
         {
             var bookingInfo = _session.ScBookingInfo;
-
-            // Previously-selected "regular booking" trial date
-            string trialDate =
-                bookingInfo.FullDate.ToString("yyyy") == "0001"
-                    ? ""
-                    : bookingInfo.FullDate.ToString("yyyy-MM-dd");
-
-            // Get formula values for fair use booking from the API
-            var formula = await GetFormulaLocationAsync(
-                ScFormulaType.FairUseBooking,
-                bookingInfo.TrialLocation,
-                bookingInfo.SelectedCourtFile.courtClassCode
-            );
 
             //Model instance
             return new ScCaseSearchViewModel
@@ -99,16 +86,7 @@ namespace SCJ.Booking.MVC.Services
                 SelectedCourtClass = bookingInfo.SelectedCourtClass,
                 FullCaseNumber = bookingInfo.FullCaseNumber,
                 LocationPrefix = bookingInfo.LocationPrefix,
-                HearingTypeId = bookingInfo.HearingTypeId,
-                HearingTypeName = bookingInfo.HearingTypeName,
-                EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
-                IsHomeRegistry = bookingInfo.IsHomeRegistry,
-                IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
-                TrialLocation = bookingInfo.TrialLocation,
-                BookingLocationName = bookingInfo.BookingLocationName,
-                HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
-                AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
-                BookingFormula = bookingInfo.BookingFormula,
+                AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds
             };
         }
 
@@ -134,73 +112,6 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return result;
-        }
-
-        /// <summary>
-        ///     Search for available times
-        /// </summary>
-        public async Task<ScCaseSearchViewModel> GetSearchResults(ScCaseSearchViewModel model)
-        {
-            // Load locations from cache
-            var retval = new ScCaseSearchViewModel
-            {
-                HearingTypeId = model.HearingTypeId,
-                CaseRegistryId = model.CaseRegistryId,
-                CaseNumber = model.CaseNumber,
-                TimeSlotExpired = model.TimeSlotExpired,
-                SelectedCourtClass = model.SelectedCourtClass
-            };
-
-            //set hearing type name
-            if (
-                retval.HearingTypeId > 0
-                && ScHearingType.HearingTypeNameMap.ContainsKey(retval.HearingTypeId)
-            )
-            {
-                retval.HearingTypeName = ScHearingType.HearingTypeNameMap[retval.HearingTypeId];
-            }
-
-            //set selected registry name
-            retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
-
-            // set booking location information
-            retval.HearingBookingRegistryId =
-                await _cache.GetBookingLocationIdAsync(retval.CaseRegistryId, retval.HearingTypeId)
-                ?? retval.CaseRegistryId;
-
-            retval.BookingLocationName = await _cache.GetLocationNameAsync(
-                retval.HearingBookingRegistryId
-            );
-
-            //search the current case number
-            (retval.FullCaseNumber, retval.LocationPrefix) = await BuildCaseNumber(
-                model.CaseNumber,
-                model.CaseRegistryId
-            );
-            retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
-
-            if (!retval.IsValidCaseNumber)
-            {
-                //get contact information
-                retval.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
-            }
-            else
-            {
-                _session.ScBookingInfo = new ScSessionBookingInfo
-                {
-                    CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                    FullCaseNumber = retval.FullCaseNumber,
-                    CaseId = (int)retval.CourtFiles[0].physicalFileId,
-                    HearingTypeId = model.HearingTypeId,
-                    HearingTypeName = retval.HearingTypeName,
-                    CaseRegistryId = model.CaseRegistryId,
-                    CaseLocationName = retval.CaseLocationName,
-                    HearingBookingRegistryId = retval.HearingBookingRegistryId,
-                    BookingLocationName = retval.BookingLocationName,
-                };
-            }
-
-            return retval;
         }
 
         public async Task<List<int>> GetConferenceTypeIds(ScCaseSearchViewModel model)
@@ -265,7 +176,7 @@ namespace SCJ.Booking.MVC.Services
             return result;
         }
 
-        public async Task SaveScBookingInfoAsync(ScCaseSearchViewModel model)
+        public void SaveScBookingInfo(ScCaseSearchViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
 
