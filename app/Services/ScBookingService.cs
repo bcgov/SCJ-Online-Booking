@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
@@ -26,7 +25,6 @@ namespace SCJ.Booking.MVC.Services
 
         private readonly IOnlineBooking _client;
         private readonly ApplicationDbContext _dbContext;
-        private readonly HttpContext _httpContext;
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
         private readonly MailService _mailService;
@@ -37,7 +35,6 @@ namespace SCJ.Booking.MVC.Services
         //Constructor
         public ScBookingService(
             ApplicationDbContext dbContext,
-            IHttpContextAccessor httpAccessor,
             IConfiguration configuration,
             SessionService sessionService,
             IViewRenderService viewRenderService,
@@ -55,7 +52,6 @@ namespace SCJ.Booking.MVC.Services
             _configuration = configuration;
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _dbContext = dbContext;
-            _httpContext = httpAccessor.HttpContext;
             _session = sessionService;
             _viewRenderService = viewRenderService;
             _cache = scCacheService;
@@ -74,22 +70,9 @@ namespace SCJ.Booking.MVC.Services
             return new ScCaseSearchViewModel();
         }
 
-        public async Task<ScCaseSearchViewModel> LoadSearchForm2Async()
+        public ScCaseSearchViewModel ReloadSearchForm()
         {
             var bookingInfo = _session.ScBookingInfo;
-
-            // Previously-selected "regular booking" trial date
-            string trialDate =
-                bookingInfo.FullDate.ToString("yyyy") == "0001"
-                    ? ""
-                    : bookingInfo.FullDate.ToString("yyyy-MM-dd");
-
-            // Get formula values for fair use booking from the API
-            var formula = await GetFormulaLocationAsync(
-                ScFormulaType.FairUseBooking,
-                bookingInfo.TrialLocation,
-                bookingInfo.SelectedCourtFile.courtClassCode
-            );
 
             //Model instance
             return new ScCaseSearchViewModel
@@ -102,29 +85,13 @@ namespace SCJ.Booking.MVC.Services
                 SelectedCourtClass = bookingInfo.SelectedCourtClass,
                 FullCaseNumber = bookingInfo.FullCaseNumber,
                 LocationPrefix = bookingInfo.LocationPrefix,
-                HearingTypeId = bookingInfo.HearingTypeId,
-                HearingTypeName = bookingInfo.HearingTypeName,
-                EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
-                IsHomeRegistry = bookingInfo.IsHomeRegistry,
-                IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
-                TrialLocation = bookingInfo.TrialLocation,
-                Results = bookingInfo.Results,
-                BookingLocationName = bookingInfo.BookingLocationName,
-                HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
-                AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
-                BookingFormula = bookingInfo.BookingFormula,
-                SelectedRegularTrialDate = trialDate,
-                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
-                FairUseStartDate = formula?.FairUseBookingPeriodStartDate,
-                FairUseEndDate = formula?.FairUseBookingPeriodEndDate,
-                // lottery date, when users will be notified (@TODO: confirm & handle null date?)
-                FairUseResultDate = formula?.FairUseContactDate,
-                // date when the notice of trial must be filed (@TODO: confirm & handle null date?)
-                FairUseNoticeDate = formula?.FairUseBookingPeriodEndDate,
+                AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds
             };
         }
 
-        public async Task<List<int>> GetConferenceTypesAsync(string caseLocationName)
+        public async Task<List<int>> GetAvailableConferenceTypesByLocationAsync(
+            string caseLocationName
+        )
         {
             var result = new List<int>();
 
@@ -138,6 +105,7 @@ namespace SCJ.Booking.MVC.Services
                             x.bookingHearingTypeID == ScHearingType.TMC
                             || x.bookingHearingTypeID == ScHearingType.CPC
                             || x.bookingHearingTypeID == ScHearingType.JCC
+                            || x.bookingHearingTypeID == ScHearingType.JMC
                         )
                     )
                     .Select(x => x.bookingHearingTypeID)
@@ -146,110 +114,6 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return result;
-        }
-
-        /// <summary>
-        ///     Search for available times
-        /// </summary>
-        public async Task<ScCaseSearchViewModel> GetSearchResults(ScCaseSearchViewModel model)
-        {
-            // Load locations from cache
-            var retval = new ScCaseSearchViewModel
-            {
-                HearingTypeId = model.HearingTypeId,
-                CaseRegistryId = model.CaseRegistryId,
-                CaseNumber = model.CaseNumber,
-                TimeSlotExpired = model.TimeSlotExpired,
-                SelectedCourtClass = model.SelectedCourtClass
-            };
-
-            //set hearing type name
-            if (
-                retval.HearingTypeId > 0
-                && ScHearingType.HearingTypeNameMap.ContainsKey(retval.HearingTypeId)
-            )
-            {
-                retval.HearingTypeName = ScHearingType.HearingTypeNameMap[retval.HearingTypeId];
-            }
-
-            //set selected registry name
-            retval.CaseLocationName = await _cache.GetLocationNameAsync(retval.CaseRegistryId);
-
-            // set booking location information
-            retval.HearingBookingRegistryId =
-                await _cache.GetBookingLocationIdAsync(retval.CaseRegistryId, retval.HearingTypeId)
-                ?? retval.CaseRegistryId;
-
-            retval.BookingLocationName = await _cache.GetLocationNameAsync(
-                retval.HearingBookingRegistryId
-            );
-
-            //search the current case number
-            (retval.FullCaseNumber, retval.LocationPrefix) = await BuildCaseNumber(
-                model.CaseNumber,
-                model.CaseRegistryId
-            );
-            retval.CourtFiles = await _client.caseNumberValidAsync(retval.FullCaseNumber);
-
-            if (!retval.IsValidCaseNumber)
-            {
-                //get contact information
-                retval.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
-            }
-            else
-            {
-                retval.Results = await _client.AvailableDatesByLocationAsync(
-                    retval.HearingBookingRegistryId,
-                    model.HearingTypeId
-                );
-
-                //check for valid date
-                if (model.ContainerId > 0)
-                {
-                    retval.TimeSlotExpired = !IsTimeStillAvailable(
-                        retval.Results,
-                        model.ContainerId
-                    );
-
-                    //convert JS ticks to .Net date
-                    DateTime? dt = new DateTime(Convert.ToInt64(model.SelectedCaseDate));
-
-                    //set date properties
-                    retval.ContainerId = model.ContainerId;
-                    retval.SelectedCaseDate = model.SelectedCaseDate;
-
-                    string bookingTime =
-                        $"{dt.Value:hh:mm tt} to {dt.Value.AddMinutes(retval.HearingLengthMinutes):hh:mm tt}";
-
-                    retval.TimeSlotFriendlyName = $"{dt.Value:MMMM dd} from {bookingTime}";
-                }
-
-                _session.ScBookingInfo = new ScSessionBookingInfo
-                {
-                    ContainerId = model.ContainerId,
-                    CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                    FullCaseNumber = retval.FullCaseNumber,
-                    CaseId = (int)retval.CourtFiles[0].physicalFileId,
-                    HearingTypeId = model.HearingTypeId,
-                    HearingTypeName = retval.HearingTypeName,
-                    Results = retval.Results,
-                    CaseRegistryId = model.CaseRegistryId,
-                    CaseLocationName = retval.CaseLocationName,
-                    HearingBookingRegistryId = retval.HearingBookingRegistryId,
-                    BookingLocationName = retval.BookingLocationName,
-                    SelectedCaseDate = model.SelectedCaseDate,
-                };
-            }
-
-            return retval;
-        }
-
-        public async Task<List<int>> GetConferenceTypeIds(ScCaseSearchViewModel model)
-        {
-            //set selected registry name
-            model.CaseLocationName = await _cache.GetLocationNameAsync(model.CaseRegistryId);
-
-            return await GetConferenceTypesAsync(model.CaseLocationName);
         }
 
         // Returns booking types from the cache
@@ -306,7 +170,7 @@ namespace SCJ.Booking.MVC.Services
             return result;
         }
 
-        public async Task SaveScBookingInfoAsync(ScCaseSearchViewModel model)
+        public void SaveScBookingInfo(ScCaseSearchViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
 
@@ -345,50 +209,6 @@ namespace SCJ.Booking.MVC.Services
             }
 
             bookingInfo.AvailableConferenceTypeIds = model.AvailableConferenceTypeIds;
-
-            if (model.ContainerId > 0)
-            {
-                if (
-                    !string.IsNullOrWhiteSpace(model.SelectedCaseDate)
-                    && bookingInfo.SelectedCaseDate != model.SelectedCaseDate
-                )
-                {
-                    bookingInfo.SelectedCaseDate = model.SelectedCaseDate;
-                }
-
-                model.TimeSlotExpired = !IsTimeStillAvailable(
-                    bookingInfo.Results,
-                    model.ContainerId
-                );
-
-                if (bookingInfo.ContainerId != model.ContainerId)
-                {
-                    bookingInfo.ContainerId = model.ContainerId;
-                }
-            }
-
-            if (bookingInfo.FullDate != model.FullDate)
-            {
-                bookingInfo.FullDate = model.FullDate;
-            }
-
-            if (bookingInfo.SelectedRegularTrialDate != model.SelectedRegularTrialDate)
-            {
-                bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
-            }
-
-            if (
-                model.SelectedFairUseTrialDates.Count > 0
-                && bookingInfo.SelectedFairUseTrialDates != model.SelectedFairUseTrialDates
-            )
-            {
-                bookingInfo.SelectedFairUseTrialDates = model.SelectedFairUseTrialDates;
-            }
-
-            if (bookingInfo.BookingFormula != model.BookingFormula)
-            {
-                bookingInfo.BookingFormula = model.BookingFormula;
-            }
 
             _session.ScBookingInfo = bookingInfo;
         }
@@ -601,18 +421,19 @@ namespace SCJ.Booking.MVC.Services
                     bookingInfo.SelectedCourtFile.courtClassCode
                 );
 
-                BookTrialHearingInfo requestPayload = new BookTrialHearingInfo
-                {
-                    BookingLocationID = formula.BookingLocationID,
-                    CEIS_Physical_File_ID = bookingInfo.CaseId,
-                    CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
-                    FormulaType = bookingInfo.BookingFormula,
-                    HearingDate = selectedDate,
-                    HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
-                    HearingType = bookingInfo.HearingTypeId,
-                    LocationID = bookingInfo.TrialLocation,
-                    RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
-                };
+                BookTrialHearingInfo requestPayload =
+                    new()
+                    {
+                        BookingLocationID = formula.BookingLocationID,
+                        CEIS_Physical_File_ID = bookingInfo.CaseId,
+                        CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
+                        FormulaType = bookingInfo.BookingFormula,
+                        HearingDate = selectedDate,
+                        HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
+                        HearingType = bookingInfo.HearingTypeId,
+                        LocationID = bookingInfo.TrialLocation,
+                        RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
+                    };
                 BookingHearingResult bookingResult = await _client.BookTrialHearingAsync(
                     requestPayload
                 );
@@ -888,7 +709,7 @@ namespace SCJ.Booking.MVC.Services
             }
 
             AvailableTrialDatesRequestInfo trialDatesRequestInfo =
-                new AvailableTrialDatesRequestInfo
+                new()
                 {
                     LocationID = bookingInfo.TrialLocation,
                     BookingLocationID = formula.BookingLocationID,
@@ -1007,6 +828,76 @@ namespace SCJ.Booking.MVC.Services
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
                 TrialLocation = bookingInfo.TrialLocation,
                 AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
+                SessionInfo = bookingInfo
+            };
+        }
+
+        public void SaveScAvailableTimesFormAsync(ScAvailableTimesViewModel model)
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            if (model.ContainerId > 0)
+            {
+                if (
+                    !string.IsNullOrWhiteSpace(model.SelectedCaseDate)
+                    && bookingInfo.SelectedCaseDate != model.SelectedCaseDate
+                )
+                {
+                    bookingInfo.SelectedCaseDate = model.SelectedCaseDate;
+                }
+
+                model.TimeSlotExpired = !IsTimeStillAvailable(
+                    bookingInfo.Results,
+                    model.ContainerId
+                );
+
+                if (bookingInfo.ContainerId != model.ContainerId)
+                {
+                    bookingInfo.ContainerId = model.ContainerId;
+                }
+            }
+
+            bookingInfo.FullDate = model.FullDate;
+            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
+            bookingInfo.SelectedFairUseTrialDates = model.SelectedFairUseTrialDates;
+            bookingInfo.BookingFormula = model.BookingFormula;
+
+            _session.ScBookingInfo = bookingInfo;
+        }
+
+        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesForm()
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            // Previously-selected "regular booking" trial date
+            string trialDate =
+                bookingInfo.FullDate.ToString("yyyy") == "0001"
+                    ? ""
+                    : bookingInfo.FullDate.ToString("yyyy-MM-dd");
+
+            // Get formula values for fair use booking from the API
+            var formula = await GetFormulaLocationAsync(
+                ScFormulaType.FairUseBooking,
+                bookingInfo.TrialLocation,
+                bookingInfo.SelectedCourtFile.courtClassCode
+            );
+
+            //Model instance
+            return new ScAvailableTimesViewModel
+            {
+                CaseNumber = bookingInfo.CaseNumber,
+                HearingTypeId = bookingInfo.HearingTypeId,
+                Results = bookingInfo.Results,
+                HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
+                BookingFormula = bookingInfo.BookingFormula,
+                SelectedRegularTrialDate = trialDate,
+                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
+                FairUseStartDate = formula?.FairUseBookingPeriodStartDate,
+                FairUseEndDate = formula?.FairUseBookingPeriodEndDate,
+                // lottery date, when users will be notified (@TODO: confirm & handle null date?)
+                FairUseResultDate = formula?.FairUseContactDate,
+                // date when the notice of trial must be filed (@TODO: confirm & handle null date?)
+                FairUseNoticeDate = formula?.FairUseBookingPeriodEndDate,
                 SessionInfo = bookingInfo
             };
         }

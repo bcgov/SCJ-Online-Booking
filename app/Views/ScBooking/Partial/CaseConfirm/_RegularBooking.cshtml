@@ -1,24 +1,19 @@
-@inject SessionService SessionService
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
 
 <h2>Trial Details</h2>
 
 <div class="mb-4">
     <p>
-        Trial length: @Model.EstimatedTrialLength
-        @(Model.EstimatedTrialLength == 1 ? "day" : "days")
+        Trial length: @Model.SessionInfo.EstimatedTrialLength
+        @(Model.SessionInfo.EstimatedTrialLength == 1 ? "day" : "days")
     </p>
 
     <p>Starting: @Model.Date</p>
 
     <p>Trial location: @Model.TrialLocationName</p>
-
-    <span class="text-danger" asp-validation-for="SelectedRegularTrialDate"></span>
 </div>
 
 <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
-
-    @Html.HiddenFor(m => m.HearingTypeId)
 
     <partial name="Partial/CaseConfirm/_ContactForm" model="Model" />
 

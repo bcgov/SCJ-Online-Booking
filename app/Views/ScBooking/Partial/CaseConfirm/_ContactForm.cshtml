@@ -1,9 +1,8 @@
-@inject SessionService SessionService
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
 
 <h4>Provide Your Contact Information</h4>
 
-@if (@Model.BookingFormula == ScFormulaType.FairUseBooking)
+@if (@Model.SessionInfo.BookingFormula == ScFormulaType.FairUseBooking)
 {
     <p>Please provide the following contact information. Your email address will be used to let you know whether a trial
     date is set for your case, and your phone number may be used later for booking and coordination purposes.</p>

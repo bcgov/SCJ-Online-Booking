@@ -1,28 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
     public class ScCaseConfirmViewModel
     {
-        //Case number
-        public string CaseNumber { get; set; }
-
-        //Hearing type
-        public string HearingTypeName { get; set; }
-        public int HearingTypeId { get; set; }
-
-        //Booking time formula (from ScFormulaType)
-        public string BookingFormula { get; set; }
-
-        //Location for the booking
-        public string CaseLocationName { get; set; }
-
         //Date for the booking
         public string Date { get; set; }
-        public string SelectedRegularTrialDate { get; set; }
-        public List<DateTime> SelectedFairUseTrialDates { get; set; }
 
         //Time for booking
         public string Time { get; set; }
@@ -32,12 +17,6 @@ namespace SCJ.Booking.MVC.ViewModels
 
         //indicate if the case was booked successfully
         public bool IsBooked { get; set; }
-
-        //ContainerId for locations
-        public int ContainerId { get; set; }
-
-        //Location id
-        public int CaseRegistryId { get; set; }
 
         //Full date for the booking
         public DateTime FullDate { get; set; }
@@ -57,12 +36,9 @@ namespace SCJ.Booking.MVC.ViewModels
         )]
         public string Phone { get; set; }
 
-        public string BookingLocationName { get; set; }
-        public int HearingBookingRegistryId { get; set; }
-
-        public int? EstimatedTrialLength { get; set; }
-
-        public int TrialLocation { get; set; }
         public string TrialLocationName { get; set; }
+
+        // Session object
+        public ScSessionBookingInfo SessionInfo { get; set; }
     }
 }

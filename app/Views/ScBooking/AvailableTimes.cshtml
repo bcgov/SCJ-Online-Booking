@@ -1,4 +1,4 @@
-@model SCJ.Booking.MVC.ViewModels.ScCaseSearchViewModel
+@model SCJ.Booking.MVC.ViewModels.ScAvailableTimesViewModel
 
 @{
     ViewData["Title"] = "AvailableTimes";
@@ -22,9 +22,9 @@
     }
 
     <div style="margin-bottom: 30px">
-        <div class="uppercase-sm">File Number: @Model.FileNumber</div>
-        <h5>@Model.SelectedCourtFile?.styleOfCause</h5>
-        <p>@Model.SelectedCourtClassName</p>
+        <div class="uppercase-sm">File Number: @Model.SessionInfo.FileNumber</div>
+        <h5>@Model.SessionInfo.SelectedCourtFile?.styleOfCause</h5>
+        <p>@Model.SessionInfo.SelectedCourtClassName</p>
     </div>
 
     @if (@Model.HearingTypeId == @ScHearingType.TRIAL)
