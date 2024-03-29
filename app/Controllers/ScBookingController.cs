@@ -60,7 +60,11 @@ namespace SCJ.Booking.MVC.Controllers
                 ModelState.AddModelError("CaseNumber", "Please provide a Court File Number");
             }
 
-            model.AvailableConferenceTypeIds = await _scBookingService.GetConferenceTypeIds(model);
+            model.CaseLocationName = await _scBookingService.GetLocationName(model.CaseRegistryId);
+            model.AvailableConferenceTypeIds =
+                await _scBookingService.GetAvailableConferenceTypesByLocationAsync(
+                    model.CaseLocationName
+                );
 
             if (!ModelState.IsValid)
             {

@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
@@ -90,7 +89,9 @@ namespace SCJ.Booking.MVC.Services
             };
         }
 
-        public async Task<List<int>> GetConferenceTypesAsync(string caseLocationName)
+        public async Task<List<int>> GetAvailableConferenceTypesByLocationAsync(
+            string caseLocationName
+        )
         {
             var result = new List<int>();
 
@@ -104,6 +105,7 @@ namespace SCJ.Booking.MVC.Services
                             x.bookingHearingTypeID == ScHearingType.TMC
                             || x.bookingHearingTypeID == ScHearingType.CPC
                             || x.bookingHearingTypeID == ScHearingType.JCC
+                            || x.bookingHearingTypeID == ScHearingType.JMC
                         )
                     )
                     .Select(x => x.bookingHearingTypeID)
@@ -112,14 +114,6 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return result;
-        }
-
-        public async Task<List<int>> GetConferenceTypeIds(ScCaseSearchViewModel model)
-        {
-            //set selected registry name
-            model.CaseLocationName = await _cache.GetLocationNameAsync(model.CaseRegistryId);
-
-            return await GetConferenceTypesAsync(model.CaseLocationName);
         }
 
         // Returns booking types from the cache
