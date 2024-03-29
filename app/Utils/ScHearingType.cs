@@ -18,19 +18,14 @@ namespace SCJ.Booking.MVC.Utils
 
         public static string GetHearingType(int code)
         {
-            switch (code)
+            return code switch
             {
-                case CPC:
-                    return nameof(CPC);
-                case JCC:
-                    return nameof(JCC);
-                case TMC:
-                    return nameof(TMC);
-                case JMC:
-                    return nameof(JMC);
-                default:
-                    return nameof(UNKNOWN);
-            }
+                CPC => nameof(CPC),
+                JCC => nameof(JCC),
+                TMC => nameof(TMC),
+                JMC => nameof(JMC),
+                _ => nameof(UNKNOWN)
+            };
         }
 
         // map string ID to integer ID

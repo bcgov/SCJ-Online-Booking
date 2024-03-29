@@ -237,22 +237,21 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void BookTrialHearingAsync()
         {
-            BookTrialHearingInfo bookingInfo = new BookTrialHearingInfo
-            {
-                CEIS_Physical_File_ID = 3879m,
-                RequestedBy = "John Smith 604-555-1212 somebody@email.com",
-                BookingLocationID = 1,
-                CourtClass = "E",
-                HearingDate = new DateTime(2025, 6, 22),
-                FormulaType = "Fair-Use", // Regular or Fair-Use
-                HearingLength = 5,
-                HearingType = 9001, // Unmet demand is 20538
-                LocationID = 41
-            };
+            BookTrialHearingInfo bookingInfo =
+                new()
+                {
+                    CEIS_Physical_File_ID = 3879m,
+                    RequestedBy = "John Smith 604-555-1212 somebody@email.com",
+                    BookingLocationID = 1,
+                    CourtClass = "E",
+                    HearingDate = new DateTime(2025, 6, 22),
+                    FormulaType = "Fair-Use", // Regular or Fair-Use
+                    HearingLength = 5,
+                    HearingType = 9001, // Unmet demand is 20538
+                    LocationID = 41
+                };
             var result = _soapClient.BookTrialHearingAsync(bookingInfo).Result;
-            Assert.True(
-                result.bookingResult.StartsWith("success", StringComparison.OrdinalIgnoreCase)
-            );
+            Assert.StartsWith("success", result.bookingResult, StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
@@ -266,16 +265,17 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void AvailableTrialDatesByLocationAsync_Regular()
         {
-            AvailableTrialDatesRequestInfo regular = new AvailableTrialDatesRequestInfo
-            {
-                BookingLocationID = 41,
-                Courtclass = "E",
-                StartDate = DateTime.Parse("2024/08/01"), // these dates come from formulas by location
-                EndDate = DateTime.Parse("2026/01/31"),
-                HearingLength = 5,
-                FormulaType = "Regular",
-                LocationID = 1
-            };
+            AvailableTrialDatesRequestInfo regular =
+                new()
+                {
+                    BookingLocationID = 41,
+                    Courtclass = "E",
+                    StartDate = DateTime.Parse("2024/08/01"), // these dates come from formulas by location
+                    EndDate = DateTime.Parse("2026/01/31"),
+                    HearingLength = 5,
+                    FormulaType = "Regular",
+                    LocationID = 1
+                };
             var result = _soapClient.AvailableTrialDatesByLocationAsync(regular).Result;
             Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
         }
@@ -283,16 +283,17 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void AvailableTrialDatesByLocationAsync_FairUse()
         {
-            AvailableTrialDatesRequestInfo fairUse = new AvailableTrialDatesRequestInfo
-            {
-                BookingLocationID = 41,
-                Courtclass = "E",
-                StartDate = DateTime.Parse("2025/08/01"), // 18 months in the future
-                EndDate = DateTime.Parse("2025/08/31"), // these dates come from formulas by location
-                HearingLength = 5,
-                FormulaType = "Fair-Use",
-                LocationID = 1
-            };
+            AvailableTrialDatesRequestInfo fairUse =
+                new()
+                {
+                    BookingLocationID = 41,
+                    Courtclass = "E",
+                    StartDate = DateTime.Parse("2025/08/01"), // 18 months in the future
+                    EndDate = DateTime.Parse("2025/08/31"), // these dates come from formulas by location
+                    HearingLength = 5,
+                    FormulaType = "Fair-Use",
+                    LocationID = 1
+                };
             var result = _soapClient.AvailableTrialDatesByLocationAsync(fairUse).Result;
             Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
         }

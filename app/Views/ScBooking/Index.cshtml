@@ -52,7 +52,7 @@
             <div class="form-group hideMsgClass" @hideMsgClass>
                 <label for="courtClassDropdown" id="courtClassLabel">
                     Choose the court class (Optional)
-                </label> @* style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
+                </label>
                 <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" aria-label="Court classes" asp-items="SelectListService.ScCourtClasses">
                     <option value="">-- Pick a class --</option>
                 </select>
@@ -65,7 +65,6 @@
                     title="<p>@caseNoTooltip</p>"
                     aria-label="@caseNoTooltip"
                     role="tooltip">
-                    @*style="@(Model.HearingTypeId == ScHearingType.PTC ? "display:none" : "")"*@
                     <i class="fas fa-question-circle"></i>
                 </span>
             </div>

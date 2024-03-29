@@ -9,8 +9,6 @@ namespace SCJ.Booking.MVC.ViewModels
 {
     public class ScCaseSearchViewModel
     {
-        private readonly string format = "yyyy-MM-dd";
-
         public ScCaseSearchViewModel()
         {
             //Default values
