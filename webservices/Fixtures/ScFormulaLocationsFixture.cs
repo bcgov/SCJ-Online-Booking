@@ -95,7 +95,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
             {
                 BookingHearingCode = "All Other",
                 BookingLocationID = 2,
-                EndDate = DateTime.Parse("2025-09-31T23:59:59.0000000Z"),
+                EndDate = DateTime.Parse("2025-09-30T23:59:59.0000000Z"),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -109,7 +109,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
             {
                 BookingHearingCode = "E",
                 BookingLocationID = 2,
-                EndDate = DateTime.Parse("2025-09-31T23:59:59.0000000Z"),
+                EndDate = DateTime.Parse("2025-09-30T23:59:59.0000000Z"),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,

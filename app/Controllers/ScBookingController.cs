@@ -92,7 +92,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View("Index", model);
             }
 
-            _scBookingService.SaveScBookingInfo(model);
+            _scBookingService.SaveCaseSearchForm(model);
 
             return RedirectToAction("BookingType");
         }
@@ -168,7 +168,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            await _scBookingService.SaveScBookingTypeFormAsync(model);
+            await _scBookingService.SaveBookingTypeFormAsync(model);
 
             return RedirectToAction("AvailableTimes");
         }
@@ -205,7 +205,7 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpPost]
         [Route("~/booking/sc/available-times")]
-        public async Task<IActionResult> AvailableTimes(ScAvailableTimesViewModel model)
+        public IActionResult AvailableTimes(ScAvailableTimesViewModel model)
         {
             model.Results = _session.ScBookingInfo.Results;
 
@@ -245,7 +245,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            _scBookingService.SaveScAvailableTimesFormAsync(model);
+            _scBookingService.SaveAvailableTimesForm(model);
 
             return RedirectToAction("CaseConfirm");
         }
