@@ -15,6 +15,8 @@ oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-test
 oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-prod:scjob-patroni -n bc7c5c-tools
 ```
 
+You will get a warning that the service accounts don't exist, but that's okay.  They will be created in the next step. 
+
 ## Deploying
 
 The `install` command can be used when deploying to a namespace for the very first time.
