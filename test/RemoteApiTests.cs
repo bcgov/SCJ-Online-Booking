@@ -169,12 +169,12 @@ namespace SCJ.Booking.UnitTest
             var booking = new CoABookingHearingInfo
             {
                 caseID = 37351,
-                email = "mike@olund.ca",
+                email = "somebody@email.com",
                 hearingDate = DateTime.Parse("2024/03/12 00:00:00.0000000"),
                 hearingLength = "Full",
-                phone = "778-865-7042",
+                phone = "604-555-1212",
                 hearingTypeId = 24,
-                requestedBy = "Mike Olund",
+                requestedBy = "John Smith",
                 MainCase = true,
                 RelatedCases = ""
             };
@@ -205,12 +205,12 @@ namespace SCJ.Booking.UnitTest
             var booking = new CoAChambersBookingHearingInfo
             {
                 caseID = 37351,
-                email = "mike@olund.ca",
+                email = "somebody@email.com",
                 hearingDate = DateTime.Parse("2023-12-18T00:00:00.0000000"),
                 hearingLength = "One Hour",
-                phone = "778-865-7042",
+                phone = "604-555-1212",
                 HearingTypeListID = "116|114",
-                requestedBy = "Mike Olund",
+                requestedBy = "John Smith",
                 MainCase = true,
                 RelatedCases = ""
             };

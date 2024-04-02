@@ -13,6 +13,10 @@ namespace SCJ.Booking.Data
 
         public DbSet<OidcUser> Users => Set<OidcUser>();
 
+        public DbSet<ScTrialBookingRequest> ScTrialBookingRequests => Set<ScTrialBookingRequest>();
+
+        public DbSet<ScTrialDateSelection> ScTrialDateSelections => Set<ScTrialDateSelection>();
+
         public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,6 +25,8 @@ namespace SCJ.Booking.Data
                 .Entity<OidcUser>()
                 .HasIndex(u => new { u.UniqueIdentifier, u.CredentialType })
                 .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
