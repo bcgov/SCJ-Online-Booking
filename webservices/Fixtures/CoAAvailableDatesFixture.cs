@@ -1886,7 +1886,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2024/09/31 00:00:00.0000000",
+                        "2024/10/01 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },

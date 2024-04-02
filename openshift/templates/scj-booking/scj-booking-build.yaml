@@ -28,7 +28,7 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: partoni-postgres
+      name: patroni-postgres
   - kind: ImageStream
     apiVersion: v1
     metadata:
