@@ -46,12 +46,8 @@
                 @{
                     var trialLength = SessionService.ScBookingInfo.EstimatedTrialLength;
 
-                    var trialDateObj = DateTime.ParseExact(
-                    SessionService.ScBookingInfo.SelectedRegularTrialDate,
-                    "yyyy-MM-dd",
-                    System.Globalization.CultureInfo.InvariantCulture
-                    );
-                    var trialDate = trialDateObj.ToString("dddd, MMMM dd, yyyy");
+                    var trialDate = SessionService.ScBookingInfo.SelectedRegularTrialDate?.ToString("dddd, MMMM dd, yyyy")
+                    ?? "";
 
                     var trialLocation = await BookingService.GetLocationName(SessionService.ScBookingInfo.TrialLocation);
                 }

@@ -138,31 +138,13 @@ namespace SCJ.Booking.MVC.ViewModels
         public string SelectedCaseDate { get; set; }
         public string SelectedDate { get; set; }
 
-        //Full date for the booking
+        //Full date for conference hearing bookings
         public DateTime FullDate
         {
             get
             {
                 var result = DateTime.MinValue;
 
-                // trial booking
-                if (
-                    HearingTypeId == ScHearingType.TRIAL
-                    && BookingFormula == ScFormulaType.RegularBooking
-                )
-                {
-                    DateTime.TryParseExact(
-                        SelectedRegularTrialDate,
-                        "yyyy-MM-dd",
-                        System.Globalization.CultureInfo.InvariantCulture,
-                        System.Globalization.DateTimeStyles.None,
-                        out DateTime parsedDate
-                    );
-
-                    return parsedDate;
-                }
-
-                // conference hearing booking
                 if (
                     !string.IsNullOrWhiteSpace(SelectedCaseDate)
                     && long.TryParse(SelectedCaseDate, out long ticks)
@@ -176,7 +158,7 @@ namespace SCJ.Booking.MVC.ViewModels
 
         public List<DateTime> AvailableRegularTrialDates { get; set; }
         public List<DateTime> AvailableFairUseTrialDates { get; set; }
-        public string SelectedRegularTrialDate { get; set; }
+        public DateTime? SelectedRegularTrialDate { get; set; }
         public List<DateTime> SelectedFairUseTrialDates { get; set; } = new();
         public DateTime? FairUseStartDate { get; set; }
         public DateTime? FairUseEndDate { get; set; }

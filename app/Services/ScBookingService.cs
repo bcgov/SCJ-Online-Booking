@@ -369,13 +369,9 @@ namespace SCJ.Booking.MVC.Services
                 );
 
                 // check if selected date exists in the available dates
-                DateTime selectedDate = DateTime.ParseExact(
-                    bookingInfo.SelectedRegularTrialDate,
-                    "yyyy-MM-dd",
-                    System.Globalization.CultureInfo.InvariantCulture
-                );
-
-                bool dateAvailable = availableTrialDates.Contains(selectedDate);
+                bool dateAvailable =
+                    bookingInfo.SelectedRegularTrialDate.HasValue
+                    && availableTrialDates.Contains(bookingInfo.SelectedRegularTrialDate.Value);
 
                 // thow an exception if the date is no longer available
                 if (!dateAvailable)
@@ -399,7 +395,6 @@ namespace SCJ.Booking.MVC.Services
                         CEIS_Physical_File_ID = bookingInfo.CaseId,
                         CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
                         FormulaType = bookingInfo.BookingFormula,
-                        HearingDate = selectedDate,
                         HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
                         HearingType = bookingInfo.HearingTypeId,
                         LocationID = bookingInfo.TrialLocation,
@@ -416,7 +411,7 @@ namespace SCJ.Booking.MVC.Services
                 string emailBody = await GetTrialEmailBody();
                 string locationPrefix = bookingInfo.LocationPrefix;
                 string fileNumber = bookingInfo.FileNumber;
-                string startDate = selectedDate.ToString("MMMM dd, yyyy");
+                string startDate = bookingInfo.SelectedRegularTrialDate?.ToString("MMMM dd, yyyy");
                 string EmailSubject = $"Trial booking for {fileNumber} starting on {startDate}";
                 await SendEmail(model.EmailAddress, EmailSubject, emailBody);
             }
@@ -535,15 +530,11 @@ namespace SCJ.Booking.MVC.Services
                 .ToList();
 
             string regularDateString = "";
-            if (booking.SelectedRegularTrialDate != null)
+            if (booking.SelectedRegularTrialDate.HasValue)
             {
-                regularDateString = DateTime
-                    .ParseExact(
-                        booking.SelectedRegularTrialDate,
-                        "yyyy-MM-dd",
-                        System.Globalization.CultureInfo.InvariantCulture
-                    )
-                    .ToString("dddd, MMMM dd, yyyy");
+                regularDateString = booking.SelectedRegularTrialDate.Value.ToString(
+                    "dddd, MMMM dd, yyyy"
+                );
             }
 
             string trialLengthFormatted =
@@ -792,12 +783,6 @@ namespace SCJ.Booking.MVC.Services
         {
             var bookingInfo = _session.ScBookingInfo;
 
-            // Previously-selected "regular booking" trial date
-            string trialDate =
-                bookingInfo.FullDate.ToString("yyyy") == "0001"
-                    ? ""
-                    : bookingInfo.FullDate.ToString("yyyy-MM-dd");
-
             // Get formula values for fair use booking from the API
             var formula = await GetFormulaLocationAsync(
                 ScFormulaType.FairUseBooking,
@@ -813,7 +798,7 @@ namespace SCJ.Booking.MVC.Services
                 Results = bookingInfo.Results,
                 HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
                 BookingFormula = bookingInfo.BookingFormula,
-                SelectedRegularTrialDate = trialDate,
+                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
                 FairUseStartDate = formula?.FairUseBookingPeriodStartDate,
                 FairUseEndDate = formula?.FairUseBookingPeriodEndDate,

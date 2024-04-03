@@ -10,6 +10,8 @@
   List<string> selectedFairUseList = Model.SelectedFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
   string selectedFairUseDateStrings = Json.Serialize(selectedFairUseList).ToString();
 
+  string selectedRegularTrialDate = Model.SelectedRegularTrialDate?.ToString("yyyy-MM-dd") ?? "";
+
   string fairUseStartDate = Model.FairUseStartDate?.ToString("dddd, MMMM dd, yyyy");
   string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
   string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd, MMMM dd, yyyy");
@@ -26,7 +28,7 @@
   <div id="VueTrialTimeSelect" v-cloak>
     <trial-time-select-tabs initial-tab="@Model.BookingFormula">
       <regular-booking :dates="@availableRegularDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
-        initial-value="@Model.SelectedRegularTrialDate" slot="regularBooking">
+        initial-value="@selectedRegularTrialDate" slot="regularBooking">
         <div slot="noDatesError" class="alert alert-danger" role="alert">
           <i class="fa fa-ban"></i>
           There are currently no trial dates available at @Model.SessionInfo.BookingLocationName. Try again at a later
