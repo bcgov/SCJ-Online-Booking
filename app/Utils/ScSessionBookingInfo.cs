@@ -27,7 +27,7 @@ namespace SCJ.Booking.MVC.Utils
         public int TrialLocation { get; set; }
         public string SelectedCaseDate { get; set; }
 
-        public string SelectedRegularTrialDate { get; set; }
+        public DateTime? SelectedRegularTrialDate { get; set; }
         public List<DateTime> SelectedFairUseTrialDates { get; set; } = new List<DateTime>() { };
 
         //The result string returned by the SOAP API when the hearing was booked

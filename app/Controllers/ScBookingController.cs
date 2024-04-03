@@ -220,7 +220,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (
                 model.BookingFormula == ScFormulaType.RegularBooking
-                && string.IsNullOrWhiteSpace(model.SelectedRegularTrialDate)
+                && !model.SelectedRegularTrialDate.HasValue
             )
             {
                 ModelState.AddModelError(
@@ -273,6 +273,7 @@ namespace SCJ.Booking.MVC.Controllers
                 Date = bookingInfo.DateFriendlyName,
                 Time = bookingInfo.TimeSlotFriendlyName,
                 TrialLocationName = locationName,
+                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
                 FullDate = bookingInfo.FullDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone,
