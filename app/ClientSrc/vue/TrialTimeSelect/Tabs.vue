@@ -32,6 +32,10 @@
       <input type="hidden" name="BookingFormula" :value="tab" />
 
       <div class="alert sm-banner alert-warning m-0" v-if="showFairUseDisabledAlert">
+        <i class="fa fa-exclamation-triangle" />
+
+        <slot name="fairUseDisabledAlert" />
+
         <button
           type="button"
           class="close d-md-none"
@@ -40,10 +44,6 @@
         >
           <span aria-hidden="true">&times;</span>
         </button>
-
-        <i class="fa fa-exclamation-triangle" />
-
-        <slot name="fairUseDisabledAlert" />
       </div>
 
       <slot v-if="tab === 'Fair-Use'" name="fairUseBooking" />
@@ -147,6 +147,7 @@ ul {
 
       &.selected {
         border-bottom-color: $blue-light;
+        color: $blue-light;
       }
 
       label {
@@ -168,7 +169,6 @@ ul {
     li {
       background: $white;
       display: flex;
-      border: 1px solid $blue-light;
       border-bottom: none;
       border-radius: 14px 14px 0 0;
 

@@ -373,9 +373,21 @@ hr {
 
 // alerts
 .alert {
+  display: flex;
+  align-items: baseline;
+  padding: 12px;
+
+  i {
+    margin-right: 12px;
+  }
+
   // larger dismiss/close button
   .close {
     font-size: 1.5em;
+    margin-left: auto;
+    span {
+      margin-left: 12px;
+    }
   }
 
   // custom colors for "info" alerts
@@ -389,7 +401,7 @@ hr {
   // display alerts as a floating banner on small screens
   &.sm-banner {
     @media (max-width: ($breakpoint-md - 1px)) {
-      position: fixed;
+      position: fixed !important;
       top: 0;
       left: 0;
       right: 0;

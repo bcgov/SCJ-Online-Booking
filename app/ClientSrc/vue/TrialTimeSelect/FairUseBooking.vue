@@ -61,6 +61,10 @@
           class="alert sm-banner alert-warning m-0"
           v-if="selected.length >= maxSelectionSize && !selectionSizeAlertHidden"
         >
+          <i class="fa fa-exclamation-triangle" />
+
+          Remove a chosen date before adding another.
+
           <button
             type="button"
             class="close d-md-none"
@@ -69,15 +73,12 @@
           >
             <span aria-hidden="true">&times;</span>
           </button>
-
-          <i class="fa fa-exclamation-triangle" />
-          Remove a chosen date before adding another.
         </div>
       </div>
 
       <div class="mb-5 dates-list content-pad select-dates">
         <div
-          class="label-button date-button"
+          class="label-button date-button text-center"
           :class="dateClasses(date)"
           role="button"
           v-for="date in visibleDates"
@@ -114,7 +115,7 @@
               <div class="btn-icon grab-button d-flex justify-content-center align-items-center">
                 <i class="fas fa-grip-horizontal" />
               </div>
-              <div class="label-button selected m-0">
+              <div class="label-button selected text-center m-0">
                 <input type="hidden" :value="date.isoDate" name="SelectedFairUseTrialDates" />
                 <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
                 <strong>{{ date.formattedDate }}</strong>
@@ -298,7 +299,7 @@ export default {
       position: relative;
 
       &:not(:last-of-type) {
-        border-left: 1px solid $grey-medium;
+        border-left: 1px solid #c8e0f2;
       }
 
       padding-left: 1.8em;
@@ -344,7 +345,7 @@ a > i {
 
 .dates-list {
   .date-wrap {
-    gap: 0.5em;
+    gap: 0.25em;
     background: $white;
 
     &.sortable-ghost {

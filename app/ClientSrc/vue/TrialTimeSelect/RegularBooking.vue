@@ -10,7 +10,7 @@
       <slot v-if="dates.length === 0" name="noDatesError" />
 
       <label
-        class="label-button"
+        class="label-button text-center"
         :class="{ selected: selected === date.isoDate }"
         role="button"
         v-for="date in visibleDates"
