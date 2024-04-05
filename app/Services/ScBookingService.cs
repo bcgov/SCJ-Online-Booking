@@ -384,7 +384,7 @@ namespace SCJ.Booking.MVC.Services
                 // book trial in API
                 var formula = await GetFormulaLocationAsync(
                     bookingInfo.BookingFormula,
-                    bookingInfo.TrialLocation,
+                    bookingInfo.TrialLocationRegistryId,
                     bookingInfo.SelectedCourtFile.courtClassCode
                 );
 
@@ -397,7 +397,7 @@ namespace SCJ.Booking.MVC.Services
                         FormulaType = bookingInfo.BookingFormula,
                         HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
                         HearingType = bookingInfo.HearingTypeId,
-                        LocationID = bookingInfo.TrialLocation,
+                        LocationID = bookingInfo.TrialLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                     };
                 BookingHearingResult bookingResult = await _client.BookTrialHearingAsync(
@@ -545,7 +545,7 @@ namespace SCJ.Booking.MVC.Services
             // get formula details from the API to use in the template
             var formula = await GetFormulaLocationAsync(
                 booking.BookingFormula,
-                booking.TrialLocation,
+                booking.TrialLocationRegistryId,
                 booking.SelectedCourtFile.courtClassCode
             );
 
@@ -565,7 +565,7 @@ namespace SCJ.Booking.MVC.Services
                 TrialLength = trialLengthFormatted,
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
-                TrialLocationName = await GetLocationName(booking.TrialLocation),
+                TrialLocationName = await GetLocationName(booking.TrialLocationRegistryId),
                 RegularDate = regularDateString,
                 FairUseDates = fairUseDateStrings,
                 ResultDate = resultDate,
@@ -661,7 +661,7 @@ namespace SCJ.Booking.MVC.Services
 
             var formula = await GetFormulaLocationAsync(
                 formulaType,
-                bookingInfo.TrialLocation,
+                bookingInfo.TrialLocationRegistryId,
                 courtClassCode
             );
 
@@ -673,7 +673,7 @@ namespace SCJ.Booking.MVC.Services
             AvailableTrialDatesRequestInfo trialDatesRequestInfo =
                 new()
                 {
-                    LocationID = bookingInfo.TrialLocation,
+                    LocationID = bookingInfo.TrialLocationRegistryId,
                     BookingLocationID = formula.BookingLocationID,
                     Courtclass = courtClassCode,
                     FormulaType = formulaType,
@@ -713,7 +713,9 @@ namespace SCJ.Booking.MVC.Services
                 ) ?? bookingInfo.CaseRegistryId;
 
             bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
-                bookingInfo.HearingBookingRegistryId
+                model.HearingTypeId == ScHearingType.TRIAL
+                    ? model.TrialLocationRegistryId
+                    : bookingInfo.HearingBookingRegistryId
             );
 
             bookingInfo.Results = await _client.AvailableDatesByLocationAsync(
@@ -729,12 +731,12 @@ namespace SCJ.Booking.MVC.Services
             if (model.IsHomeRegistry == true)
             {
                 // home registry
-                bookingInfo.TrialLocation = bookingInfo.CaseRegistryId;
+                bookingInfo.TrialLocationRegistryId = bookingInfo.CaseRegistryId;
             }
             else if (model.IsHomeRegistry == false && model.IsLocationChangeFiled == true)
             {
                 // somewhere besides the home registry
-                bookingInfo.TrialLocation = model.TrialLocation;
+                bookingInfo.TrialLocationRegistryId = model.TrialLocationRegistryId;
             }
 
             _session.ScBookingInfo = bookingInfo;
@@ -752,7 +754,7 @@ namespace SCJ.Booking.MVC.Services
                 EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
                 IsHomeRegistry = bookingInfo.IsHomeRegistry,
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
-                TrialLocation = bookingInfo.TrialLocation,
+                TrialLocationRegistryId = bookingInfo.TrialLocationRegistryId,
                 AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds,
                 SessionInfo = bookingInfo
             };
@@ -787,7 +789,7 @@ namespace SCJ.Booking.MVC.Services
             // Get formula values for fair use booking from the API
             var formula = await GetFormulaLocationAsync(
                 ScFormulaType.FairUseBooking,
-                bookingInfo.TrialLocation,
+                bookingInfo.TrialLocationRegistryId,
                 bookingInfo.SelectedCourtFile.courtClassCode
             );
 

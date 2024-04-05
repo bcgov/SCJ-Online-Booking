@@ -46,16 +46,13 @@
                 @{
                     var trialLength = SessionService.ScBookingInfo.EstimatedTrialLength;
 
-                    var trialDate = SessionService.ScBookingInfo.SelectedRegularTrialDate?.ToString("dddd, MMMM dd, yyyy")
-                    ?? "";
-
-                    var trialLocation = await BookingService.GetLocationName(SessionService.ScBookingInfo.TrialLocation);
+                    var trialDate = SessionService.ScBookingInfo.SelectedRegularTrialDate?.ToString("dddd, MMMM dd, yyyy") ?? "";
                 }
                 <p>Trial length: @trialLength @(trialLength == 1 ? "day" : "days")</p>
 
                 <p>Starting: @trialDate</p>
 
-                <p class="mb-3">Location: @trialLocation</p>
+                <p class="mb-3">Location: @SessionService.ScBookingInfo.BookingLocationName</p>
             </div>
 
             <div class="mb-4">

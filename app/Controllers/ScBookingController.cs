@@ -151,10 +151,10 @@ namespace SCJ.Booking.MVC.Controllers
                         );
                     }
 
-                    if (model.TrialLocation == -1)
+                    if (model.TrialLocationRegistryId == -1)
                     {
                         ModelState.AddModelError(
-                            "TrialLocation",
+                            "TrialLocationRegistryId",
                             "Please choose a trial location."
                         );
                     }
@@ -264,7 +264,7 @@ namespace SCJ.Booking.MVC.Controllers
             var user = _session.GetUserInformation();
 
             string locationName = await _scBookingService.GetLocationName(
-                bookingInfo.TrialLocation
+                bookingInfo.TrialLocationRegistryId
             );
 
             //Time-slot is still available
