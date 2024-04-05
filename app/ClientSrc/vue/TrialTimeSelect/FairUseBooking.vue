@@ -78,7 +78,7 @@
 
       <div class="mb-5 dates-list content-pad select-dates">
         <div
-          class="label-button date-button"
+          class="label-button date-button text-center"
           :class="dateClasses(date)"
           role="button"
           v-for="date in visibleDates"
@@ -115,7 +115,7 @@
               <div class="btn-icon grab-button d-flex justify-content-center align-items-center">
                 <i class="fas fa-grip-horizontal" />
               </div>
-              <div class="label-button selected m-0">
+              <div class="label-button selected text-center m-0">
                 <input type="hidden" :value="date.isoDate" name="SelectedFairUseTrialDates" />
                 <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
                 <strong>{{ date.formattedDate }}</strong>
