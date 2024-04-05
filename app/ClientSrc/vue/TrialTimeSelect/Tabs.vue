@@ -147,6 +147,7 @@ ul {
 
       &.selected {
         border-bottom-color: $blue-light;
+        color: $blue-light;
       }
 
       label {
@@ -168,7 +169,6 @@ ul {
     li {
       background: $white;
       display: flex;
-      border: 1px solid $blue-light;
       border-bottom: none;
       border-radius: 14px 14px 0 0;
 
