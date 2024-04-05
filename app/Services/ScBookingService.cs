@@ -692,6 +692,7 @@ namespace SCJ.Booking.MVC.Services
 
             return availableDates
                 .AvailableTrialDates.AvailablesDatesInfo.Select(d => d.AvailableDate)
+                .OrderBy(date => date)
                 .ToList();
         }
 
