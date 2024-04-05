@@ -299,7 +299,7 @@ export default {
       position: relative;
 
       &:not(:last-of-type) {
-        border-left: 1px solid $grey-medium;
+        border-left: 1px solid #c8e0f2;
       }
 
       padding-left: 1.8em;
