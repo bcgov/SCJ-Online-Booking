@@ -344,7 +344,7 @@ a > i {
 
 .dates-list {
   .date-wrap {
-    gap: 0.5em;
+    gap: 0.25em;
     background: $white;
 
     &.sortable-ghost {
