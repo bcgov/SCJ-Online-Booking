@@ -61,6 +61,10 @@
           class="alert sm-banner alert-warning m-0"
           v-if="selected.length >= maxSelectionSize && !selectionSizeAlertHidden"
         >
+          <i class="fa fa-exclamation-triangle" />
+
+          Remove a chosen date before adding another.
+
           <button
             type="button"
             class="close d-md-none"
@@ -69,9 +73,6 @@
           >
             <span aria-hidden="true">&times;</span>
           </button>
-
-          <i class="fa fa-exclamation-triangle" />
-          Remove a chosen date before adding another.
         </div>
       </div>
 
