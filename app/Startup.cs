@@ -133,7 +133,7 @@ namespace SCJ.Booking.MVC
                                 {
                                     new AuthenticationToken
                                     {
-                                        Name = OidcConstants.TokenTypeIdentifiers.IdentityToken,
+                                        Name = OidcConstants.TokenTypes.IdentityToken,
                                         Value = c.TokenEndpointResponse.IdToken
                                     }
                                 }

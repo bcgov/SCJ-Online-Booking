@@ -71,3 +71,9 @@ $(document).ready(function () {
   // kills the spinner when the back button is pressed
   window.onunload = function () {};
 });
+
+// logout
+function submitLogoutForm(e) {
+    e.preventDefault();
+    document.getElementById('logout_form').submit();
+}
