@@ -24,7 +24,7 @@ namespace SCJ.Booking.MVC.Utils
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
-        public int TrialLocation { get; set; }
+        public int TrialLocationRegistryId { get; set; }
         public string SelectedCaseDate { get; set; }
 
         public DateTime? SelectedRegularTrialDate { get; set; }

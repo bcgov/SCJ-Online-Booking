@@ -13,7 +13,7 @@ namespace SCJ.Booking.MVC.ViewModels
             EstimatedTrialLength = null;
             IsHomeRegistry = null;
             IsLocationChangeFiled = null;
-            TrialLocation = -1;
+            TrialLocationRegistryId = -1;
         }
 
         //Booking type fields
@@ -22,7 +22,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
-        public int TrialLocation { get; set; }
+        public int TrialLocationRegistryId { get; set; }
         public List<int> AvailableConferenceTypeIds { get; set; }
         public List<string> AvailableBookingTypes { get; set; }
 
