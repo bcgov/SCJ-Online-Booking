@@ -800,7 +800,9 @@ namespace SCJ.Booking.MVC.Services
                 HearingTypeId = bookingInfo.HearingTypeId,
                 Results = bookingInfo.Results,
                 HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
-                BookingFormula = bookingInfo.BookingFormula,
+                BookingFormula = formula?.FairUseBookingPeriodStartDate is null
+                    ? ScFormulaType.RegularBooking
+                    : bookingInfo.BookingFormula,
                 SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
                 FairUseStartDate = formula?.FairUseBookingPeriodStartDate,
