@@ -1,6 +1,6 @@
 <template>
   <div class="trial-time-select-tabs">
-    <ul class="p-0 m-0">
+    <ul class="p-0 m-0" v-if="!fairUseUnavailable">
       <li :class="{ selected: tab === 'Fair-Use', disabled: fairUseDisabled }">
         <label role="button" @click="checkFairUseDisabled">
           <div>
@@ -63,6 +63,11 @@ export default {
     },
 
     fairUseDisabled: {
+      type: Boolean,
+      default: false,
+    },
+
+    fairUseUnavailable: {
       type: Boolean,
       default: false,
     },

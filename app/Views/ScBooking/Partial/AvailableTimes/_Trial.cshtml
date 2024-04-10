@@ -19,6 +19,9 @@
 
   string resultContactDate = Model.FairUseResultDate?.ToString("dddd, MMMM dd, yyyy");
   string noticeOfTrialDate = Model.FairUseNoticeDate?.ToString("dddd, MMMM dd, yyyy");
+
+  bool fairUseUnavailable = Model.FairUseStartDate is null || Model.FairUseEndDate is null;
+  bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value < DateTime.Now);
 }
 
 <form method="post" id="availableTimesForm">
@@ -26,7 +29,7 @@
   @Html.HiddenFor(m => m.HearingTypeId)
 
   <div id="VueTrialTimeSelect" v-cloak>
-    <trial-time-select-tabs initial-tab="@Model.BookingFormula">
+    <trial-time-select-tabs initial-tab="@Model.BookingFormula" fair-use-unavailable="@fairUseUnavailable" fair-use-disabled="@fairUseDisabled">
       <regular-booking :dates="@availableRegularDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
         initial-value="@selectedRegularTrialDate" slot="regularBooking">
         <div slot="noDatesError" class="alert alert-danger" role="alert">
