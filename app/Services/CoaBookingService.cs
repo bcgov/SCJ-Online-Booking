@@ -6,8 +6,9 @@ using System.ServiceModel;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
+using NuGet.Packaging.Signing;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Models;
 using SCJ.Booking.MVC.Utils;
@@ -24,12 +25,12 @@ namespace SCJ.Booking.MVC.Services
         private const string EmailSubject = "BC Courts Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
-        private readonly ApplicationDbContext _dbContext;
         private readonly ILogger _logger;
         private readonly SessionService _session;
         private readonly CoaCacheService _coaCacheService;
         private readonly IViewRenderService _viewRenderService;
         private readonly MailService _mailService;
+        private readonly DbWriterService _dbWriterService;
 
         //Constructor
         public CoaBookingService(
@@ -37,7 +38,8 @@ namespace SCJ.Booking.MVC.Services
             IConfiguration configuration,
             SessionService sessionService,
             CoaCacheService coaCacheService,
-            IViewRenderService viewRenderService
+            IViewRenderService viewRenderService,
+            DbWriterService dbWriterService
         )
         {
             //check if this is running on a developer workstation (outside OpenShift)
@@ -50,11 +52,11 @@ namespace SCJ.Booking.MVC.Services
             _logger = LogHelper.GetLogger(configuration);
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _configuration = configuration;
-            _dbContext = dbContext;
             _session = sessionService;
             _coaCacheService = coaCacheService;
             _viewRenderService = viewRenderService;
             _mailService = new MailService("CA", _configuration, _logger);
+            _dbWriterService = new DbWriterService(dbContext);
         }
 
         /// <summary>
@@ -317,25 +319,14 @@ namespace SCJ.Booking.MVC.Services
                 if (result.bookingResult.ToLower().StartsWith("success"))
                 {
                     //create database entry
-                    DbSet<BookingHistory> bookingHistory = _dbContext.Set<BookingHistory>();
-
-                    var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-                    await bookingHistory.AddAsync(
-                        new BookingHistory
-                        {
-                            CourtLevel = "COA",
-                            User = oidcUser,
-                            Timestamp = DateTime.Now,
-                            CoaCaseType = bookingInfo.CaseType,
-                            CoaConferenceType = bookingInfo.IsAppealHearing is true
-                                ? "Appeal"
-                                : "Chambers",
-                        }
+                    await _dbWriterService.SaveBookingHistory(
+                        userId,
+                        "COA",
+                        null,
+                        null,
+                        bookingInfo.CaseType,
+                        bookingInfo.IsAppealHearing is true ? "Appeal" : "Chambers"
                     );
-
-                    //save to DB
-                    await _dbContext.SaveChangesAsync();
 
                     //update model
                     model.IsBooked = true;
