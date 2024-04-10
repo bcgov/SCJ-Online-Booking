@@ -786,33 +786,46 @@ namespace SCJ.Booking.MVC.Services
         {
             var bookingInfo = _session.ScBookingInfo;
 
-            // Get formula values for fair use booking from the API
-            var formula = await GetFormulaLocationAsync(
-                ScFormulaType.FairUseBooking,
-                bookingInfo.TrialLocationRegistryId,
-                bookingInfo.SelectedCourtFile.courtClassCode
-            );
-
             //Model instance
-            return new ScAvailableTimesViewModel
+            var model = new ScAvailableTimesViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 HearingTypeId = bookingInfo.HearingTypeId,
                 Results = bookingInfo.Results,
                 HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
-                BookingFormula = formula?.FairUseBookingPeriodStartDate is null
-                    ? ScFormulaType.RegularBooking
-                    : bookingInfo.BookingFormula,
                 SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
-                FairUseStartDate = formula?.FairUseBookingPeriodStartDate,
-                FairUseEndDate = formula?.FairUseBookingPeriodEndDate,
-                // lottery date, when users will be notified (@TODO: confirm & handle null date?)
-                FairUseResultDate = formula?.FairUseContactDate,
-                // date when the notice of trial must be filed (@TODO: confirm & handle null date?)
-                FairUseNoticeDate = formula?.FairUseBookingPeriodEndDate,
                 SessionInfo = bookingInfo
             };
+
+            model = await SetFairUseFormulaInfo(model);
+
+            model.BookingFormula = model.FairUseStartDate is null
+                ? ScFormulaType.RegularBooking
+                : bookingInfo.BookingFormula;
+
+            return model;
+        }
+
+        public async Task<ScAvailableTimesViewModel> SetFairUseFormulaInfo(
+            ScAvailableTimesViewModel model
+        )
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            // Get formula values for fair use booking from the API
+            var fairUseFormula = await GetFormulaLocationAsync(
+                ScFormulaType.FairUseBooking,
+                bookingInfo.TrialLocationRegistryId,
+                bookingInfo.SelectedCourtFile.courtClassCode
+            );
+
+            model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
+            model.FairUseEndDate = fairUseFormula?.FairUseBookingPeriodEndDate;
+            model.FairUseResultDate = fairUseFormula?.FairUseContactDate;
+            model.FairUseNoticeDate = fairUseFormula?.FairUseBookingPeriodEndDate;
+
+            return model;
         }
 
         private async Task SendEmail(string toEmail, string subject, string body)
