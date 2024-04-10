@@ -87,6 +87,20 @@ export default {
     }
   },
 
+  watch: {
+    // change the next button label based on the tab selected
+    tab: function(value) {
+      const nextButton = document.getElementById("btnNext");
+      if (nextButton) {
+        if (value == "Fair-Use" && !this.fairUseUnavailable && !this.fairUseDisabled) {
+          nextButton.innerText = "Review Your Request";
+        } else {
+          nextButton.innerText = "Book Trial Date";
+        }
+      }
+    }
+  },
+
   methods: {
     /**
      * Blocks click events if fair use booking is disabled,
