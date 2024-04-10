@@ -39,7 +39,9 @@ else
     <div class="col-6 col-md-8 d-flex align-items-center text-link">
         <span>
             <i class="fas fa-arrow-left"></i>
-            <a asp-action="AvailableTimes">Step 3: Book Your Hearing</a>
+            <a asp-action="AvailableTimes">Step 3: Choose Your Trial
+                @(Model.SessionInfo.BookingFormula == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+            </a>
         </span>
     </div>
     <div class="col-6 col-md-4">
