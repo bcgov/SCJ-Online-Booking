@@ -25,6 +25,8 @@ namespace SCJ.Booking.MVC
 {
     public class Startup
     {
+        private const int AuthExpiryMinutes = 120;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -101,6 +103,7 @@ namespace SCJ.Booking.MVC
                     options.Cookie.SameSite = SameSiteMode.Lax;
                     options.LoginPath = "/home/NotAuthorized";
                     options.AccessDeniedPath = "/home/NotAuthorized";
+                    options.Cookie.MaxAge = TimeSpan.FromMinutes(AuthExpiryMinutes);
                 })
                 .AddOpenIdConnect(options =>
                 {
