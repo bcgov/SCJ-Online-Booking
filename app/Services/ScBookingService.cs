@@ -31,6 +31,7 @@ namespace SCJ.Booking.MVC.Services
         private readonly ScCacheService _cache;
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
+        private readonly DbWriterService _dbWriterService;
 
         //Constructor
         public ScBookingService(
@@ -56,6 +57,7 @@ namespace SCJ.Booking.MVC.Services
             _viewRenderService = viewRenderService;
             _cache = scCacheService;
             _mailService = new MailService("SC", configuration, _logger);
+            _dbWriterService = new DbWriterService(dbContext);
         }
 
         /// <summary>
@@ -208,7 +210,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Book court case
         /// </summary>
-        public async Task<ScCaseConfirmViewModel> BookCourtCase(
+        public async Task<ScCaseConfirmViewModel> BookHearing(
             ScCaseConfirmViewModel model,
             ClaimsPrincipal user
         )
@@ -238,7 +240,7 @@ namespace SCJ.Booking.MVC.Services
                 {
                     CEIS_Physical_File_ID = bookingInfo.CaseId,
                     containerID = bookingInfo.ContainerId,
-                    dateTime = model.FullDate,
+                    dateTime = bookingInfo.FullDate,
                     hearingLength = bookingInfo.HearingLengthMinutes,
                     locationID = bookingInfo.HearingBookingRegistryId,
                     requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
@@ -267,31 +269,21 @@ namespace SCJ.Booking.MVC.Services
                 if (result.bookingResult.ToLower().StartsWith("success"))
                 {
                     //create database entry
-                    DbSet<BookingHistory> bookingHistory = _dbContext.Set<BookingHistory>();
-                    var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-                    await bookingHistory.AddAsync(
-                        new BookingHistory
-                        {
-                            User = oidcUser,
-                            CourtLevel = "SC",
-                            ScHearingType = bookingInfo.HearingTypeId,
-                            Timestamp = DateTime.UtcNow
-                        }
+                    await _dbWriterService.SaveBookingHistory(
+                        userId,
+                        "SC",
+                        bookingInfo.HearingTypeId
                     );
-
-                    //save to DB
-                    await _dbContext.SaveChangesAsync();
 
                     //update model
                     model.IsBooked = true;
                     bookingInfo.IsBooked = true;
 
                     var emailBody = await GetConferenceEmailBody();
-                    const string EmailSubject = "BC Courts Booking Confirmation";
+                    const string emailSubject = "BC Courts Booking Confirmation";
 
                     //send email
-                    await SendEmail(model.EmailAddress, EmailSubject, emailBody);
+                    await SendEmail(model.EmailAddress, emailSubject, emailBody);
 
                     //clear booking info session
                     _session.ScBookingInfo = null;
@@ -356,10 +348,9 @@ namespace SCJ.Booking.MVC.Services
 
                 // send email
                 string emailBody = await GetTrialEmailBody();
-                string locationPrefix = bookingInfo.LocationPrefix;
                 string fileNumber = bookingInfo.FileNumber;
-                string EmailSubject = $"Trial booking request for {fileNumber}";
-                await SendEmail(model.EmailAddress, EmailSubject, emailBody);
+                string emailSubject = $"Trial booking request for {fileNumber}";
+                await SendEmail(model.EmailAddress, emailSubject, emailBody);
             }
             else if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
             {
@@ -400,77 +391,50 @@ namespace SCJ.Booking.MVC.Services
                         LocationID = bookingInfo.TrialLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                     };
-                BookingHearingResult bookingResult = await _client.BookTrialHearingAsync(
-                    requestPayload
-                );
+                BookingHearingResult result = await _client.BookTrialHearingAsync(requestPayload);
 
-                // @TODO: save to DB
-                var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                //get the raw result
+                bookingInfo.RawResult = result.bookingResult;
 
-                // send email
-                string emailBody = await GetTrialEmailBody();
-                string locationPrefix = bookingInfo.LocationPrefix;
-                string fileNumber = bookingInfo.FileNumber;
-                string startDate = bookingInfo.SelectedRegularTrialDate?.ToString("MMMM dd, yyyy");
-                string EmailSubject = $"Trial booking for {fileNumber} starting on {startDate}";
-                await SendEmail(model.EmailAddress, EmailSubject, emailBody);
+                //test to see if the booking was successful
+                if (result.bookingResult.ToLower().StartsWith("success"))
+                {
+                    //create database entry
+                    await _dbWriterService.SaveBookingHistory(
+                        userId,
+                        "SC",
+                        ScHearingType.TRIAL,
+                        ScFormulaType.RegularBooking
+                    );
+
+                    // update model
+                    model.IsBooked = true;
+                    bookingInfo.IsBooked = true;
+
+                    // send email
+                    string emailBody = await GetTrialEmailBody();
+                    string fileNumber = bookingInfo.FileNumber;
+                    string startDate = bookingInfo.SelectedRegularTrialDate?.ToString(
+                        "MMMM dd, yyyy"
+                    );
+                    string emailSubject = $"Trial booking for {fileNumber} starting on {startDate}";
+                    await SendEmail(model.EmailAddress, emailSubject, emailBody);
+
+                    //clear booking info session
+                    _session.ScBookingInfo = null;
+                }
+                else
+                {
+                    _logger.Information($"API Response: {result.bookingResult}");
+                    model.IsBooked = false;
+                    bookingInfo.IsBooked = false;
+                }
             }
-
-            // update model
-            model.IsBooked = true;
-            bookingInfo.IsBooked = true;
 
             // save the booking info back to the session
             _session.ScBookingInfo = bookingInfo;
 
             return model;
-        }
-
-        /// <summary>
-        ///     Get the number of hearings left for the day
-        /// </summary>
-        public HtmlString GetHearingsRemaining()
-        {
-            return new HtmlString("");
-
-            // todo: 4/20/2020 - I commented this out to quickly disable the message in the header. MaxHearingsPerDay was also changed from 10 to int.MaxValue.
-            // int hearingsRemaining = GetUserHearingsTotalRemaining();
-            //
-            // switch (hearingsRemaining)
-            // {
-            //     case MaxHearingsPerDay:
-            //         return new HtmlString($"You can book {MaxHearingsPerDay} hearings today.");
-            //     case 1:
-            //         return new HtmlString("You can book 1 more hearing today.");
-            //     case 0:
-            //         return new HtmlString("You cannot book anymore hearings today.");
-            //     default:
-            //         return new HtmlString($"You can book {hearingsRemaining} more hearings today.");
-            // }
-        }
-
-        /// <summary>
-        ///     Read the database and get the total number of hearings left for the day
-        /// </summary>
-        public int GetUserHearingsTotalRemaining(ClaimsPrincipal user)
-        {
-            long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
-
-            //today's date
-            var today = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
-
-            //get all entries for logged-in user
-            //booked on today
-            List<BookingHistory> hearingsBookedForToday = _dbContext
-                .BookingHistory.Where(b =>
-                    b.User.Id == userId
-                    && b.Timestamp.Day == today.Day
-                    && b.Timestamp.Month == today.Month
-                    && b.Timestamp.Year == today.Year
-                )
-                .ToList();
-
-            return MaxHearingsPerDay - hearingsBookedForToday.Count;
         }
 
         /// <summary>

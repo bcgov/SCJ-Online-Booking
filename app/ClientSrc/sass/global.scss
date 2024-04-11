@@ -174,15 +174,6 @@ div.invalid-field-message {
   }
 }
 
-.bookingsLeft {
-  margin-top: 10px;
-
-  @include breakpoint(md) {
-    margin-right: 30px;
-    margin-top: 0;
-  }
-}
-
 /*Footer*/
 .footer-nav {
   .container {

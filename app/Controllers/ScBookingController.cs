@@ -338,7 +338,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
             else
             {
-                var result = await _scBookingService.BookCourtCase(model, user);
+                var result = await _scBookingService.BookHearing(model, user);
 
                 return Redirect($"/scjob/booking/sc/CaseBooked?booked={result.IsBooked}");
             }
