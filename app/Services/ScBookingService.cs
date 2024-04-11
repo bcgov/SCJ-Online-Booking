@@ -4,11 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
-using SCJ.Booking.Data.Models;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
@@ -449,7 +447,7 @@ namespace SCJ.Booking.MVC.Services
             var booking = _session.ScBookingInfo;
 
             //set ViewModel for the email
-            var viewModel = new EmailViewModel
+            var viewModel = new ScHearingEmailViewModel
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
@@ -482,29 +480,8 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         private async Task<string> GetTrialEmailBody()
         {
-            // user information
-            SessionUserInfo user = _session.GetUserInformation();
-
-            // booking information
+            var user = _session.GetUserInformation();
             var booking = _session.ScBookingInfo;
-
-            // format fair use dates
-            List<string> fairUseDateStrings = booking
-                .SelectedFairUseTrialDates.Select(date => date.ToString("dddd, MMMM dd, yyyy"))
-                .ToList();
-
-            string regularDateString = "";
-            if (booking.SelectedRegularTrialDate.HasValue)
-            {
-                regularDateString = booking.SelectedRegularTrialDate.Value.ToString(
-                    "dddd, MMMM dd, yyyy"
-                );
-            }
-
-            string trialLengthFormatted =
-                booking.EstimatedTrialLength == 1
-                    ? "1 day"
-                    : booking.EstimatedTrialLength.ToString() + " days";
 
             // get formula details from the API to use in the template
             var formula = await GetFormulaLocationAsync(
@@ -518,7 +495,7 @@ namespace SCJ.Booking.MVC.Services
                 formula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
 
             // set ViewModel for the email
-            var viewModel = new TrialEmailViewModel
+            var viewModel = new ScTrialEmailViewModel(booking)
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
@@ -526,13 +503,10 @@ namespace SCJ.Booking.MVC.Services
                 CourtFileNumber = booking.FileNumber,
                 StyleOfCause = booking.SelectedCourtFile.styleOfCause,
                 CourtClassName = booking.SelectedCourtClassName,
-                TrialLength = trialLengthFormatted,
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
                 TrialLocationName = await GetLocationName(booking.TrialLocationRegistryId),
-                RegularDate = regularDateString,
-                FairUseDates = fairUseDateStrings,
-                ResultDate = resultDate,
+                ResultDate = resultDate
             };
 
             var template =
