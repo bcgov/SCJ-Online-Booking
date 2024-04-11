@@ -322,10 +322,11 @@ namespace SCJ.Booking.MVC.Services
                     await _dbWriterService.SaveBookingHistory(
                         userId,
                         "COA",
-                        null,
-                        null,
-                        bookingInfo.CaseType,
-                        bookingInfo.IsAppealHearing is true ? "Appeal" : "Chambers"
+                        bookingInfo.RegistryName,
+                        coaCaseType: bookingInfo.CaseType,
+                        coaConferenceType: bookingInfo.IsAppealHearing is true
+                            ? "Appeal"
+                            : "Chambers"
                     );
 
                     //update model

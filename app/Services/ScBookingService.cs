@@ -270,6 +270,7 @@ namespace SCJ.Booking.MVC.Services
                     await _dbWriterService.SaveBookingHistory(
                         userId,
                         "SC",
+                        bookingInfo.BookingLocationName,
                         bookingInfo.HearingTypeId
                     );
 
@@ -342,7 +343,19 @@ namespace SCJ.Booking.MVC.Services
             if (bookingInfo.BookingFormula == ScFormulaType.FairUseBooking)
             {
                 // @TODO: save to DB
-                var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                await _dbWriterService.SaveBookingHistory(
+                    userId,
+                    "SC",
+                    bookingInfo.BookingLocationName,
+                    ScHearingType.TRIAL,
+                    ScFormulaType.FairUseBooking
+                );
+
+                await _dbWriterService.SaveFairUseRequest(userId, bookingInfo, userInfo);
+
+                //update model
+                model.IsBooked = true;
+                bookingInfo.IsBooked = true;
 
                 // send email
                 string emailBody = await GetTrialEmailBody();
@@ -353,8 +366,9 @@ namespace SCJ.Booking.MVC.Services
             else if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
             {
                 // Available dates
-                List<DateTime> availableTrialDates = await GetAvailableTrialDatesAsync(
-                    ScFormulaType.RegularBooking
+                (List<DateTime> availableTrialDates, _) = await GetAvailableTrialDatesAsync(
+                    ScFormulaType.RegularBooking,
+                    bookingInfo.RegularFormula
                 );
 
                 // check if selected date exists in the available dates
@@ -362,7 +376,7 @@ namespace SCJ.Booking.MVC.Services
                     bookingInfo.SelectedRegularTrialDate.HasValue
                     && availableTrialDates.Contains(bookingInfo.SelectedRegularTrialDate.Value);
 
-                // thow an exception if the date is no longer available
+                // throw an exception if the date is no longer available
                 if (!dateAvailable)
                 {
                     throw new InvalidOperationException(
@@ -371,23 +385,18 @@ namespace SCJ.Booking.MVC.Services
                 }
 
                 // book trial in API
-                var formula = await GetFormulaLocationAsync(
-                    bookingInfo.BookingFormula,
-                    bookingInfo.TrialLocationRegistryId,
-                    bookingInfo.SelectedCourtFile.courtClassCode
-                );
-
                 BookTrialHearingInfo requestPayload =
                     new()
                     {
-                        BookingLocationID = formula.BookingLocationID,
+                        BookingLocationID = bookingInfo.RegularFormula.BookingLocationID,
                         CEIS_Physical_File_ID = bookingInfo.CaseId,
                         CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
-                        FormulaType = bookingInfo.BookingFormula,
+                        FormulaType = ScFormulaType.RegularBooking,
                         HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
                         HearingType = bookingInfo.HearingTypeId,
                         LocationID = bookingInfo.TrialLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
+                        HearingDate = bookingInfo.SelectedRegularTrialDate.Value
                     };
                 BookingHearingResult result = await _client.BookTrialHearingAsync(requestPayload);
 
@@ -401,6 +410,7 @@ namespace SCJ.Booking.MVC.Services
                     await _dbWriterService.SaveBookingHistory(
                         userId,
                         "SC",
+                        bookingInfo.BookingLocationName,
                         ScHearingType.TRIAL,
                         ScFormulaType.RegularBooking
                     );
@@ -483,16 +493,10 @@ namespace SCJ.Booking.MVC.Services
             var user = _session.GetUserInformation();
             var booking = _session.ScBookingInfo;
 
-            // get formula details from the API to use in the template
-            var formula = await GetFormulaLocationAsync(
-                booking.BookingFormula,
-                booking.TrialLocationRegistryId,
-                booking.SelectedCourtFile.courtClassCode
-            );
-
             // lottery date, when users will be notified (@TODO: confirm & handle null date?)
             string resultDate =
-                formula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
+                booking.FairUseFormula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy")
+                ?? "[N/A]";
 
             // set ViewModel for the email
             var viewModel = new ScTrialEmailViewModel(booking)
@@ -592,12 +596,15 @@ namespace SCJ.Booking.MVC.Services
             );
         }
 
-        public async Task<List<DateTime>> GetAvailableTrialDatesAsync(string formulaType)
+        public async Task<Tuple<List<DateTime>, FormulaLocation>> GetAvailableTrialDatesAsync(
+            string formulaType,
+            FormulaLocation formula = null
+        )
         {
             var bookingInfo = _session.ScBookingInfo;
             var courtClassCode = bookingInfo.SelectedCourtFile.courtClassCode ?? "";
 
-            var formula = await GetFormulaLocationAsync(
+            formula ??= await GetFormulaLocationAsync(
                 formulaType,
                 bookingInfo.TrialLocationRegistryId,
                 courtClassCode
@@ -605,7 +612,7 @@ namespace SCJ.Booking.MVC.Services
 
             if (formula == null)
             {
-                return new List<DateTime>();
+                return Tuple.Create(new List<DateTime>(), (FormulaLocation)null);
             }
 
             AvailableTrialDatesRequestInfo trialDatesRequestInfo =
@@ -625,13 +632,15 @@ namespace SCJ.Booking.MVC.Services
 
             if (availableDates.AvailableTrialDates.AvailablesDatesInfo == null)
             {
-                return new List<DateTime>();
+                return Tuple.Create(new List<DateTime>(), formula);
             }
 
-            return availableDates
+            var dates = availableDates
                 .AvailableTrialDates.AvailablesDatesInfo.Select(d => d.AvailableDate)
                 .OrderBy(date => date)
                 .ToList();
+
+            return Tuple.Create(dates, formula);
         }
 
         public async Task SaveBookingTypeFormAsync(ScBookingTypeViewModel model)
@@ -746,13 +755,13 @@ namespace SCJ.Booking.MVC.Services
         }
 
         public async Task<ScAvailableTimesViewModel> SetFairUseFormulaInfo(
-            ScAvailableTimesViewModel model
+            ScAvailableTimesViewModel model,
+            FormulaLocation fairUseFormula = null
         )
         {
             var bookingInfo = _session.ScBookingInfo;
 
-            // Get formula values for fair use booking from the API
-            var fairUseFormula = await GetFormulaLocationAsync(
+            fairUseFormula ??= await GetFormulaLocationAsync(
                 ScFormulaType.FairUseBooking,
                 bookingInfo.TrialLocationRegistryId,
                 bookingInfo.SelectedCourtFile.courtClassCode

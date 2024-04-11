@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace SCJ.Booking.Data.Models
 {
@@ -9,6 +11,7 @@ namespace SCJ.Booking.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public OidcUser? User { get; set; }
+        public int UnmetDemandMonths { get; set; }
         public decimal CeisPhysicalFileId { get; set; }
 
         [MaxLength(20)]
@@ -44,6 +47,18 @@ namespace SCJ.Booking.Data.Models
         [MaxLength(40)]
         public string? Email { get; set; }
 
-        public DateTime Timestamp { get; set; }
+        public DateTime CreationTimestamp { get; set; }
+
+        public DateTime? LotteryBeginTimestamp { get; set; }
+
+        public int LotteryPosition { get; set; }
+
+        public bool IsProcessed { get; set; } = false;
+
+        public DateTime? AllocatedSelectionTrialStartDate { get; set; }
+        public int AllocatedSelectionRank { get; set; }
+
+        public ICollection<ScTrialDateSelection> TrialDateSelections { get; } =
+            new List<ScTrialDateSelection>();
     }
 }

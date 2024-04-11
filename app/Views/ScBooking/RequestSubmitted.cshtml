@@ -1,27 +1,21 @@
-@using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration
-@inject ScBookingService BookingService
 @inject SessionService SessionService
 
 @{
     ViewData["Title"] = "Your Request is Submitted";
 
-    var formula = await BookingService.GetFormulaLocationAsync(
-    SessionService.ScBookingInfo.BookingFormula,
-    SessionService.ScBookingInfo.TrialLocationRegistryId,
-    SessionService.ScBookingInfo.SelectedCourtFile.courtClassCode
-    );
+    var bookingInfo = SessionService.ScBookingInfo;
+    var fairUseFormula = bookingInfo.FairUseFormula;
 
-    string endTime = formula.EndDate.ToString("h:mm tt").ToLower();
-    string endDate = formula.EndDate.ToString("dddd, MMMM dd, yyyy");
+    string endTime = fairUseFormula.EndDate.ToString("h:mm tt").ToLower();
+    string endDate = fairUseFormula.EndDate.ToString("dddd, MMMM dd, yyyy");
 
     // lottery date, when users will be notified (@TODO: confirm & handle null date?)
-    string resultDate = formula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
+    string resultDate = fairUseFormula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
 }
 <div class="body-content--inner">
     <div class="row no-gutters">
         <div class="col">
-            @if (SessionService.ScBookingInfo.IsBooked)
+            @if (bookingInfo.IsBooked)
             {
                 <h2>@ViewData["Title"]</h2>
 
@@ -36,7 +30,7 @@
                 <h2>Booking Could Not Be Completed</h2>
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-circle"></i>
-                    @SessionService.ScBookingInfo.FriendlyError
+                    @bookingInfo.FriendlyError
                 </div>
             }
         </div>

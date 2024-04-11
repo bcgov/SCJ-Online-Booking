@@ -27,8 +27,8 @@ namespace SCJ.Booking.MVC.Services
         {
             return new SessionUserInfo
             {
-                Phone = string.IsNullOrEmpty(UserInfo.Phone) ? string.Empty : UserInfo.Phone,
-                Email = string.IsNullOrEmpty(UserInfo.Email) ? string.Empty : UserInfo.Email
+                Phone = UserInfo.Phone ?? string.Empty,
+                Email = UserInfo.Email ?? string.Empty
             };
         }
 
