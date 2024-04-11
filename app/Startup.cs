@@ -24,6 +24,8 @@ namespace SCJ.Booking.MVC
 {
     public class Startup
     {
+        private const int AuthExpiryMinutes = 120;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -100,19 +102,7 @@ namespace SCJ.Booking.MVC
                     options.Cookie.SameSite = SameSiteMode.Lax;
                     options.LoginPath = "/home/NotAuthorized";
                     options.AccessDeniedPath = "/home/NotAuthorized";
-                    options.Events = new CookieAuthenticationEvents
-                    {
-                        // check if the access token needs to be refreshed, and refresh it if needed
-                        OnValidatePrincipal = async ctx =>
-                        {
-                            await OpenIdConnectHelper.HandleOidcRefreshToken(
-                                ctx,
-                                oidcRealmUri,
-                                oidcClientId,
-                                oidcClientSecret
-                            );
-                        }
-                    };
+                    options.Cookie.MaxAge = TimeSpan.FromMinutes(AuthExpiryMinutes);
                 })
                 .AddOpenIdConnect(options =>
                 {
@@ -256,8 +246,8 @@ namespace SCJ.Booking.MVC
             var platform = new Platform();
 
             using (
-                IServiceScope serviceScope = app.ApplicationServices
-                    .GetRequiredService<IServiceScopeFactory>()
+                IServiceScope serviceScope = app
+                    .ApplicationServices.GetRequiredService<IServiceScopeFactory>()
                     .CreateScope()
             )
             {
