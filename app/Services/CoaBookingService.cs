@@ -400,7 +400,7 @@ namespace SCJ.Booking.MVC.Services
             CoaSessionBookingInfo booking = _session.CoaBookingInfo;
 
             //set ViewModel for the email
-            var viewModel = new EmailViewModel
+            var viewModel = new CoaEmailViewModel
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
