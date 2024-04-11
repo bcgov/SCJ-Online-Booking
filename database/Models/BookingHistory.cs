@@ -17,6 +17,10 @@ namespace SCJ.Booking.Data.Models
         public DateTime Timestamp { get; set; }
 
         [Required]
+        [MaxLength(20)]
+        public string? BookingLocationName { get; set; }
+
+        [Required]
         [MaxLength(3)]
         // "COA" or "SC"
         public string? CourtLevel { get; set; }

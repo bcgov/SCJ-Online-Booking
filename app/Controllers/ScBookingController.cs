@@ -189,15 +189,19 @@ namespace SCJ.Booking.MVC.Controllers
             // Trial bookings: get lists of available trial dates
             if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
             {
-                model.AvailableRegularTrialDates =
+                (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
                     await _scBookingService.GetAvailableTrialDatesAsync(
-                        ScFormulaType.RegularBooking
+                        ScFormulaType.RegularBooking,
+                        bookingInfo.RegularFormula
                     );
 
-                model.AvailableFairUseTrialDates =
+                (model.AvailableFairUseTrialDates, bookingInfo.FairUseFormula) =
                     await _scBookingService.GetAvailableTrialDatesAsync(
-                        ScFormulaType.FairUseBooking
+                        ScFormulaType.FairUseBooking,
+                        bookingInfo.FairUseFormula
                     );
+
+                _session.ScBookingInfo = bookingInfo;
             }
 
             return View(model);
@@ -245,14 +249,17 @@ namespace SCJ.Booking.MVC.Controllers
                 // Trial bookings: get lists of available trial dates
                 if (model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
-                    model = await _scBookingService.SetFairUseFormulaInfo(model);
+                    model = await _scBookingService.SetFairUseFormulaInfo(
+                        model,
+                        _session.ScBookingInfo.FairUseFormula
+                    );
 
-                    model.AvailableRegularTrialDates =
+                    (model.AvailableRegularTrialDates, _) =
                         await _scBookingService.GetAvailableTrialDatesAsync(
                             ScFormulaType.RegularBooking
                         );
 
-                    model.AvailableFairUseTrialDates =
+                    (model.AvailableFairUseTrialDates, _) =
                         await _scBookingService.GetAvailableTrialDatesAsync(
                             ScFormulaType.FairUseBooking
                         );

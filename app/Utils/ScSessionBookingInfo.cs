@@ -74,5 +74,9 @@ namespace SCJ.Booking.MVC.Utils
                 return this.RawResult.Replace("Fail - ", "");
             }
         }
+
+        public FormulaLocation RegularFormula { get; set; }
+        public FormulaLocation FairUseFormula { get; set; }
+        public int UnmetDemandMonths { get; set; }
     }
 }
