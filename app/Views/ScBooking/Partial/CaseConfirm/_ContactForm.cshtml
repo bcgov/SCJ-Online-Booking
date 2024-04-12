@@ -2,7 +2,7 @@
 
 <h4>Provide Your Contact Information</h4>
 
-@if (@Model.SessionInfo.BookingFormula == ScFormulaType.FairUseBooking)
+@if (@Model.SessionInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
 {
     <p>Please provide the following contact information. Your email address will be used to let you know whether a trial
     date is set for your case, and your phone number may be used later for booking and coordination purposes.</p>
@@ -39,8 +39,17 @@ else
     <div class="col-6 col-md-8 d-flex align-items-center text-link">
         <span>
             <i class="fas fa-arrow-left"></i>
-            <a asp-action="AvailableTimes">Step 3: Choose Trial
-                @(Model.SessionInfo.BookingFormula == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+            <a asp-action="AvailableTimes">Step 3: 
+
+                @if (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
+                {
+                    <text>Choose Trial</text>
+                    @(Model.SessionInfo.TrialFormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+                }
+                else
+                {
+                    <text>Book Your Hearing</text>
+                }
             </a>
         </span>
     </div>

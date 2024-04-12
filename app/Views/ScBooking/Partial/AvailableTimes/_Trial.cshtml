@@ -29,7 +29,7 @@
   @Html.HiddenFor(m => m.HearingTypeId)
 
   <div id="VueTrialTimeSelect" v-cloak>
-    <trial-time-select-tabs initial-tab="@Model.BookingFormula" fair-use-unavailable="@fairUseUnavailable" fair-use-disabled="@fairUseDisabled">
+    <trial-time-select-tabs initial-tab="@Model.TrialFormulaType" fair-use-unavailable="@fairUseUnavailable" fair-use-disabled="@fairUseDisabled">
       <regular-booking :dates="@availableRegularDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
         initial-value="@selectedRegularTrialDate" slot="regularBooking">
         <div slot="noDatesError" class="alert alert-danger" role="alert">

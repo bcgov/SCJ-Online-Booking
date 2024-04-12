@@ -13,14 +13,14 @@ namespace SCJ.Booking.MVC.ViewModels
         public ScAvailableTimesViewModel()
         {
             //Default values
-            Results = new AvailableDatesByLocation();
+            AvailableConferenceDates = new AvailableDatesByLocation();
             TimeSlotExpired = false;
-            HearingBookingRegistryId = -1;
+            ConferenceLocationRegistryId = -1;
             ContainerId = -1;
-            SelectedCaseDate = string.Empty;
-            CaseNumber = string.Empty;
+            SelectedConferenceDate = string.Empty;
+            CaseNumber = 0;
             HearingTypeId = -1;
-            BookingFormula = string.Empty;
+            TrialFormulaType = string.Empty;
             AvailableRegularTrialDates = new List<DateTime> { };
             AvailableFairUseTrialDates = new List<DateTime> { };
             FairUseStartDate = null;
@@ -30,22 +30,22 @@ namespace SCJ.Booking.MVC.ViewModels
         }
 
         //Search fields
-        public string CaseNumber { get; set; }
+        public int CaseNumber { get; set; }
         public int HearingTypeId { get; set; }
-        public string BookingFormula { get; set; }
+        public string TrialFormulaType { get; set; }
 
         //Available dates
-        public AvailableDatesByLocation Results { get; set; }
+        public AvailableDatesByLocation AvailableConferenceDates { get; set; }
         public int HearingLengthMinutes
         {
-            get { return Results?.BookingDetails?.detailBookingLength ?? 0; }
+            get { return AvailableConferenceDates?.BookingDetails?.detailBookingLength ?? 0; }
         }
 
         public string[] AvailableDates
         {
             get
             {
-                var result = Results
+                var result = AvailableConferenceDates
                     ?.AvailableDates?.Select(x => x.Date_Time.ToString(DateFormat))
                     .Distinct()
                     .ToArray();
@@ -57,9 +57,9 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 var result = DateTime.Now.ToString(DateFormat);
-                if (Results?.AvailableDates != null)
+                if (AvailableConferenceDates?.AvailableDates != null)
                 {
-                    result = Results
+                    result = AvailableConferenceDates
                         .AvailableDates.Select(x => x.Date_Time.Date)
                         .OrderBy(x => x)
                         .FirstOrDefault()
@@ -73,9 +73,9 @@ namespace SCJ.Booking.MVC.ViewModels
             get
             {
                 var result = DateTime.Now.ToString(DateFormat);
-                if (Results?.AvailableDates != null)
+                if (AvailableConferenceDates?.AvailableDates != null)
                 {
-                    result = Results
+                    result = AvailableConferenceDates
                         .AvailableDates.Select(x => x.Date_Time.Date)
                         .OrderBy(x => x)
                         .LastOrDefault()
@@ -88,7 +88,7 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                var result = Results
+                var result = AvailableConferenceDates
                     ?.AvailableDates?.Select(x => (x.Date_Time.Year, x.Date_Time.Month))
                     .Distinct()
                     .ToArray();
@@ -129,25 +129,25 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool TimeSlotExpired { get; set; }
 
         // Id of the registry where hearings are booked for the selected registry (varies based on HearingTypeId)
-        public int HearingBookingRegistryId { get; set; }
+        public int ConferenceLocationRegistryId { get; set; }
 
         //[Required(ErrorMessage = "Please choose from one of the available times")]
         public int ContainerId { get; set; }
 
         //Date selected in the swiper control
-        public string SelectedCaseDate { get; set; }
+        public string SelectedConferenceDate { get; set; }
         public string SelectedDate { get; set; }
 
         //Full date for conference hearing bookings
-        public DateTime FullDate
+        public DateTime ParsedConferenceDate
         {
             get
             {
                 var result = DateTime.MinValue;
 
                 if (
-                    !string.IsNullOrWhiteSpace(SelectedCaseDate)
-                    && long.TryParse(SelectedCaseDate, out long ticks)
+                    !string.IsNullOrWhiteSpace(SelectedConferenceDate)
+                    && long.TryParse(SelectedConferenceDate, out long ticks)
                 )
                 {
                     result = new DateTime(ticks);

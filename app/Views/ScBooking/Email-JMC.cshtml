@@ -1,4 +1,4 @@
-@model ScHearingEmailViewModel
+@model ScConferenceEmailViewModel
 Thank you.
 
 A Judicial Management Conference (JMC) has been scheduled for the date and time noted below. The JMC will be heard by telephone.
@@ -17,7 +17,7 @@ REGISTRY NAME:
 @Model.CaseLocationName
 
 COURT FILE:
-@Model.CourtFileNumber
+@Model.FullCaseNumber
 @Model.StyleOfCause
 
 @if (Model.CaseLocationName != Model.BookingLocationName)

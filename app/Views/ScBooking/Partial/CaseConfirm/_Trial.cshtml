@@ -1,6 +1,8 @@
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
-
-@if (@Model.SessionInfo.BookingFormula == ScFormulaType.FairUseBooking)
+@{
+    var bookingInfo = @Model.SessionInfo;
+}
+@if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
 {
     <p class="mb-4">Please review the following information to ensure that it is accurate. Dates are not guaranteed at this
     stage, you
@@ -13,13 +15,13 @@ else
 
 <div class="row no-gutters justify-content-between booking-confirmation--details">
     <div class="col-12">
-        <div class="uppercase-sm">File Number: @Model.SessionInfo.FileNumber</div>
-        <h5 style="margin-bottom: 4px">@Model.SessionInfo.SelectedCourtFile?.styleOfCause</h5>
-        <p>@Model.SessionInfo.SelectedCourtClassName</p>
+        <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
+        <h5 style="margin-bottom: 4px">@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
+        <p>@bookingInfo.SelectedCourtClassName</p>
     </div>
 </div>
 
-@if (@Model.SessionInfo.BookingFormula == ScFormulaType.FairUseBooking)
+@if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
 {
     <partial name="Partial/CaseConfirm/_FairUseBooking" model="Model" />
 }
