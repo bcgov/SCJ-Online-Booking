@@ -29,7 +29,7 @@
     </ul>
 
     <div class="bg-white">
-      <input type="hidden" name="BookingFormula" :value="tab" />
+      <input type="hidden" name="TrialFormulaType" :value="tab" />
 
       <div class="alert sm-banner alert-warning m-0" v-if="showFairUseDisabledAlert">
         <i class="fa fa-exclamation-triangle" />

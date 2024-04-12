@@ -228,7 +228,7 @@ namespace SCJ.Booking.MVC.Services
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
                 //build object to send to the API
-                var bookInfo = new BookHearingInfo
+                var requestPayload = new BookHearingInfo
                 {
                     CEIS_Physical_File_ID = bookingInfo.PhysicalFileId,
                     containerID = bookingInfo.ContainerId,
@@ -239,11 +239,11 @@ namespace SCJ.Booking.MVC.Services
                     hearingTypeId = bookingInfo.HearingTypeId
                 };
 
-                _logger.Information("BOOKING SUPREME COURT => BookingHearingAsync(bookInfo)");
-                _logger.Information(JsonSerializer.Serialize(bookInfo));
+                _logger.Information("BOOKING SUPREME COURT => BookingHearingAsync()");
+                _logger.Information(JsonSerializer.Serialize(requestPayload));
 
                 //submit booking
-                BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
+                BookingHearingResult result = await _client.BookingHearingAsync(requestPayload);
 
                 //get the raw result
                 bookingInfo.ApiBookingResultMessage = result.bookingResult;
@@ -392,6 +392,10 @@ namespace SCJ.Booking.MVC.Services
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                         HearingDate = bookingInfo.SelectedRegularTrialDate.Value
                     };
+
+                _logger.Information("BOOKING SUPREME COURT => BookTrialHearingAsync()");
+                _logger.Information(JsonSerializer.Serialize(requestPayload));
+
                 BookingHearingResult result = await _client.BookTrialHearingAsync(requestPayload);
 
                 //get the raw result

@@ -266,7 +266,7 @@ namespace SCJ.Booking.MVC.Services
 
                 if (bookingInfo.IsAppealHearing is true)
                 {
-                    var bookInfo = new CoABookingHearingInfo
+                    var requestPayload = new CoABookingHearingInfo
                     {
                         caseID = finalCase.CaseId,
                         MainCase = finalCase.Main,
@@ -279,13 +279,11 @@ namespace SCJ.Booking.MVC.Services
                         requestedBy = $"{userDisplayName}"
                     };
 
-                    _logger.Information(
-                        "BOOKING COURT OF APPEAL => CoAQueueHearingAsync(bookInfo)"
-                    );
-                    _logger.Information(JsonSerializer.Serialize(bookInfo));
+                    _logger.Information("BOOKING COA => CoAQueueHearingAsync()");
+                    _logger.Information(JsonSerializer.Serialize(requestPayload));
 
                     //submit booking
-                    result = await _client.CoAQueueHearingAsync(bookInfo);
+                    result = await _client.CoAQueueHearingAsync(requestPayload);
                 }
                 else
                 {
@@ -302,9 +300,7 @@ namespace SCJ.Booking.MVC.Services
                         requestedBy = $"{userDisplayName}",
                     };
 
-                    _logger.Information(
-                        "BOOKING COURT OF APPEAL => CoAChambersQueueHearingAsync(bookInfo)"
-                    );
+                    _logger.Information("BOOKING COA => CoAChambersQueueHearingAsync()");
                     _logger.Information(JsonSerializer.Serialize(bookInfo));
 
                     //submit booking
