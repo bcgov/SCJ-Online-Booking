@@ -23,13 +23,13 @@
     </div>
 
     <div id="VueHearingTimeSelect" class="availableTimesContainer">
-        <hearing-time-select :location-id="@Model.HearingBookingRegistryId" :available-dates="@availableDates.ToString()"
+        <hearing-time-select :location-id="@Model.ConferenceLocationRegistryId" :available-dates="@availableDates.ToString()"
             :hearing-type="@Model.HearingTypeId"></hearing-time-select>
     </div>
 
-    @Html.HiddenFor(m => m.HearingBookingRegistryId)
+    @Html.HiddenFor(m => m.ConferenceLocationRegistryId)
     @Html.HiddenFor(m => m.HearingTypeId)
-    <input type="hidden" asp-for="SelectedCaseDate" id="hidDate" />
+    <input type="hidden" asp-for="SelectedConferenceDate" id="hidDate" />
     <input type="hidden" asp-for="ContainerId" id="hidContainerId" />
     <div class="text-danger">
         <span asp-validation-for="ContainerId"></span>

@@ -17,12 +17,9 @@ namespace SCJ.Booking.MVC.Services
 {
     public class ScBookingService
     {
-        // todo: this is usually 10.  It was changed to int.MaxValue on 4/20/2020 to quickly disable the limit.
-        public const int MaxHearingsPerDay = int.MaxValue;
         public readonly bool IsLocalDevEnvironment;
 
         private readonly IOnlineBooking _client;
-        private readonly ApplicationDbContext _dbContext;
         private readonly SessionService _session;
         private readonly IViewRenderService _viewRenderService;
         private readonly MailService _mailService;
@@ -50,7 +47,6 @@ namespace SCJ.Booking.MVC.Services
             _logger = LogHelper.GetLogger(configuration);
             _configuration = configuration;
             _client = OnlineBookingClientFactory.GetClient(configuration);
-            _dbContext = dbContext;
             _session = sessionService;
             _viewRenderService = viewRenderService;
             _cache = scCacheService;
@@ -79,11 +75,10 @@ namespace SCJ.Booking.MVC.Services
             {
                 CaseRegistryId = bookingInfo.CaseRegistryId,
                 CaseLocationName = bookingInfo.CaseLocationName,
-                SelectedCaseId = bookingInfo.CaseId,
+                SelectedCaseId = bookingInfo.PhysicalFileId,
                 CaseNumber = bookingInfo.CaseNumber,
-                CourtFiles = bookingInfo.CourtFiles,
+                CaseSearchResults = bookingInfo.CaseSearchResults,
                 SelectedCourtClass = bookingInfo.SelectedCourtClass,
-                FullCaseNumber = bookingInfo.FullCaseNumber,
                 LocationPrefix = bookingInfo.LocationPrefix,
                 AvailableConferenceTypeIds = bookingInfo.AvailableConferenceTypeIds
             };
@@ -130,10 +125,10 @@ namespace SCJ.Booking.MVC.Services
             return await _cache.GetLocationNameAsync(registryId);
         }
 
-        public async Task<ScCaseSearchViewModel> GetSearchResults2(ScCaseSearchViewModel model)
+        public async Task<ScCaseSearchViewModel> GetSearchResults(ScCaseSearchViewModel model)
         {
             // Load locations from cache
-            var result = new ScCaseSearchViewModel
+            var newModel = new ScCaseSearchViewModel
             {
                 CaseRegistryId = model.CaseRegistryId,
                 CaseNumber = model.CaseNumber,
@@ -143,40 +138,39 @@ namespace SCJ.Booking.MVC.Services
             };
 
             //search the current case number
-            (result.FullCaseNumber, result.LocationPrefix) = await BuildCaseNumber(
+            (string searchableCaseNumber, newModel.LocationPrefix) = await BuildCaseNumber(
                 model.CaseNumber,
                 model.CaseRegistryId
             );
-            result.CourtFiles = await _client.caseNumberValidAsync(result.FullCaseNumber);
+            newModel.CaseSearchResults = await _client.caseNumberValidAsync(searchableCaseNumber);
 
-            if (!result.IsValidCaseNumber)
+            if ((newModel.CaseSearchResults?.Length ?? 0) == 0)
             {
                 //get contact information
-                result.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
+                newModel.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
             }
             else
             {
                 _session.ScBookingInfo = new ScSessionBookingInfo
                 {
-                    CaseNumber = model.CaseNumber.ToUpper().Trim(),
-                    FullCaseNumber = result.FullCaseNumber,
-                    LocationPrefix = result.LocationPrefix,
-                    CourtFiles = result.CourtFiles,
+                    CaseNumber = model.CaseNumber.GetValueOrDefault(0),
+                    LocationPrefix = newModel.LocationPrefix,
+                    CaseSearchResults = newModel.CaseSearchResults,
                     CaseRegistryId = model.CaseRegistryId,
-                    CaseLocationName = result.CaseLocationName,
+                    CaseLocationName = newModel.CaseLocationName,
                 };
             }
 
-            return result;
+            return newModel;
         }
 
         public void SaveCaseSearchForm(ScCaseSearchViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
 
-            bookingInfo.CaseId = model.SelectedCaseId;
+            bookingInfo.PhysicalFileId = model.SelectedCaseId;
             bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
-            bookingInfo.FileNumber = model.FileNumber;
+            bookingInfo.FullCaseNumber = model.FullCaseNumber;
             bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
             bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
             bookingInfo.AvailableConferenceTypeIds = model.AvailableConferenceTypeIds;
@@ -196,7 +190,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Fetch location-code for specific case ID
         /// </summary>
-        public async Task<(string, string)> BuildCaseNumber(string caseId, int locationId)
+        public async Task<(string, string)> BuildCaseNumber(int? caseId, int locationId)
         {
             //fetch location prefix
             string prefix = (await _cache.GetLocationAsync(locationId)).locationCode ?? "";
@@ -208,7 +202,7 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Book court case
         /// </summary>
-        public async Task<ScCaseConfirmViewModel> BookHearing(
+        public async Task<ScCaseConfirmViewModel> BookConference(
             ScCaseConfirmViewModel model,
             ClaimsPrincipal user
         )
@@ -223,7 +217,7 @@ namespace SCJ.Booking.MVC.Services
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
             AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
-                bookingInfo.HearingBookingRegistryId,
+                bookingInfo.ConferenceLocationRegistryId,
                 bookingInfo.HearingTypeId
             );
 
@@ -236,11 +230,11 @@ namespace SCJ.Booking.MVC.Services
                 //build object to send to the API
                 var bookInfo = new BookHearingInfo
                 {
-                    CEIS_Physical_File_ID = bookingInfo.CaseId,
+                    CEIS_Physical_File_ID = bookingInfo.PhysicalFileId,
                     containerID = bookingInfo.ContainerId,
-                    dateTime = bookingInfo.FullDate,
-                    hearingLength = bookingInfo.HearingLengthMinutes,
-                    locationID = bookingInfo.HearingBookingRegistryId,
+                    dateTime = bookingInfo.SelectedConferenceDate,
+                    hearingLength = bookingInfo.ConferenceLengthMinutes,
+                    locationID = bookingInfo.ConferenceLocationRegistryId,
                     requestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                     hearingTypeId = bookingInfo.HearingTypeId
                 };
@@ -252,7 +246,7 @@ namespace SCJ.Booking.MVC.Services
                 BookingHearingResult result = await _client.BookingHearingAsync(bookInfo);
 
                 //get the raw result
-                bookingInfo.RawResult = result.bookingResult;
+                bookingInfo.ApiBookingResultMessage = result.bookingResult;
 
                 //store user info in session for next booking
                 var userInfo = new SessionUserInfo
@@ -340,7 +334,7 @@ namespace SCJ.Booking.MVC.Services
             };
             _session.UserInfo = userInfo;
 
-            if (bookingInfo.BookingFormula == ScFormulaType.FairUseBooking)
+            if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
             {
                 // @TODO: save to DB
                 await _dbWriterService.SaveBookingHistory(
@@ -359,11 +353,11 @@ namespace SCJ.Booking.MVC.Services
 
                 // send email
                 string emailBody = await GetTrialEmailBody();
-                string fileNumber = bookingInfo.FileNumber;
+                string fileNumber = bookingInfo.FullCaseNumber;
                 string emailSubject = $"Trial booking request for {fileNumber}";
                 await SendEmail(model.EmailAddress, emailSubject, emailBody);
             }
-            else if (bookingInfo.BookingFormula == ScFormulaType.RegularBooking)
+            else if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
             {
                 // Available dates
                 (List<DateTime> availableTrialDates, _) = await GetAvailableTrialDatesAsync(
@@ -389,7 +383,7 @@ namespace SCJ.Booking.MVC.Services
                     new()
                     {
                         BookingLocationID = bookingInfo.RegularFormula.BookingLocationID,
-                        CEIS_Physical_File_ID = bookingInfo.CaseId,
+                        CEIS_Physical_File_ID = bookingInfo.PhysicalFileId,
                         CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
                         FormulaType = ScFormulaType.RegularBooking,
                         HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
@@ -401,7 +395,7 @@ namespace SCJ.Booking.MVC.Services
                 BookingHearingResult result = await _client.BookTrialHearingAsync(requestPayload);
 
                 //get the raw result
-                bookingInfo.RawResult = result.bookingResult;
+                bookingInfo.ApiBookingResultMessage = result.bookingResult;
 
                 //test to see if the booking was successful
                 if (result.bookingResult.ToLower().StartsWith("success"))
@@ -421,7 +415,7 @@ namespace SCJ.Booking.MVC.Services
 
                     // send email
                     string emailBody = await GetTrialEmailBody();
-                    string fileNumber = bookingInfo.FileNumber;
+                    string fileNumber = bookingInfo.FullCaseNumber;
                     string startDate = bookingInfo.SelectedRegularTrialDate?.ToString(
                         "MMMM dd, yyyy"
                     );
@@ -457,17 +451,17 @@ namespace SCJ.Booking.MVC.Services
             var booking = _session.ScBookingInfo;
 
             //set ViewModel for the email
-            var viewModel = new ScHearingEmailViewModel
+            var viewModel = new ScConferenceEmailViewModel
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
-                CourtFileNumber = booking.FileNumber,
+                FullCaseNumber = booking.FullCaseNumber,
                 StyleOfCause = booking.SelectedCourtFile.styleOfCause,
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
                 TypeOfConference = booking.HearingTypeName,
-                Date = booking.DateFriendlyName,
-                Time = booking.TimeSlotFriendlyName
+                Date = booking.FormattedConferenceDate,
+                Time = booking.FormattedConferenceTime
             };
 
             //Render the email template
@@ -504,7 +498,7 @@ namespace SCJ.Booking.MVC.Services
                 EmailAddress = user.Email,
                 Phone = user.Phone,
                 LocationPrefix = booking.LocationPrefix,
-                CourtFileNumber = booking.FileNumber,
+                FullCaseNumber = booking.FullCaseNumber,
                 StyleOfCause = booking.SelectedCourtFile.styleOfCause,
                 CourtClassName = booking.SelectedCourtClassName,
                 CaseLocationName = booking.CaseLocationName,
@@ -514,7 +508,7 @@ namespace SCJ.Booking.MVC.Services
             };
 
             var template =
-                (booking.BookingFormula == ScFormulaType.FairUseBooking)
+                (booking.TrialFormulaType == ScFormulaType.FairUseBooking)
                     ? "ScBooking/Email-Trial-FairUse"
                     : "ScBooking/Email-Trial-Regular";
 
@@ -653,8 +647,8 @@ namespace SCJ.Booking.MVC.Services
             bookingInfo.HearingTypeId = model.HearingTypeId;
             bookingInfo.HearingTypeName = ScHearingType.HearingTypeNameMap[model.HearingTypeId];
 
-            bookingInfo.HearingBookingRegistryId =
-                await _cache.GetBookingLocationIdAsync(
+            bookingInfo.ConferenceLocationRegistryId =
+                await _cache.GetConferenceBookingLocationIdAsync(
                     bookingInfo.CaseRegistryId,
                     bookingInfo.HearingTypeId
                 ) ?? bookingInfo.CaseRegistryId;
@@ -662,11 +656,11 @@ namespace SCJ.Booking.MVC.Services
             bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
                 model.HearingTypeId == ScHearingType.TRIAL
                     ? model.TrialLocationRegistryId
-                    : bookingInfo.HearingBookingRegistryId
+                    : bookingInfo.ConferenceLocationRegistryId
             );
 
-            bookingInfo.Results = await _client.AvailableDatesByLocationAsync(
-                bookingInfo.HearingBookingRegistryId,
+            bookingInfo.AvailableConferenceDates = await _client.AvailableDatesByLocationAsync(
+                bookingInfo.ConferenceLocationRegistryId,
                 bookingInfo.HearingTypeId
             );
 
@@ -707,24 +701,27 @@ namespace SCJ.Booking.MVC.Services
             };
         }
 
-        public void SaveAvailableTimesForm(ScAvailableTimesViewModel model)
+        public async Task SaveAvailableTimesForm(ScAvailableTimesViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
 
+            // check the schedule again to make sure the time slot wasn't taken by someone else
+            AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+                bookingInfo.ConferenceLocationRegistryId,
+                bookingInfo.HearingTypeId
+            );
+
             if (model.ContainerId > 0)
             {
-                bookingInfo.SelectedCaseDate = model.SelectedCaseDate;
-                model.TimeSlotExpired = !IsTimeStillAvailable(
-                    bookingInfo.Results,
-                    model.ContainerId
-                );
+                bookingInfo.SelectedConferenceDateTicks = model.SelectedConferenceDate;
+                model.TimeSlotExpired = !IsTimeStillAvailable(schedule, model.ContainerId);
                 bookingInfo.ContainerId = model.ContainerId;
             }
 
-            bookingInfo.FullDate = model.FullDate;
+            bookingInfo.SelectedConferenceDate = model.ParsedConferenceDate;
             bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
             bookingInfo.SelectedFairUseTrialDates = model.SelectedFairUseTrialDates;
-            bookingInfo.BookingFormula = model.BookingFormula;
+            bookingInfo.TrialFormulaType = model.TrialFormulaType;
 
             _session.ScBookingInfo = bookingInfo;
         }
@@ -738,8 +735,8 @@ namespace SCJ.Booking.MVC.Services
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 HearingTypeId = bookingInfo.HearingTypeId,
-                Results = bookingInfo.Results,
-                HearingBookingRegistryId = bookingInfo.HearingBookingRegistryId,
+                AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
+                ConferenceLocationRegistryId = bookingInfo.ConferenceLocationRegistryId,
                 SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
                 SessionInfo = bookingInfo
@@ -747,9 +744,9 @@ namespace SCJ.Booking.MVC.Services
 
             model = await SetFairUseFormulaInfo(model);
 
-            model.BookingFormula = model.FairUseStartDate is null
+            model.TrialFormulaType = bookingInfo.FairUseFormula is null
                 ? ScFormulaType.RegularBooking
-                : bookingInfo.BookingFormula;
+                : bookingInfo.TrialFormulaType;
 
             return model;
         }

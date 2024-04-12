@@ -1,9 +1,10 @@
 @inject SelectListService SelectListService
-
 @model SCJ.Booking.MVC.ViewModels.ScBookingTypeViewModel
 
 @{
     ViewData["Title"] = "BookingType";
+
+    var bookingInfo = Model.SessionInfo;
 
     if (Model.AvailableConferenceTypeIds.Count == 1)
     {
@@ -27,9 +28,9 @@
         }
 
         <div>
-            <div class="uppercase-sm">File Number: @Model.SessionInfo.FileNumber</div>
-            <h5 style="margin-bottom: 4px">@Model.SessionInfo.SelectedCourtFile?.styleOfCause</h5>
-            <p>@Model.SessionInfo.SelectedCourtClassName</p>
+            <div class="uppercase-sm">File Number:@bookingInfo.FullCaseNumber</div>
+            <h5 style="margin-bottom: 4px">@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
+            <p>@bookingInfo.SelectedCourtClassName</p>
         </div>
 
         <div class="row no-gutters">

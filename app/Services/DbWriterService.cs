@@ -93,7 +93,7 @@ namespace SCJ.Booking.MVC.Services
                 User = oidcUser,
                 BookHearingCode = formula.BookingHearingCode,
                 BookingLocationId = formula.BookingLocationID,
-                CeisPhysicalFileId = bookingInfo.CaseId,
+                CeisPhysicalFileId = bookingInfo.PhysicalFileId,
                 CourtClassCode = bookingInfo.SelectedCourtClass,
                 CourtClassName = bookingInfo.SelectedCourtClassName,
                 CreationTimestamp = DateTime.Now,

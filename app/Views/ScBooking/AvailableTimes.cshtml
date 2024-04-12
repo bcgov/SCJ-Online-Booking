@@ -1,7 +1,8 @@
 @model SCJ.Booking.MVC.ViewModels.ScAvailableTimesViewModel
-
 @{
     ViewData["Title"] = "AvailableTimes";
+
+    var bookingInfo = Model.SessionInfo;
 }
 
 <div class="body-content--inner">
@@ -22,9 +23,9 @@
     }
 
     <div style="margin-bottom: 30px">
-        <div class="uppercase-sm">File Number: @Model.SessionInfo.FileNumber</div>
-        <h5>@Model.SessionInfo.SelectedCourtFile?.styleOfCause</h5>
-        <p>@Model.SessionInfo.SelectedCourtClassName</p>
+        <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
+        <h5>@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
+        <p>@bookingInfo.SelectedCourtClassName</p>
     </div>
 
     @if (@Model.HearingTypeId == @ScHearingType.TRIAL)

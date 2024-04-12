@@ -32,7 +32,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string EmailAddress { get; set; }
         public string Phone { get; set; }
         public string LocationPrefix { get; set; }
-        public string CourtFileNumber { get; set; }
+        public string FullCaseNumber { get; set; }
         public string StyleOfCause { get; internal set; }
         public string CourtClassName { get; internal set; }
         public string TrialLength { get; set; }

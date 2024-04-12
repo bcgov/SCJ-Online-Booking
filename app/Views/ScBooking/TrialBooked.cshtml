@@ -1,15 +1,14 @@
-@using Microsoft.Extensions.Configuration
 @inject SessionService SessionService
-@inject ScBookingService BookingService
-@inject IConfiguration Configuration
-
 @{
     ViewData["Title"] = "Your Booking is Reserved Tentatively";
+
+    var bookingInfo = SessionService.ScBookingInfo;
+    var userInfo = SessionService.UserInfo;
 }
 <div class="body-content--inner">
     <div class="row no-gutters">
         <div class="col">
-            @if (SessionService.ScBookingInfo.IsBooked)
+            @if (bookingInfo.IsBooked)
             {
                 <h2>@ViewData["Title"]</h2>
 
@@ -22,7 +21,7 @@
                 <h2>Booking Could Not Be Completed</h2>
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-circle"></i>
-                    @SessionService.ScBookingInfo.FriendlyError
+                    @bookingInfo.FriendlyError
                 </div>
                 <p>For your reference, here is the information for the booking that was not completed.</p>
             }
@@ -34,9 +33,9 @@
 
             <div class="row no-gutters justify-content-between booking-confirmation--details">
                 <div class="col-12">
-                    <div class="uppercase-sm">File Number: @SessionService.ScBookingInfo.FileNumber</div>
-                    <h5 style="margin-bottom: 4px">@SessionService.ScBookingInfo.SelectedCourtFile?.styleOfCause</h5>
-                    <p>@SessionService.ScBookingInfo.SelectedCourtClassName</p>
+                    <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
+                    <h5 style="margin-bottom: 4px">@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
+                    <p>@bookingInfo.SelectedCourtClassName</p>
                 </div>
             </div>
 
@@ -44,23 +43,23 @@
                 <h2>Trial Details</h2>
 
                 @{
-                    var trialLength = SessionService.ScBookingInfo.EstimatedTrialLength;
+                    var trialLength = bookingInfo.EstimatedTrialLength;
 
-                    var trialDate = SessionService.ScBookingInfo.SelectedRegularTrialDate?.ToString("dddd, MMMM dd, yyyy") ?? "";
+                    var trialDate = bookingInfo.SelectedRegularTrialDate?.ToString("dddd, MMMM dd, yyyy") ?? "";
                 }
                 <p>Trial length: @trialLength @(trialLength == 1 ? "day" : "days")</p>
 
                 <p>Starting: @trialDate</p>
 
-                <p class="mb-3">Location: @SessionService.ScBookingInfo.BookingLocationName</p>
+                <p class="mb-3">Location: @bookingInfo.BookingLocationName</p>
             </div>
 
             <div class="mb-4">
                 <h2>Contact Information</h2>
 
-                <p>Email: @SessionService.UserInfo.Email</p>
+                <p>Email: @userInfo.Email</p>
 
-                <p>Phone number: @SessionService.UserInfo.Phone</p>
+                <p>Phone number: @userInfo.Phone</p>
             </div>
 
             <div class="mb-4">
@@ -83,5 +82,9 @@
 </div>
 
 @{
-    SessionService.ScBookingInfo = null;
+    // this needs to be done in the view (not the controller) because the view uses the session
+    if (SessionService != null)
+    {
+        SessionService.ScBookingInfo = null;
+    }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,17 +14,11 @@ namespace SCJ.Booking.MVC.ViewModels
             CaseLocationName = string.Empty;
             CaseRegistryId = -1;
             BookingLocationName = string.Empty;
-            CaseNumber = string.Empty;
+            CaseNumber = null;
         }
 
         //Search fields
-        public string CaseNumber { get; set; }
-
-        //Indicates if the case number is valid or not
-        public bool IsValidCaseNumber
-        {
-            get { return (CourtFiles?.Length ?? 0) > 0; }
-        }
+        public int? CaseNumber { get; set; }
 
         // Selected Registry ID
         [Required(ErrorMessage = "Please select the registry where the file was created.")]
@@ -44,17 +37,16 @@ namespace SCJ.Booking.MVC.ViewModels
         public string RegistryContactNumber { get; set; }
 
         public bool IsConfirmingCase = false;
-        public string FullCaseNumber { get; set; }
         public string LocationPrefix { get; set; }
 
         //[Required(ErrorMessage = "Please choose a case")]
         public int SelectedCaseId { get; set; }
-        public CourtFile[] CourtFiles { get; set; }
+        public CourtFile[] CaseSearchResults { get; set; }
         public List<CourtFile> Cases
         {
             get
             {
-                return CourtFiles
+                return CaseSearchResults
                     ?.Where(x =>
                         string.IsNullOrWhiteSpace(SelectedCourtClass)
                         || x.courtClassCode == SelectedCourtClass
@@ -66,7 +58,7 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                return CourtFiles?.Where(x => x.physicalFileId == SelectedCaseId).FirstOrDefault();
+                return CaseSearchResults?.Where(x => x.physicalFileId == SelectedCaseId).FirstOrDefault();
             }
         }
         public string SelectedFileNumber
@@ -77,10 +69,7 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get { return ScCourtClass.GetCourtClass(SelectedCourtFile?.courtClassCode); }
         }
-        public string FileNumber
-        {
-            get { return LocationPrefix + " " + SelectedFileNumber; }
-        }
+        public string FullCaseNumber => $"{LocationPrefix} {SelectedFileNumber}";
         public List<int> AvailableConferenceTypeIds { get; set; }
     }
 }

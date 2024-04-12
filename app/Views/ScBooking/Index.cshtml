@@ -98,7 +98,6 @@
         </div>
         </form>
         <form method="POST">
-        @Html.HiddenFor(m => m.FullCaseNumber)
         @Html.HiddenFor(m => m.LocationPrefix)
         @if (haveConferenceTypeIds) {
             @for (int i = 0; i < Model.AvailableConferenceTypeIds.Count; i++)
@@ -108,13 +107,13 @@
 
             if (cases > 0)
             {
-                @for (int i = 0; i < Model.CourtFiles.Length; i++)
+                @for (int i = 0; i < Model.CaseSearchResults.Length; i++)
                 {
-                    @Html.HiddenFor(m => m.CourtFiles[i].courtClassCode)
-                    @Html.HiddenFor(m => m.CourtFiles[i].courtFileNumber)
-                    @Html.HiddenFor(m => m.CourtFiles[i].styleOfCause)
-                    @Html.HiddenFor(m => m.CourtFiles[i].physicalFileId)
-                    @Html.HiddenFor(m => m.CourtFiles[i].courtLevelCode)
+                    @Html.HiddenFor(m => m.CaseSearchResults[i].courtClassCode)
+                    @Html.HiddenFor(m => m.CaseSearchResults[i].courtFileNumber)
+                    @Html.HiddenFor(m => m.CaseSearchResults[i].styleOfCause)
+                    @Html.HiddenFor(m => m.CaseSearchResults[i].physicalFileId)
+                    @Html.HiddenFor(m => m.CaseSearchResults[i].courtLevelCode)
                 }
                 <h3>@cases @results found</h3>
                 <div class="col p-0">

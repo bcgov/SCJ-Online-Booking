@@ -38,8 +38,7 @@ namespace SCJ.Booking.MVC.Services
             IConfiguration configuration,
             SessionService sessionService,
             CoaCacheService coaCacheService,
-            IViewRenderService viewRenderService,
-            DbWriterService dbWriterService
+            IViewRenderService viewRenderService
         )
         {
             //check if this is running on a developer workstation (outside OpenShift)

@@ -1,4 +1,7 @@
 @model SCJ.Booking.MVC.ViewModels.ScCaseConfirmViewModel
+@{
+    var bookingInfo = Model.SessionInfo;
+}
 
 <p>
     Please review that the following information is accurate before confirming your booking.
@@ -10,12 +13,13 @@
 <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
     <div class="row no-gutters justify-content-between booking-confirmation--details">
         <div class="col-12 col-md-6">
-            <div class="uppercase-sm">File Number: @Model.SessionInfo.FileNumber</div>
-            <h5 style="margin-bottom: 4px">@Model.SessionInfo.SelectedCourtFile?.styleOfCause</h5>
-            <p>@Model.SessionInfo.SelectedCourtClassName</p>
+            <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
+            <h5 style="margin-bottom: 4px">@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
+            <p>@bookingInfo.SelectedCourtClassName</p>
         </div>
         <div class="col-12 col-md-6">
-            <small><i class="fas fa-gavel"></i>@Model.SessionInfo.HearingTypeName</small>
+            <small><i class="fas fa-gavel"></i>@bookingInfo.HearingTypeName
+            </small>
             <small><i class="fas fa-calendar-alt"></i>@Model.Date</small>
             <small><i class="far fa-clock"></i>@Model.Time</small>
         </div>

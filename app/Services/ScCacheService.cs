@@ -30,7 +30,10 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Gets the booking location for a specified hearingTypeId and locationId
         /// </summary>
-        public async Task<int?> GetBookingLocationIdAsync(int caseLocationId, int hearingTypeId)
+        public async Task<int?> GetConferenceBookingLocationIdAsync(
+            int caseLocationId,
+            int hearingTypeId
+        )
         {
             return (await GetLocationsAsync())
                 .FirstOrDefault(l =>
