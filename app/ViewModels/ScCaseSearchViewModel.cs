@@ -58,7 +58,9 @@ namespace SCJ.Booking.MVC.ViewModels
         {
             get
             {
-                return CaseSearchResults?.Where(x => x.physicalFileId == SelectedCaseId).FirstOrDefault();
+                return CaseSearchResults
+                    ?.Where(x => x.physicalFileId == SelectedCaseId)
+                    .FirstOrDefault();
             }
         }
         public string SelectedFileNumber
@@ -70,6 +72,5 @@ namespace SCJ.Booking.MVC.ViewModels
             get { return ScCourtClass.GetCourtClass(SelectedCourtFile?.courtClassCode); }
         }
         public string FullCaseNumber => $"{LocationPrefix} {SelectedFileNumber}";
-        public List<int> AvailableConferenceTypeIds { get; set; }
     }
 }

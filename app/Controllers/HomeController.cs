@@ -1,22 +1,22 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SCJ.Booking.MVC.Services;
-using SCJ.Booking.MVC.ViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Mvc;
+using SCJ.Booking.MVC.Services.SC;
+using SCJ.Booking.MVC.ViewModels;
 
 namespace SCJ.Booking.MVC.Controllers
 {
     public class HomeController : Controller
     {
         //Services
-        private readonly ScBookingService _scBookingService;
+        private readonly ScCoreService _scCoreService;
 
         //Constructor
-        public HomeController(ScBookingService scBookingService)
+        public HomeController(ScCoreService scCoreService)
         {
-            _scBookingService = scBookingService;
+            _scCoreService = scCoreService;
         }
 
         public async Task<IActionResult> Index()
@@ -24,7 +24,7 @@ namespace SCJ.Booking.MVC.Controllers
             return View(
                 new IndexViewModel
                 {
-                    AvailableBookingTypes = await _scBookingService.GetAvailableBookingTypes()
+                    AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync()
                 }
             );
         }

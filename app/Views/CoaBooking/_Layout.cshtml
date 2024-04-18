@@ -1,7 +1,3 @@
-@using Microsoft.Extensions.Configuration
-@inject ScBookingService Service
-@inject IConfiguration Configuration
-
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.CourtName = "coa";
@@ -31,11 +27,11 @@
 @section Scripts {
     <script src="/scjob/js/coa.js" asp-append-version="true"></script>
     <script src="/scjob/dist/vue/ApplicationTypeSelect.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", false)
+    @await RenderSectionAsync("Scripts", false)
 }
 
 @section Styles {
-    @RenderSection("Styles", false)
+    @await RenderSectionAsync("Styles", false)
     <link rel="stylesheet" href="/scjob/dist/css/coa.css" asp-append-version="true" />
     <link rel="stylesheet" href="/scjob/dist/vue/ApplicationTypeSelect.js.css" asp-append-version="true" />
 }

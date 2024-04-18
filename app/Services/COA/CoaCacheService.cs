@@ -5,9 +5,9 @@ using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Serilog;
 
-namespace SCJ.Booking.MVC.Services
+namespace SCJ.Booking.MVC.Services.COA
 {
-    public class CoaCacheService : CacheServiceBase
+    public class CacheService : CacheServiceBase
     {
         private const string CoaChambersApplicationTypesKey = "COA_CHAMBERS_APPLICATION_TYPES";
 
@@ -15,7 +15,7 @@ namespace SCJ.Booking.MVC.Services
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
 
-        public CoaCacheService(IDistributedCache cache, IConfiguration configuration)
+        public CacheService(IDistributedCache cache, IConfiguration configuration)
             : base(cache)
         {
             _configuration = configuration;

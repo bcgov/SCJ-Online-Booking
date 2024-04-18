@@ -5,11 +5,6 @@
     ViewData["Title"] = "BookingType";
 
     var bookingInfo = Model.SessionInfo;
-
-    if (Model.AvailableConferenceTypeIds.Count == 1)
-    {
-        Model.HearingTypeId = Model.AvailableConferenceTypeIds.First();
-    }
 }
 
 <div class="body-content--inner">
@@ -22,11 +17,6 @@
     <h2>Choose Your Booking Type</h2>
 
     <form method="post">
-        @for (int i = 0; i < Model.AvailableConferenceTypeIds.Count; i++)
-        {
-            @Html.HiddenFor(m => m.AvailableConferenceTypeIds[i])
-        }
-
         <div>
             <div class="uppercase-sm">File Number:@bookingInfo.FullCaseNumber</div>
             <h5 style="margin-bottom: 4px">@bookingInfo.SelectedCourtFile?.styleOfCause</h5>

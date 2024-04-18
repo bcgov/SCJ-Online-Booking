@@ -13,9 +13,14 @@ namespace SCJ.Booking.MVC.Utils
 
         public int CaseRegistryId { get; set; }
         public string CaseLocationName { get; set; }
-        public int ConferenceLocationRegistryId { get; set; }
-        public string BookingLocationName { get; set; }
 
+        // this is the alternate trial location the user selected from the dropdown
+        public int TrialLocationRegistryId { get; set; }
+
+        // this is the internal id that is used for booking trials and conferences
+        public int BookingLocationRegistryId { get; set; }
+
+        public string BookingLocationName { get; set; }
         public int ContainerId { get; set; }
         public int HearingTypeId { get; set; }
         public string TrialFormulaType { get; set; }
@@ -23,7 +28,6 @@ namespace SCJ.Booking.MVC.Utils
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
-        public int TrialLocationRegistryId { get; set; }
         public string SelectedConferenceDateTicks { get; set; }
 
         public DateTime? SelectedRegularTrialDate { get; set; }
@@ -39,7 +43,6 @@ namespace SCJ.Booking.MVC.Utils
         public CourtFile SelectedCourtFile { get; set; }
         public string SelectedCourtClassName { get; set; }
         public AvailableDatesByLocation AvailableConferenceDates { get; set; }
-        public List<int> AvailableConferenceTypeIds { get; set; }
 
         public int ConferenceLengthMinutes
         {

@@ -7,17 +7,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
-using NuGet.Packaging.Signing;
 using SCJ.Booking.Data;
-using SCJ.Booking.Data.Models;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Serilog;
 
-namespace SCJ.Booking.MVC.Services
+namespace SCJ.Booking.MVC.Services.COA
 {
     public class CoaBookingService
     {
@@ -27,7 +24,7 @@ namespace SCJ.Booking.MVC.Services
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly SessionService _session;
-        private readonly CoaCacheService _coaCacheService;
+        private readonly CacheService _coaCacheService;
         private readonly IViewRenderService _viewRenderService;
         private readonly MailService _mailService;
         private readonly DbWriterService _dbWriterService;
@@ -37,7 +34,7 @@ namespace SCJ.Booking.MVC.Services
             ApplicationDbContext dbContext,
             IConfiguration configuration,
             SessionService sessionService,
-            CoaCacheService coaCacheService,
+            CacheService coaCacheService,
             IViewRenderService viewRenderService
         )
         {
@@ -339,24 +336,11 @@ namespace SCJ.Booking.MVC.Services
                     _session.UserInfo = userInfo;
 
                     //send email
-                    if (!IsLocalDevEnvironment)
-                    {
-                        await _mailService.ExchangeSendEmail(
-                            model.EmailAddress,
-                            EmailSubject,
-                            await GetEmailBody()
-                        );
-                    }
-                    else
-                    {
-                        var fromEmail = _configuration["FROM_EMAIL"];
-                        await _mailService.SendGridSendEmail(
-                            fromEmail,
-                            model.EmailAddress,
-                            EmailSubject,
-                            await GetEmailBody()
-                        );
-                    }
+                    await _mailService.SendEmailAsync(
+                        model.EmailAddress,
+                        EmailSubject,
+                        await GetEmailBody()
+                    );
 
                     //clear booking info session
                     _session.CoaBookingInfo = null;
@@ -407,7 +391,7 @@ namespace SCJ.Booking.MVC.Services
                 HearingLength = booking.IsFullDay is true ? "Full Day" : "Half Day",
                 Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? "",
                 RelatedCasesString = "",
-                SelectedApplicationTypeNames = await this.GetApplicationTypeNames(
+                SelectedApplicationTypeNames = await GetApplicationTypeNames(
                     booking.CaseType,
                     booking.SelectedApplicationTypes
                 ),

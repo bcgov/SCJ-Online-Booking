@@ -18,6 +18,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SCJ.Booking.Data;
 using SCJ.Booking.MVC.Services;
+using SCJ.Booking.MVC.Services.COA;
+using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
 using SerilogLoggerFactory = Serilog.Extensions.Logging.SerilogLoggerFactory;
 
@@ -63,7 +65,7 @@ namespace SCJ.Booking.MVC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<SessionService>();
             services.AddSingleton<ScCacheService>();
-            services.AddSingleton<CoaCacheService>();
+            services.AddSingleton<Services.COA.CacheService>();
 
             if (Configuration["TAG_NAME"] == "localdev")
             {
@@ -200,7 +202,9 @@ namespace SCJ.Booking.MVC
                 });
 
             //services
-            services.AddTransient<ScBookingService>();
+            services.AddTransient<ScCoreService>();
+            services.AddTransient<ScTrialBookingService>();
+            services.AddTransient<ScConferenceBookingService>();
             services.AddTransient<CoaBookingService>();
             services.AddTransient<SelectListService>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
