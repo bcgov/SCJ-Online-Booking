@@ -632,10 +632,11 @@ namespace SCJ.Booking.MVC.Services
                 { 31, "250-847-7482" },
                 { 32, "250-624-7474" },
                 { 33, "250-614-2750" },
-                { 34, "250-470-6935" }
+                { 34, "250-470-6935" },
+                { 82, "604-425-3711" }
             };
 
-            return numbers[registryId];
+            return numbers.ContainsKey(registryId) ? numbers[registryId] : numbers[1];
         }
     }
 }
