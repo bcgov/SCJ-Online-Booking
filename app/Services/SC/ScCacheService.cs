@@ -3,10 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 
-namespace SCJ.Booking.MVC.Services
+namespace SCJ.Booking.MVC.Services.SC
 {
     /// <summary>
     ///     Cache helper for speeding up database queries
@@ -30,14 +31,17 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Gets the booking location for a specified hearingTypeId and locationId
         /// </summary>
-        public async Task<int?> GetConferenceBookingLocationIdAsync(
-            int caseLocationId,
-            int hearingTypeId
-        )
+        public async Task<int?> GetBookingLocationIdAsync(int locationId, int hearingTypeId)
         {
+            if (hearingTypeId == ScHearingType.TRIAL)
+            {
+                // trials get their booking location id from AvailableTrialBookingFormulasByLocationAsync()
+                return null;
+            }
+
             return (await GetLocationsAsync())
                 .FirstOrDefault(l =>
-                    l.bookingHearingTypeID == hearingTypeId && l.locationID == caseLocationId
+                    l.bookingHearingTypeID == hearingTypeId && l.locationID == locationId
                 )
                 ?.bookingLocationID;
         }
@@ -47,7 +51,7 @@ namespace SCJ.Booking.MVC.Services
         /// </summary>
         public async Task<string> GetLocationNameAsync(int locationId)
         {
-            return (await GetLocationAsync(locationId))?.locationName ?? "";
+            return (await GetLocationAsync(locationId)).locationName;
         }
 
         /// <summary>

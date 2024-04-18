@@ -121,10 +121,13 @@
         <a asp-action="BookingType">Step 2: Choose Your Booking Type</a>
       </span>
     </div>
-    <div class="col-6 col-md-4">
-      <button type="submit" class="btn btn-secondary btn-block" id="btnNext">
-        Review Your Request
-      </button>
-    </div>
+      <div class="col-6 col-md-4">
+          @if (Model.AvailableFairUseTrialDates.Any() || Model.AvailableRegularTrialDates.Any())
+          {
+              <button type="submit" class="btn btn-secondary btn-block" id="btnNext">
+                  Review Your Request
+              </button>
+          }
+      </div>
   </div>
 </form>

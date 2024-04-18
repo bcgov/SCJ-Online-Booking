@@ -13,16 +13,6 @@ $(document).ready(function () {
     }
   });
 
-  $("#CaseRegistryId").change(function () {
-    if (!$(".showMsgClass").is(":hidden")) {
-      $(".showMsgClass").prop("hidden", true);
-    }
-
-    if ($(".hideMsgClass").is(":hidden")) {
-      $(".hideMsgClass").removeAttr("hidden");
-    }
-  });
-
   // show/hide extra fields for specific booking types
   $("input[name=HearingTypeId]").change(function () {
     var $courtClassDropdown = $("#courtClassDropdown");

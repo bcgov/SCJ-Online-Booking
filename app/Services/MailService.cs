@@ -29,6 +29,27 @@ namespace SCJ.Booking.MVC.Services
         }
 
         /// <summary>
+        ///     Send an email
+        /// </summary>
+        public async Task SendEmailAsync(
+            string toEmail,
+            string subject,
+            string body,
+            bool isLocalDevEnvironment = false
+        )
+        {
+            if (!isLocalDevEnvironment)
+            {
+                await ExchangeSendEmail(toEmail, subject, body);
+            }
+            else
+            {
+                var fromEmail = _configuration["FROM_EMAIL"];
+                await SendGridSendEmail(fromEmail, toEmail, subject, body);
+            }
+        }
+
+        /// <summary>
         ///     Sends a confirmation email using an Exchange server
         /// </summary>
         public async Task ExchangeSendEmail(string to, string subject, string body)

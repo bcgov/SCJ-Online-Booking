@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
+using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels;
-using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -15,23 +15,32 @@ namespace SCJ.Booking.MVC.Controllers
     public class ScBookingController : Controller
     {
         //Services
-        private readonly ScBookingService _scBookingService;
+        private readonly ScCoreService _scCoreService;
+        private readonly ScTrialBookingService _scTrialBookingService;
+        private readonly ScConferenceBookingService _scConferenceBookingService;
 
         // Strongly typed session
         private readonly SessionService _session;
 
         //Constructor
-        public ScBookingController(SessionService sessionService, ScBookingService scBookingService)
+        public ScBookingController(
+            SessionService sessionService,
+            ScCoreService scCoreService,
+            ScTrialBookingService scTrialBookingService,
+            ScConferenceBookingService scConferenceBookingService
+        )
         {
             _session = sessionService;
-            _scBookingService = scBookingService;
+            _scCoreService = scCoreService;
+            _scTrialBookingService = scTrialBookingService;
+            _scConferenceBookingService = scConferenceBookingService;
         }
 
         [HttpGet]
         [Route("~/booking/sc")]
         public IActionResult Index()
         {
-            var model = _scBookingService.LoadSearchForm();
+            var model = _scCoreService.LoadSearchForm();
             return View(model);
         }
 
@@ -39,7 +48,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/select-case")]
         public IActionResult SelectCaseAsync()
         {
-            var model = _scBookingService.ReloadSearchForm();
+            var model = _scCoreService.ReloadSearchForm();
             return View("Index", model);
         }
 
@@ -60,18 +69,16 @@ namespace SCJ.Booking.MVC.Controllers
                 ModelState.AddModelError("CaseNumber", "Please provide a Court File Number");
             }
 
-            model.CaseLocationName = await _scBookingService.GetLocationName(model.CaseRegistryId);
-            model.AvailableConferenceTypeIds =
-                await _scBookingService.GetAvailableConferenceTypesByLocationAsync(
-                    model.CaseLocationName
-                );
+            model.CaseLocationName = await _scCoreService.GetLocationNameAsync(
+                model.CaseRegistryId
+            );
 
             if (!ModelState.IsValid)
             {
                 return View("Index", model);
             }
 
-            model = await _scBookingService.GetSearchResults(model);
+            model = await _scCoreService.GetSearchResults(model);
 
             return View("Index", model);
         }
@@ -92,7 +99,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View("Index", model);
             }
 
-            _scBookingService.SaveCaseSearchForm(model);
+            _scCoreService.SaveSearchForm(model);
 
             return RedirectToAction("BookingType");
         }
@@ -101,14 +108,14 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/booking-type")]
         public async Task<IActionResult> BookingType()
         {
-            var model = _scBookingService.LoadBookingTypeForm();
+            var model = _scCoreService.LoadBookingTypeForm();
 
             if (model.SessionInfo.CaseNumber == 0)
             {
                 return RedirectToAction("Index");
             }
 
-            model.AvailableBookingTypes = await _scBookingService.GetAvailableBookingTypes();
+            model.AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync();
 
             return View(model);
         }
@@ -163,12 +170,12 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.AvailableBookingTypes = await _scBookingService.GetAvailableBookingTypes();
+                model.AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync();
                 model.SessionInfo = _session.ScBookingInfo;
                 return View(model);
             }
 
-            await _scBookingService.SaveBookingTypeFormAsync(model);
+            await _scCoreService.SaveBookingTypeFormAsync(model);
 
             return RedirectToAction("AvailableTimes");
         }
@@ -177,7 +184,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/available-times")]
         public async Task<IActionResult> AvailableTimesAsync()
         {
-            var model = await _scBookingService.LoadAvailableTimesForm();
+            var model = await _scCoreService.LoadAvailableTimesFormAsync();
 
             if (model.CaseNumber == 0)
             {
@@ -190,18 +197,28 @@ namespace SCJ.Booking.MVC.Controllers
             if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
             {
                 (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
-                    await _scBookingService.GetAvailableTrialDatesAsync(
+                    await _scTrialBookingService.GetAvailableTrialDatesAsync(
                         ScFormulaType.RegularBooking,
                         bookingInfo.RegularFormula
                     );
 
                 (model.AvailableFairUseTrialDates, bookingInfo.FairUseFormula) =
-                    await _scBookingService.GetAvailableTrialDatesAsync(
+                    await _scTrialBookingService.GetAvailableTrialDatesAsync(
                         ScFormulaType.FairUseBooking,
                         bookingInfo.FairUseFormula
                     );
 
                 _session.ScBookingInfo = bookingInfo;
+            }
+
+            if (bookingInfo.FairUseFormula is null)
+            {
+                model.TrialFormulaType = ScFormulaType.RegularBooking;
+            }
+            else
+            {
+                model.TrialFormulaType =
+                    bookingInfo.TrialFormulaType ?? ScFormulaType.FairUseBooking;
             }
 
             return View(model);
@@ -230,7 +247,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 ModelState.AddModelError(
                     "SelectedRegularTrialDate",
-                    "Please choose from one of the available times."
+                    "Please choose from one of the available dates."
                 );
             }
             else if (
@@ -240,7 +257,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 ModelState.AddModelError(
                     "SelectedFairUseTrialDates",
-                    "Please choose from the available times."
+                    "Please choose from the available dates."
                 );
             }
 
@@ -250,25 +267,27 @@ namespace SCJ.Booking.MVC.Controllers
                 // Trial bookings: get lists of available trial dates
                 if (model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
-                    model = await _scBookingService.SetFairUseFormulaInfo(
+                    model = await _scCoreService.SetFairUseFormulaInfoAsync(
                         model,
                         bookingInfo.FairUseFormula
                     );
 
                     (model.AvailableRegularTrialDates, _) =
-                        await _scBookingService.GetAvailableTrialDatesAsync(
-                            ScFormulaType.RegularBooking
+                        await _scTrialBookingService.GetAvailableTrialDatesAsync(
+                            ScFormulaType.RegularBooking,
+                            null
                         );
 
                     (model.AvailableFairUseTrialDates, _) =
-                        await _scBookingService.GetAvailableTrialDatesAsync(
-                            ScFormulaType.FairUseBooking
+                        await _scTrialBookingService.GetAvailableTrialDatesAsync(
+                            ScFormulaType.FairUseBooking,
+                            null
                         );
                 }
                 return View(model);
             }
 
-            await _scBookingService.SaveAvailableTimesForm(model);
+            await _scCoreService.SaveAvailableTimesFormAsync(model);
 
             return RedirectToAction("CaseConfirm");
         }
@@ -287,9 +306,19 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             var user = _session.GetUserInformation();
 
-            string locationName = await _scBookingService.GetLocationName(
-                bookingInfo.TrialLocationRegistryId
-            );
+            string locationName;
+            if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
+            {
+                locationName = await _scCoreService.GetLocationNameAsync(
+                    bookingInfo.TrialLocationRegistryId
+                );
+            }
+            else
+            {
+                locationName = await _scCoreService.GetLocationNameAsync(
+                    bookingInfo.BookingLocationRegistryId
+                );
+            }
 
             //Time-slot is still available
             var model = new ScCaseConfirmViewModel
@@ -325,7 +354,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 try
                 {
-                    var result = await _scBookingService.BookTrial(model, user);
+                    await _scTrialBookingService.BookTrialAsync(model, user);
 
                     if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
                     {
@@ -348,7 +377,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
             else
             {
-                var result = await _scBookingService.BookConference(model, user);
+                var result = await _scConferenceBookingService.BookConferenceAsync(model, user);
 
                 return Redirect($"/scjob/booking/sc/conference-booked?booked={result.IsBooked}");
             }

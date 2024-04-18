@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.Services

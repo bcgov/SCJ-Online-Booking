@@ -23,7 +23,6 @@ namespace SCJ.Booking.MVC.ViewModels
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
         public int TrialLocationRegistryId { get; set; }
-        public List<int> AvailableConferenceTypeIds { get; set; }
         public List<string> AvailableBookingTypes { get; set; }
 
         // Session object
