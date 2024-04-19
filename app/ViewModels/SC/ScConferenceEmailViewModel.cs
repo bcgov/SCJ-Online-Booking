@@ -1,4 +1,4 @@
-namespace SCJ.Booking.MVC.ViewModels
+namespace SCJ.Booking.MVC.ViewModels.SC
 {
     public class ScConferenceEmailViewModel
     {

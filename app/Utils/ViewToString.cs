@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 
-namespace SCJ.Booking.MVC.Services
+namespace SCJ.Booking.MVC.Utils
 {
     public interface IViewRenderService
     {

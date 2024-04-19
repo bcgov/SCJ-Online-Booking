@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using Microsoft.Graph;
 
-namespace SCJ.Booking.MVC.Utils
+namespace SCJ.Booking.MVC.Constants
 {
     public class ScCourtClass
     {

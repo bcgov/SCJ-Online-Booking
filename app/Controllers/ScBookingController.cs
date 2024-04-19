@@ -3,10 +3,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
-using SCJ.Booking.MVC.ViewModels;
+using SCJ.Booking.MVC.ViewModels.SC;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -267,7 +268,7 @@ namespace SCJ.Booking.MVC.Controllers
                 // Trial bookings: get lists of available trial dates
                 if (model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
-                    model = await _scCoreService.SetFairUseFormulaInfoAsync(
+                    model = await _scCoreService.LoadAvailableTimesFormulaInfoAsync(
                         model,
                         bookingInfo.FairUseFormula
                     );

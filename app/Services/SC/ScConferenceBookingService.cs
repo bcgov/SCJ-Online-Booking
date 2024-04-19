@@ -1,12 +1,12 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Utils;
-using SCJ.Booking.MVC.ViewModels;
+using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Serilog;
@@ -22,9 +22,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly SessionService _session;
         private readonly DbWriterService _dbWriterService;
         private readonly IViewRenderService _viewRenderService;
-        private readonly ScCacheService _cache;
         private readonly MailService _mailService;
-        private readonly ScCoreService _coreService;
 
         //Constructor
         public ScConferenceBookingService(
@@ -47,10 +45,8 @@ namespace SCJ.Booking.MVC.Services.SC
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _session = sessionService;
             _viewRenderService = viewRenderService;
-            _cache = scCacheService;
             _mailService = new MailService("SC", configuration, _logger);
             _dbWriterService = new DbWriterService(dbContext);
-            _coreService = coreService;
         }
 
         /// <summary>
@@ -76,7 +72,7 @@ namespace SCJ.Booking.MVC.Services.SC
             );
 
             //ensure time slot is still available
-            if (_coreService.IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
+            if (ScCoreService.IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
                 string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
@@ -190,13 +186,13 @@ namespace SCJ.Booking.MVC.Services.SC
             //Render the email template
             string template = booking.HearingTypeId switch
             {
-                ScHearingType.AWS => "ScBooking/Email-CV-AWS",
-                ScHearingType.JMC => "ScBooking/Email-JMC",
-                ScHearingType.PTC => "ScBooking/Email-CV-PTC",
-                ScHearingType.TCH => "ScBooking/Email-CV-TCH",
-                ScHearingType.TMC => "ScBooking/Email-TMC",
-                ScHearingType.CPC => "ScBooking/Email-CPC",
-                ScHearingType.JCC => "ScBooking/Email-JCC",
+                ScHearingType.AWS => "ScBooking/Emails/Email-CV-AWS",
+                ScHearingType.JMC => "ScBooking/Emails/Email-JMC",
+                ScHearingType.PTC => "ScBooking/Emails/Email-CV-PTC",
+                ScHearingType.TCH => "ScBooking/Emails/Email-CV-TCH",
+                ScHearingType.TMC => "ScBooking/Emails/Email-TMC",
+                ScHearingType.CPC => "ScBooking/Emails/Email-CPC",
+                ScHearingType.JCC => "ScBooking/Emails/Email-JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
             };
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

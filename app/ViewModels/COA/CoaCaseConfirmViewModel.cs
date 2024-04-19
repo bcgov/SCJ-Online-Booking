@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SCJ.OnlineBooking;
 
-namespace SCJ.Booking.MVC.ViewModels
+namespace SCJ.Booking.MVC.ViewModels.COA
 {
     public class CoaCaseConfirmViewModel
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using SCJ.Booking.MVC.ViewModels;
+using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Services.COA;
 using SCJ.Booking.MVC.Utils;
-using SCJ.Booking.MVC.ViewModels;
+using SCJ.Booking.MVC.ViewModels.COA;
 
 namespace SCJ.Booking.MVC.Controllers
 {

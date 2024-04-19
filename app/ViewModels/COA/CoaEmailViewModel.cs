@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SCJ.Booking.MVC.ViewModels
+namespace SCJ.Booking.MVC.ViewModels.COA
 {
     public class CoaEmailViewModel
     {
