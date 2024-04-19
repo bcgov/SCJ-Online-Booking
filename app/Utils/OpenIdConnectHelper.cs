@@ -15,8 +15,6 @@ namespace SCJ.Booking.MVC.Utils
     {
         private const string BceidUserGuidClaim = "bceid_user_guid";
         private const string IdentityProviderClaim = "identity_provider";
-        private const string EmailClaim =
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
         private const string NameClaim =
             "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname";
 

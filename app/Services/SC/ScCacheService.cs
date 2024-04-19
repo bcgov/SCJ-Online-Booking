@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
-using SCJ.Booking.MVC.Utils;
+using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 
@@ -136,7 +136,7 @@ namespace SCJ.Booking.MVC.Services.SC
         }
 
         /// <summary>
-        ///     Gets a cached list of trial booking formulas
+        ///     Gets a cached list of trial booking formula locations
         /// </summary>
         public async Task<FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync()
         {
@@ -152,6 +152,39 @@ namespace SCJ.Booking.MVC.Services.SC
             await SaveObjectAsync(ScAvailableBookingFormulas, formulas, CacheSlidingExpirySeconds);
 
             return formulas;
+        }
+
+        /// <summary>
+        ///     Gets a trial booking formula location for a specified court class
+        /// </summary>
+        public async Task<FormulaLocation> GetFormulaLocationAsync(
+            string formulaType,
+            int locationId,
+            string courtClass
+        )
+        {
+            var formulas = await AvailableTrialBookingFormulasByLocationAsync();
+
+            // look for a special formula location for the specific courtClass
+            var result = formulas.FirstOrDefault(f =>
+                f.FormulaType == formulaType
+                && f.LocationID == locationId
+                && f.BookingHearingCode == courtClass
+            );
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            // if there isn't a special formula location then use the general one
+            var all = new[] { "All", "All Other" };
+
+            return formulas.FirstOrDefault(f =>
+                f.FormulaType == formulaType
+                && f.LocationID == locationId
+                && all.Contains(f.BookingHearingCode)
+            );
         }
     }
 }

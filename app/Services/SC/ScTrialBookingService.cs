@@ -6,8 +6,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Utils;
-using SCJ.Booking.MVC.ViewModels;
+using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Serilog;
@@ -25,6 +26,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly IViewRenderService _viewRenderService;
         private readonly MailService _mailService;
         private readonly ScCoreService _coreService;
+        private readonly ScCacheService _cache;
 
         //Constructor
         public ScTrialBookingService(
@@ -32,7 +34,7 @@ namespace SCJ.Booking.MVC.Services.SC
             IConfiguration configuration,
             SessionService sessionService,
             IViewRenderService viewRenderService,
-            ScCacheService scCacheService,
+            ScCacheService cacheService,
             ScCoreService coreService
         )
         {
@@ -50,6 +52,7 @@ namespace SCJ.Booking.MVC.Services.SC
             _mailService = new MailService("SC", configuration, _logger);
             _dbWriterService = new DbWriterService(dbContext);
             _coreService = coreService;
+            _cache = cacheService;
         }
 
         /// <summary>
@@ -226,7 +229,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 CourtClassName = booking.SelectedCourtClassName,
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
-                TrialLocationName = await _coreService.GetLocationNameAsync(
+                TrialLocationName = await _cache.GetLocationNameAsync(
                     booking.TrialLocationRegistryId
                 ),
                 ResultDate = resultDate
@@ -234,8 +237,8 @@ namespace SCJ.Booking.MVC.Services.SC
 
             var template =
                 booking.TrialFormulaType == ScFormulaType.FairUseBooking
-                    ? "ScBooking/Email-Trial-FairUse"
-                    : "ScBooking/Email-Trial-Regular";
+                    ? "ScBooking/Emails/Email-Trial-FairUse"
+                    : "ScBooking/Emails/Email-Trial-Regular";
 
             // @TODO: html email body?
             return await _viewRenderService.RenderToStringAsync(template, viewModel);
@@ -249,7 +252,7 @@ namespace SCJ.Booking.MVC.Services.SC
             var bookingInfo = _session.ScBookingInfo;
             var courtClassCode = bookingInfo.SelectedCourtFile.courtClassCode ?? "";
 
-            formula ??= await _coreService.GetFormulaLocationAsync(
+            formula ??= await _cache.GetFormulaLocationAsync(
                 formulaType,
                 bookingInfo.TrialLocationRegistryId,
                 courtClassCode

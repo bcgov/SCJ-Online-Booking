@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using SCJ.Booking.MVC.Utils;
+using SCJ.Booking.MVC.Constants;
 using SCJ.OnlineBooking;
 
-namespace SCJ.Booking.MVC.ViewModels
+namespace SCJ.Booking.MVC.ViewModels.SC
 {
     public class ScCaseSearchViewModel
     {

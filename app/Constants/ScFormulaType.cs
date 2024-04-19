@@ -1,4 +1,4 @@
-namespace SCJ.Booking.MVC.Utils
+namespace SCJ.Booking.MVC.Constants
 {
     public static class ScFormulaType
     {

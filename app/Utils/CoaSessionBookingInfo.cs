@@ -1,6 +1,6 @@
-using SCJ.OnlineBooking;
 using System;
 using System.Collections.Generic;
+using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Utils
 {
@@ -15,18 +15,11 @@ namespace SCJ.Booking.MVC.Utils
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
         public DateTime? SelectedDate { get; set; }
-        public string FullCaseNumber { get; set; }
-        public int LocationId { get; set; }
         public string RegistryName { get; set; }
-        public string HearingLength { get; set; }
-        public int ContainerId { get; set; }
 
         //The result string returned by the SOAP API when the hearing was booked
         public string RawResult { get; set; }
         public bool IsBooked { get; set; }
-        public string RelatedCases { get; set; }
-        public string DateFriendlyName { get; set; }
-        public string TimeSlotFriendlyName { get; set; }
         public CoAClassInfo[] CaseList { get; set; }
         public List<string> SelectedCases { get; set; }
         public List<string> RelatedCaseList { get; set; }
@@ -38,11 +31,11 @@ namespace SCJ.Booking.MVC.Utils
         {
             get
             {
-                if (this.RawResult == null)
+                if (RawResult == null)
                 {
                     return string.Empty;
                 }
-                return this.RawResult.Replace("Fail - ", "");
+                return RawResult.Replace("Fail - ", "");
             }
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using SCJ.Booking.MVC.Utils;
 using SCJ.OnlineBooking;
 
-namespace SCJ.Booking.MVC.ViewModels
+namespace SCJ.Booking.MVC.ViewModels.SC
 {
     public class ScAvailableTimesViewModel
     {

@@ -68,11 +68,11 @@ namespace SCJ.Booking.MVC.Utils
         {
             get
             {
-                if (this.ApiBookingResultMessage == null)
+                if (ApiBookingResultMessage == null)
                 {
                     return string.Empty;
                 }
-                return this.ApiBookingResultMessage.Replace("Fail - ", "");
+                return ApiBookingResultMessage.Replace("Fail - ", "");
             }
         }
 

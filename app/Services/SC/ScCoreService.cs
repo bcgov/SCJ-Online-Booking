@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Utils;
-using SCJ.Booking.MVC.ViewModels;
+using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
-using Serilog;
 
 namespace SCJ.Booking.MVC.Services.SC
 {
@@ -79,11 +80,10 @@ namespace SCJ.Booking.MVC.Services.SC
                 CaseLocationName = model.CaseLocationName
             };
 
-            //search the current case number
-            (string searchableCaseNumber, newModel.LocationPrefix) = await BuildCaseNumberAsync(
-                model.CaseNumber,
-                model.CaseRegistryId
-            );
+            string prefix =
+                (await _cache.GetLocationAsync(model.CaseRegistryId)).locationCode ?? "";
+            string searchableCaseNumber = $"{prefix}{model.CaseNumber}";
+
             newModel.CaseSearchResults = await _client.caseNumberValidAsync(searchableCaseNumber);
 
             if ((newModel.CaseSearchResults?.Length ?? 0) == 0)
@@ -182,7 +182,7 @@ namespace SCJ.Booking.MVC.Services.SC
                     bookingInfo.TrialLocationRegistryId
                 );
 
-                FormulaLocation location = await GetFormulaLocationAsync(
+                FormulaLocation location = await _cache.GetFormulaLocationAsync(
                     bookingInfo.TrialFormulaType,
                     bookingInfo.TrialLocationRegistryId,
                     bookingInfo.SelectedCourtClass
@@ -213,12 +213,33 @@ namespace SCJ.Booking.MVC.Services.SC
                 SessionInfo = bookingInfo
             };
 
-            model = await SetFairUseFormulaInfoAsync(model);
+            model = await LoadAvailableTimesFormulaInfoAsync(model, null);
 
             model.TrialFormulaType =
                 bookingInfo.FairUseFormula is null && bookingInfo.RegularFormula is not null
                     ? ScFormulaType.RegularBooking
                     : bookingInfo.TrialFormulaType;
+
+            return model;
+        }
+
+        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesFormulaInfoAsync(
+            ScAvailableTimesViewModel model,
+            FormulaLocation fairUseFormula
+        )
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            fairUseFormula ??= await _cache.GetFormulaLocationAsync(
+                ScFormulaType.FairUseBooking,
+                bookingInfo.TrialLocationRegistryId,
+                bookingInfo.SelectedCourtFile.courtClassCode
+            );
+
+            model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
+            model.FairUseEndDate = fairUseFormula?.FairUseBookingPeriodEndDate;
+            model.FairUseResultDate = fairUseFormula?.FairUseContactDate;
+            model.FairUseNoticeDate = fairUseFormula?.FairUseBookingPeriodEndDate;
 
             return model;
         }
@@ -263,120 +284,22 @@ namespace SCJ.Booking.MVC.Services.SC
         }
 
         /// <summary>
-        ///     Get registry contact number
-        /// </summary>
-        private string GetRegistryContactNumber(int registryId)
-        {
-            //TODO:Implement logic to find contact number
-            //Need to ask SCJ to add a new field to the locations API
-            //for now temporary code to loop it up in a dictionary
-
-            var numbers = new Dictionary<int, string>
-            {
-                { 1, "604-660-2853" },
-                { 2, "250-356-1450" },
-                { 3, "604-660-8551" },
-                { 4, "250-614-2750" },
-                { 6, "250-828-4351" },
-                { 7, "250-741-5860" },
-                { 9, "250-741-5860" },
-                { 10, "604-795-8349" },
-                { 11, "250-614-2750" },
-                { 12, "250-356-1450" },
-                { 13, "250-614-2750" },
-                { 15, "250-828-4351" },
-                { 17, "250-828-4351" },
-                { 18, "250-470-6935" },
-                { 20, "250-741-5860" },
-                { 21, "250-828-4351" },
-                { 22, "250-741-5860" },
-                { 24, "250-741-5860" },
-                { 25, "250-624-7474" },
-                { 26, "250-470-6935" },
-                { 27, "250-614-2750" },
-                { 28, "250-828-4351" },
-                { 29, "250-828-4351" },
-                { 30, "250-828-4351" },
-                { 31, "250-847-7482" },
-                { 32, "250-624-7474" },
-                { 33, "250-614-2750" },
-                { 34, "250-470-6935" },
-                { 82, "604-425-3711" }
-            };
-
-            return numbers.ContainsKey(registryId) ? numbers[registryId] : numbers[1];
-        }
-
-        /// <summary>
-        ///     Fetch location-code for specific case ID and combine it with the case number
-        /// </summary>
-        private async Task<(string, string)> BuildCaseNumberAsync(int? caseId, int locationId)
-        {
-            //fetch location prefix
-            string prefix = (await _cache.GetLocationAsync(locationId)).locationCode ?? "";
-
-            //return location prefix + case number
-            return ($"{prefix}{caseId}", prefix);
-        }
-
-        public async Task<ScAvailableTimesViewModel> SetFairUseFormulaInfoAsync(
-            ScAvailableTimesViewModel model,
-            FormulaLocation fairUseFormula = null
-        )
-        {
-            var bookingInfo = _session.ScBookingInfo;
-
-            fairUseFormula ??= await GetFormulaLocationAsync(
-                ScFormulaType.FairUseBooking,
-                bookingInfo.TrialLocationRegistryId,
-                bookingInfo.SelectedCourtFile.courtClassCode
-            );
-
-            model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
-            model.FairUseEndDate = fairUseFormula?.FairUseBookingPeriodEndDate;
-            model.FairUseResultDate = fairUseFormula?.FairUseContactDate;
-            model.FairUseNoticeDate = fairUseFormula?.FairUseBookingPeriodEndDate;
-
-            return model;
-        }
-
-        public async Task<FormulaLocation> GetFormulaLocationAsync(
-            string formula,
-            int locationId,
-            string courtClass
-        )
-        {
-            var formulas = await _cache.AvailableTrialBookingFormulasByLocationAsync();
-
-            // look for a special formula location for the specific courtClass
-            var result = formulas.FirstOrDefault(f =>
-                f.FormulaType == formula
-                && f.LocationID == locationId
-                && f.BookingHearingCode == courtClass
-            );
-
-            if (result != null)
-            {
-                return result;
-            }
-
-            // if there isn't a special formula location then use the general one
-            var all = new[] { "All", "All Other" };
-
-            return formulas.FirstOrDefault(f =>
-                f.FormulaType == formula
-                && f.LocationID == locationId
-                && all.Contains(f.BookingHearingCode)
-            );
-        }
-
-        /// <summary>
         ///     Check if a time slot is still available for a court booking
         /// </summary>
-        public bool IsTimeStillAvailable(AvailableDatesByLocation schedule, int containerId)
+        public static bool IsTimeStillAvailable(AvailableDatesByLocation schedule, int containerId)
         {
             //check if the container ID is still available
             return schedule.AvailableDates.Any(x => x.ContainerID == containerId);
+        }
+
+        /// <summary>
+        ///     Get registry contact number
+        /// </summary>
+        public static string GetRegistryContactNumber(int registryId)
+        {
+            const int vancouverId = 1;
+            var numbers = ScPhoneNumbers.PhoneList;
+            return numbers.ContainsKey(registryId) ? numbers[registryId] : numbers[vancouverId];
         }
     }
 }

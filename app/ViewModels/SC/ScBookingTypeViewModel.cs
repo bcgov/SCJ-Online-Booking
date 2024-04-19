@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SCJ.Booking.MVC.Utils;
 
-namespace SCJ.Booking.MVC.ViewModels
+namespace SCJ.Booking.MVC.ViewModels.SC
 {
     public class ScBookingTypeViewModel
     {
