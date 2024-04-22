@@ -87,26 +87,28 @@ namespace SCJ.Booking.MVC.Services
                 _dbContext.Set<ScTrialBookingRequest>();
 
             var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var courtFile = bookingInfo.SelectedCourtFile;
 
             var bookingRequest = new ScTrialBookingRequest
             {
                 User = oidcUser,
                 BookHearingCode = formula.BookingHearingCode,
                 BookingLocationId = formula.BookingLocationID,
-                CeisPhysicalFileId = bookingInfo.PhysicalFileId,
-                CourtClassCode = bookingInfo.SelectedCourtClass,
-                CourtClassName = bookingInfo.SelectedCourtClassName,
+                CeisPhysicalFileId = courtFile.physicalFileId.GetValueOrDefault(0),
+                CourtClassCode = courtFile.courtClassCode,
+                CaseRegistryId = bookingInfo.CaseRegistryId,
+                CaseRegistryCode = bookingInfo.LocationPrefix,
                 CreationTimestamp = DateTime.Now,
                 Email = userInfo.Email,
                 Phone = userInfo.Phone,
                 RequestedByName = userInfo.ContactName,
-                UnmetDemandMonths = bookingInfo.UnmetDemandMonths,
                 TrialLocationName = bookingInfo.BookingLocationName,
-                FullCaseNumber = bookingInfo.FullCaseNumber,
-                StyleOfCause = bookingInfo.SelectedCourtFile.styleOfCause,
+                FairUseSort = courtFile.fairUseSort,
+                CaseNumber = bookingInfo.CaseNumber,
+                StyleOfCause = courtFile.styleOfCause,
                 TrialPeriodStartDate = formula.StartDate,
                 TrialPeriodEndDate = formula.EndDate,
-                LocationId = bookingInfo.TrialLocationRegistryId,
+                TrialLocationId = bookingInfo.TrialLocationRegistryId,
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
                 HearingLength = bookingInfo.EstimatedTrialLength.Value,

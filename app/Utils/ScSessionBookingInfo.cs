@@ -78,6 +78,5 @@ namespace SCJ.Booking.MVC.Utils
 
         public FormulaLocation RegularFormula { get; set; }
         public FormulaLocation FairUseFormula { get; set; }
-        public int UnmetDemandMonths { get; set; }
     }
 }
