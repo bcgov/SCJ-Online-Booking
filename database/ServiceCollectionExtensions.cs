@@ -1,12 +1,10 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SCJ.Booking.Data;
 
-namespace SCJ.Booking.MVC
+namespace SCJ.Booking.Data
 {
-    internal static class ServiceCollectionExtension
+    public static class ServiceCollectionExtension
     {
         public static IServiceCollection AddApplicationDbContext(
             this IServiceCollection services,
@@ -30,32 +28,9 @@ namespace SCJ.Booking.MVC
                 ];
             }
 
-            if (string.IsNullOrEmpty(provider))
-            {
-                provider = ServiceConfig.DataProviderPlatform;
-            }
-
-            if (provider == ServiceConfig.DataProviderPlatform)
-            {
-                var platform = new Platform();
-                provider = platform.UseInMemoryStore
-                    ? ServiceConfig.DataProviderMemory
-                    : ServiceConfig.DataProviderSqlServer;
-            }
-
             Console.WriteLine($"Using data provider: {provider}");
             switch (provider)
             {
-                case ServiceConfig.DataProviderMemory:
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseInMemoryDatabase("Scratch")
-                    );
-                    break;
-                case ServiceConfig.DataProviderSqlServer:
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlServer(connectionString)
-                    );
-                    break;
                 case ServiceConfig.DataProviderNpgsql:
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseNpgsql(connectionString)

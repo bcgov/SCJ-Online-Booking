@@ -17,15 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 		openshift\templates\scj-booking\scj-booking-deploy.yaml = openshift\templates\scj-booking\scj-booking-deploy.yaml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jenkins", "jenkins", "{C72FC6E5-6989-4BA7-98C4-3ABB29C5C8EE}"
-	ProjectSection(SolutionItems) = preProject
-		openshift\jenkins\core-build-pipeline-Jenkinsfile = openshift\jenkins\core-build-pipeline-Jenkinsfile
-		openshift\jenkins\create-runtime-and-deploy-to-dev-Jenkinsfile = openshift\jenkins\create-runtime-and-deploy-to-dev-Jenkinsfile
-		openshift\jenkins\deploy-to-prod-Jenkinsfile = openshift\jenkins\deploy-to-prod-Jenkinsfile
-		openshift\jenkins\deploy-to-test-Jenkinsfile = openshift\jenkins\deploy-to-test-Jenkinsfile
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.Data", "database\SCJ.Booking.Data.csproj", "{B0621E37-FF9F-41CE-9392-18A5655ABC23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCJ.Booking.Data", "database\SCJ.Booking.Data.csproj", "{B0621E37-FF9F-41CE-9392-18A5655ABC23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.TaskManager", "service\SCJ.Booking.TaskManager.csproj", "{C9827C16-2A98-4117-AC6E-B3723CCC25E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +43,10 @@ Global
 		{B0621E37-FF9F-41CE-9392-18A5655ABC23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0621E37-FF9F-41CE-9392-18A5655ABC23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0621E37-FF9F-41CE-9392-18A5655ABC23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9827C16-2A98-4117-AC6E-B3723CCC25E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9827C16-2A98-4117-AC6E-B3723CCC25E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9827C16-2A98-4117-AC6E-B3723CCC25E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9827C16-2A98-4117-AC6E-B3723CCC25E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

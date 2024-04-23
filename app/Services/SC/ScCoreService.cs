@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
 using SCJ.Booking.MVC.Constants;

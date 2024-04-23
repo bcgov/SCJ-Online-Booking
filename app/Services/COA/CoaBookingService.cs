@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Utils;
 using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels.COA;
 using SCJ.Booking.RemoteAPIs;
+using SCJ.Booking.TaskManager.Services;
 using SCJ.OnlineBooking;
 using Serilog;
 
@@ -27,8 +29,8 @@ namespace SCJ.Booking.MVC.Services.COA
         private readonly SessionService _session;
         private readonly CacheService _coaCacheService;
         private readonly IViewRenderService _viewRenderService;
-        private readonly MailService _mailService;
-        private readonly DbWriterService _dbWriterService;
+        private readonly MailQueueService _mailService;
+        private readonly DataWriterService _dbWriterService;
 
         //Constructor
         public CoaBookingService(
@@ -52,8 +54,8 @@ namespace SCJ.Booking.MVC.Services.COA
             _session = sessionService;
             _coaCacheService = coaCacheService;
             _viewRenderService = viewRenderService;
-            _mailService = new MailService("CA", _configuration, _logger);
-            _dbWriterService = new DbWriterService(dbContext);
+            _mailService = new MailQueueService(dbContext);
+            _dbWriterService = new DataWriterService(dbContext);
         }
 
         /// <summary>
@@ -337,7 +339,8 @@ namespace SCJ.Booking.MVC.Services.COA
                     _session.UserInfo = userInfo;
 
                     //send email
-                    await _mailService.SendEmailAsync(
+                    await _mailService.QueueEmailAsync(
+                        "COA",
                         model.EmailAddress,
                         EmailSubject,
                         await GetEmailBody()

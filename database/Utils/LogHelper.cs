@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 
-namespace SCJ.Booking.MVC.Utils
+namespace SCJ.Booking.Data.Utils
 {
     public static class LogHelper
     {
