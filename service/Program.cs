@@ -21,6 +21,8 @@ namespace SCJ.Booking.TaskManager
 
             while (true)
             {
+                logger.Information("Checking mail queue");
+
                 // get the successful court booking emails in batches of 5 to send out
                 var emailBatch = dbContext.Set<QueuedEmail>().Take(5);
 

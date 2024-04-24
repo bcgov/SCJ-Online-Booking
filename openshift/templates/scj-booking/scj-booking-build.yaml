@@ -132,6 +132,48 @@ objects:
         to:
           kind: ImageStreamTag
           name: ${NAME}-runtime:latest
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}-taskmanager-runtime
+      annotations:
+        description: Defines how to chain the taskmanager runtime image from the source build image
+    spec:
+      source:
+        dockerfile: |-
+          FROM ${DOTNET_RUNTIME_DOCKER_IMAGE}
+          ADD app.tar.gz .
+          RUN echo 'exec dotnet SCJ.Booking.TaskManager.dll $@' > /opt/app-root/app/default-cmd.sh
+        images:
+          - from:
+              kind: ImageStreamTag
+              name: ${NAME}-build:latest
+            paths:
+              - sourcePath: /opt/app-root/app.tar.gz
+                destinationDir: .
+      strategy:
+        type: Docker
+        dockerStrategy:
+          from:
+            kind: DockerImage
+            name: ${DOTNET_RUNTIME_DOCKER_IMAGE}
+      triggers:
+          - type: ImageChange
+            imageChange:
+              from:
+                kind: ImageStreamTag
+                name: ${NAME}-build:latest
+      resources:
+        limits:
+          cpu: '2'
+          memory: 4Gi
+        requests:
+          cpu: '1'
+          memory: 2Gi
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}-taskmanager-runtime:latest
 parameters:
   - name: NAME
     displayName: Name
