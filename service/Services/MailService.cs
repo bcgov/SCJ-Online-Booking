@@ -1,51 +1,44 @@
-using System;
-using System.Threading.Tasks;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
+using SCJ.Booking.Data.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Serilog;
 using Task = System.Threading.Tasks.Task;
 
-namespace SCJ.Booking.MVC.Services
+namespace SCJ.Booking.TaskManager.Services
 {
     public class MailService
     {
         private readonly IConfiguration _configuration;
-        private readonly ClientSecretCredential _emailCredentials;
+        private ClientSecretCredential? _emailCredentials;
         private readonly ILogger _logger;
-        private readonly string _senderEmail;
+        private string? _senderEmail;
+        private readonly bool _isLocalDevEnvironment;
 
-        public MailService(string courtLevel, IConfiguration configuration, ILogger logger)
+        public MailService(IConfiguration configuration, ILogger logger)
         {
             _configuration = configuration;
             _logger = logger;
-            if (_configuration["TAG_NAME"] != "localdev")
-            {
-                _senderEmail = configuration[$"{courtLevel}_EMAIL"] ?? "";
-                _emailCredentials = SetExchangeCredentials(courtLevel);
-            }
+            _isLocalDevEnvironment = _configuration["TAG_NAME"] == "localdev";
         }
 
         /// <summary>
         ///     Send an email
         /// </summary>
-        public async Task SendEmailAsync(
-            string toEmail,
-            string subject,
-            string body,
-            bool isLocalDevEnvironment = false
-        )
+        public async Task SendEmailAsync(QueuedEmail email)
         {
-            if (!isLocalDevEnvironment)
+            if (_isLocalDevEnvironment)
             {
-                await ExchangeSendEmail(toEmail, subject, body);
+                var fromEmail = _configuration["FROM_EMAIL"];
+                await SendGridSendEmail(fromEmail, email.ToEmail, email.Subject, email.Body);
             }
             else
             {
-                var fromEmail = _configuration["FROM_EMAIL"];
-                await SendGridSendEmail(fromEmail, toEmail, subject, body);
+                _senderEmail = _configuration[$"{email.CourtLevel}_EMAIL"] ?? "";
+                _emailCredentials = SetExchangeCredentials(email.CourtLevel);
+                await ExchangeSendEmail(email.ToEmail, email.Subject, email.Body);
             }
         }
 
@@ -70,12 +63,9 @@ namespace SCJ.Booking.MVC.Services
                     },
                     Subject = subject,
                     Body = new ItemBody { ContentType = BodyType.Text, Content = body },
-                    ToRecipients = new System.Collections.Generic.List<Recipient>()
+                    ToRecipients = new List<Recipient>()
                     {
-                        new Recipient
-                        {
-                            EmailAddress = new Microsoft.Graph.EmailAddress { Address = to }
-                        }
+                        new() { EmailAddress = new Microsoft.Graph.EmailAddress { Address = to } }
                     }
                 };
 
@@ -95,7 +85,7 @@ namespace SCJ.Booking.MVC.Services
         /// <remarks>
         ///     For local development purposes only
         /// </remarks>
-        public async Task<Response> SendGridSendEmail(
+        public async Task<SendGrid.Response> SendGridSendEmail(
             string fromEmail,
             string toEmail,
             string subject,
@@ -105,7 +95,7 @@ namespace SCJ.Booking.MVC.Services
             // log the settings the the console
             _logger.Information($"Sending email with SendGrid");
 
-            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            var apiKey = _configuration["SENDGRID_API_KEY"];
             var client = new SendGridClient(apiKey);
             var from = new SendGrid.Helpers.Mail.EmailAddress(fromEmail);
             var to = new SendGrid.Helpers.Mail.EmailAddress(toEmail);

@@ -7,12 +7,12 @@ using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.Services
 {
-    public class DbWriterService
+    public class DataWriterService
     {
         private readonly ApplicationDbContext _dbContext;
 
         //Constructor
-        public DbWriterService(ApplicationDbContext dbContext)
+        public DataWriterService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

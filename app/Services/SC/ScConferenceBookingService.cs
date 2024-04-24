@@ -4,10 +4,12 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Utils;
 using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
+using SCJ.Booking.TaskManager.Services;
 using SCJ.OnlineBooking;
 using Serilog;
 
@@ -20,9 +22,9 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly IOnlineBooking _client;
         private readonly ILogger _logger;
         private readonly SessionService _session;
-        private readonly DbWriterService _dbWriterService;
+        private readonly DataWriterService _dbWriterService;
         private readonly IViewRenderService _viewRenderService;
-        private readonly MailService _mailService;
+        private readonly MailQueueService _mailService;
 
         //Constructor
         public ScConferenceBookingService(
@@ -45,8 +47,8 @@ namespace SCJ.Booking.MVC.Services.SC
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _session = sessionService;
             _viewRenderService = viewRenderService;
-            _mailService = new MailService("SC", configuration, _logger);
-            _dbWriterService = new DbWriterService(dbContext);
+            _mailService = new MailQueueService(dbContext);
+            _dbWriterService = new DataWriterService(dbContext);
         }
 
         /// <summary>
@@ -126,11 +128,11 @@ namespace SCJ.Booking.MVC.Services.SC
                     const string emailSubject = "BC Courts Booking Confirmation";
 
                     //send email
-                    await _mailService.SendEmailAsync(
+                    await _mailService.QueueEmailAsync(
+                        "SC",
                         model.EmailAddress,
                         emailSubject,
-                        emailBody,
-                        IsLocalDevEnvironment
+                        emailBody
                     );
 
                     //clear booking info session

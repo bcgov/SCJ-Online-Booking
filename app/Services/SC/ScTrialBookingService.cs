@@ -6,10 +6,12 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Utils;
 using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
+using SCJ.Booking.TaskManager.Services;
 using SCJ.OnlineBooking;
 using Serilog;
 
@@ -22,10 +24,9 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly IOnlineBooking _client;
         private readonly ILogger _logger;
         private readonly SessionService _session;
-        private readonly DbWriterService _dbWriterService;
+        private readonly DataWriterService _dbWriterService;
         private readonly IViewRenderService _viewRenderService;
-        private readonly MailService _mailService;
-        private readonly ScCoreService _coreService;
+        private readonly MailQueueService _mailService;
         private readonly ScCacheService _cache;
 
         //Constructor
@@ -34,8 +35,7 @@ namespace SCJ.Booking.MVC.Services.SC
             IConfiguration configuration,
             SessionService sessionService,
             IViewRenderService viewRenderService,
-            ScCacheService cacheService,
-            ScCoreService coreService
+            ScCacheService cacheService
         )
         {
             //check if this is running on a developer workstation (outside OpenShift)
@@ -49,9 +49,8 @@ namespace SCJ.Booking.MVC.Services.SC
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _session = sessionService;
             _viewRenderService = viewRenderService;
-            _mailService = new MailService("SC", configuration, _logger);
-            _dbWriterService = new DbWriterService(dbContext);
-            _coreService = coreService;
+            _mailService = new MailQueueService(dbContext);
+            _dbWriterService = new DataWriterService(dbContext);
             _cache = cacheService;
         }
 
@@ -107,11 +106,11 @@ namespace SCJ.Booking.MVC.Services.SC
                 string emailBody = await GetTrialEmailBodyAsync();
                 string fileNumber = bookingInfo.FullCaseNumber;
                 string emailSubject = $"Trial booking request for {fileNumber}";
-                await _mailService.SendEmailAsync(
+                await _mailService.QueueEmailAsync(
+                    "SC",
                     model.EmailAddress,
                     emailSubject,
-                    emailBody,
-                    IsLocalDevEnvironment
+                    emailBody
                 );
             }
             else if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
@@ -181,11 +180,11 @@ namespace SCJ.Booking.MVC.Services.SC
                         "MMMM dd, yyyy"
                     );
                     string emailSubject = $"Trial booking for {fileNumber} starting on {startDate}";
-                    await _mailService.SendEmailAsync(
+                    await _mailService.QueueEmailAsync(
+                        "SC",
                         model.EmailAddress,
                         emailSubject,
-                        emailBody,
-                        IsLocalDevEnvironment
+                        emailBody
                     );
 
                     //clear booking info session

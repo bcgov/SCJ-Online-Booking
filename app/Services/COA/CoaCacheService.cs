@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using SCJ.Booking.Data.Utils;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;

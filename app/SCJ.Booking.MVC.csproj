@@ -6,16 +6,8 @@
         <PackageReference Include="Azure.Identity" Version="1.11.1" />
         <PackageReference Include="DotEnv.Core" Version="3.0.0" />
         <PackageReference Include="IdentityModel" Version="6.2.0" />
-        <PackageReference Include="MailKit" Version="4.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.27" />
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="6.0.26" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.26">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Graph" Version="4.22.0" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" PrivateAssets="All" />
-        <PackageReference Include="MimeKit" Version="4.5.0" />
         <PackageReference Include="SendGrid" Version="9.25.3" />
         <PackageReference Include="Serilog" Version="2.10.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
@@ -40,12 +32,8 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\database\SCJ.Booking.Data.csproj" />
+        <ProjectReference Include="..\service\SCJ.Booking.TaskManager.csproj" />
         <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="SCJ.Booking.Data">
-            <HintPath>..\SCJ.Booking.Data\bin\Debug\net6.0\SCJ.Booking.Data.dll</HintPath>
-        </Reference>
     </ItemGroup>
     <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
         <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
