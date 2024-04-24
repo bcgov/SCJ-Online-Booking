@@ -73,7 +73,7 @@ namespace SCJ.Booking.TaskManager
         {
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile("servicesettings.json", true, true)
                 .AddUserSecrets<Program>()
                 .AddEnvironmentVariables();
 
