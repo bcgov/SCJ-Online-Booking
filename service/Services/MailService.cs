@@ -7,7 +7,7 @@ using SendGrid.Helpers.Mail;
 using Serilog;
 using Task = System.Threading.Tasks.Task;
 
-namespace SCJ.Booking.TaskManager.Services
+namespace SCJ.Booking.TaskRunner.Services
 {
     public class MailService
     {

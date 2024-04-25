@@ -2,7 +2,7 @@ using SCJ.Booking.Data;
 using SCJ.Booking.Data.Models;
 using Task = System.Threading.Tasks.Task;
 
-namespace SCJ.Booking.TaskManager.Services
+namespace SCJ.Booking.TaskRunner.Services
 {
     public class MailQueueService
     {

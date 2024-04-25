@@ -11,7 +11,7 @@ using SCJ.Booking.MVC.Constants;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
-using SCJ.Booking.TaskManager.Services;
+using SCJ.Booking.TaskRunner.Services;
 using SCJ.OnlineBooking;
 using Serilog;
 

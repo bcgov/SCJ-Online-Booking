@@ -11,10 +11,21 @@ objects:
     name: deploy-to-test
   spec:
     tasks:
-      - name: scj-deploy-with-tag
+      - name: deploy-app
         params:
           - name: IMAGE
             value: scj-booking-runtime
+          - name: IMAGE_TAG
+            value: latest
+          - name: ENV
+            value: test
+        taskRef:
+          kind: Task
+          name: scj-deploy-with-tag
+      - name: deploy-taskrunner
+        params:
+          - name: IMAGE
+            value: scj-booking-taskrunner-runtime
           - name: IMAGE_TAG
             value: latest
           - name: ENV
@@ -29,10 +40,21 @@ objects:
     name: deploy-to-prod
   spec:
     tasks:
-      - name: scj-deploy-with-tag
+      - name: deploy-app
         params:
           - name: IMAGE
             value: scj-booking-runtime
+          - name: IMAGE_TAG
+            value: test
+          - name: ENV
+            value: prod
+        taskRef:
+          kind: Task
+          name: scj-deploy-with-tag
+      - name: deploy-taskrunner
+        params:
+          - name: IMAGE
+            value: scj-booking-taskrunner-runtime
           - name: IMAGE_TAG
             value: test
           - name: ENV

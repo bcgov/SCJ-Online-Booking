@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.Data", "database\SCJ.Booking.Data.csproj", "{B0621E37-FF9F-41CE-9392-18A5655ABC23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.TaskManager", "service\SCJ.Booking.TaskManager.csproj", "{C9827C16-2A98-4117-AC6E-B3723CCC25E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.TaskRunner", "service\SCJ.Booking.TaskRunner.csproj", "{C9827C16-2A98-4117-AC6E-B3723CCC25E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

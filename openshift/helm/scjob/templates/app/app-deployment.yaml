@@ -50,7 +50,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: {{ .Values.app.service.portName }}
               scheme: HTTP
             initialDelaySeconds: 120
             timeoutSeconds: 10
@@ -66,14 +66,6 @@ spec:
               value: {{ .Values.app.env.aspNetCoreEnvironment }}
             - name: TAG_NAME
               value: {{ .Values.app.env.tagName }}
-            - name: SC_MAIL_USERNAME
-              value: {{ .Values.app.env.scMailUsername }}
-            - name: CA_MAIL_USERNAME
-              value: {{ .Values.app.env.caMailUsername }}
-            - name: SC_EMAIL
-              value: {{ .Values.app.env.scEmail }}
-            - name: CA_EMAIL
-              value: {{ .Values.app.env.caEmail }}
             - name: ConnectionString
               valueFrom:
                 secretKeyRef:
@@ -82,15 +74,6 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-app-secrets
-          readinessProbe:
-            httpGet:
-              path: /
-              port: {{ .Values.app.service.portName }}
-            initialDelaySeconds: 10
-            timeoutSeconds: 10
-            periodSeconds: 5
-            successThreshold: 1
-            failureThreshold: 20
           startupProbe:
             httpGet:
               path: /

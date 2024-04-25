@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
@@ -32,7 +32,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\database\SCJ.Booking.Data.csproj" />
-        <ProjectReference Include="..\service\SCJ.Booking.TaskManager.csproj" />
+        <ProjectReference Include="..\service\SCJ.Booking.TaskRunner.csproj" />
         <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
     </ItemGroup>
     <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">

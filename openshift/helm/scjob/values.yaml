@@ -6,6 +6,9 @@ images:
   app:
     name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/scj-booking-runtime
     tag: latest
+  taskrunner:
+    name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/scj-booking-taskrunner-runtime
+    tag: latest
   patroni:
     name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/patroni-postgres
     tag: 2.0.1-12.4
@@ -28,10 +31,6 @@ app:
   env:
     aspNetCoreEnvironment: Development
     tagName: dev
-    scMailUsername: no-reply_SC_Booking
-    caMailUsername: no-reply_CA_Booking
-    scEmail: noreply_BCSC_Booking@bccourts.ca
-    caEmail: noreply_BCCA_Booking@bccourts.ca
 
   service:
     portName: netcore
@@ -42,6 +41,22 @@ app:
     maxReplicas: 1
     cpuUtilizationThreshold: 125
     memoryUtilizationThreshold: 125
+    
+taskrunner:
+  componentName: taskrunner
+
+  imagePullPolicy: Always
+
+  resources:
+    limits:
+      memory: 128Mi
+
+  env:
+    tagName: dev
+    scMailUsername: no-reply_SC_Booking
+    caMailUsername: no-reply_CA_Booking
+    scEmail: noreply_BCSC_Booking@bccourts.ca
+    caEmail: noreply_BCCA_Booking@bccourts.ca
 
 patroni:
   componentName: patroni

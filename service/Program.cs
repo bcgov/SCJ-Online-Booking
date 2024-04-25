@@ -3,10 +3,10 @@ using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Models;
 using SCJ.Booking.Data.Utils;
-using SCJ.Booking.TaskManager.Services;
+using SCJ.Booking.TaskRunner.Services;
 using Serilog;
 
-namespace SCJ.Booking.TaskManager
+namespace SCJ.Booking.TaskRunner
 {
     internal class Program
     {
@@ -22,6 +22,14 @@ namespace SCJ.Booking.TaskManager
             while (true)
             {
                 logger.Information("Checking mail queue");
+
+                // record pod liveness for health check every time the job runs
+                using (StreamWriter outputFile = new StreamWriter("lastrun.txt"))
+                {
+                    TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+                    int secondsSinceEpoch = (int)t.TotalSeconds;
+                    outputFile.WriteLine(secondsSinceEpoch);
+                }
 
                 // get the successful court booking emails in batches of 5 to send out
                 var emailBatch = dbContext.Set<QueuedEmail>().Take(5);

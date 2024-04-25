@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SCJ.Booking.Data.Models;
@@ -36,7 +37,8 @@ namespace SCJ.Booking.Data
             {
                 if (_provider == "sqlite")
                 {
-                    optionsBuilder.UseSqlite(_connectionString);
+                    var cs = SwapDevSqliteConnectionString();
+                    optionsBuilder.UseSqlite(cs);
                 }
 
                 if (_provider == "npgsql")
@@ -54,6 +56,22 @@ namespace SCJ.Booking.Data
                 .IsUnique();
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        private string SwapDevSqliteConnectionString()
+        {
+            var slash = Path.DirectorySeparatorChar;
+            var process = Process.GetCurrentProcess().MainModule?.FileName;
+            if (process != null && _connectionString != null)
+            {
+                var path = process.Split(@$"{slash}service{slash}bin");
+                var fileName = _connectionString.Split('=');
+                if (fileName.Length > 1 && path.Length > 1)
+                {
+                    return $@"data source={path[0]}{slash}app{slash}{fileName[1]}";
+                }
+            }
+            return _connectionString ?? "";
         }
     }
 }
