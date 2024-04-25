@@ -56,3 +56,13 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-app-secrets
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - health.sh
+            initialDelaySeconds: 120
+            timeoutSeconds: 10
+            periodSeconds: 120
+            successThreshold: 1
+            failureThreshold: 3
