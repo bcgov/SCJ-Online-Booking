@@ -18,6 +18,8 @@ namespace SCJ.OnlineBooking
     public partial class CourtFile : object
     {
 
+        private System.Nullable<decimal> CEISLocationIdField;
+
         private string courtClassCodeField;
 
         private string courtFileNumberField;
@@ -28,11 +30,22 @@ namespace SCJ.OnlineBooking
 
         private bool futureTrialHearingField;
 
-        private System.Nullable<decimal> locationIdField;
-
         private System.Nullable<decimal> physicalFileIdField;
 
         private string styleOfCauseField;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<decimal> CEISLocationId
+        {
+            get
+            {
+                return this.CEISLocationIdField;
+            }
+            set
+            {
+                this.CEISLocationIdField = value;
+            }
+        }
 
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string courtClassCode
@@ -96,19 +109,6 @@ namespace SCJ.OnlineBooking
             set
             {
                 this.futureTrialHearingField = value;
-            }
-        }
-
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<decimal> locationId
-        {
-            get
-            {
-                return this.locationIdField;
-            }
-            set
-            {
-                this.locationIdField = value;
             }
         }
 
@@ -1533,6 +1533,10 @@ namespace SCJ.OnlineBooking
 
         private string RequestedByField;
 
+        private System.DateTime SCJOB_Trial_Booking_DateField;
+
+        private string SCJOB_Trial_Booking_IDField;
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int BookingLocationID
         {
@@ -1647,6 +1651,32 @@ namespace SCJ.OnlineBooking
             set
             {
                 this.RequestedByField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime SCJOB_Trial_Booking_Date
+        {
+            get
+            {
+                return this.SCJOB_Trial_Booking_DateField;
+            }
+            set
+            {
+                this.SCJOB_Trial_Booking_DateField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SCJOB_Trial_Booking_ID
+        {
+            get
+            {
+                return this.SCJOB_Trial_Booking_IDField;
+            }
+            set
+            {
+                this.SCJOB_Trial_Booking_IDField = value;
             }
         }
     }

@@ -11,8 +11,7 @@
 *.userosscache
 *.sln.docstates
 .DS_Store
-app/.env
-test/.env
+*.env
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -270,3 +269,4 @@ app/wwwroot/dist/
 # Sqlite database
 app/scj-booking.sqlite
 app/scj-booking.sqlite*
+

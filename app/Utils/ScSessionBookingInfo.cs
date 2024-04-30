@@ -78,5 +78,6 @@ namespace SCJ.Booking.MVC.Utils
 
         public FormulaLocation RegularFormula { get; set; }
         public FormulaLocation FairUseFormula { get; set; }
+        public string TrialBookingId { get; set; }
     }
 }

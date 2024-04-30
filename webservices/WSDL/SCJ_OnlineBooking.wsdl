@@ -271,12 +271,12 @@
       <xs:element name="ArrayOfCourtFile" nillable="true" type="tns:ArrayOfCourtFile"/>
       <xs:complexType name="CourtFile">
         <xs:sequence>
+          <xs:element minOccurs="0" name="CEISLocationId" nillable="true" type="xs:decimal"/>
           <xs:element minOccurs="0" name="courtClassCode" nillable="true" type="xs:string"/>
           <xs:element minOccurs="0" name="courtFileNumber" nillable="true" type="xs:string"/>
           <xs:element minOccurs="0" name="courtLevelCode" nillable="true" type="xs:string"/>
           <xs:element minOccurs="0" name="fairUseSort" type="xs:int"/>
           <xs:element minOccurs="0" name="futureTrialHearing" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="locationId" nillable="true" type="xs:decimal"/>
           <xs:element minOccurs="0" name="physicalFileId" nillable="true" type="xs:decimal"/>
           <xs:element minOccurs="0" name="styleOfCause" nillable="true" type="xs:string"/>
         </xs:sequence>
@@ -527,6 +527,8 @@
           <xs:element minOccurs="0" name="HearingType" type="xs:int"/>
           <xs:element minOccurs="0" name="LocationID" type="xs:int"/>
           <xs:element minOccurs="0" name="RequestedBy" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="SCJOB_Trial_Booking_Date" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="SCJOB_Trial_Booking_ID" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:element name="BookTrialHearingInfo" nillable="true" type="tns:BookTrialHearingInfo"/>
