@@ -1,4 +1,5 @@
 using System.Globalization;
+using DotEnv.Core;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Models;
@@ -81,6 +82,8 @@ namespace SCJ.Booking.TaskRunner
 
         private static IConfiguration GetConfiguration()
         {
+            new EnvLoader().Load();
+
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("servicesettings.json", true, true)

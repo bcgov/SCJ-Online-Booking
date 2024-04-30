@@ -87,7 +87,6 @@ namespace SCJ.Booking.MVC.Services.SC
 
             if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
             {
-                // @TODO: save to DB
                 await _dbWriterService.SaveBookingHistory(
                     userId,
                     "SC",
@@ -133,6 +132,7 @@ namespace SCJ.Booking.MVC.Services.SC
                         "The date you selected is no longer available."
                     );
                 }
+                var trialBookingId = GenerateTrialBookingId() + "-" + userId;
 
                 // book trial in API
                 BookTrialHearingInfo requestPayload =
@@ -146,7 +146,9 @@ namespace SCJ.Booking.MVC.Services.SC
                         HearingType = bookingInfo.HearingTypeId,
                         LocationID = bookingInfo.TrialLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
-                        HearingDate = bookingInfo.SelectedRegularTrialDate.Value
+                        HearingDate = bookingInfo.SelectedRegularTrialDate.Value,
+                        SCJOB_Trial_Booking_ID = trialBookingId,
+                        SCJOB_Trial_Booking_Date = DateTime.Now
                     };
 
                 _logger.Information("BOOKING SUPREME COURT => BookTrialHearingAsync()");
@@ -160,6 +162,9 @@ namespace SCJ.Booking.MVC.Services.SC
                 //test to see if the booking was successful
                 if (result.bookingResult.ToLower().StartsWith("success"))
                 {
+                    bookingInfo.TrialBookingId = trialBookingId;
+                    _session.ScBookingInfo = bookingInfo;
+
                     //create database entry
                     await _dbWriterService.SaveBookingHistory(
                         userId,
@@ -231,7 +236,8 @@ namespace SCJ.Booking.MVC.Services.SC
                 TrialLocationName = await _cache.GetLocationNameAsync(
                     booking.TrialLocationRegistryId
                 ),
-                ResultDate = resultDate
+                ResultDate = resultDate,
+                TrialBookingId = booking.TrialBookingId
             };
 
             var template =
@@ -288,6 +294,11 @@ namespace SCJ.Booking.MVC.Services.SC
                 .ToList();
 
             return Tuple.Create(dates, formula);
+        }
+
+        public string GenerateTrialBookingId()
+        {
+            return DateTime.Now.ToString("yyMMddHHmm");
         }
     }
 }

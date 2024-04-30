@@ -12,13 +12,13 @@ namespace SCJ.Booking.Data.Models
         public int CaseRegistryId { get; set; }
 
         [MaxLength(2)]
-        public string? CaseRegistryCode { get; set; }
+        public string CaseRegistryCode { get; set; } = "";
 
         public int CaseNumber { get; set; }
         public decimal CeisPhysicalFileId { get; set; }
 
         [MaxLength(255)]
-        public string? StyleOfCause { get; set; }
+        public string StyleOfCause { get; set; } = "";
 
         public int TrialLocationId { get; set; }
         public int BookingLocationId { get; set; }
@@ -30,24 +30,25 @@ namespace SCJ.Booking.Data.Models
         public DateTime TrialPeriodEndDate { get; set; }
 
         [MaxLength(1)]
-        public string? CourtClassCode { get; set; }
+        public string CourtClassCode { get; set; } = "";
 
         [MaxLength(10)]
-        public string? BookHearingCode { get; set; }
+        public string BookHearingCode { get; set; } = "";
 
         public int HearingLength { get; set; }
         public int FairUseSort { get; set; }
 
         [MaxLength(40)]
-        public string? RequestedByName { get; set; } // comes from Keycloak claims
+        public string RequestedByName { get; set; } = ""; // comes from Keycloak claims
 
         [MaxLength(20)]
-        public string? Phone { get; set; }
+        public string Phone { get; set; } = "";
 
         [MaxLength(40)]
-        public string? Email { get; set; }
+        public string Email { get; set; } = "";
 
         public DateTime CreationTimestamp { get; set; }
+        public string TrialBookingId { get; set; } = "";
         public DateTime? LotteryBeginTimestamp { get; set; }
         public int LotteryPosition { get; set; }
         public bool IsProcessed { get; set; } = false;

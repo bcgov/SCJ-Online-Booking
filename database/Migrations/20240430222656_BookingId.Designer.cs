@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SCJ.Booking.Data;
@@ -11,9 +12,10 @@ using SCJ.Booking.Data;
 namespace SCJ.Booking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240430222656_BookingId")]
+    partial class BookingId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,9 @@ namespace SCJ.Booking.Data.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("BookingLocationName")
                         .IsRequired()
@@ -56,20 +58,20 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.Property<string>("CoaCaseType")
                         .HasMaxLength(8)
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(8)");
 
                     b.Property<string>("CoaConferenceType")
                         .HasMaxLength(8)
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(8)");
 
                     b.Property<string>("CourtLevel")
                         .IsRequired()
                         .HasMaxLength(3)
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(3)");
 
                     b.Property<string>("ScFormulaType")
                         .HasMaxLength(8)
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(8)");
 
                     b.Property<int?>("ScHearingType")
                         .HasColumnType("integer");
@@ -78,7 +80,7 @@ namespace SCJ.Booking.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("UserId")
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -91,11 +93,11 @@ namespace SCJ.Booking.Data.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<ushort>("CredentialType")
+                    b.Property<int>("CredentialType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("LastLogin")
@@ -160,6 +162,7 @@ namespace SCJ.Booking.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("BookHearingCode")
+                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)");
 
@@ -181,6 +184,7 @@ namespace SCJ.Booking.Data.Migrations
                         .HasColumnType("numeric");
 
                     b.Property<string>("CourtClassCode")
+                        .IsRequired()
                         .HasMaxLength(1)
                         .HasColumnType("character varying(1)");
 
@@ -188,6 +192,7 @@ namespace SCJ.Booking.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
