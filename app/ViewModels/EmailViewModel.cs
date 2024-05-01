@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Html;
 
 namespace SCJ.Booking.MVC.ViewModels
 {
@@ -10,7 +11,7 @@ namespace SCJ.Booking.MVC.ViewModels
         public string BookingLocationName { get; set; }
         public string CourtFileNumber { get; set; }
         public string Date { get; set; }
-        public string Time { get; set; }
+        public HtmlString Time { get; set; }
         public string Phone { get; set; }
 
         //For Court of Appeal
