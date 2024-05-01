@@ -2,6 +2,7 @@ using System;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Utils;
@@ -182,7 +183,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 BookingLocationName = booking.BookingLocationName,
                 TypeOfConference = booking.HearingTypeName,
                 Date = booking.FormattedConferenceDate,
-                Time = booking.FormattedConferenceTime
+                Time = new HtmlString(booking.FormattedConferenceTime)
             };
 
             //Render the email template

@@ -8,7 +8,6 @@ namespace SCJ.Booking.MVC.ViewModels.COA
         public string TypeOfConference { get; set; }
         public string CourtFileNumber { get; set; }
         public string Date { get; set; }
-        public string Time { get; set; }
         public string Phone { get; set; }
         public string HearingLength { get; set; }
         public string CaseType { get; internal set; }

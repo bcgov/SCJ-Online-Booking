@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Html;
+
 namespace SCJ.Booking.MVC.ViewModels.SC
 {
     public class ScConferenceEmailViewModel
@@ -8,7 +10,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public string BookingLocationName { get; set; }
         public string FullCaseNumber { get; set; }
         public string Date { get; set; }
-        public string Time { get; set; }
+        public HtmlString Time { get; set; }
         public string Phone { get; set; }
         public string StyleOfCause { get; internal set; }
     }
