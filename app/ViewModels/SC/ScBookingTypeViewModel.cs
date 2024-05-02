@@ -24,6 +24,8 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public bool? IsLocationChangeFiled { get; set; }
         public int TrialLocationRegistryId { get; set; }
         public List<string> AvailableBookingTypes { get; set; }
+        public bool FutureTrialBooked { get; set; } = false;
+        public bool HasExistingTrialRequest { get; set; } = false;
 
         // Session object
         public ScSessionBookingInfo SessionInfo { get; set; }

@@ -55,6 +55,10 @@ namespace SCJ.Booking.Data
                 .HasIndex(u => new { u.UniqueIdentifier, u.CredentialType })
                 .IsUnique();
 
+            modelBuilder
+                .Entity<ScTrialBookingRequest>()
+                .HasIndex(r => new { r.CaseNumber }, "IX_CaseNumber_Ascending");
+
             base.OnModelCreating(modelBuilder);
         }
 

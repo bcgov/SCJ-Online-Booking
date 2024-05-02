@@ -116,6 +116,8 @@ namespace SCJ.Booking.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
+            model.HasExistingTrialRequest =
+                await _scTrialBookingService.CheckIfTrialAlreadyRequestedAsync();
             model.AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync();
 
             return View(model);

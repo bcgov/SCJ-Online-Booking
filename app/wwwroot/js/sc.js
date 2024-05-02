@@ -46,7 +46,16 @@ $(document).ready(function () {
 // Shows or hides the additional form fields for Trials
 function showTrialFields() {
   const trialSelected = $("input[name=HearingTypeId]:checked").val() === "9001";
-  $("#trial-additional-fields").toggle(trialSelected);
+
+  $("#existing-trial-error").hide();
+  $("#btnNext").show();
+
+  if (trialSelected && checkExistingTrialBookings()) {
+    $("#existing-trial-error").show();
+    $("#btnNext").hide();
+  } else {
+    $("#trial-additional-fields").toggle(trialSelected);
+  }
 
   const notHomeRegistry = $("input[name=IsHomeRegistry]:checked").val() === "false";
   $("#different-place-of-trial").toggle(notHomeRegistry);
@@ -55,6 +64,21 @@ function showTrialFields() {
   const notDifferentPlace = $("input[name=IsLocationChangeFiled]:checked").val() === "false";
   $("#trial-location").toggle(notHomeRegistry && differentPlace);
   $("#trial-location-warning").toggle(notHomeRegistry && notDifferentPlace);
+}
+
+// Shows an error if the case already has a future trial or a trial request
+function checkExistingTrialBookings() {
+  if ($("#FutureTrialBooked").val() === "True") {
+    $("#reason-future-trial-booked").show();
+    return true;
+  }
+
+  if ($("#HasExistingTrialRequest").val() === "True") {
+    $("#reason-existing-trial-request").show();
+    return true;
+  }
+
+  return false;
 }
 
 // Called by Vue when a time-slot is selected

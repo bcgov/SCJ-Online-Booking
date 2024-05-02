@@ -253,6 +253,8 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex(new[] { "CaseNumber" }, "IX_CaseNumber_Ascending");
+
                     b.ToTable("ScTrialBookingRequests");
                 });
 

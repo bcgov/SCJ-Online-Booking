@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Utils;
@@ -28,6 +29,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly IViewRenderService _viewRenderService;
         private readonly MailQueueService _mailService;
         private readonly ScCacheService _cache;
+        private readonly ApplicationDbContext _dbContext;
 
         //Constructor
         public ScTrialBookingService(
@@ -47,6 +49,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             _logger = LogHelper.GetLogger(configuration);
             _client = OnlineBookingClientFactory.GetClient(configuration);
+            _dbContext = dbContext;
             _session = sessionService;
             _viewRenderService = viewRenderService;
             _mailService = new MailQueueService(dbContext);
@@ -87,30 +90,38 @@ namespace SCJ.Booking.MVC.Services.SC
 
             if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
             {
-                await _dbWriterService.SaveBookingHistory(
-                    userId,
-                    "SC",
-                    bookingInfo.BookingLocationName,
-                    ScHearingType.TRIAL,
-                    ScFormulaType.FairUseBooking
-                );
+                if (await CheckIfTrialAlreadyRequestedAsync())
+                {
+                    bookingInfo.ApiBookingResultMessage =
+                        "A trial has already been requested for this case.";
+                }
+                else
+                {
+                    await _dbWriterService.SaveBookingHistory(
+                        userId,
+                        "SC",
+                        bookingInfo.BookingLocationName,
+                        ScHearingType.TRIAL,
+                        ScFormulaType.FairUseBooking
+                    );
 
-                await _dbWriterService.SaveFairUseRequest(userId, bookingInfo, userInfo);
+                    await _dbWriterService.SaveFairUseRequest(userId, bookingInfo, userInfo);
 
-                //update model
-                model.IsBooked = true;
-                bookingInfo.IsBooked = true;
+                    //update model
+                    model.IsBooked = true;
+                    bookingInfo.IsBooked = true;
 
-                // send email
-                string emailBody = await GetTrialEmailBodyAsync();
-                string fileNumber = bookingInfo.FullCaseNumber;
-                string emailSubject = $"Trial booking request for {fileNumber}";
-                await _mailService.QueueEmailAsync(
-                    "SC",
-                    model.EmailAddress,
-                    emailSubject,
-                    emailBody
-                );
+                    // send email
+                    string emailBody = await GetTrialEmailBodyAsync();
+                    string fileNumber = bookingInfo.FullCaseNumber;
+                    string emailSubject = $"Trial booking request for {fileNumber}";
+                    await _mailService.QueueEmailAsync(
+                        "SC",
+                        model.EmailAddress,
+                        emailSubject,
+                        emailBody
+                    );
+                }
             }
             else if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
             {
@@ -299,6 +310,24 @@ namespace SCJ.Booking.MVC.Services.SC
         public string GenerateTrialBookingId()
         {
             return DateTime.Now.ToString("yyMMddHHmm");
+        }
+
+        public async Task<bool> CheckIfTrialAlreadyRequestedAsync()
+        {
+            var booking = _session.ScBookingInfo;
+
+            // skip this check if we are already going to show the other message
+            if (booking.SelectedCourtFile.futureTrialHearing)
+            {
+                return false;
+            }
+
+            return await _dbContext.ScTrialBookingRequests.AnyAsync(r =>
+                r.CaseNumber == booking.CaseNumber // has index
+                && r.CaseRegistryId == booking.CaseRegistryId
+                && r.CourtClassCode == booking.SelectedCourtClass
+                && r.IsProcessed == false
+            );
         }
     }
 }
