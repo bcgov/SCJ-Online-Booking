@@ -11,7 +11,7 @@ namespace SCJ.Booking.Data.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public DateTime Timestamp { get; set; }
