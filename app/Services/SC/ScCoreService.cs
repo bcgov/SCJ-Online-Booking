@@ -131,6 +131,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 IsHomeRegistry = bookingInfo.IsHomeRegistry,
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
                 TrialLocationRegistryId = bookingInfo.TrialLocationRegistryId,
+                FutureTrialBooked = bookingInfo.SelectedCourtFile.futureTrialHearing,
                 SessionInfo = bookingInfo
             };
         }
