@@ -70,17 +70,19 @@ namespace SCJ.Booking.MVC.Services.SC
 
         public async Task<ScCaseSearchViewModel> GetSearchResults(ScCaseSearchViewModel model)
         {
+            string prefix =
+                (await _cache.GetLocationAsync(model.CaseRegistryId)).locationCode ?? "";
+
             // Load locations from cache
             var newModel = new ScCaseSearchViewModel
             {
                 CaseRegistryId = model.CaseRegistryId,
                 CaseNumber = model.CaseNumber,
                 SelectedCourtClass = model.SelectedCourtClass,
+                LocationPrefix = prefix,
                 CaseLocationName = model.CaseLocationName
             };
 
-            string prefix =
-                (await _cache.GetLocationAsync(model.CaseRegistryId)).locationCode ?? "";
             string searchableCaseNumber = $"{prefix}{model.CaseNumber}";
 
             newModel.CaseSearchResults = await _client.caseNumberValidAsync(searchableCaseNumber);
@@ -114,6 +116,7 @@ namespace SCJ.Booking.MVC.Services.SC
             bookingInfo.FullCaseNumber = model.FullCaseNumber;
             bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
             bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
+            bookingInfo.LocationPrefix = model.LocationPrefix;
 
             _session.ScBookingInfo = bookingInfo;
         }
