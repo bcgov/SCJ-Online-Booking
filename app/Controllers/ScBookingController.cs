@@ -111,7 +111,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             var model = _scCoreService.LoadBookingTypeForm();
 
-            if (model.SessionInfo.CaseNumber == 0)
+            if (model.SessionInfo.SelectedCourtFile is null)
             {
                 return RedirectToAction("Index");
             }
@@ -301,7 +301,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
-            if (bookingInfo.CaseNumber == 0)
+            if (bookingInfo.SelectedCourtFile is null)
             {
                 return RedirectToAction("Index");
             }
@@ -392,7 +392,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
-            if (bookingInfo.CaseNumber == 0)
+            if (bookingInfo.SelectedCourtFile is null)
             {
                 return RedirectToAction("Index");
             }
@@ -406,7 +406,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
-            if (bookingInfo.CaseNumber == 0)
+            if (bookingInfo.SelectedCourtFile is null)
             {
                 return RedirectToAction("Index");
             }
@@ -420,7 +420,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
-            if (bookingInfo.CaseNumber == 0)
+            if (bookingInfo.SelectedCourtFile is null)
             {
                 return RedirectToAction("Index");
             }

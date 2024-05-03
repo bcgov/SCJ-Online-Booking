@@ -325,7 +325,7 @@ namespace SCJ.Booking.MVC.Services.SC
             return await _dbContext.ScTrialBookingRequests.AnyAsync(r =>
                 r.CaseNumber == booking.CaseNumber // has index
                 && r.CaseRegistryId == booking.CaseRegistryId
-                && r.CourtClassCode == booking.SelectedCourtClass
+                && r.CourtClassCode == booking.SelectedCourtFile.courtClassCode
                 && r.IsProcessed == false
             );
         }
