@@ -63,7 +63,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 SelectedCaseId = bookingInfo.PhysicalFileId,
                 CaseNumber = bookingInfo.CaseNumber,
                 CaseSearchResults = bookingInfo.CaseSearchResults,
-                SelectedCourtClass = bookingInfo.SelectedCourtFile?.courtClassCode,
+                SelectedCourtClass = bookingInfo.SelectedCourtClass,
                 LocationPrefix = bookingInfo.LocationPrefix
             };
         }
