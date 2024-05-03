@@ -112,6 +112,7 @@ namespace SCJ.Booking.MVC.Services.SC
             var bookingInfo = _session.ScBookingInfo;
 
             bookingInfo.PhysicalFileId = model.SelectedCaseId;
+            bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
             bookingInfo.FullCaseNumber = model.FullCaseNumber;
             bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
             bookingInfo.SelectedCourtFile = model.SelectedCourtFile;

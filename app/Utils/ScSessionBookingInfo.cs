@@ -39,6 +39,7 @@ namespace SCJ.Booking.MVC.Utils
         public bool IsBooked { get; set; }
 
         public CourtFile[] CaseSearchResults { get; set; }
+        public string SelectedCourtClass { get; set; }
         public CourtFile SelectedCourtFile { get; set; }
         public string SelectedCourtClassName { get; set; }
         public AvailableDatesByLocation AvailableConferenceDates { get; set; }
