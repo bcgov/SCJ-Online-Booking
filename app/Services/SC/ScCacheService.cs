@@ -51,7 +51,7 @@ namespace SCJ.Booking.MVC.Services.SC
         /// </summary>
         public async Task<string> GetLocationNameAsync(int locationId)
         {
-            return (await GetLocationAsync(locationId)).locationName;
+            return locationId != -1 ? (await GetLocationAsync(locationId)).locationName : null;
         }
 
         /// <summary>
