@@ -63,7 +63,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 SelectedCaseId = bookingInfo.PhysicalFileId,
                 CaseNumber = bookingInfo.CaseNumber,
                 CaseSearchResults = bookingInfo.CaseSearchResults,
-                SelectedCourtClass = bookingInfo.SelectedCourtClass,
+                SelectedCourtClass = bookingInfo.SelectedCourtFile?.courtClassCode,
                 LocationPrefix = bookingInfo.LocationPrefix
             };
         }
@@ -112,7 +112,6 @@ namespace SCJ.Booking.MVC.Services.SC
             var bookingInfo = _session.ScBookingInfo;
 
             bookingInfo.PhysicalFileId = model.SelectedCaseId;
-            bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
             bookingInfo.FullCaseNumber = model.FullCaseNumber;
             bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
             bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
@@ -188,7 +187,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 FormulaLocation location = await _cache.GetFormulaLocationAsync(
                     bookingInfo.TrialFormulaType,
                     bookingInfo.TrialLocationRegistryId,
-                    bookingInfo.SelectedCourtClass
+                    bookingInfo.SelectedCourtFile?.courtClassCode
                 );
 
                 if (location is not null)
