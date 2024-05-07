@@ -71,6 +71,7 @@ namespace SCJ.Booking.MVC.Utils
                 }
 
                 var claims = new List<Claim> { new(ClaimTypes.Sid, userId.ToString()), };
+                Console.WriteLine($"Add claim: userId={userId} for guid={guid}");
 
                 var appIdentity = new ClaimsIdentity(claims);
 

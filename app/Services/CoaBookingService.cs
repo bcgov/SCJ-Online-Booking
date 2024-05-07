@@ -265,6 +265,7 @@ namespace SCJ.Booking.MVC.Services
 
                 string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
+                _logger.Information($"Got claim: userId={userId}");
 
                 if (bookingInfo.IsAppealHearing is true)
                 {
@@ -323,6 +324,7 @@ namespace SCJ.Booking.MVC.Services
                     DbSet<BookingHistory> bookingHistory = _dbContext.Set<BookingHistory>();
 
                     var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                    _logger.Information($"Got user: {JsonSerializer.Serialize(oidcUser)}");
 
                     await bookingHistory.AddAsync(
                         new BookingHistory
