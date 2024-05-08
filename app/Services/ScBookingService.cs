@@ -575,7 +575,7 @@ namespace SCJ.Booking.MVC.Services
                 BookingLocationName = booking.BookingLocationName,
                 TypeOfConference = booking.HearingTypeName,
                 Date = booking.DateFriendlyName,
-                Time = booking.TimeSlotFriendlyName
+                Time = new HtmlString(booking.TimeSlotFriendlyName)
             };
 
             //Render the email template
