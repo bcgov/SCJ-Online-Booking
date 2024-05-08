@@ -214,8 +214,10 @@ hr {
     background-color: $blue-medium;
   }
   &:focus,
+  &.selected,
   &:not(:disabled):not(.disabled):active {
     background-color: $blue-dark;
+    color: $white;
   }
 }
 
