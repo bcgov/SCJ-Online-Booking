@@ -22,7 +22,7 @@
                   <button
                     type="button"
                     class="btn btn-tertiary btn-block"
-                    @click="selectTime(container.containerId, container.startDateTime)"
+                    @mousedown="selectTime(container.containerId, container.startDateTime)"
                     @keypress.enter="
                       keyboardSelection(container.containerId, container.startDateTime)
                     "
