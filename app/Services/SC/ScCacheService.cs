@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
-using SCJ.Booking.MVC.Constants;
+using SCJ.Booking.Data.Constants;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 

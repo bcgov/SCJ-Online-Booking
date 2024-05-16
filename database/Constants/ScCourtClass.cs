@@ -1,6 +1,6 @@
 using System.Collections.Specialized;
 
-namespace SCJ.Booking.MVC.Constants
+namespace SCJ.Booking.Data.Constants
 {
     public class ScCourtClass
     {

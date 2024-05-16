@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace SCJ.Booking.MVC.Constants
+namespace SCJ.Booking.Data.Constants
 {
     public static class CoaHearingType
     {

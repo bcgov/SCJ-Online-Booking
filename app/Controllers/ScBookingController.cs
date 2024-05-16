@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SCJ.Booking.MVC.Constants;
+using SCJ.Booking.Data.Constants;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
