@@ -8,9 +8,11 @@
             <strong class="d-md-none">Provide availability</strong>
             <strong class="d-none d-md-block">Provide your availability for upcoming dates</strong>
           </div>
-          <div class="d-none d-md-block">
+          <div v-if="!fairUseDisabled" class="d-none d-md-block">
             Choose up to five dates for a trial starting in the upcoming release of dates.
           </div>
+          <!-- show "fair use disabled" alert text inline on larger screens -->
+          <div v-else class="d-none d-md-block"><slot name="fairUseDisabledAlert" /></div>
         </label>
       </li>
 
@@ -31,7 +33,8 @@
     <div class="bg-white">
       <input type="hidden" name="TrialFormulaType" :value="tab" />
 
-      <div class="alert sm-banner alert-warning m-0" v-if="showFairUseDisabledAlert">
+      <!-- show "fair use disabled" alert text in a floating banner on small screens -->
+      <div class="alert sm-banner alert-warning m-0 d-md-none" v-if="showFairUseDisabledAlert">
         <i class="fa fa-exclamation-triangle" />
 
         <slot name="fairUseDisabledAlert" />
@@ -130,6 +133,7 @@ ul {
     padding: 0;
     list-style-type: none;
     user-select: none;
+    flex: 1;
 
     label {
       margin: 0;
