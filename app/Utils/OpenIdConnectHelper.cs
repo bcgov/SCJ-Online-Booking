@@ -61,7 +61,6 @@ namespace SCJ.Booking.MVC.Utils
                     {
                         user.LastLogin = DateTime.Now;
 
-                        dbCtx.Users.Update(user);
                         await dbCtx.SaveChangesAsync();
                     }
                 }

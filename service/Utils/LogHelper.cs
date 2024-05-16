@@ -2,14 +2,14 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 
-namespace SCJ.Booking.Data.Utils
+namespace SCJ.Booking.TaskRunner.Utils
 {
     public static class LogHelper
     {
         public static ILogger GetLogger(IConfiguration configuration)
         {
-            // default log level is error (less verbose)
-            var logLevel = LogEventLevel.Error;
+            // default log level is warning (less verbose)
+            var logLevel = LogEventLevel.Warning;
 
             //check if this is running on a developer workstation (outside OpenShift)
             string tagName = configuration["TAG_NAME"] ?? "";

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace SCJ.Booking.MVC.Constants
+namespace SCJ.Booking.Data.Constants
 {
     public static class ScHearingType
     {
@@ -14,6 +12,7 @@ namespace SCJ.Booking.MVC.Constants
         public const int JCC = 9005;
         public const int TRIAL = 9001;
 
+        public const int UNMET_DEMAND = 20538;
         public const int UNKNOWN = 0;
 
         public static string GetHearingType(int code)
@@ -40,6 +39,7 @@ namespace SCJ.Booking.MVC.Constants
                 { "TMC", TMC },
                 { "CPC", CPC },
                 { "JCC", JCC },
+                { "UNMET_DEMAND", UNMET_DEMAND },
                 { "UNKNOWN", UNKNOWN },
             };
 
@@ -55,6 +55,7 @@ namespace SCJ.Booking.MVC.Constants
                 { TMC, "Trial Management Conference (TMC)" },
                 { CPC, "Case Planning Conference (CPC)" },
                 { JCC, "Judicial Case Conference (JCC)" },
+                { UNMET_DEMAND, "Unmet Trial Demand" },
                 { UNKNOWN, "Unknown Conference" },
             };
     }

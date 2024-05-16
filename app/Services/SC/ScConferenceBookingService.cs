@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
-using SCJ.Booking.Data.Utils;
-using SCJ.Booking.MVC.Constants;
+using SCJ.Booking.Data.Constants;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels.SC;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.Booking.TaskRunner.Services;
+using SCJ.Booking.TaskRunner.Utils;
 using SCJ.OnlineBooking;
 using Serilog;
 
@@ -48,7 +48,7 @@ namespace SCJ.Booking.MVC.Services.SC
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _session = sessionService;
             _viewRenderService = viewRenderService;
-            _mailService = new MailQueueService(dbContext);
+            _mailService = new MailQueueService(configuration, dbContext);
             _dbWriterService = new DataWriterService(dbContext);
         }
 
