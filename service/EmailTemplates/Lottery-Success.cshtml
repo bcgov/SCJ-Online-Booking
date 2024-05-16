@@ -1,0 +1,24 @@
+@model SCJ.Booking.TaskRunner.Utils.LotteryEmailViewModel
+A trial date has been reserved tentatively for the date below.
+
+File a Notice of Trial within 30 days of the date of this email to confirm this trial date. The Notice of Trial form can
+be found on the Supreme Court scheduling website:
+https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/
+
+----
+COURT FILE
+File number: @Model.FullCaseNumber
+@Model.StyleOfCause
+@Model.CourtClassName
+
+TRIAL DETAILS
+Trial length: @Model.TrialLength
+Starting: @Model.FairUseDate
+Trial location: @Model.TrialLocationName
+
+CONTACT INFORMATION
+Email: @Model.EmailAddress
+Phone number: @Model.Phone
+
+REQUEST ID:
+@Model.TrialBookingId
