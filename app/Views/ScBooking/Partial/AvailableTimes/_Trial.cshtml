@@ -16,6 +16,8 @@
   string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
   string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd, MMMM dd, yyyy");
   string fairUseEndTime = Model.FairUseEndDate?.ToString("h:mm tt").ToLower();
+  string currentMonth = Model.FairUseEndDate?.ToString("MMMM");
+  string nextMonth = Model.FairUseEndDate?.AddMonths(1).ToString("MMMM");
 
   string resultContactDate = Model.FairUseResultDate?.ToString("dddd, MMMM dd, yyyy");
   string noticeOfTrialDate = Model.FairUseNoticeDate?.ToString("dddd, MMMM dd, yyyy");
@@ -103,8 +105,8 @@
       </fair-use-booking>
 
       <template slot="fairUseDisabledAlert">
-        Booking period for the next release of upcoming dates starts @fairUseStartDate @fairUseStartTime and
-        ends @fairUseEndDate @fairUseEndTime.
+        The @currentMonth booking period ended on @fairUseEndDate.
+        The next booking period will open in @nextMonth.
       </template>
     </trial-time-select-tabs>
   </div>
