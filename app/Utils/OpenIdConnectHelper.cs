@@ -52,8 +52,8 @@ namespace SCJ.Booking.MVC.Utils
                     };
 
                     await dbCtx.Users.AddAsync(newUser);
-
-                    userId = await dbCtx.SaveChangesAsync();
+                    await dbCtx.SaveChangesAsync();
+                    userId = newUser.Id;
                 }
                 else
                 {
