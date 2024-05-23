@@ -47,7 +47,7 @@ namespace SCJ.Booking.MVC.Services.COA
 
             if (applicationTypes.Length > 0)
             {
-                await SaveObjectAsync(cacheKey, applicationTypes, CacheSlidingExpirySeconds);
+                await SaveObjectAsync(cacheKey, applicationTypes);
             }
 
             _logger.Information(

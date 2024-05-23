@@ -11,7 +11,8 @@ namespace SCJ.Booking.MVC.Services
     /// </summary>
     public abstract class CacheServiceBase
     {
-        protected const int CacheSlidingExpirySeconds = 3600; // 1 hour
+        protected const int CacheSlidingExpirySeconds = 1200; // 20 minutes
+        protected const int CacheAbsoluteExpirySeconds = 3600; // 1 hour
         protected readonly IDistributedCache Cache;
 
         protected CacheServiceBase(IDistributedCache cache)
@@ -49,7 +50,8 @@ namespace SCJ.Booking.MVC.Services
         protected async Task SaveStringAsync(
             string cacheKey,
             string value,
-            int slidingExpirySeconds = 600
+            int slidingExpirySeconds = CacheSlidingExpirySeconds,
+            int absoluteExpirySeconds = CacheAbsoluteExpirySeconds
         )
         {
             await RemoveAsync(cacheKey);
@@ -61,7 +63,8 @@ namespace SCJ.Booking.MVC.Services
                 b,
                 new DistributedCacheEntryOptions
                 {
-                    SlidingExpiration = TimeSpan.FromSeconds(slidingExpirySeconds)
+                    SlidingExpiration = TimeSpan.FromSeconds(slidingExpirySeconds),
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(absoluteExpirySeconds)
                 }
             );
         }

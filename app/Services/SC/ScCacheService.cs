@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
@@ -94,7 +92,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 .OrderBy(x => x.locationName)
                 .ToDictionary(x => x.locationID, x => x.locationName);
 
-            await SaveObjectAsync(ScRegistryDropdownKey, locationList, CacheSlidingExpirySeconds);
+            await SaveObjectAsync(ScRegistryDropdownKey, locationList);
 
             return locationList;
         }
@@ -113,7 +111,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             Location[] locations = await client.getLocationsAsync();
 
-            await SaveObjectAsync(ScLocationInfoKey, locations, CacheSlidingExpirySeconds);
+            await SaveObjectAsync(ScLocationInfoKey, locations);
 
             return locations;
         }
@@ -132,9 +130,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             string[] bookingTypes = await client.GetAvailableBookingTypesAsync();
 
-            Console.WriteLine(JsonSerializer.Serialize(bookingTypes));
-
-            await SaveObjectAsync(ScAvailableBookingTypes, bookingTypes, CacheSlidingExpirySeconds);
+            await SaveObjectAsync(ScAvailableBookingTypes, bookingTypes);
 
             return bookingTypes;
         }
@@ -153,7 +149,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             var formulas = await client.AvailableTrialBookingFormulasByLocationAsync("", "");
 
-            await SaveObjectAsync(ScAvailableBookingFormulas, formulas, CacheSlidingExpirySeconds);
+            await SaveObjectAsync(ScAvailableBookingFormulas, formulas);
 
             return formulas;
         }
