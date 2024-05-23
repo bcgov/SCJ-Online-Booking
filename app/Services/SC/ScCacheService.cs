@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
@@ -129,6 +131,8 @@ namespace SCJ.Booking.MVC.Services.SC
             IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
 
             string[] bookingTypes = await client.GetAvailableBookingTypesAsync();
+
+            Console.WriteLine(JsonSerializer.Serialize(bookingTypes));
 
             await SaveObjectAsync(ScAvailableBookingTypes, bookingTypes, CacheSlidingExpirySeconds);
 
