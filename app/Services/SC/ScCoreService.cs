@@ -134,7 +134,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 IsHomeRegistry = bookingInfo.IsHomeRegistry,
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
                 TrialLocationRegistryId = bookingInfo.TrialLocationRegistryId,
-                FutureTrialBooked = bookingInfo.SelectedCourtFile.futureTrialHearing,
+                FutureTrialBooked = bookingInfo.SelectedCourtFile?.futureTrialHearing ?? false,
                 SessionInfo = bookingInfo
             };
         }
@@ -236,7 +236,7 @@ namespace SCJ.Booking.MVC.Services.SC
             fairUseFormula ??= await _cache.GetFormulaLocationAsync(
                 ScFormulaType.FairUseBooking,
                 bookingInfo.TrialLocationRegistryId,
-                bookingInfo.SelectedCourtFile.courtClassCode
+                bookingInfo.SelectedCourtFile?.courtClassCode ?? ""
             );
 
             model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
