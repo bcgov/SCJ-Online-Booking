@@ -112,7 +112,7 @@ namespace SCJ.Booking.MVC.Services
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
                 HearingLength = bookingInfo.EstimatedTrialLength.Value,
-                FairUseContactDate = formula.FairUseContactDate.Value,
+                FairUseContactDate = formula.FairUseContactDate.Value.Date,
                 TrialBookingId = bookingInfo.TrialBookingId
             };
 

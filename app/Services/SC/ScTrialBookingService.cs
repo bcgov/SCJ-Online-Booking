@@ -233,11 +233,9 @@ namespace SCJ.Booking.MVC.Services.SC
             var booking = _session.ScBookingInfo;
 
             // lottery date, when users will be notified
-            // add 1 day because the FairUseContactDate is always 1 second before midnight
-            string resultDate = booking
-                .FairUseFormula?.FairUseContactDate.GetValueOrDefault()
-                .AddDays(1)
-                .ToString("dddd, MMMM dd, yyyy");
+            string resultDate =
+                booking.FairUseFormula?.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy")
+                ?? "[N/A]";
 
             // set ViewModel for the email
             var viewModel = new ScTrialEmailViewModel(booking)

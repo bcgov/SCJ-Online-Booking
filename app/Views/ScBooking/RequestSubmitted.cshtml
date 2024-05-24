@@ -9,11 +9,8 @@
     string endTime = fairUseFormula.FairUseBookingPeriodEndDate?.ToString("h:mm tt").ToLower() ?? "[N/A]";
     string endDate = fairUseFormula.FairUseBookingPeriodEndDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
 
-    // lottery date, when users will be notified
-    // add 1 day because the FairUseContactDate is always 1 second before midnight
-    string resultDate = fairUseFormula.FairUseContactDate.GetValueOrDefault()
-        .AddDays(1)
-        .ToString("dddd, MMMM dd, yyyy");
+    // lottery date, when users will be notified (@TODO: confirm & handle null date?)
+    string resultDate = fairUseFormula.FairUseContactDate?.ToString("dddd, MMMM dd, yyyy") ?? "[N/A]";
 }
 <div class="body-content--inner">
     <div class="row no-gutters">
