@@ -86,7 +86,7 @@ namespace SCJ.Booking.TaskRunner.Services
             // group the lottery entries into batches (mini lotteries) by trial booking location and
             // court class groupings
             var lotteryBatch = await GetLotteryBatch(
-                toProcess.TrialLocationId,
+                toProcess.BookingLocationId,
                 toProcess.BookHearingCode
             );
 
@@ -151,7 +151,7 @@ namespace SCJ.Booking.TaskRunner.Services
         ///    and court class formula grouping
         /// </summary>
         private async Task<List<ScTrialBookingRequest>> GetLotteryBatch(
-            int trialLocationId,
+            int bookingLocationId,
             string bookHearingCode
         )
         {
@@ -159,7 +159,7 @@ namespace SCJ.Booking.TaskRunner.Services
                 .ScTrialBookingRequests.Where(x =>
                     x.Lottery == null
                     && x.BookHearingCode == bookHearingCode
-                    && x.TrialLocationId == trialLocationId
+                    && x.BookingLocationId == bookingLocationId
                     && x.FairUseContactDate < DateTime.Now
                     && x.FairUseBookingPeriodEndDate < DateTime.Now
                     && x.IsProcessed == false
