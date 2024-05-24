@@ -44,8 +44,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             if (lotteryInProgress == null)
             {
-                await StartNextLottery();
-                return true;
+                return await StartNextLottery();
             }
             else
             {
@@ -64,50 +63,54 @@ namespace SCJ.Booking.TaskRunner.Services
             }
         }
 
-        private async Task StartNextLottery()
+        private async Task<bool> StartNextLottery()
         {
             // todo: wait until after 6pm
 
             var toProcess = await CheckRequestsReadyToProcess();
 
-            if (toProcess != null)
+            if (toProcess == null)
             {
-                var newLottery = new ScLottery
-                {
-                    BookHearingCode = toProcess.BookHearingCode,
-                    BookingLocationId = toProcess.BookingLocationId,
-                    FairUseBookingPeriodStartDate = toProcess.FairUseBookingPeriodStartDate,
-                    FairUseBookingPeriodEndDate = toProcess.FairUseBookingPeriodEndDate,
-                    InitiationTime = DateTime.Now,
-                };
-
-                // group the lottery entries into batches (mini lotteries) by trial booking location and
-                // court class groupings
-                var lotteryBatch = await GetLotteryBatch(
-                    toProcess.TrialLocationId,
-                    toProcess.BookHearingCode
-                );
-
-                // randomize the list order
-                lotteryBatch.RandomizeListOrder();
-
-                // attach the entries to the new lottery and assign the random lottery positions
-                for (var index = 0; index < lotteryBatch.Count; index++)
-                {
-                    lotteryBatch[index].Lottery = newLottery;
-                    lotteryBatch[index].LotteryPosition = index + 1;
-                }
-
-                await _dbContext.SaveChangesAsync();
-
-                _logger.Information("Lottery started!");
-                _logger.Information($"BookingLocationId={newLottery.BookingLocationId}");
-                _logger.Information($"BookHearingCode={newLottery.BookHearingCode}");
-                _logger.Information(
-                    $"FairUseBookingPeriodEndDate={newLottery.FairUseBookingPeriodEndDate}"
-                );
-                _logger.Information($"EntryCount={lotteryBatch.Count}");
+                return false;
             }
+
+            var newLottery = new ScLottery
+            {
+                BookHearingCode = toProcess.BookHearingCode,
+                BookingLocationId = toProcess.BookingLocationId,
+                FairUseBookingPeriodStartDate = toProcess.FairUseBookingPeriodStartDate,
+                FairUseBookingPeriodEndDate = toProcess.FairUseBookingPeriodEndDate,
+                InitiationTime = DateTime.Now,
+            };
+
+            // group the lottery entries into batches (mini lotteries) by trial booking location and
+            // court class groupings
+            var lotteryBatch = await GetLotteryBatch(
+                toProcess.TrialLocationId,
+                toProcess.BookHearingCode
+            );
+
+            // randomize the list order
+            lotteryBatch.RandomizeListOrder();
+
+            // attach the entries to the new lottery and assign the random lottery positions
+            for (var index = 0; index < lotteryBatch.Count; index++)
+            {
+                lotteryBatch[index].Lottery = newLottery;
+                lotteryBatch[index].LotteryPosition = index + 1;
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            _logger.Information("Lottery started!");
+            _logger.Information($"BookingLocationId={newLottery.BookingLocationId}");
+            _logger.Information($"BookHearingCode={newLottery.BookHearingCode}");
+            _logger.Information(
+                $"FairUseBookingPeriodEndDate={newLottery.FairUseBookingPeriodEndDate}"
+            );
+            _logger.Information($"EntryCount={lotteryBatch.Count}");
+
+            return true;
         }
 
         /// <summary>
@@ -116,7 +119,8 @@ namespace SCJ.Booking.TaskRunner.Services
         private async Task<ScTrialBookingRequest?> GetNextLotteryEntry(ScLottery lotteryInProgress)
         {
             return await _dbContext
-                .ScTrialBookingRequests.Where(x => x.Lottery == lotteryInProgress)
+                .ScTrialBookingRequests.Include(x => x.TrialDateSelections)
+                .Where(x => x.Lottery == lotteryInProgress && x.IsProcessed == false)
                 .OrderByDescending(x => x.FairUseSort)
                 .ThenBy(x => x.LotteryPosition)
                 .FirstOrDefaultAsync();
@@ -133,8 +137,8 @@ namespace SCJ.Booking.TaskRunner.Services
             return await _dbContext
                 .ScTrialBookingRequests.Where(x =>
                     x.Lottery == null
-                    && x.FairUseContactDate > DateTime.Now
-                    && x.FairUseBookingPeriodEndDate > DateTime.Now
+                    && x.FairUseContactDate < DateTime.Now
+                    && x.FairUseBookingPeriodEndDate < DateTime.Now
                     && x.IsProcessed == false
                 )
                 .OrderBy(x => x.BookingLocationId)
@@ -156,8 +160,8 @@ namespace SCJ.Booking.TaskRunner.Services
                     x.Lottery == null
                     && x.BookHearingCode == bookHearingCode
                     && x.TrialLocationId == trialLocationId
-                    && x.FairUseContactDate > DateTime.Now
-                    && x.FairUseBookingPeriodEndDate > DateTime.Now
+                    && x.FairUseContactDate < DateTime.Now
+                    && x.FairUseBookingPeriodEndDate < DateTime.Now
                     && x.IsProcessed == false
                 )
                 .ToListAsync();
@@ -207,7 +211,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
                     // update the request
                     entry.AllocatedSelectionRank = selection.Rank;
-                    selection.BookingResult = result.bookingResult[..255];
+                    selection.BookingResult = new string(result.bookingResult.Take(255).ToArray());
 
                     await QueueSuccessEmail(entry);
 
@@ -225,7 +229,9 @@ namespace SCJ.Booking.TaskRunner.Services
                     _logger.Debug(JsonSerializer.Serialize(bookingInfo));
 
                     result = await _client.BookTrialHearingAsync(bookingInfo);
-                    entry.UnmetDemandBookingResult = result.bookingResult[..255];
+                    entry.UnmetDemandBookingResult = new string(
+                        result.bookingResult.Take(255).ToArray()
+                    );
 
                     if (result.bookingResult.ToLower().StartsWith("success"))
                     {
