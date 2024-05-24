@@ -10,7 +10,7 @@ namespace SCJ.Booking.TaskRunner.Utils
             EmailAddress = bookingRequest.Email;
             Phone = bookingRequest.Phone;
             FullCaseNumber =
-                $"{bookingRequest.CaseRegistryCode}{bookingRequest.CourtClassCode}{bookingRequest.CaseNumber}";
+                $"{bookingRequest.CaseRegistryCode} {bookingRequest.CourtClassCode}{bookingRequest.CaseNumber}";
             StyleOfCause = bookingRequest.StyleOfCause;
             CourtClassName = ScCourtClass.GetCourtClass(bookingRequest.CourtClassCode);
 
