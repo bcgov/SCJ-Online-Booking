@@ -24,12 +24,13 @@ namespace SCJ.Booking.Data.Constants
         {
             if (string.IsNullOrEmpty(value))
             {
-                return null;
+                return string.Empty;
             }
 
             if (CourtClasses.Contains(value.ToUpper()))
             {
-                return CourtClasses[value.ToUpper()]?.ToString();
+                return CourtClasses[value.ToUpper()]?.ToString()
+                    ?? $"Unknown Court Class for {value}?";
             }
 
             return $"Unknown Court Class for {value}?";

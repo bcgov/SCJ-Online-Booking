@@ -9,7 +9,7 @@ namespace SCJ.Booking.Data.Constants
             // - criminal conviction appeal = 96
             // - criminal sentence appeal = 97
             public int HearingTypeId { get; set; }
-            public string Description { get; set; }
+            public string Description { get; set; } = "";
             public bool IsCriminal { get; set; }
         }
 

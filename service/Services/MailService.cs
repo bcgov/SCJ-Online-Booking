@@ -114,7 +114,7 @@ namespace SCJ.Booking.TaskRunner.Services
         /// <summary>
         ///     Sets the exchange credentials
         /// </summary>
-        private ClientSecretCredential SetExchangeCredentials(string courtLevel)
+        private ClientSecretCredential? SetExchangeCredentials(string courtLevel)
         {
             string tenantId = _configuration["EXCHANGE_TENANT_ID"] ?? "";
             string clientId = _configuration["EXCHANGE_CLIENT_ID"] ?? "";
