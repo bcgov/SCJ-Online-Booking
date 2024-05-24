@@ -27,6 +27,8 @@ namespace SCJ.Booking.Data
 
         public DbSet<ScTrialDateSelection> ScTrialDateSelections => Set<ScTrialDateSelection>();
 
+        public DbSet<ScLottery> ScLotteries => Set<ScLottery>();
+
         public DbSet<QueuedEmail> EmailQueue => Set<QueuedEmail>();
 
         public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();

@@ -18,6 +18,7 @@ namespace SCJ.Booking.TaskRunner
             ApplicationDbContext dbContext = GetDbContext(configuration);
 
             var mailQueueService = new MailQueueService(configuration, dbContext);
+            var lotteryService = new LotteryService(configuration, dbContext);
 
             while (true)
             {
@@ -31,9 +32,13 @@ namespace SCJ.Booking.TaskRunner
 
                 await mailQueueService.SendEmailBatch();
 
+                bool hasUnfinishedWork = await lotteryService.RunNextLotteryStep();
 
-                // pause for 10 seconds
-                Thread.Sleep(10000);
+                // todo: we need another service that removes names and phone numbers (14 days after the lottery?)
+
+                // pause for 3 seconds
+                // todo: there should be a fast/infrequent mode an a slow/frequent mode for trial bookings based on whether or not there is incomplete work to be done
+                Thread.Sleep(3000);
             }
         }
 

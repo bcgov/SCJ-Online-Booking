@@ -9,6 +9,7 @@ namespace SCJ.Booking.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public OidcUser? User { get; set; }
+        public ScLottery? Lottery { get; set; }
         public int CaseRegistryId { get; set; }
 
         [MaxLength(2)]
@@ -49,12 +50,13 @@ namespace SCJ.Booking.Data.Models
 
         public DateTime CreationTimestamp { get; set; }
         public string TrialBookingId { get; set; } = "";
-        public DateTime? LotteryBeginTimestamp { get; set; }
         public int LotteryPosition { get; set; }
         public bool IsProcessed { get; set; } = false;
-        public DateTime? AllocatedSelectionTrialStartDate { get; set; }
         public int AllocatedSelectionRank { get; set; }
         public ICollection<ScTrialDateSelection> TrialDateSelections { get; } =
             new List<ScTrialDateSelection>();
+
+        [MaxLength(255)]
+        public string? UnmetDemandBookingResult { get; set; }
     }
 }

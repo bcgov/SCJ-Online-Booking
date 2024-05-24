@@ -14,5 +14,8 @@ namespace SCJ.Booking.Data.Models
         public DateTime TrialStartDate { get; set; }
 
         public int Rank { get; set; }
+
+        [MaxLength(255)]
+        public string? BookingResult { get; set; }
     }
 }
