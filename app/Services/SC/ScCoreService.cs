@@ -241,8 +241,17 @@ namespace SCJ.Booking.MVC.Services.SC
 
             model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
             model.FairUseEndDate = fairUseFormula?.FairUseBookingPeriodEndDate;
-            model.FairUseResultDate = fairUseFormula?.FairUseContactDate;
-            model.FairUseNoticeDate = fairUseFormula?.FairUseBookingPeriodEndDate;
+
+            // add 1 day because the FairUseContactDate is always 1 second before midnight
+            model.FairUseResultDate = fairUseFormula
+                ?.FairUseContactDate.GetValueOrDefault()
+                .AddDays(1);
+
+            // the notice of trial must be filed within 30 days but we add 31 because the
+            // lottery runner won't start before 11:59PM on the FairUseContactDate
+            model.FairUseNoticeDate = fairUseFormula
+                ?.FairUseContactDate.GetValueOrDefault()
+                .AddDays(31);
 
             return model;
         }
