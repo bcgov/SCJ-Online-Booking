@@ -27,7 +27,8 @@ namespace SCJ.Booking.TaskRunner.Services
             string courtLevel,
             string toEmail,
             string subject,
-            string body
+            string body,
+            bool isLotteryResult = false
         )
         {
             await _dbContext.EmailQueue.AddAsync(
@@ -36,7 +37,8 @@ namespace SCJ.Booking.TaskRunner.Services
                     CourtLevel = courtLevel,
                     ToEmail = toEmail,
                     Subject = subject,
-                    Body = body
+                    Body = body,
+                    IsLotteryResult = isLotteryResult
                 }
             );
 

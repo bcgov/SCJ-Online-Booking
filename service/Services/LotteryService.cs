@@ -280,7 +280,13 @@ namespace SCJ.Booking.TaskRunner.Services
             string subject =
                 $"Trial booking for {model.FullCaseNumber} starting on {model.FairUseDate}";
 
-            await _mailQueueService.QueueEmailAsync("SC", model.EmailAddress, subject, emailText);
+            await _mailQueueService.QueueEmailAsync(
+                "SC",
+                model.EmailAddress,
+                subject,
+                emailText,
+                isLotteryResult: true
+            );
         }
 
         /// <summary>
@@ -292,7 +298,13 @@ namespace SCJ.Booking.TaskRunner.Services
             string emailText = await RazorHelper.RenderTemplate("Lottery-Failure.cshtml", model);
             string subject = $"No trial booking for {model.FullCaseNumber}";
 
-            await _mailQueueService.QueueEmailAsync("SC", model.EmailAddress, subject, emailText);
+            await _mailQueueService.QueueEmailAsync(
+                "SC",
+                model.EmailAddress,
+                subject,
+                emailText,
+                isLotteryResult: true
+            );
         }
     }
 }

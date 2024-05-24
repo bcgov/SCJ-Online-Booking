@@ -29,5 +29,6 @@ namespace SCJ.Booking.Data.Models
         public string Body { get; set; }
 
         public DateTime TimeStamp { get; set; }
+        public bool IsLotteryResult { get; set; }
     }
 }
