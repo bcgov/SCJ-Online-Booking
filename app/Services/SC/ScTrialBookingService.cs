@@ -88,6 +88,9 @@ namespace SCJ.Booking.MVC.Services.SC
             };
             _session.UserInfo = userInfo;
 
+            // generate a trial booking id (for troubleshooting between SCSS and SCJOB)
+            var trialBookingId = GenerateTrialBookingId() + "-" + userId;
+
             if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
             {
                 if (await CheckIfTrialAlreadyRequestedAsync())
@@ -105,6 +108,8 @@ namespace SCJ.Booking.MVC.Services.SC
                         ScFormulaType.FairUseBooking
                     );
 
+                    bookingInfo.TrialBookingId = trialBookingId;
+                    _session.ScBookingInfo = bookingInfo;
                     await _dbWriterService.SaveFairUseRequest(userId, bookingInfo, userInfo);
 
                     //update model
@@ -143,7 +148,6 @@ namespace SCJ.Booking.MVC.Services.SC
                         "The date you selected is no longer available."
                     );
                 }
-                var trialBookingId = GenerateTrialBookingId() + "-" + userId;
 
                 // book trial in API
                 BookTrialHearingInfo requestPayload =
@@ -309,7 +313,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
         public string GenerateTrialBookingId()
         {
-            return DateTime.Now.ToString("yyMMddHHmm");
+            return DateTime.Now.ToString("yyMMddHHmmss");
         }
 
         public async Task<bool> CheckIfTrialAlreadyRequestedAsync()
