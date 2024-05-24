@@ -106,8 +106,6 @@ namespace SCJ.Booking.MVC.Services
                 FairUseSort = courtFile.fairUseSort,
                 CaseNumber = bookingInfo.CaseNumber,
                 StyleOfCause = courtFile.styleOfCause,
-                TrialPeriodStartDate = formula.StartDate,
-                TrialPeriodEndDate = formula.EndDate,
                 TrialLocationId = bookingInfo.TrialLocationRegistryId,
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,

@@ -27,8 +27,6 @@ namespace SCJ.Booking.Data.Models
         public DateTime FairUseBookingPeriodEndDate { get; set; }
         public DateTime FairUseBookingPeriodStartDate { get; set; }
         public DateTime FairUseContactDate { get; set; }
-        public DateTime TrialPeriodStartDate { get; set; }
-        public DateTime TrialPeriodEndDate { get; set; }
 
         [MaxLength(1)]
         public string CourtClassCode { get; set; } = "";
