@@ -16,6 +16,7 @@ namespace SCJ.Booking.TaskRunner
             IConfiguration configuration = GetConfiguration();
             ILogger logger = LogHelper.GetLogger(configuration);
             ApplicationDbContext dbContext = GetDbContext(configuration);
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             var mailQueueService = new MailQueueService(configuration, dbContext);
             var lotteryService = new LotteryService(configuration, dbContext);
