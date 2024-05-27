@@ -53,7 +53,7 @@ public class DatabaseUtils
         return applicationDbContext;
     }
 
-    public static void LoadCsvData(ApplicationDbContext dbContext)
+    public static void LoadCsvData(ApplicationDbContext dbContext, string filePath)
     {
         var testUser = new OidcUser
         {
@@ -64,9 +64,7 @@ public class DatabaseUtils
         dbContext.Users.AddAsync(testUser);
         dbContext.SaveChanges();
 
-        var reader = new StreamReader(
-            "data" + Path.DirectorySeparatorChar + "FairUseTestRequests.csv"
-        );
+        var reader = new StreamReader(filePath);
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csv.GetRecords<CsvMapping>();

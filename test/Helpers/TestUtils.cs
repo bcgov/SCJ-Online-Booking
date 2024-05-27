@@ -12,7 +12,7 @@ public class TestUtils
 
         IConfigurationBuilder builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", true, true)
+            .AddJsonFile("testsettings.json", true, true)
             .AddEnvironmentVariables();
 
         IConfiguration configuration = builder.Build();

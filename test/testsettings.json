@@ -1,0 +1,10 @@
+{
+    "TAG_NAME": "localdev",
+    "USE_FAKE_API": "true",
+    "Data": {
+        "DefaultConnection": {
+            "Provider": "sqlite",
+            "ConnectionString": "data source=scj-booking.sqlite;"
+        }
+    }
+}

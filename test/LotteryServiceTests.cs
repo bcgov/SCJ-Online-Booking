@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
@@ -17,18 +18,19 @@ namespace SCJ.Booking.UnitTest
             _configuration = TestUtils.GetConfiguration();
             _dbContext = DatabaseUtils.GetDbContext(_configuration);
 
-            DatabaseUtils.LoadCsvData(_dbContext);
+            string testFile = $"Data{Path.DirectorySeparatorChar}FairUseTestRequests.csv";
+            DatabaseUtils.LoadCsvData(_dbContext, testFile);
         }
 
         [Fact]
         public async Task RunLottery()
         {
             var service = new TaskRunner.Services.LotteryService(_configuration, _dbContext);
-            bool hasMoreWork = true;
 
-            while (hasMoreWork)
+            bool moreWorkRemaining = true;
+            while (moreWorkRemaining)
             {
-                hasMoreWork = await service.RunNextLotteryStep();
+                moreWorkRemaining = await service.RunNextLotteryStep();
             }
         }
     }

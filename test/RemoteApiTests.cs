@@ -245,7 +245,7 @@ namespace SCJ.Booking.UnitTest
                     BookingLocationID = 1,
                     CourtClass = "E",
                     HearingDate = new DateTime(2025, 6, 22),
-                    FormulaType = "Fair-Use", // Regular or Fair-Use
+                    FormulaType = "Regular", // Regular or Fair-Use
                     HearingLength = 5,
                     HearingType = 9001, // Unmet demand is 20538
                     LocationID = 41
