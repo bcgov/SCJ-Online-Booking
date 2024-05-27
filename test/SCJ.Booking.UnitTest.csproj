@@ -4,6 +4,15 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Data\FairUseTestRequests.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\FairUseTestRequests.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="32.0.3" />
     <PackageReference Include="DotEnv.Core" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 	<PackageReference Include="ObjectDumper.NET" Version="3.3.13" />
@@ -19,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
       <ProjectReference Include="..\app\SCJ.Booking.MVC.csproj" />
+      <ProjectReference Include="..\service\SCJ.Booking.TaskRunner.csproj" />
       <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 using System.Globalization;
 using DotEnv.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
 using SCJ.Booking.TaskRunner.Services;
@@ -61,7 +62,12 @@ namespace SCJ.Booking.TaskRunner
                 ];
             }
 
-            return new ApplicationDbContext(connectionString, provider);
+            var applicationDbContext = new ApplicationDbContext(connectionString, provider);
+
+            // run migrations if needed
+            applicationDbContext.Database.Migrate();
+
+            return applicationDbContext;
         }
 
         private static IConfiguration GetConfiguration()

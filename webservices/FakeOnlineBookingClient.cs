@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SCJ.Booking.Data.Constants;
 using SCJ.Booking.RemoteAPIs.Fixtures;
 
 // ReSharper disable once CheckNamespace
@@ -235,6 +236,28 @@ namespace SCJ.OnlineBooking
             BookTrialHearingInfo bookingInfo
         )
         {
+            if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+            {
+                Random r = new Random();
+                int n = r.Next(0, 100);
+
+                if (bookingInfo.HearingType == ScHearingType.TRIAL)
+                {
+                    // fair use trial bookings fail 85% of the time for test purposes
+                    return n > 85
+                        ? ScBookingHearingResultFixture.Success
+                        : ScBookingHearingResultFixture.SupremeCourtFailure;
+                }
+
+                if (bookingInfo.HearingType == ScHearingType.UNMET_DEMAND)
+                {
+                    // unmet demand bookings fail 10% of the time for test purposes
+                    return n > 10
+                        ? ScBookingHearingResultFixture.Success
+                        : ScBookingHearingResultFixture.SupremeCourtFailure;
+                }
+            }
+
             await Task.Delay(100);
             return ScBookingHearingResultFixture.Success;
         }

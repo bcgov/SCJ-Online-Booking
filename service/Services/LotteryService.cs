@@ -217,6 +217,10 @@ namespace SCJ.Booking.TaskRunner.Services
 
                     break;
                 }
+                else
+                {
+                    selection.BookingResult = new string(result.bookingResult.Take(255).ToArray());
+                }
 
                 // if this is the last item in the list of selections and the 'break' above was not hit
                 if (selectionIndex + 1 == selectionCount)
@@ -253,6 +257,7 @@ namespace SCJ.Booking.TaskRunner.Services
                 selectionIndex++;
             }
 
+            entry.ProcessingTimestamp = DateTime.Now;
             entry.IsProcessed = true;
             await _dbContext.SaveChangesAsync();
         }

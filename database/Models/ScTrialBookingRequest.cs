@@ -56,5 +56,7 @@ namespace SCJ.Booking.Data.Models
 
         [MaxLength(255)]
         public string? UnmetDemandBookingResult { get; set; }
+
+        public DateTime ProcessingTimestamp { get; set; }
     }
 }

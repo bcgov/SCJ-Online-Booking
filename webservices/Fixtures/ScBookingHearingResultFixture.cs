@@ -12,8 +12,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 // this message is returned when the date is too close in the future.
                 // MicroServe has agreed to change the messages to something more user friendly before launch,
                 // based on feedback from OpenRoad QA/UX
-                bookingResult =
-                    "Fail - The date for filing the Plaintiff's Civil Trial Brief has passed for booking this date.\n"
+                bookingResult = "Fail - Hearing booking was randomly failed by the fake API"
             };
 
         internal static BookingHearingResult Success =
