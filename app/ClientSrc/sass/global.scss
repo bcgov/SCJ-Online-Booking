@@ -662,6 +662,7 @@ input {
 // non-Bootstrap styles for a vertical list of radio buttons or checkboxes nested in labels
 .check-group {
   label {
+    font-weight: 400;
     display: block;
     margin: 0 0 0.5em;
   }
