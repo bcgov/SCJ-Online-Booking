@@ -56,7 +56,7 @@ namespace SCJ.OnlineBooking
                     },
                     new CourtFile
                     {
-                        courtClassCode = "G",
+                        courtClassCode = "S",
                         courtFileNumber = "111",
                         courtLevelCode = "S",
                         CEISLocationId = 83.0001m,
