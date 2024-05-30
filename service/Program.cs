@@ -14,10 +14,11 @@ namespace SCJ.Booking.TaskRunner
         public static async Task Main(string[] args)
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-CA", false);
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             IConfiguration configuration = GetConfiguration();
             ILogger logger = LogHelper.GetLogger(configuration);
             ApplicationDbContext dbContext = GetDbContext(configuration);
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             var mailQueueService = new MailQueueService(configuration, dbContext);
             var lotteryService = new LotteryService(configuration, dbContext);
