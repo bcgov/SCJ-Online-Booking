@@ -16,7 +16,7 @@ namespace SCJ.Booking.UnitTest.Helpers
         public int FairUseSort { get; set; }
         public DateTime FairUseBookingPeriodStartDate { get; set; }
         public DateTime FairUseBookingPeriodEndDate { get; set; }
-        public DateTime FairUseContactDate { get; set; }
+        public DateTime LotteryStartDate { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string RequestedByName { get; set; }

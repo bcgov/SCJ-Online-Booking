@@ -26,7 +26,7 @@ namespace SCJ.Booking.Data.Models
         public string? TrialLocationName { get; set; }
         public DateTime FairUseBookingPeriodEndDate { get; set; }
         public DateTime FairUseBookingPeriodStartDate { get; set; }
-        public DateTime FairUseContactDate { get; set; }
+        public DateTime LotteryStartDate { get; set; }
 
         [MaxLength(1)]
         public string CourtClassCode { get; set; } = "";
@@ -57,6 +57,6 @@ namespace SCJ.Booking.Data.Models
         [MaxLength(255)]
         public string? UnmetDemandBookingResult { get; set; }
 
-        public DateTime ProcessingTimestamp { get; set; }
+        public DateTime? ProcessingTimestamp { get; set; }
     }
 }

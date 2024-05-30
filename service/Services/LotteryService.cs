@@ -136,10 +136,7 @@ namespace SCJ.Booking.TaskRunner.Services
         {
             return await _dbContext
                 .ScTrialBookingRequests.Where(x =>
-                    x.Lottery == null
-                    && x.FairUseContactDate < DateTime.Now
-                    && x.FairUseBookingPeriodEndDate < DateTime.Now
-                    && x.IsProcessed == false
+                    x.Lottery == null && x.LotteryStartDate < DateTime.Now && x.IsProcessed == false
                 )
                 .OrderBy(x => x.BookingLocationId)
                 .ThenBy(x => x.BookHearingCode)
@@ -160,8 +157,7 @@ namespace SCJ.Booking.TaskRunner.Services
                     x.Lottery == null
                     && x.BookHearingCode == bookHearingCode
                     && x.BookingLocationId == bookingLocationId
-                    && x.FairUseContactDate < DateTime.Now
-                    && x.FairUseBookingPeriodEndDate < DateTime.Now
+                    && x.LotteryStartDate < DateTime.Now
                     && x.IsProcessed == false
                 )
                 .ToListAsync();

@@ -69,7 +69,7 @@ namespace SCJ.Booking.MVC.Services
 
             if (!formula.FairUseContactDate.HasValue)
             {
-                throw new InvalidOperationException("FairUseContactDate cannot be null");
+                throw new InvalidOperationException("LotteryStartDate cannot be null");
             }
 
             if (
@@ -88,6 +88,20 @@ namespace SCJ.Booking.MVC.Services
 
             var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var courtFile = bookingInfo.SelectedCourtFile;
+
+            var fairUseContactDate = formula.FairUseContactDate.Value.Date;
+            var bookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value;
+
+            var lotteryStartDate =
+                fairUseContactDate > bookingPeriodEndDate
+                    ? fairUseContactDate
+                    : bookingPeriodEndDate;
+
+            if (lotteryStartDate.Hour is > 2 and < 18)
+            {
+                // don't start the lottery after 2:59am or before 6:00pm
+                lotteryStartDate = lotteryStartDate.Date.AddHours(18);
+            }
 
             var bookingRequest = new ScTrialBookingRequest
             {
@@ -110,7 +124,7 @@ namespace SCJ.Booking.MVC.Services
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
                 HearingLength = bookingInfo.EstimatedTrialLength.Value,
-                FairUseContactDate = formula.FairUseContactDate.Value.Date,
+                LotteryStartDate = lotteryStartDate,
                 TrialBookingId = bookingInfo.TrialBookingId
             };
 

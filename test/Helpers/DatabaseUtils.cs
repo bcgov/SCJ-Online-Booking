@@ -74,7 +74,7 @@ public class DatabaseUtils
                 var entity = new ScTrialBookingRequest
                 {
                     FairUseBookingPeriodEndDate = record.FairUseBookingPeriodEndDate,
-                    FairUseContactDate = record.FairUseContactDate,
+                    LotteryStartDate = record.LotteryStartDate,
                     BookHearingCode = record.BookHearingCode,
                     BookingLocationId = record.BookingLocationId,
                     CaseNumber = record.CaseNumber,
