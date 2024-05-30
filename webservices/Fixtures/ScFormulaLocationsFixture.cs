@@ -5,27 +5,43 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
     public class ScFormulaLocationsFixture
     {
+        private static readonly int BookingDays = 14;
+
+        private static DateTime StartDate
+        {
+            get
+            {
+                var futureMonth = DateTime.Now.AddMonths(18);
+                return new DateTime(futureMonth.Year, futureMonth.Month, 1);
+            }
+        }
+
+        private static DateTime BookingStartDate
+        {
+            get { return new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1); }
+        }
+
         internal static FormulaLocation[] Locations =
         {
             new()
             {
                 BookingHearingCode = "M",
                 BookingLocationID = 1,
-                EndDate = DateTime.Parse("2025-12-31 23:59:59.0000000"),
-                FairUseBookingPeriodEndDate = DateTime.Parse("2024-05-07 23:59:59.0000000"),
-                FairUseBookingPeriodStartDate = DateTime.Parse("2024-05-01 00:00:00.0000000"),
-                FairUseContactDate = DateTime.Parse("2024-05-03 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
+                FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
+                FairUseBookingPeriodStartDate = BookingStartDate,
+                FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Parse("2025-12-01 00:00:00.0000000")
+                StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "M",
                 BookingLocationID = 1,
-                EndDate = DateTime.Parse("2026-05-31 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -33,41 +49,41 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Parse("2024-12-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "E",
                 BookingLocationID = 41,
-                EndDate = DateTime.Parse("2025-12-31 23:59:59.0000000"),
-                FairUseBookingPeriodEndDate = DateTime.Parse("2024-05-17 23:59:59.0000000"),
-                FairUseBookingPeriodStartDate = DateTime.Parse("2024-05-01 00:00:00.0000000"),
-                FairUseContactDate = DateTime.Parse("2024-05-03 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(1).AddSeconds(-1),
+                FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
+                FairUseBookingPeriodStartDate = BookingStartDate,
+                FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Parse("2025-12-01 00:00:00.0000000")
+                StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "All Other",
                 BookingLocationID = 41,
-                EndDate = DateTime.Parse("2025-12-31 23:59:59.0000000"),
-                FairUseBookingPeriodEndDate = DateTime.Parse("2024-05-17 23:59:59.0000000"),
-                FairUseBookingPeriodStartDate = DateTime.Parse("2024-05-01 00:00:00.0000000"),
-                FairUseContactDate = DateTime.Parse("2024-05-03 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(1).AddSeconds(-1),
+                FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
+                FairUseBookingPeriodStartDate = BookingStartDate,
+                FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Parse("2025-12-01 00:00:00.0000000")
+                StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "All Other",
                 BookingLocationID = 41,
-                EndDate = DateTime.Parse("2026-05-31 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -75,13 +91,13 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Parse("2024-12-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "E",
                 BookingLocationID = 41,
-                EndDate = DateTime.Parse("2026-05-31 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -89,13 +105,13 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Parse("2024-12-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "All Other",
                 BookingLocationID = 2,
-                EndDate = DateTime.Parse("2025-09-30 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -103,13 +119,13 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VI",
                 LocationID = 2,
                 LocationName = "Victoria",
-                StartDate = DateTime.Parse("2024-09-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "E",
                 BookingLocationID = 2,
-                EndDate = DateTime.Parse("2025-09-30 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -117,27 +133,27 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VI",
                 LocationID = 2,
                 LocationName = "Victoria",
-                StartDate = DateTime.Parse("2024-09-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "All",
                 BookingLocationID = 9,
-                EndDate = DateTime.Parse("2024-11-30 23:59:59.0000000"),
-                FairUseBookingPeriodEndDate = DateTime.Parse("2024-05-07 23:59:59.0000000"),
-                FairUseBookingPeriodStartDate = DateTime.Parse("2024-05-01 00:00:00.0000000"),
-                FairUseContactDate = DateTime.Parse("2024-05-01 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(1).AddSeconds(-1),
+                FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
+                FairUseBookingPeriodStartDate = BookingStartDate,
+                FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
                 LocationCode = "CT",
                 LocationID = 9,
                 LocationName = "Courtenay",
-                StartDate = DateTime.Parse("2024-11-01 00:00:00.0000000")
+                StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "All",
                 BookingLocationID = 9,
-                EndDate = DateTime.Parse("2025-04-30 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -145,55 +161,55 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "CT",
                 LocationID = 9,
                 LocationName = "Courtenay",
-                StartDate = DateTime.Parse("2024-08-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "M",
                 BookingLocationID = 13,
-                EndDate = DateTime.Parse("2024-07-31 23:59:59.0000000"),
-                FairUseBookingPeriodEndDate = DateTime.Parse("2024-05-17 23:59:59.0000000"),
-                FairUseBookingPeriodStartDate = DateTime.Parse("2024-05-12 00:00:00.0000000"),
-                FairUseContactDate = DateTime.Parse("2024-05-20 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(1).AddSeconds(-1),
+                FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
+                FairUseBookingPeriodStartDate = BookingStartDate,
+                FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Parse("2024-08-01 00:00:00.0000000")
+                StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "E",
                 BookingLocationID = 13,
-                EndDate = DateTime.Parse("2024-07-31 23:59:59.0000000"),
-                FairUseBookingPeriodEndDate = DateTime.Parse("2024-05-17 23:59:59.0000000"),
-                FairUseBookingPeriodStartDate = DateTime.Parse("2024-05-12 00:00:00.0000000"),
-                FairUseContactDate = DateTime.Parse("2024-05-20 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(1).AddSeconds(-1),
+                FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
+                FairUseBookingPeriodStartDate = BookingStartDate,
+                FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Parse("2024-08-01 00:00:00.0000000")
+                StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "All Other",
                 BookingLocationID = 13,
-                EndDate = DateTime.Parse("2024-07-31 23:59:59.0000000"),
-                FairUseBookingPeriodEndDate = DateTime.Parse("2024-05-10 23:59:59.0000000"),
-                FairUseBookingPeriodStartDate = DateTime.Parse("2024-05-01 00:00:00.0000000"),
-                FairUseContactDate = DateTime.Parse("2024-05-20 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(1).AddSeconds(-1),
+                FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
+                FairUseBookingPeriodStartDate = BookingStartDate,
+                FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Parse("2024-08-01 00:00:00.0000000")
+                StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "E",
                 BookingLocationID = 13,
-                EndDate = DateTime.Parse("2025-04-30 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -201,13 +217,13 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Parse("2024-08-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "All Other",
                 BookingLocationID = 13,
-                EndDate = DateTime.Parse("2025-04-30 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -215,13 +231,13 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Parse("2024-08-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
             {
                 BookingHearingCode = "M",
                 BookingLocationID = 13,
-                EndDate = DateTime.Parse("2025-04-30 23:59:59.0000000"),
+                EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
@@ -229,7 +245,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Parse("2024-08-01 00:00:00.0000000")
+                StartDate = DateTime.Now.Date.AddDays(60)
             }
         };
     }
