@@ -132,7 +132,8 @@ namespace SCJ.Booking.MVC.Services.COA
                     SelectedCases = model.SelectedCases,
                     IsAppealHearing = model.IsAppealHearing,
                     SelectedApplicationTypes = model.SelectedApplicationTypes,
-                    IsHalfHour = model.IsHalfHour
+                    IsHalfHour = model.IsHalfHour,
+                    HearingRegistryName = "Vancouver"
                 };
 
                 if (model.HearingTypeId.HasValue)
@@ -317,7 +318,7 @@ namespace SCJ.Booking.MVC.Services.COA
                     await _dbWriterService.SaveBookingHistory(
                         userId,
                         "COA",
-                        bookingInfo.RegistryName,
+                        bookingInfo.HearingRegistryName,
                         coaCaseType: bookingInfo.CaseType,
                         coaConferenceType: bookingInfo.IsAppealHearing is true
                             ? "Appeal"
@@ -418,8 +419,8 @@ namespace SCJ.Booking.MVC.Services.COA
             }
 
             var template = booking.IsAppealHearing is true
-                ? "CoaBooking/Email-Appeal"
-                : "CoaBooking/Email-Chambers";
+                ? "CoaBooking/Emails/Email-Appeal"
+                : "CoaBooking/Emails/Email-Chambers";
 
             //Render the email template
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

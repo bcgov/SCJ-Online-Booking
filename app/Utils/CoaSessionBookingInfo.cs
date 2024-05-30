@@ -15,7 +15,7 @@ namespace SCJ.Booking.MVC.Utils
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
         public DateTime? SelectedDate { get; set; }
-        public string RegistryName { get; set; }
+        public string HearingRegistryName { get; set; }
 
         //The result string returned by the SOAP API when the hearing was booked
         public string RawResult { get; set; }
