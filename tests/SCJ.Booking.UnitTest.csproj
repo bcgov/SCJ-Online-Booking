@@ -28,7 +28,7 @@
   </ItemGroup>
   <ItemGroup>
       <ProjectReference Include="..\app\SCJ.Booking.MVC.csproj" />
-      <ProjectReference Include="..\service\SCJ.Booking.TaskRunner.csproj" />
+      <ProjectReference Include="..\taskrunner\SCJ.Booking.TaskRunner.csproj" />
       <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
   </ItemGroup>
   <ItemGroup>

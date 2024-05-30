@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.MVC", "app\SCJ.Booking.MVC.csproj", "{9C011224-85D0-4A6D-934A-E0F6B10F967A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.UnitTest", "test\SCJ.Booking.UnitTest.csproj", "{658A7C9D-0D4B-44D7-8011-DFC1B039EAA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.UnitTest", "tests\SCJ.Booking.UnitTest.csproj", "{658A7C9D-0D4B-44D7-8011-DFC1B039EAA5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.RemoteAPIs", "webservices\SCJ.Booking.RemoteAPIs.csproj", "{2C312DB6-D5DD-4305-AED3-CA5B7AE4F1A0}"
 EndProject
@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.Data", "database\SCJ.Booking.Data.csproj", "{B0621E37-FF9F-41CE-9392-18A5655ABC23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.TaskRunner", "service\SCJ.Booking.TaskRunner.csproj", "{C9827C16-2A98-4117-AC6E-B3723CCC25E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCJ.Booking.TaskRunner", "taskrunner\SCJ.Booking.TaskRunner.csproj", "{C9827C16-2A98-4117-AC6E-B3723CCC25E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
