@@ -1,20 +1,39 @@
-A trial date has been reserved tentatively for the date below.
+<html>
+<body>
+<p>
+    A trial date has been reserved tentatively for the date below.
+</p>
 
-File a Notice of Trial within 30 days of the date of this email to confirm this trial date. The Notice of Trial form can
-be found on the Supreme Court scheduling website:
-https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/
+<p>
+    File a Notice of Trial within 30 days of the date of this email to confirm this trial
+    date. The Notice of Trial form can be found on the
+    <a href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/">
+        Supreme Court scheduling website
+    </a>.
+</p>
 
-----
-COURT FILE
+
+<h3>Court File</h3>
 File number: @Model.FullCaseNumber
-@Model.StyleOfCause
+<br />
+<strong>@Model.StyleOfCause</strong>
+<br />
 @Model.CourtClassName
+<br />
 
-TRIAL DETAILS
+<h3>Trial Details</h3>
 Trial length: @Model.TrialLength
+<br />
 Starting: @Model.FairUseDate
+<br />
 Trial location: @Model.TrialLocationName
+<br/>
 
-CONTACT INFORMATION
+<h3>Contact Information</h3>
 Email: @Model.EmailAddress
+<br/>
 Phone number: @Model.Phone
+<br />
+
+</body>
+</html>

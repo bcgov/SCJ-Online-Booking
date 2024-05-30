@@ -1,10 +1,20 @@
-We received your request for a trial booking through the Online booking System. A trial date was not reserved tentatively for your case as there were more requests than available trial dates.
-
-The next booking period commences [start date for next booking period].
-
-----
-COURT FILE
+<html>
+<body>
+<p>
+    We received your request for a trial booking through the Online booking System.
+    A trial date was not reserved tentatively for your case as there were more
+    requests than available trial dates.
+</p>
+<p>
+    The next booking period commences in <strong>@Model.NextMonth</strong>.
+</p>
+<h3>Court File</h3>
 File number: @Model.FullCaseNumber
-@Model.StyleOfCause
+<br/>
+<strong>@Model.StyleOfCause</strong>
+<br/>
 @Model.CourtClassName
+<br/>
 Trial location: @Model.TrialLocationName
+</body>
+</html>

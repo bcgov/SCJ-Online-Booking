@@ -65,8 +65,6 @@ namespace SCJ.Booking.TaskRunner.Services
 
         private async Task<bool> StartNextLottery()
         {
-            // todo: wait until after 6pm
-
             var toProcess = await CheckRequestsReadyToProcess();
 
             if (toProcess == null)
@@ -211,10 +209,12 @@ namespace SCJ.Booking.TaskRunner.Services
 
                     await QueueSuccessEmail(entry);
 
+                    // exit the loop
                     break;
                 }
                 else
                 {
+                    // record the failure
                     selection.BookingResult = new string(result.bookingResult.Take(255).ToArray());
                 }
 

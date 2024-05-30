@@ -412,9 +412,9 @@ namespace SCJ.Booking.MVC.Services.COA
             if (booking.RelatedCaseList != null && booking.RelatedCaseList.Any())
             {
                 viewModel.RelatedCasesString =
-                    "\nRELATED FILE NUMBER(S):\n"
+                    "<br/>\nRELATED FILE NUMBER(S):<br/>\n"
                     + string.Join(", ", booking.RelatedCaseList)
-                    + "\n";
+                    + "<br/>\n";
             }
 
             var template = booking.IsAppealHearing is true

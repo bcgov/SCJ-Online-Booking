@@ -1,31 +1,43 @@
 @model ScTrialEmailViewModel
-The request for trial dates has been submitted to the Online Booking System.
+<html>
+<body>
 
-Once the booking period closes, the Online Booking system will notify you whether a trial date has been reserved
-tentatively for this case. You will receive an update via email by @Model.ResultDate.
+<p>The request for trial dates has been submitted to the Online Booking System.</p>
+<p>
+    Once the booking period closes, the Online Booking system will notify you whether
+    a trial date has been reserved tentatively for this case. You will receive an
+    update via email by @Model.ResultDate.
+</p>
 
-----
-COURT FILE
-File number: @Model.FullCaseNumber
-@Model.StyleOfCause
-@Model.CourtClassName
-Trial length: @Model.TrialLength
-Trial location: @Model.TrialLocationName
+<h3>Court File</h3>
+File number: @Model.FullCaseNumber<br/>
+<strong>@Model.StyleOfCause</strong><br/>
+@Model.CourtClassName<br/>
+Trial length: @Model.TrialLength<br/>
+Trial location: @Model.TrialLocationName<br/>
 
-REQUESTED TRIAL DATES
-You are submitting a request for one of the following trial dates (listed in order of priority):
+<h3>Requested Trial Dates</h3>
+<p>
+    You are submitting a request for one of the following trial dates (listed in order
+    of priority):
+</p>
+<ol>
 @{
-  int counter = 1;
   foreach (var formattedDate in @Model.FairUseDates)
   {
-<text>    @counter. @formattedDate
-</text>
-    counter++;
+    <li>@formattedDate</li>
   }
 }
+</ol>
 
-CONTACT INFORMATION
-Email: @Model.EmailAddress
-Phone number: @Model.Phone
+<h3>Contact Information</h3>
+Email: @Model.EmailAddress<br/>
+Phone number: @Model.Phone<br/>
+<br/>
+<p>
+    To learn more about this process, please visit bccourts.ca or call Supreme Court
+    Scheduling at 604-660-2853.
+</p>
 
-To learn more about this process, please visit bccourts.ca or call Supreme Court Scheduling at 604-660-2853.
+</body>
+</html>

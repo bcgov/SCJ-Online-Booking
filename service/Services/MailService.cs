@@ -62,7 +62,7 @@ namespace SCJ.Booking.TaskRunner.Services
                         EmailAddress = new Microsoft.Graph.EmailAddress { Address = _senderEmail }
                     },
                     Subject = subject,
-                    Body = new ItemBody { ContentType = BodyType.Text, Content = body },
+                    Body = new ItemBody { ContentType = BodyType.Html, Content = body },
                     ToRecipients = new List<Recipient>()
                     {
                         new() { EmailAddress = new Microsoft.Graph.EmailAddress { Address = to } }
@@ -99,15 +99,8 @@ namespace SCJ.Booking.TaskRunner.Services
             var client = new SendGridClient(apiKey);
             var from = new SendGrid.Helpers.Mail.EmailAddress(fromEmail);
             var to = new SendGrid.Helpers.Mail.EmailAddress(toEmail);
-            var plainTextContent = body;
-            var htmlContent = body.Replace("\n", "<br/>\n");
-            var msg = MailHelper.CreateSingleEmail(
-                from,
-                to,
-                subject,
-                plainTextContent,
-                htmlContent
-            );
+            var htmlContent = body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, null, htmlContent);
             return await client.SendEmailAsync(msg);
         }
 

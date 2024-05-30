@@ -29,6 +29,8 @@ namespace SCJ.Booking.TaskRunner.Utils
                     ?.TrialStartDate.ToString("dddd, MMMM dd, yyyy") ?? "";
 
             TrialBookingId = bookingRequest.TrialBookingId;
+
+            NextMonth = bookingRequest.FairUseBookingPeriodStartDate.AddMonths(1).ToString("MMMM");
         }
 
         public string EmailAddress { get; set; }
@@ -40,5 +42,6 @@ namespace SCJ.Booking.TaskRunner.Utils
         public string TrialLocationName { get; set; }
         public string FairUseDate { get; set; }
         public string TrialBookingId { get; set; }
+        public string NextMonth { get; set; }
     }
 }

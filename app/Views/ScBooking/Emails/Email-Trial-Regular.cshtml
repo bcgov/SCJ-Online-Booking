@@ -1,21 +1,30 @@
 @model ScTrialEmailViewModel
-A trial date has been reserved tentatively for the date below.
+<html>
+<body>
+<p>
+    A trial date has been reserved tentatively for the date below.
+</p>
+<p>
+    File a Notice of Trial within 30 days of the date of this email to confirm this trial date.
+    The Notice of Trial form can be found on the
+    <a href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/">
+        Supreme Court scheduling website
+    </a>.
+</p>
 
-File a Notice of Trial within 30 days of the date of this email to confirm this trial date. The Notice of Trial form can
-be found on the Supreme Court scheduling website:
-https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/
+<h3>Court File</h3>
+File number: @Model.FullCaseNumber<br/>
+<strong>@Model.StyleOfCause</strong><br/>
+@Model.CourtClassName<br/>
 
-----
-COURT FILE
-File number: @Model.FullCaseNumber
-@Model.StyleOfCause
-@Model.CourtClassName
+<h3>Trial Details</h3>
+Trial length: @Model.TrialLength<br/>
+Starting: @Model.RegularDate<br/>
+Trial location: @Model.TrialLocationName<br/>
 
-TRIAL DETAILS
-Trial length: @Model.TrialLength
-Starting: @Model.RegularDate
-Trial location: @Model.TrialLocationName
+<h3>Contact Information</h3>
+Email: @Model.EmailAddress<br/>
+Phone number: @Model.Phone<br/>
 
-CONTACT INFORMATION
-Email: @Model.EmailAddress
-Phone number: @Model.Phone
+</body>
+</html>
