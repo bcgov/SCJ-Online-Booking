@@ -61,6 +61,22 @@ namespace SCJ.Booking.Data
                 .Entity<ScTrialBookingRequest>()
                 .HasIndex(r => new { r.CaseNumber }, "IX_CaseNumber_Ascending");
 
+            modelBuilder
+                .Entity<ScTrialBookingRequest>()
+                .HasIndex(
+                    r => new
+                    {
+                        r.LotteryStartDate,
+                        r.BookingLocationId,
+                        r.BookHearingCode
+                    },
+                    "IX_TaskRunner_Lottery"
+                );
+
+            modelBuilder
+                .Entity<ScTrialBookingRequest>()
+                .HasIndex(r => new { r.LotteryStartDate }, "IX_LotteryStartDate_Ascending");
+
             base.OnModelCreating(modelBuilder);
         }
 

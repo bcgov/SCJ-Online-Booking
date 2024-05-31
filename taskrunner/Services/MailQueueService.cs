@@ -52,7 +52,7 @@ namespace SCJ.Booking.TaskRunner.Services
         {
             var mailService = new MailService(_configuration, _logger);
 
-            _logger.Information("Checking mail queue");
+            _logger.Debug("Checking mail queue");
 
             // get the successful court booking emails in batches of 5 to send out
             var emailBatch = _dbContext.Set<QueuedEmail>().Take(5);

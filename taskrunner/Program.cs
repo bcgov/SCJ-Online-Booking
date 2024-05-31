@@ -35,12 +35,11 @@ namespace SCJ.Booking.TaskRunner
 
                 await mailQueueService.SendEmailBatch();
 
-                bool hasUnfinishedWork = await lotteryService.RunNextLotteryStep();
+                await lotteryService.RunNextLotteryStep();
 
                 // todo: we need another service that removes names and phone numbers (14 days after the lottery?)
 
                 // pause for 3 seconds
-                // todo: there should be a fast/infrequent mode an a slow/frequent mode for trial bookings based on whether or not there is incomplete work to be done
                 Thread.Sleep(3000);
             }
         }

@@ -168,10 +168,9 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         private async Task ProcessSingleEntry(ScTrialBookingRequest entry)
         {
-            var selectionIndex = 0;
-            var selectionCount = entry.TrialDateSelections.Count;
-
             var orderedSelections = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray();
+            var lastSelectionRank = orderedSelections.LastOrDefault()?.Rank ?? 0;
+
             foreach (var selection in orderedSelections)
             {
                 BookTrialHearingInfo bookingInfo =
@@ -219,7 +218,7 @@ namespace SCJ.Booking.TaskRunner.Services
                 }
 
                 // if this is the last item in the list of selections and the 'break' above was not hit
-                if (selectionIndex + 1 == selectionCount)
+                if (selection.Rank == lastSelectionRank)
                 {
                     // record an unmet demand for the first selection
                     bookingInfo.HearingDate = orderedSelections[0].TrialStartDate;
@@ -249,8 +248,6 @@ namespace SCJ.Booking.TaskRunner.Services
 
                     await QueueFailureEmail(entry);
                 }
-
-                selectionIndex++;
             }
 
             entry.ProcessingTimestamp = DateTime.Now;
