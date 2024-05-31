@@ -24,9 +24,6 @@
         <UseAppHost>false</UseAppHost>
     </PropertyGroup>
     <ItemGroup>
-        <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.8.391" />
-    </ItemGroup>
-    <ItemGroup>
         <!-- Files not to publish -->
         <Compile Remove="wwwroot\templates\**" />
         <Content Remove="ClientSrc\**" />
