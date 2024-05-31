@@ -12,7 +12,6 @@ namespace SCJ.OnlineBooking
     /// </summary>
     public class FakeOnlineBookingClient : IOnlineBooking
     {
-        // todo: added futureTrialHearing and fairUseSort
         public async Task<CourtFile[]> caseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
@@ -39,7 +38,7 @@ namespace SCJ.OnlineBooking
             }
 
             //KE111 -- Kelowna (KE) / Any Court (empty string) / #111
-            if (caseNum == "KE111" || caseNum == "KEM111" || caseNum == "KEG111")
+            if (caseNum == "KE111" || caseNum == "KEM111" || caseNum == "KES111")
             {
                 result = new[]
                 {
@@ -61,7 +60,7 @@ namespace SCJ.OnlineBooking
                         courtLevelCode = "S",
                         CEISLocationId = 83.0001m,
                         physicalFileId = 1063m,
-                        styleOfCause = "GILLESPIE, JANET",
+                        styleOfCause = "SIMPSON, Marge v SIMPSON, Homer",
                         fairUseSort = 3,
                         futureTrialHearing = false
                     }
@@ -85,8 +84,8 @@ namespace SCJ.OnlineBooking
         {
             await Task.Delay(100);
             var result = ScAvailableDatesByLocationFixture.AvailableDatesResult;
-            result.AvailableDates = result.AvailableDates
-                .Where(x => x.Date_Time > DateTime.Now)
+            result.AvailableDates = result
+                .AvailableDates.Where(x => x.Date_Time > DateTime.Now)
                 .ToArray();
             return result;
         }
@@ -94,10 +93,6 @@ namespace SCJ.OnlineBooking
         public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
         {
             await Task.Delay(100);
-            //return new BookingHearingResult
-            //{
-            //    bookingResult = "Failed - Hearing Booked test"
-            //};
             return ScBookingHearingResultFixture.Success;
         }
 
@@ -141,8 +136,8 @@ namespace SCJ.OnlineBooking
             await Task.Delay(100);
 
             var result = CoAAvailableDatesFixture.Dates;
-            result.AvailableDates = result.AvailableDates
-                .Where(x => x.scheduleDate > DateTime.Now)
+            result.AvailableDates = result
+                .AvailableDates.Where(x => x.scheduleDate > DateTime.Now)
                 .ToArray();
             return result;
         }
@@ -161,8 +156,8 @@ namespace SCJ.OnlineBooking
             await Task.Delay(100);
 
             var result = CoAAvailableDatesFixture.ChambersDates;
-            result.AvailableDates = result.AvailableDates
-                .Where(x => x.scheduleDate > DateTime.Now)
+            result.AvailableDates = result
+                .AvailableDates.Where(x => x.scheduleDate > DateTime.Now)
                 .ToArray();
             return result;
         }
@@ -206,20 +201,22 @@ namespace SCJ.OnlineBooking
 
             if (string.IsNullOrEmpty(locationID))
             {
-                return ScFormulaLocationsFixture.Locations
-                    .Where(l => l.FormulaType == formula)
+                return ScFormulaLocationsFixture
+                    .Locations.Where(l => l.FormulaType == formula)
                     .ToArray();
             }
 
             if (string.IsNullOrEmpty(formula))
             {
-                return ScFormulaLocationsFixture.Locations
-                    .Where(l => l.LocationID == int.Parse(locationID))
+                return ScFormulaLocationsFixture
+                    .Locations.Where(l => l.LocationID == int.Parse(locationID))
                     .ToArray();
             }
 
-            return ScFormulaLocationsFixture.Locations
-                .Where(l => l.FormulaType == formula && l.LocationID == int.Parse(locationID))
+            return ScFormulaLocationsFixture
+                .Locations.Where(l =>
+                    l.FormulaType == formula && l.LocationID == int.Parse(locationID)
+                )
                 .ToArray();
         }
 
