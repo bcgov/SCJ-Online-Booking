@@ -53,6 +53,8 @@ spec:
                 secretKeyRef:
                   name: {{ template "scjob_patroni_secrets" . }}
                   key: connect-string
+            - name: TZ
+              value: America/Vancouver
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-app-secrets
