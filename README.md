@@ -57,7 +57,7 @@ Make sure you are using Node 18 by running `node -v`
 
 Find "Solution Explorer" in the VS Code explorer panel.  Right click on SCJ.Booking.MVC and select "Debug => Start New Instance"
 
-you should be able to connect on http://localhost:5002/
+you should be able to connect on https://localhost:5002/
 
 ### Running the app
  
