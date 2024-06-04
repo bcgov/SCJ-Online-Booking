@@ -83,7 +83,9 @@ namespace SCJ.Booking.MVC.Services.SC
                 CaseLocationName = model.CaseLocationName
             };
 
-            string searchableCaseNumber = $"{prefix}{model.CaseNumber}";
+            var searchableCaseNumber = string.IsNullOrWhiteSpace(model.SelectedCourtClass)
+                ? $"{prefix}{model.CaseNumber}"
+                : $"{prefix}{model.SelectedCourtClass}{model.CaseNumber}";
 
             newModel.CaseSearchResults = await _client.caseNumberValidAsync(searchableCaseNumber);
 
