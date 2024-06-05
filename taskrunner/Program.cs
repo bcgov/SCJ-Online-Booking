@@ -11,6 +11,8 @@ namespace SCJ.Booking.TaskRunner
 {
     internal class Program
     {
+        private const int PollingFrequencySeconds = 3;
+
         public static async Task Main(string[] args)
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-CA", false);
@@ -22,6 +24,11 @@ namespace SCJ.Booking.TaskRunner
 
             var mailQueueService = new MailQueueService(configuration, dbContext);
             var lotteryService = new LotteryService(configuration, dbContext);
+
+            logger.Information("SCJ.Booking.TaskRunner started");
+            logger.Information(
+                $"Checking emails and lottery requests every {PollingFrequencySeconds} seconds"
+            );
 
             while (true)
             {
@@ -40,7 +47,7 @@ namespace SCJ.Booking.TaskRunner
                 // todo: we need another service that removes names and phone numbers (14 days after the lottery?)
 
                 // pause for 3 seconds
-                Thread.Sleep(3000);
+                Thread.Sleep(PollingFrequencySeconds * 1000);
             }
         }
 
