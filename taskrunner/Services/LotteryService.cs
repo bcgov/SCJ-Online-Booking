@@ -168,25 +168,30 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         private async Task ProcessSingleEntry(ScTrialBookingRequest entry)
         {
+            if (!entry.TrialDateSelections.Any())
+            {
+                return;
+            }
+
             var orderedSelections = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray();
-            BookTrialHearingInfo? scssTrialRequest = null;
 
             foreach (var selection in orderedSelections)
             {
-                scssTrialRequest = new()
-                {
-                    BookingLocationID = entry.BookingLocationId,
-                    CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                    CourtClass = entry.CourtClassCode,
-                    FormulaType = ScFormulaType.FairUseBooking,
-                    HearingLength = entry.HearingLength,
-                    HearingType = ScHearingType.TRIAL,
-                    LocationID = entry.TrialLocationId,
-                    RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                    HearingDate = selection.TrialStartDate,
-                    SCJOB_Trial_Booking_ID = entry.TrialBookingId,
-                    SCJOB_Trial_Booking_Date = DateTime.Now
-                };
+                BookTrialHearingInfo? scssTrialRequest =
+                    new()
+                    {
+                        BookingLocationID = entry.BookingLocationId,
+                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
+                        CourtClass = entry.CourtClassCode,
+                        FormulaType = ScFormulaType.FairUseBooking,
+                        HearingLength = entry.HearingLength,
+                        HearingType = ScHearingType.TRIAL,
+                        LocationID = entry.TrialLocationId,
+                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
+                        HearingDate = selection.TrialStartDate,
+                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
+                        SCJOB_Trial_Booking_Date = DateTime.Now
+                    };
 
                 _logger.Debug("BookTrialHearingAsync()");
                 _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
@@ -212,52 +217,73 @@ namespace SCJ.Booking.TaskRunner.Services
                     entry.AllocatedSelectionRank = selection.Rank;
                     selection.BookingResult = new string(result.bookingResult.Truncate(255));
 
-                    // queue the success email
-                    await QueueSuccessEmail(entry);
-
-                    // write to the database and exit
+                    // write to the database
                     entry.ProcessingTimestamp = DateTime.Now;
                     entry.IsProcessed = true;
                     await _dbContext.SaveChangesAsync();
 
+                    // queue the success email
+                    await QueueSuccessEmail(entry);
+
+                    // exit the function & don't process any more selections
                     return;
                 }
             }
 
             // We tried all the selections and we were unable to book anything.
-            // Record an unmet demand for the first selection & queue the failure email.
-            if (entry.TrialDateSelections.Any() && scssTrialRequest != null)
-            {
-                scssTrialRequest.HearingDate = orderedSelections[0].TrialStartDate;
-                scssTrialRequest.HearingType = ScHearingType.UNMET_DEMAND;
-
-                _logger.Debug("Record unmet demand");
-                _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
-
-                BookingHearingResult result = await _client.BookTrialHearingAsync(scssTrialRequest);
-
-                if (result.bookingResult.ToLower().StartsWith("success"))
-                {
-                    entry.UnmetDemandBookingResult = "Success - Unmet Demand Recorded";
-                    _logger.Information(
-                        $"Successfully recorded unmet demand for {entry.CeisPhysicalFileId}"
-                    );
-                }
-                else
-                {
-                    entry.UnmetDemandBookingResult = new string(result.bookingResult.Truncate(255));
-                    _logger.Error($"Failed to record unmet demand for {entry.CeisPhysicalFileId}");
-                    _logger.Error(JsonSerializer.Serialize(result));
-                }
-
-                // queue the failure email
-                await QueueFailureEmail(entry);
-            }
+            // Record an unmet demand for the first selection
+            await RecordUnmetDemand(entry);
 
             // write to the database
             entry.ProcessingTimestamp = DateTime.Now;
             entry.IsProcessed = true;
             await _dbContext.SaveChangesAsync();
+
+            // queue the failure email
+            await QueueFailureEmail(entry);
+        }
+
+        /// <summary>
+        ///   Records an unmet demand (hearing type 20538) for the user's first lottery selection
+        /// </summary>
+        private async Task RecordUnmetDemand(ScTrialBookingRequest entry)
+        {
+            var firstSelection = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray()[0];
+
+            BookTrialHearingInfo scssTrialRequest =
+                new()
+                {
+                    BookingLocationID = entry.BookingLocationId,
+                    CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
+                    CourtClass = entry.CourtClassCode,
+                    FormulaType = ScFormulaType.FairUseBooking,
+                    HearingLength = entry.HearingLength,
+                    HearingType = ScHearingType.UNMET_DEMAND,
+                    LocationID = entry.TrialLocationId,
+                    RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
+                    HearingDate = firstSelection.TrialStartDate,
+                    SCJOB_Trial_Booking_ID = entry.TrialBookingId,
+                    SCJOB_Trial_Booking_Date = DateTime.Now
+                };
+
+            _logger.Debug("Record unmet demand");
+            _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
+
+            var result = await _client.BookTrialHearingAsync(scssTrialRequest);
+
+            if (result.bookingResult.ToLower().StartsWith("success"))
+            {
+                entry.UnmetDemandBookingResult = "Success - Unmet Demand Recorded";
+                _logger.Information(
+                    $"Successfully recorded unmet demand for {entry.CeisPhysicalFileId}"
+                );
+            }
+            else
+            {
+                entry.UnmetDemandBookingResult = new string(result.bookingResult.Truncate(255));
+                _logger.Error($"Failed to record unmet demand for {entry.CeisPhysicalFileId}");
+                _logger.Error(JsonSerializer.Serialize(result));
+            }
         }
 
         /// <summary>
