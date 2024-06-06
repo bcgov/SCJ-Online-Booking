@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -114,10 +116,10 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("/api/lottery-results/{year}/{month}")]
         public async Task<ActionResult> LotteryResults(int year, int month)
         {
-            if (!IsAllowedToExportJson(Request))
-            {
-                return new UnauthorizedResult();
-            }
+            //if (!IsAllowedToExportJson(Request))
+            //{
+            //    return new UnauthorizedResult();
+            //}
 
             DateTime startDate = new(year, month, 1);
             DateTime endDate = startDate.AddMonths(1).AddSeconds(-1);
@@ -140,14 +142,10 @@ namespace SCJ.Booking.MVC.Controllers
                         .TrialBookingRequests.OrderBy(x => x.ProcessingTimestamp)
                         .Select(r => new
                         {
-                            RequestId = r.Id,
+                            r.TrialBookingId,
                             r.FairUseSort,
                             r.LotteryPosition,
-                            r.ProcessingTimestamp,
-                            r.TrialBookingId,
                             r.HearingLength,
-                            BookingResult = r.AllocatedSelectionRank > 0,
-                            r.UnmetDemandBookingResult,
                             DateSelections = r
                                 .TrialDateSelections.OrderBy(s => s.Rank)
                                 .Select(s => new
@@ -155,12 +153,20 @@ namespace SCJ.Booking.MVC.Controllers
                                     s.Rank,
                                     s.TrialStartDate,
                                     s.BookingResult
-                                })
+                                }),
+                            AllocatedSelectionRank = (int?)(
+                                r.AllocatedSelectionRank > 0 ? r.AllocatedSelectionRank : null
+                            ),
+                            r.UnmetDemandBookingResult,
+                            r.ProcessingTimestamp
                         })
                 })
                 .ToListAsync();
 
-            return Json(lotteries);
+            return Json(
+                lotteries,
+                new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.Never }
+            );
         }
 
         private bool IsAllowedToExportJson(HttpRequest request)
