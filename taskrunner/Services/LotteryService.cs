@@ -44,7 +44,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             if (lotteryInProgress == null)
             {
-                return await StartNextLottery();
+                return await StartLottery();
             }
             else
             {
@@ -63,7 +63,7 @@ namespace SCJ.Booking.TaskRunner.Services
             }
         }
 
-        private async Task<bool> StartNextLottery()
+        private async Task<bool> StartLottery()
         {
             var toProcess = await CheckRequestsReadyToProcess();
 
@@ -168,16 +168,12 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         private async Task ProcessSingleEntry(ScTrialBookingRequest entry)
         {
-            if (!entry.TrialDateSelections.Any())
-            {
-                return;
-            }
-
+            bool trialBooked = false;
             var orderedSelections = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray();
 
             foreach (var selection in orderedSelections)
             {
-                BookTrialHearingInfo? scssTrialRequest =
+                BookTrialHearingInfo scssTrialRequest =
                     new()
                     {
                         BookingLocationID = entry.BookingLocationId,
@@ -201,46 +197,36 @@ namespace SCJ.Booking.TaskRunner.Services
 
                 _logger.Debug(JsonSerializer.Serialize(result));
 
-                if (!result.bookingResult.ToLower().StartsWith("success"))
+                if (result.bookingResult.ToLower().StartsWith("success"))
+                {
+                    // successfully booked the selection
+                    trialBooked = true;
+                    _logger.Information(
+                        $"Successfully booked selection {selection.Rank} for {entry.CeisPhysicalFileId}"
+                    );
+                    entry.AllocatedSelectionRank = selection.Rank;
+                    selection.BookingResult = new string(result.bookingResult.Truncate(255));
+                    entry.ProcessingTimestamp = DateTime.Now;
+                    entry.IsProcessed = true;
+                    await _dbContext.SaveChangesAsync();
+                    await QueueSuccessEmail(entry);
+                    break;
+                }
+                else
                 {
                     // record the failure
                     selection.BookingResult = new string(result.bookingResult.Truncate(255));
                 }
-                else
-                {
-                    // successfully booked the selection
-                    _logger.Information(
-                        $"Successfully booked selection {selection.Rank} for {entry.CeisPhysicalFileId}"
-                    );
-
-                    // update the request
-                    entry.AllocatedSelectionRank = selection.Rank;
-                    selection.BookingResult = new string(result.bookingResult.Truncate(255));
-
-                    // write to the database
-                    entry.ProcessingTimestamp = DateTime.Now;
-                    entry.IsProcessed = true;
-                    await _dbContext.SaveChangesAsync();
-
-                    // queue the success email
-                    await QueueSuccessEmail(entry);
-
-                    // exit the function & don't process any more selections
-                    return;
-                }
             }
 
-            // We tried all the selections and we were unable to book anything.
-            // Record an unmet demand for the first selection
-            await RecordUnmetDemand(entry);
-
-            // write to the database
-            entry.ProcessingTimestamp = DateTime.Now;
-            entry.IsProcessed = true;
-            await _dbContext.SaveChangesAsync();
-
-            // queue the failure email
-            await QueueFailureEmail(entry);
+            if (!trialBooked)
+            {
+                await RecordUnmetDemand(entry);
+                entry.ProcessingTimestamp = DateTime.Now;
+                entry.IsProcessed = true;
+                await _dbContext.SaveChangesAsync();
+                await QueueFailureEmail(entry);
+            }
         }
 
         /// <summary>
@@ -248,41 +234,46 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         private async Task RecordUnmetDemand(ScTrialBookingRequest entry)
         {
-            var firstSelection = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray()[0];
-
-            BookTrialHearingInfo scssTrialRequest =
-                new()
-                {
-                    BookingLocationID = entry.BookingLocationId,
-                    CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                    CourtClass = entry.CourtClassCode,
-                    FormulaType = ScFormulaType.FairUseBooking,
-                    HearingLength = entry.HearingLength,
-                    HearingType = ScHearingType.UNMET_DEMAND,
-                    LocationID = entry.TrialLocationId,
-                    RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                    HearingDate = firstSelection.TrialStartDate,
-                    SCJOB_Trial_Booking_ID = entry.TrialBookingId,
-                    SCJOB_Trial_Booking_Date = DateTime.Now
-                };
-
-            _logger.Debug("Record unmet demand");
-            _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
-
-            var result = await _client.BookTrialHearingAsync(scssTrialRequest);
-
-            if (result.bookingResult.ToLower().StartsWith("success"))
+            if (entry.TrialDateSelections.Any())
             {
-                entry.UnmetDemandBookingResult = "Success - Unmet Demand Recorded";
-                _logger.Information(
-                    $"Successfully recorded unmet demand for {entry.CeisPhysicalFileId}"
+                var firstSelection = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray()[0];
+
+                BookTrialHearingInfo unmetDemandRequest =
+                    new()
+                    {
+                        BookingLocationID = entry.BookingLocationId,
+                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
+                        CourtClass = entry.CourtClassCode,
+                        FormulaType = ScFormulaType.FairUseBooking,
+                        HearingLength = entry.HearingLength,
+                        HearingType = ScHearingType.UNMET_DEMAND,
+                        LocationID = entry.TrialLocationId,
+                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
+                        HearingDate = firstSelection.TrialStartDate,
+                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
+                        SCJOB_Trial_Booking_Date = DateTime.Now
+                    };
+
+                _logger.Debug("Record unmet demand");
+                _logger.Debug(JsonSerializer.Serialize(unmetDemandRequest));
+
+                BookingHearingResult result = await _client.BookTrialHearingAsync(
+                    unmetDemandRequest
                 );
-            }
-            else
-            {
-                entry.UnmetDemandBookingResult = new string(result.bookingResult.Truncate(255));
-                _logger.Error($"Failed to record unmet demand for {entry.CeisPhysicalFileId}");
-                _logger.Error(JsonSerializer.Serialize(result));
+
+                if (result.bookingResult.ToLower().StartsWith("success"))
+                {
+                    entry.UnmetDemandBookingResult = "Success - Unmet Demand Recorded";
+                    _logger.Information(
+                        $"Successfully recorded unmet demand for {entry.CeisPhysicalFileId}"
+                    );
+                }
+                else
+                {
+                    entry.UnmetDemandBookingResult = new string(result.bookingResult.Truncate(255));
+                    _logger.Error($"Failed to record unmet demand for {entry.CeisPhysicalFileId}");
+                    _logger.Error(JsonSerializer.Serialize(result));
+                }
             }
         }
 
