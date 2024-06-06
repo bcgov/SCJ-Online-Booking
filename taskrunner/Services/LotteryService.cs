@@ -275,6 +275,10 @@ namespace SCJ.Booking.TaskRunner.Services
                     _logger.Error(JsonSerializer.Serialize(result));
                 }
             }
+            else
+            {
+                entry.UnmetDemandBookingResult = "Fail - No date selections found";
+            }
         }
 
         /// <summary>
