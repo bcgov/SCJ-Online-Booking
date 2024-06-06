@@ -116,10 +116,10 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("/api/lottery-results/{year}/{month}")]
         public async Task<ActionResult> LotteryResults(int year, int month)
         {
-            //if (!IsAllowedToExportJson(Request))
-            //{
-            //    return new UnauthorizedResult();
-            //}
+            if (!IsAllowedToExportJson(Request))
+            {
+                return new UnauthorizedResult();
+            }
 
             DateTime startDate = new(year, month, 1);
             DateTime endDate = startDate.AddMonths(1).AddSeconds(-1);
