@@ -17,9 +17,9 @@ objects:
             role: ROLE_TEAM_MANAGER
           - name: lorne.lovett@bccourts.ca
             role: ROLE_TEAM_MANAGER
-          - name: techdomi@gmail.com
+          - name: dominik@oxd.com
             role: ROLE_TEAM_MANAGER
-          - name: sqa.manuji@gmail.com
+          - name: manuji@oxd.com
             role: ROLE_TEAM_EDIT
           - name: duncan@oxd.com
             role: ROLE_TEAM_EDIT
