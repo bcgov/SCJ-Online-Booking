@@ -127,6 +127,14 @@ namespace SCJ.Booking.MVC.Services.SC
         {
             var bookingInfo = _session.ScBookingInfo;
 
+            // clear formulas (needed when user navigates back)
+            if (bookingInfo.FairUseFormula != null || bookingInfo.RegularFormula != null)
+            {
+                bookingInfo.FairUseFormula = null;
+                bookingInfo.RegularFormula = null;
+                _session.ScBookingInfo = bookingInfo;
+            }
+
             //Model instance
             return new ScBookingTypeViewModel
             {
