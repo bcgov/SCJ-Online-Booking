@@ -18,8 +18,8 @@
 
       <p class="mb-3">
         <strong>A trial date is not being booked at this stage.</strong> You are providing your
-        availability for a trial to start on one (out of a maximum of five) of your requested dates
-        18 months in advance.
+        availability for a trial to start on <strong>one</strong> (out of a maximum of five) of your
+        requested dates 18 months in advance.
       </p>
 
       <p class="mb-3">
