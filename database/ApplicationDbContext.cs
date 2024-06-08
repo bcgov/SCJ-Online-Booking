@@ -46,6 +46,7 @@ namespace SCJ.Booking.Data
                 if (_provider == "npgsql")
                 {
                     optionsBuilder.UseNpgsql(_connectionString);
+                    optionsBuilder.EnableSensitiveDataLogging();
                 }
             }
         }

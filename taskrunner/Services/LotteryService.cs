@@ -134,9 +134,7 @@ namespace SCJ.Booking.TaskRunner.Services
         {
             return await _dbContext
                 .ScTrialBookingRequests.Where(x =>
-                    x.Lottery == null
-                    && x.LotteryStartDate < LocalTimeWithoutZone
-                    && x.IsProcessed == false
+                    x.Lottery == null && x.LotteryStartDate < DateTime.Now && x.IsProcessed == false
                 )
                 .OrderBy(x => x.BookingLocationId)
                 .ThenBy(x => x.BookHearingCode)
@@ -157,7 +155,7 @@ namespace SCJ.Booking.TaskRunner.Services
                     x.Lottery == null
                     && x.BookHearingCode == bookHearingCode
                     && x.BookingLocationId == bookingLocationId
-                    && x.LotteryStartDate < LocalTimeWithoutZone
+                    && x.LotteryStartDate < DateTime.Now
                     && x.IsProcessed == false
                 )
                 .ToListAsync();
@@ -332,14 +330,5 @@ namespace SCJ.Booking.TaskRunner.Services
                 isLotteryResult: true
             );
         }
-
-        /// <summary>
-        ///     Subtracts the current local timezone offset from UTC
-        ///     e.g. -7 hours for PDT or -8 hours for PST
-        ///     Postgres stores timestamps without timezone information
-        ///     We only use this for date comparisons in db queries.
-        /// </summary>
-        private DateTime LocalTimeWithoutZone =>
-            DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
     }
 }
