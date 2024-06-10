@@ -119,7 +119,7 @@ namespace SCJ.Booking.MVC.Services
                 TrialLocationName = bookingInfo.BookingLocationName,
                 FairUseSort = courtFile.fairUseSort,
                 CaseNumber = bookingInfo.CaseNumber,
-                StyleOfCause = courtFile.styleOfCause,
+                StyleOfCause = courtFile.styleOfCause ?? string.Empty,
                 TrialLocationId = bookingInfo.TrialLocationRegistryId,
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
