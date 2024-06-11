@@ -138,29 +138,29 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
             new()
             {
                 BookingHearingCode = "All",
-                BookingLocationID = 9,
+                BookingLocationID = 18,
                 EndDate = StartDate.AddMonths(1).AddSeconds(-1),
                 FairUseBookingPeriodEndDate = BookingStartDate.AddDays(BookingDays).AddSeconds(-1),
                 FairUseBookingPeriodStartDate = BookingStartDate,
                 FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
                 FormulaType = "Fair-Use",
-                LocationCode = "CT",
-                LocationID = 9,
-                LocationName = "Courtenay",
+                LocationCode = "KE",
+                LocationID = 18,
+                LocationName = "Kelowna",
                 StartDate = StartDate
             },
             new()
             {
                 BookingHearingCode = "All",
-                BookingLocationID = 9,
+                BookingLocationID = 18,
                 EndDate = StartDate.AddMonths(-4),
                 FairUseBookingPeriodEndDate = DateTime.MinValue,
                 FairUseBookingPeriodStartDate = DateTime.MinValue,
                 FairUseContactDate = DateTime.MinValue,
                 FormulaType = "Regular",
-                LocationCode = "CT",
-                LocationID = 9,
-                LocationName = "Courtenay",
+                LocationCode = "KE",
+                LocationID = 18,
+                LocationName = "Kelowna",
                 StartDate = DateTime.Now.Date.AddDays(60)
             },
             new()
