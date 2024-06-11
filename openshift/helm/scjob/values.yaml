@@ -11,7 +11,7 @@ images:
     tag: latest
   patroni:
     name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/patroni-postgres
-    tag: 2.0.1-12.4
+    tag: 2.1.7-12.19
   pgbouncer:
     name: image-registry.openshift-image-registry.svc:5000/bc7c5c-tools/pgbouncer
     tag: latest
