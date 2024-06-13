@@ -32,13 +32,15 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpGet]
+        [Route("~/booking/coa/restart")]
         public IActionResult Restart()
         {
             _session.CoaBookingInfo = null;
-            return new RedirectResult("/scjob/booking/coa/CaseSearch");
+            return new RedirectResult("/scjob/booking/coa/case-search");
         }
 
         [HttpGet]
+        [Route("~/booking/coa/case-search")]
         public async Task<IActionResult> CaseSearch()
         {
             var bookingInfo = _session.CoaBookingInfo;
@@ -78,6 +80,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpPost]
+        [Route("~/booking/coa/case-search")]
         public async Task<IActionResult> CaseSearch(CoaCaseSearchViewModel model)
         {
             if (!model.Step1Complete)
@@ -116,20 +119,21 @@ namespace SCJ.Booking.MVC.Controllers
             if (model.SelectedDate != null && !model.TimeSlotExpired)
             //go to confirmation screen
             {
-                return new RedirectResult("/scjob/booking/coa/CaseConfirm");
+                return new RedirectResult("/scjob/booking/coa/case-confirm");
             }
 
             return View(model);
         }
 
         [HttpGet]
+        [Route("~/booking/coa/case-confirm")]
         public async Task<IActionResult> CaseConfirm()
         {
             CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect("/scjob/booking/coa/CaseSearch");
+                return Redirect("/scjob/booking/coa/case-search");
             }
 
             //user information
@@ -201,6 +205,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpPost]
+        [Route("~/booking/coa/case-confirm")]
         public async Task<IActionResult> CaseConfirm(CoaCaseConfirmViewModel model)
         {
             if (!ModelState.IsValid)
@@ -217,18 +222,19 @@ namespace SCJ.Booking.MVC.Controllers
             );
 
             return Redirect(
-                $"/scjob/booking/coa/CaseBooked?booked={(result.IsBooked ? "true" : "false")}"
+                $"/scjob/booking/coa/case-booked?booked={(result.IsBooked ? "true" : "false")}"
             );
         }
 
         [HttpGet]
+        [Route("~/booking/coa/case-booked")]
         public IActionResult CaseBooked()
         {
             CoaSessionBookingInfo bookingInfo = _session.CoaBookingInfo;
 
             if (string.IsNullOrEmpty(bookingInfo.CaseNumber))
             {
-                return Redirect("/scjob/booking/coa/CaseSearch");
+                return Redirect("/scjob/booking/coa/case-search");
             }
 
             return View();
