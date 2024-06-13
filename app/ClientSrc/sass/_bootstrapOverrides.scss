@@ -185,19 +185,19 @@ hr {
 }
 
 .btn-secondary {
-    background-color: $green-dark;
-    &:not(:disabled):not(.disabled):hover,
-    &:not(:disabled):not(.disabled):focus,
-    &:not(:disabled):not(.disabled):active {
-        background-color: $green-medium;
-    }
+  background-color: $green-dark;
+  &:not(:disabled):not(.disabled):hover,
+  &:not(:disabled):not(.disabled):focus,
+  &:not(:disabled):not(.disabled):active {
+    background-color: $green-medium;
+  }
 
-    &::after {
-        display: inline-block;
-        font-family: "Font Awesome 5 Free";
-        content: "\f00c";
-        margin-left: auto;
-    }
+  &::after {
+    display: inline-block;
+    font-family: "Font Awesome 5 Free";
+    content: "\f00c";
+    margin-left: auto;
+  }
 }
 
 .btn-tertiary {
@@ -349,24 +349,26 @@ hr {
     font-size: 1.2rem;
     line-height: 2.5rem;
 
-    table {
-      border-collapse: inherit;
+    .datepicker-days {
+      table {
+        border-collapse: inherit;
 
-      tr td {
-        margin: 1px;
-        padding: 0;
-        &.today {
-          background-color: $white;
-        }
-        &:not(.disabled) {
-          border-radius: 50%;
-          border: 1px solid $blue-calendar;
-          &:hover {
-            background-color: rgba($blue-calendar, 0.2);
+        tr td {
+          margin: 1px;
+          padding: 0;
+          &.today {
+            background-color: $white;
           }
-          &.active {
-            color: $white;
-            background-color: $blue-calendar;
+          &:not(.disabled) {
+            border-radius: 50%;
+            border: 1px solid $blue-calendar;
+            &:hover {
+              background-color: rgba($blue-calendar, 0.2);
+            }
+            &.active {
+              color: $white;
+              background-color: $blue-calendar;
+            }
           }
         }
       }
