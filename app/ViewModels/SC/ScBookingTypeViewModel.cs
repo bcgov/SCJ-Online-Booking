@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.ViewModels.SC
@@ -19,6 +20,8 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         //Booking type fields
         public int HearingTypeId { get; set; }
         public string HearingTypeName { get; set; }
+
+        [Display(Name = "Estimated Trial Length")]
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
