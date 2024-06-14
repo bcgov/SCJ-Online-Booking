@@ -28,7 +28,20 @@
         <p>@bookingInfo.SelectedCourtClassName</p>
     </div>
 
-    @if (Model.AvailableDates == null || !Model.AvailableDates.Any())
+    @if (@Model.HearingTypeId == @ScHearingType.TRIAL)
+    {
+        <partial name="Partial/AvailableTimes/_Trial" model="Model" />
+
+        @section Styles {
+            <link rel="stylesheet" href="/scjob/dist/vue/TrialTimeSelect.js.css" asp-append-version="true" />
+        }
+
+        @section Scripts {
+            <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
+            <script src="/scjob/dist/vue/TrialTimeSelect.js" asp-append-version="true"></script>
+        }
+    }
+    else if (Model.AvailableDates == null || !Model.AvailableDates.Any())
     {
         var location = Model.SessionInfo.BookingLocationName;
 
@@ -51,19 +64,6 @@
                 @* No next step in this error state *@
             </div>
         </div>
-    }
-    else if (@Model.HearingTypeId == @ScHearingType.TRIAL)
-    {
-        <partial name="Partial/AvailableTimes/_Trial" model="Model" />
-
-        @section Styles {
-        <link rel="stylesheet" href="/scjob/dist/vue/TrialTimeSelect.js.css" asp-append-version="true" />
-        }
-
-        @section Scripts {
-        <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
-        <script src="/scjob/dist/vue/TrialTimeSelect.js" asp-append-version="true"></script>
-        }
     }
     else
     {
