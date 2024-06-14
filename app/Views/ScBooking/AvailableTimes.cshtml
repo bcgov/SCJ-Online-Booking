@@ -28,7 +28,31 @@
         <p>@bookingInfo.SelectedCourtClassName</p>
     </div>
 
-    @if (@Model.HearingTypeId == @ScHearingType.TRIAL)
+    @if (Model.AvailableDates == null || !Model.AvailableDates.Any())
+    {
+        var location = Model.SessionInfo.BookingLocationName;
+
+        <div class="alert alert-danger" role="alert">
+            <i class="fa fa-ban"></i>
+            <p>
+                <b>There are currently no available times for this hearing in @location.</b><br />
+                Please contact the registry in @location to for assistance and available options.
+            </p>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col-6 col-md-8 d-flex align-items-center text-link">
+                <span>
+                    <i class="fas fa-long-arrow-alt-left"></i>
+                    <a asp-action="BookingType">Step 2: Choose Your Booking Type</a>
+                </span>
+            </div>
+            <div class="col-6 col-md-4">
+                @* No next step in this error state *@
+            </div>
+        </div>
+    }
+    else if (@Model.HearingTypeId == @ScHearingType.TRIAL)
     {
         <partial name="Partial/AvailableTimes/_Trial" model="Model" />
 

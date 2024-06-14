@@ -57,7 +57,10 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             get
             {
                 var result = DateTime.Now.ToString(DateFormat);
-                if (AvailableConferenceDates?.AvailableDates != null)
+                if (
+                    AvailableConferenceDates?.AvailableDates != null
+                    && AvailableConferenceDates.AvailableDates.Any()
+                )
                 {
                     result = AvailableConferenceDates
                         .AvailableDates.Select(x => x.Date_Time.Date)
@@ -73,7 +76,10 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             get
             {
                 var result = DateTime.Now.ToString(DateFormat);
-                if (AvailableConferenceDates?.AvailableDates != null)
+                if (
+                    AvailableConferenceDates?.AvailableDates != null
+                    && AvailableConferenceDates.AvailableDates.Any()
+                )
                 {
                     result = AvailableConferenceDates
                         .AvailableDates.Select(x => x.Date_Time.Date)
