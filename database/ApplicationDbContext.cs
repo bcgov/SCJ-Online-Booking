@@ -87,7 +87,7 @@ namespace SCJ.Booking.Data
             var process = Process.GetCurrentProcess().MainModule?.FileName;
             if (process != null && _connectionString != null)
             {
-                var path = process.Split(@$"{slash}service{slash}bin");
+                var path = process.Split(@$"{slash}taskrunner{slash}bin");
                 var fileName = _connectionString.Split('=');
                 if (fileName.Length > 1 && path.Length > 1)
                 {
