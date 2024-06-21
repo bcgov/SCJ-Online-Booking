@@ -153,8 +153,15 @@ namespace SCJ.Booking.MVC
                         },
                         OnRedirectToIdentityProvider = ctx =>
                         {
-                            // add a parameter to the keycloak redirect querystring
-                            ctx.ProtocolMessage.SetParameter("kc_idp_hint", "bceid");
+                            // Add parameters to the keycloak redirect querystring
+
+                            // force it to use bceid instead of showing an SSO page
+                            // todo: this is disabled while we figure out our login flow
+                            // ctx.ProtocolMessage.SetParameter(
+                            //     "kc_idp_hint",
+                            //     OpenIdConnectHelper.BceidIdp
+                            // );
+
                             // change the redirect_uri to the reverse proxy
                             string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx.Request);
                             if (proxyHost != null)
@@ -164,6 +171,14 @@ namespace SCJ.Booking.MVC
                                     $"https://{proxyHost}/scjob/signin-oidc"
                                 );
                             }
+
+                            // add a parameter to specify the proof configuration to use for digital
+                            // credentials (these configurations are pre-created by Pathfinder SSO)
+                            ctx.ProtocolMessage.SetParameter(
+                                "pres_req_conf_id",
+                                "verified-person-bcpc-dev"
+                            );
+
                             return Task.FromResult(0);
                         },
                         OnRedirectToIdentityProviderForSignOut = ctx =>
@@ -251,8 +266,8 @@ namespace SCJ.Booking.MVC
             var platform = new Platform();
 
             using (
-                IServiceScope serviceScope = app
-                    .ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                IServiceScope serviceScope = app.ApplicationServices
+                    .GetRequiredService<IServiceScopeFactory>()
                     .CreateScope()
             )
             {

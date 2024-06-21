@@ -77,7 +77,7 @@ namespace SCJ.Booking.MVC.Services.SC
             //ensure time slot is still available
             if (ScCoreService.IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
-                string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
+                string userDisplayName = OpenIdConnectHelper.GetUserFullName(user);
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
 
                 //build object to send to the API
