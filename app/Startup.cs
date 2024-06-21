@@ -153,11 +153,10 @@ namespace SCJ.Booking.MVC
                             // Add parameters to the keycloak redirect querystring
 
                             // force it to use bceid instead of showing an SSO page
-                            // todo: this is disabled while we figure out our login flow
-                            // ctx.ProtocolMessage.SetParameter(
-                            //     "kc_idp_hint",
-                            //     OpenIdConnectHelper.BceidIdp
-                            // );
+                            ctx.ProtocolMessage.SetParameter(
+                                "kc_idp_hint",
+                                OpenIdConnectHelper.BceidIdp
+                            );
 
                             // change the redirect_uri to the reverse proxy
                             string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx.Request);
