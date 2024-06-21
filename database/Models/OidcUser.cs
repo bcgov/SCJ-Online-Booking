@@ -8,9 +8,8 @@ namespace SCJ.Booking.Data.Models
         public enum CredentialTypeLookup : ushort
         {
             None = 0,
-            Siteminder = 1,
-            KeycloakBceid = 2,
-            BcWalletLawyer = 3
+            DigitalCredential = 1,
+            Bceid = 2
         }
 
         [Key]

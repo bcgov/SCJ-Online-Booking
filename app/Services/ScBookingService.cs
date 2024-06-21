@@ -402,7 +402,7 @@ namespace SCJ.Booking.MVC.Services
             //ensure time slot is still available
             if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
-                string userDisplayName = user.FindFirst(ClaimTypes.GivenName)?.Value ?? "";
+                string userDisplayName = OpenIdConnectHelper.GetUserFullName(user);
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
                 _logger.Information($"Got claim: userId={userId}");
 
