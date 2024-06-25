@@ -24,6 +24,7 @@ namespace SCJ.Booking.TaskRunner
 
             var mailQueueService = new MailQueueService(configuration, dbContext);
             var lotteryService = new LotteryService(configuration, dbContext);
+            var lotteryCleanupService = new LotteryCleanupService(configuration, dbContext);
 
             logger.Information("SCJ.Booking.TaskRunner started");
             logger.Information(
@@ -44,7 +45,11 @@ namespace SCJ.Booking.TaskRunner
 
                 await lotteryService.RunNextLotteryStep();
 
-                // todo: we need another service that removes names and phone numbers (14 days after the lottery?)
+                // remove old lottery requests
+                await lotteryCleanupService.RemoveOldLotteryRequests();
+
+                // remove names and phone numbers from processed lottery requests
+                await lotteryCleanupService.RemovePersonalInfo();
 
                 // pause for 3 seconds
                 Thread.Sleep(PollingFrequencySeconds * 1000);
