@@ -62,7 +62,7 @@ namespace SCJ.Booking.TaskRunner.Services
             }
 
             // Save changes to the database
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             _logger.Information(
                 "Updated {count} entries from ScTrialBookingRequests",
@@ -107,7 +107,7 @@ namespace SCJ.Booking.TaskRunner.Services
             }
 
             // save changes to the database
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             // delete each expired lottery entry
             foreach (var entry in entriesToDelete)
@@ -116,7 +116,7 @@ namespace SCJ.Booking.TaskRunner.Services
             }
 
             // save changes to the database
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             _logger.Information(
                 "Deleted {count} entries from ScTrialBookingRequests",
