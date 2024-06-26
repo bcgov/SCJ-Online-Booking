@@ -52,6 +52,7 @@ namespace SCJ.Booking.TaskRunner.Services
             {
                 entry.Email = anonymizedEmail;
                 entry.RequestedByName = anonymizedName;
+                entry.Phone = "";
             }
 
             // Save changes to the database
