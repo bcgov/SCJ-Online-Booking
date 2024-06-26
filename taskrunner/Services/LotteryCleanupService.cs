@@ -25,8 +25,8 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         public async Task RemovePersonalInfo()
         {
-            string anonymizedName = "_anonymized";
-            string anonymizedEmail = "_anonymized@example.com";
+            const string anonymizedName = "_anonymized";
+            const string anonymizedEmail = "_anonymized@example.com";
 
             _logger.Information("Removing personal info from lottery entries");
 
