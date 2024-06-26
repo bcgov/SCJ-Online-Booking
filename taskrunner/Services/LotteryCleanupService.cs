@@ -42,6 +42,12 @@ namespace SCJ.Booking.TaskRunner.Services
                 .Where(e => e.Email != anonymizedEmail && e.RequestedByName != anonymizedName)
                 .ToListAsync();
 
+            if (entriesToUpdate.Count == 0)
+            {
+                _logger.Information("No entries to update");
+                return;
+            }
+
             _logger.Information(
                 "Updating {count} old entries from ScTrialBookingRequests with anonymized details",
                 entriesToUpdate.Count
@@ -79,6 +85,12 @@ namespace SCJ.Booking.TaskRunner.Services
             var entriesToDelete = await _dbContext
                 .ScTrialBookingRequests.Where(e => e.ProcessingTimestamp < oldestDate)
                 .ToListAsync();
+
+            if (entriesToDelete.Count == 0)
+            {
+                _logger.Information("No entries to delete");
+                return;
+            }
 
             _logger.Information(
                 "Deleting {count} old entries from ScTrialBookingRequests",
