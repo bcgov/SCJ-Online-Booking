@@ -34,7 +34,7 @@ namespace SCJ.Booking.TaskRunner.Services
             int maxDays = _configuration.GetValue<int>(
                 "AppSettings:PurgeLotteryContactInfoAfterDays"
             );
-            DateTime oldestDate = DateTime.UtcNow.AddDays(-maxDays);
+            DateTime oldestDate = DateTime.Now.AddDays(-maxDays);
 
             // get entries from ScTrialBookingRequests where ProcessingTimestamp is older than oldestDate
             var entriesToUpdate = await _dbContext
@@ -73,7 +73,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             // calculate the oldest trial booking request to keep
             int maxDays = _configuration.GetValue<int>("AppSettings:PurgeLotteryRequestsAfterDays");
-            DateTime oldestDate = DateTime.UtcNow.AddDays(-maxDays);
+            DateTime oldestDate = DateTime.Now.AddDays(-maxDays);
 
             // get entries from ScTrialBookingRequests where ProcessingTimestamp is older than oldestDate
             var entriesToDelete = await _dbContext
