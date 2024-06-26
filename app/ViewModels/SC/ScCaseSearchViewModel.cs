@@ -18,7 +18,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         }
 
         //Search fields
-        [Display(Name = "Case Number")]
+        [Display(Name = "Action Number")]
         public int? CaseNumber { get; set; }
 
         // Selected Registry ID
