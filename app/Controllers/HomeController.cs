@@ -4,7 +4,6 @@ using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.MVC.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.Controllers
 {
