@@ -150,13 +150,25 @@ namespace SCJ.Booking.MVC
                         },
                         OnRedirectToIdentityProvider = ctx =>
                         {
+                            var idp = ctx.Request.Query["kc_idp_hint"];
+                            if (
+                                idp != OpenIdConnectHelper.BceidIdp
+                                && idp != OpenIdConnectHelper.DigitalCredentialIdp
+                            )
+                            {
+                                // redirect to our custom sso page to pick an identity provider
+                                string ssoUrl = "/scjob/sso";
+                                var pathString = ctx.Request.Path.ToString();
+                                string court = pathString.ToLower().Contains("/coa") ? "coa" : "sc";
+                                ctx.Response.Redirect($"{ssoUrl}?court={court}");
+                                ctx.HandleResponse();
+                                return Task.FromResult(0);
+                            }
+
                             // Add parameters to the keycloak redirect querystring
 
-                            // force it to use bceid instead of showing an SSO page
-                            ctx.ProtocolMessage.SetParameter(
-                                "kc_idp_hint",
-                                OpenIdConnectHelper.BceidIdp
-                            );
+                            // add an idp hint to bypass the default keycloak SSO page
+                            ctx.ProtocolMessage.SetParameter("kc_idp_hint", idp);
 
                             // change the redirect_uri to the reverse proxy
                             string proxyHost = OpenIdConnectHelper.GetProxyHost(ctx.Request);

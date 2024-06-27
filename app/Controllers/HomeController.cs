@@ -14,6 +14,17 @@ namespace SCJ.Booking.MVC.Controllers
             return View();
         }
 
+        [Route("~/sso")]
+        public IActionResult Sso()
+        {
+            ViewBag.AppUrl =
+                Request.Query["court"] == "coa"
+                    ? "/scjob/booking/coa/CaseSearch"
+                    : "/scjob/booking/sc";
+
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [Route("~/Error")]
         public IActionResult Error()
