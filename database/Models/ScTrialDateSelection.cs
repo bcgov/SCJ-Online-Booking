@@ -9,7 +9,7 @@ namespace SCJ.Booking.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public ScTrialBookingRequest? BookingRequest { get; set; }
+        public ScTrialBookingRequest BookingRequest { get; set; } = null!;
 
         public DateTime TrialStartDate { get; set; }
 
