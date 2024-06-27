@@ -1,0 +1,31 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Single Sign-On";
+}
+
+@section NavBar {
+    <div class="navbar-collapse collapse">
+        <!-- no navbar on sso page -->
+    </div>
+}
+
+<div class="row no-gutters">
+    <div class="col-12 mx-auto">
+        <h1>Log in to BC Courts Online Booking System</h1>
+        <p>
+            Use one of the following methods to log into the BC Courts Online Booking System.
+        </p>
+    </div>
+</div>
+
+<div class="row no-gutters home-court-options">
+    <div class="col-12 mx-auto">
+        <div class="row no-gutters justify-content-around" style="display: block">
+            <p><a href="@ViewBag.AppUrl?kc_idp_hint=bceidboth">BCeID</a></p>
+            <p><a href="@ViewBag.AppUrl?kc_idp_hint=digitalcredential">BC Wallet</a></p>
+        </div>
+    </div>
+</div>
+

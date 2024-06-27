@@ -4,6 +4,7 @@ using SCJ.Booking.MVC.ViewModels;
 using SCJ.Booking.MVC.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.Controllers
 {
@@ -11,6 +12,17 @@ namespace SCJ.Booking.MVC.Controllers
     {
         public IActionResult Index()
         {
+            return View();
+        }
+
+        [Route("~/sso")]
+        public IActionResult Sso()
+        {
+            ViewBag.AppUrl =
+                Request.Query["court"] == "coa"
+                    ? "/scjob/booking/coa/CaseSearch"
+                    : "/scjob/booking/sc";
+
             return View();
         }
 
