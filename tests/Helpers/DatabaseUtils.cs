@@ -57,7 +57,7 @@ public class DatabaseUtils
     {
         var testUser = new OidcUser
         {
-            CredentialType = OidcUser.CredentialTypeLookup.KeycloakBceid,
+            CredentialType = OidcUser.CredentialTypeLookup.Bceid,
             UniqueIdentifier = Guid.NewGuid().ToString(),
             LastLogin = DateTime.Now
         };
