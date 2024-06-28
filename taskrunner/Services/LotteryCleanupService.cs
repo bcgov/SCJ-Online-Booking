@@ -97,22 +97,10 @@ namespace SCJ.Booking.TaskRunner.Services
                 entriesToDelete.Count
             );
 
-            // delete rows in dependent tables that reference entriesToDelete
-            foreach (var entry in entriesToDelete)
-            {
-                var childEntries = _dbContext
-                    .ScTrialDateSelections.Where(c => c.BookingRequest == entry)
-                    .ToList();
-                _dbContext.ScTrialDateSelections.RemoveRange(childEntries);
-            }
-
-            // save changes to the database
-            await _dbContext.SaveChangesAsync();
-
             // delete each expired lottery entry
             foreach (var entry in entriesToDelete)
             {
-                _dbContext.ScTrialBookingRequests.Remove(entry);
+                _dbContext.Remove(entry);
             }
 
             // save changes to the database
