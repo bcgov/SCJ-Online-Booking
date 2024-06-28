@@ -184,7 +184,7 @@ namespace SCJ.Booking.MVC
                             // credentials (these configurations are pre-created by Pathfinder SSO)
                             ctx.ProtocolMessage.SetParameter(
                                 "pres_req_conf_id",
-                                "verified-person-bcpc-dev"
+                                Configuration["Keycloak:DigitalCredential:ConfigId"]
                             );
 
                             return Task.FromResult(0);
