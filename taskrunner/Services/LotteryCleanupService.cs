@@ -28,7 +28,7 @@ namespace SCJ.Booking.TaskRunner.Services
             const string anonymizedName = "_anonymized";
             const string anonymizedEmail = "_anonymized@example.com";
 
-            _logger.Information("Removing personal info from lottery entries");
+            _logger.Debug("Removing personal info from lottery entries");
 
             // calculate the oldest lottery entry to keep
             int maxDays = _configuration.GetValue<int>(
@@ -44,7 +44,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             if (entriesToUpdate.Count == 0)
             {
-                _logger.Information("No entries to update");
+                _logger.Debug("No entries to update");
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         public async Task RemoveOldLotteryRequests()
         {
-            _logger.Information("Removing old lottery requests");
+            _logger.Debug("Removing old lottery requests");
 
             // calculate the oldest trial booking request to keep
             int maxDays = _configuration.GetValue<int>("AppSettings:PurgeLotteryRequestsAfterDays");
@@ -88,7 +88,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             if (entriesToDelete.Count == 0)
             {
-                _logger.Information("No entries to delete");
+                _logger.Debug("No entries to delete");
                 return;
             }
 
