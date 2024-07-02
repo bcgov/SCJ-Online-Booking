@@ -86,7 +86,7 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpPost]
         [Route("~/booking/sc/case-selected")]
-        public IActionResult CaseSelectedAsync(ScCaseSearchViewModel model)
+        public async Task<IActionResult> CaseSelectedAsync(ScCaseSearchViewModel model)
         {
             model.IsConfirmingCase = true;
 
@@ -100,7 +100,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View("Index", model);
             }
 
-            _scCoreService.SaveSearchForm(model);
+            await _scCoreService.SaveSearchForm(model);
 
             return RedirectToAction("BookingType");
         }
