@@ -109,15 +109,21 @@ namespace SCJ.Booking.MVC.Services.SC
             return newModel;
         }
 
-        public void SaveSearchForm(ScCaseSearchViewModel model)
+        public async Task SaveSearchForm(ScCaseSearchViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
+
+            // we need to do a second API call to get the selectedCourtFile because
+            // if we passed it with hidden fields then there would be a security
+            // vulnerability where an attacker could modify fairUseSort to get into
+            // an earlier lottery round
+            CourtFile selectedCourtFile = await GetCourtFile(model.SearchableCaseNumber);
 
             bookingInfo.PhysicalFileId = model.SelectedCaseId;
             bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
             bookingInfo.FullCaseNumber = model.FullCaseNumber;
             bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;
-            bookingInfo.SelectedCourtFile = model.SelectedCourtFile;
+            bookingInfo.SelectedCourtFile = selectedCourtFile;
             bookingInfo.LocationPrefix = model.LocationPrefix;
 
             _session.ScBookingInfo = bookingInfo;
@@ -315,6 +321,22 @@ namespace SCJ.Booking.MVC.Services.SC
             const int vancouverId = 1;
             var numbers = ScPhoneNumbers.PhoneList;
             return numbers.ContainsKey(registryId) ? numbers[registryId] : numbers[vancouverId];
+        }
+
+        /// <summary>
+        ///     Gets a single court file from the search API
+        /// </summary>
+        /// <remarks>
+        ///     searchableCaseNumber must include a court class for this to work as intended
+        /// </remarks>
+        private async Task<CourtFile> GetCourtFile(string searchableCaseNumber)
+        {
+            var searchResult = await _client.caseNumberValidAsync(searchableCaseNumber);
+            if (!searchResult.Any())
+            {
+                return null;
+            }
+            return searchResult[0];
         }
     }
 }

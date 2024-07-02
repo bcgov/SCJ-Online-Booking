@@ -73,5 +73,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             get { return ScCourtClass.GetCourtClass(SelectedCourtFile?.courtClassCode); }
         }
         public string FullCaseNumber => $"{LocationPrefix} {SelectedFileNumber}";
+
+        public string SearchableCaseNumber => $"{LocationPrefix}{SelectedFileNumber}";
     }
 }
