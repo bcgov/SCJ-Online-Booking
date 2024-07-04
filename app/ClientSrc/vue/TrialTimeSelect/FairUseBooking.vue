@@ -153,7 +153,6 @@ export default {
     showInfo: false,
 
     selected: [],
-    maxSelectionSize: 5,
     selectionSizeAlertHidden: false,
   }),
 
@@ -171,6 +170,11 @@ export default {
     initialValue: {
       type: Array,
       default: () => [],
+    },
+
+    maxSelectionSize: {
+      type: Number,
+      default: 5,
     },
   },
 
