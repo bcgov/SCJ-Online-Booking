@@ -1,7 +1,8 @@
 <template>
   <div class="trial-time-select-fair-use-booking">
     <div class="d-md-none mb-3 content-pad">
-      Choose up to five dates for a trial starting in the upcoming release of dates.
+      <!-- Tab description text shown on small screens -->
+      <slot name="mobileTabDescription" />
     </div>
 
     <div class="dates-info content-pad mb-3">
@@ -16,15 +17,7 @@
         />
       </div>
 
-      <p class="mb-3">
-        <strong>A trial date is not being booked at this stage.</strong> You are providing your
-        availability for a trial to start on <strong>one</strong> (out of a maximum of five) of your
-        requested dates in the upcoming release.
-      </p>
-
-      <p class="mb-3">
-        <strong>The time of your submission has no bearing on the result of your request.</strong>
-      </p>
+      <slot name="howItWorksDescription" />
 
       <div v-if="showInfo" class="expand-content"><slot name="datesInfo" /></div>
 
@@ -153,7 +146,6 @@ export default {
     showInfo: false,
 
     selected: [],
-    maxSelectionSize: 5,
     selectionSizeAlertHidden: false,
   }),
 
@@ -171,6 +163,11 @@ export default {
     initialValue: {
       type: Array,
       default: () => [],
+    },
+
+    maxSelectionSize: {
+      type: Number,
+      default: 5,
     },
   },
 

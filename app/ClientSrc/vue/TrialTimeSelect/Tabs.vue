@@ -9,7 +9,7 @@
             <strong class="d-none d-md-block">Provide your availability for upcoming dates</strong>
           </div>
           <div v-if="!fairUseDisabled" class="d-none d-md-block">
-            Choose up to five dates for a trial starting in the upcoming release of dates.
+            <slot name="fairUseTabDescription" />
           </div>
           <!-- show "fair use disabled" alert text inline on larger screens -->
           <div v-else class="d-none d-md-block"><slot name="fairUseDisabledAlert" /></div>
@@ -24,7 +24,7 @@
             <strong class="d-none d-md-block">Book currently available trial dates</strong>
           </div>
           <div class="d-none d-md-block">
-            You can instantly book a trial date that is currently available in the system.
+            <slot name="regularTabDescription" />
           </div>
         </label>
       </li>
@@ -92,7 +92,7 @@ export default {
 
   watch: {
     // change the next button label based on the tab selected
-    tab: function(value) {
+    tab: function (value) {
       const nextButton = document.getElementById("btnNext");
       if (nextButton) {
         if (value == "Fair-Use" && !this.fairUseUnavailable && !this.fairUseDisabled) {
@@ -101,7 +101,7 @@ export default {
           nextButton.innerText = "Book Trial Date";
         }
       }
-    }
+    },
   },
 
   methods: {
