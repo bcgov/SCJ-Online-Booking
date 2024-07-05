@@ -3,9 +3,9 @@ namespace SCJ.Booking.Data.Constants
     public static class ScTrialDateLimits
     {
         // Maximum number of dates that can be selected for the fair use lottery
-        public const int MaxSelectionSize = 5;
+        public const int ScMaxTrialDateSelections = 5;
 
-        // English string representation of MaxSelectionSize
-        public const string MaxSelectionSizeString = "five";
+        // English string representation of ScMaxTrialDateSelections
+        public const string ScMaxTrialDateSelectionsString = "five";
     }
 }

@@ -285,7 +285,7 @@ namespace SCJ.Booking.MVC.Services.SC
             bookingInfo.SelectedConferenceDate = model.ParsedConferenceDate;
             bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
             bookingInfo.SelectedFairUseTrialDates = model
-                .SelectedFairUseTrialDates.Take(ScTrialDateLimits.MaxSelectionSize)
+                .SelectedFairUseTrialDates.Take(ScTrialDateLimits.ScMaxTrialDateSelections)
                 .ToList();
             bookingInfo.TrialFormulaType = model.TrialFormulaType;
 

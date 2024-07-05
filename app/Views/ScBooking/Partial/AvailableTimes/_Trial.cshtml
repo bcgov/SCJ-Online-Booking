@@ -26,7 +26,7 @@
     bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value
     < DateTime.Now);
 
-    int MaxSelectionSize = ScTrialDateLimits.MaxSelectionSize;
+    int ScMaxTrialDateSelections = ScTrialDateLimits.ScMaxTrialDateSelections;
 }
 
 <form method="post" id="availableTimesForm">
@@ -47,7 +47,7 @@
             </regular-booking>
 
             <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
-                :initial-value="@selectedFairUseDateStrings" :max-selection-size="@MaxSelectionSize"
+                :initial-value="@selectedFairUseDateStrings" :max-selection-size="@ScMaxTrialDateSelections"
                 slot="fairUseBooking">
                 <div slot="noDatesError" class="alert alert-danger" role="alert">
                     <i class="fa fa-ban"></i>
