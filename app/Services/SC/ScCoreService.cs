@@ -258,12 +258,16 @@ namespace SCJ.Booking.MVC.Services.SC
                 bookingInfo.SelectedCourtFile?.courtClassCode ?? ""
             );
 
+            // The fair use start/end dates are the period inwhich dates are selected for the lottery
             model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
             model.FairUseEndDate = fairUseFormula?.FairUseBookingPeriodEndDate;
+
+            // The fair use "result date" is the date when the lottery takes place and users are notified
             model.FairUseResultDate = fairUseFormula?.FairUseContactDate;
-            model.FairUseNoticeDate = fairUseFormula
-                ?.FairUseContactDate.GetValueOrDefault()
-                .AddDays(30);
+
+            // The fair use "selection date" is the period inwhich the trials booked by
+            // the lottery take place. Example: "June 2025" for trials in June 2025
+            model.FairUseSelectionDate = fairUseFormula?.StartDate;
 
             return model;
         }
