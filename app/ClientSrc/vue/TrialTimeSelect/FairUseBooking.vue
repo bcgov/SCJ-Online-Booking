@@ -17,15 +17,7 @@
         />
       </div>
 
-      <p class="mb-3">
-        <strong>A trial date is not being booked at this stage.</strong> You are providing your
-        availability for a trial to start on <strong>one</strong> (out of a maximum of five) of your
-        requested dates in the upcoming release.
-      </p>
-
-      <p class="mb-3">
-        <strong>The time of your submission has no bearing on the result of your request.</strong>
-      </p>
+      <slot name="howItWorksDescription" />
 
       <div v-if="showInfo" class="expand-content"><slot name="datesInfo" /></div>
 
