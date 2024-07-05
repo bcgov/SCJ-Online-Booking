@@ -27,6 +27,7 @@
     < DateTime.Now);
 
     int ScMaxTrialDateSelections = ScGeneral.ScMaxTrialDateSelections;
+    string ScMaxTrialDateSelectionsString = ScGeneral.ScMaxTrialDateSelectionsString;
 }
 
 <form method="post" id="availableTimesForm">
@@ -49,6 +50,11 @@
             <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
                 :initial-value="@selectedFairUseDateStrings" :max-selection-size="@ScMaxTrialDateSelections"
                 slot="fairUseBooking">
+                <template slot="mobileTabDescription">
+                    Choose up to @ScMaxTrialDateSelectionsString dates for a trial starting in the upcoming release of
+                    dates.
+                </template>
+
                 <div slot="noDatesError" class="alert alert-danger" role="alert">
                     <i class="fa fa-ban"></i>
                     There are no dates set for the upcoming release. You can instantly book a trial date that is
@@ -110,9 +116,18 @@
                 </template>
             </fair-use-booking>
 
+            <template slot="fairUseTabDescription">
+                Choose up to @ScMaxTrialDateSelectionsString dates for a trial starting in the upcoming release of
+                dates.
+            </template>
+
             <template slot="fairUseDisabledAlert">
                 The @currentMonth booking period ended on @fairUseEndDate.
                 The next booking period will open in @nextMonth.
+            </template>
+
+            <template slot="regularTabDescription">
+                You can instantly book a trial date that is currently available in the system.
             </template>
         </trial-time-select-tabs>
     </div>

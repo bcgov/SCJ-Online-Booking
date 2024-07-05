@@ -1,7 +1,8 @@
 <template>
   <div class="trial-time-select-fair-use-booking">
     <div class="d-md-none mb-3 content-pad">
-      Choose up to five dates for a trial starting in the upcoming release of dates.
+      <!-- Tab description text shown on small screens -->
+      <slot name="mobileTabDescription" />
     </div>
 
     <div class="dates-info content-pad mb-3">
