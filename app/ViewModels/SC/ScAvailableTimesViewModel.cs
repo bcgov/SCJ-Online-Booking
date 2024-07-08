@@ -27,6 +27,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             FairUseEndDate = null;
             FairUseResultDate = null;
             FairUseNoticeDate = null;
+            RegistryContactNumber = string.Empty;
         }
 
         //Search fields
@@ -173,5 +174,6 @@ namespace SCJ.Booking.MVC.ViewModels.SC
 
         // Session object
         public ScSessionBookingInfo SessionInfo { get; set; }
+        public string RegistryContactNumber { get; set; }
     }
 }
