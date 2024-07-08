@@ -230,7 +230,9 @@ namespace SCJ.Booking.MVC.Services.SC
                 SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
                 SessionInfo = bookingInfo,
-                RegistryContactNumber = GetRegistryContactNumber(bookingInfo.CaseRegistryId)
+                RegistryContactNumber = GetRegistryContactNumber(
+                    bookingInfo.TrialLocationRegistryId
+                )
             };
 
             model = await LoadAvailableTimesFormulaInfoAsync(model, null);

@@ -254,7 +254,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 ResultDate = resultDate,
                 TrialBookingId = booking.TrialBookingId,
                 RegistryContactNumber = ScCoreService.GetRegistryContactNumber(
-                    booking.CaseRegistryId
+                    booking.TrialLocationRegistryId
                 )
             };
 
