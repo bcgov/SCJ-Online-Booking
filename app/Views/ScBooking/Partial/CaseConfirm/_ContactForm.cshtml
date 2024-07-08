@@ -39,11 +39,11 @@ else
     <div class="col-6 col-md-8 d-flex align-items-center text-link">
         <span>
             <i class="fas fa-arrow-left"></i>
-            <a asp-action="AvailableTimes">Step 3: 
+            <a asp-action="AvailableTimes">Step 3:
 
                 @if (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
-                    <text>Choose Trial</text>
+                    <text>Request Trial </text>
                     @(Model.SessionInfo.TrialFormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
                 }
                 else
