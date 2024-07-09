@@ -85,7 +85,7 @@
 
       <div class="dates-intro content-pad selected-dates-intro">
         <h6>Your Availability</h6>
-        <p class="mb-3">You can reorder dates to indicate your preference.</p>
+        <p class="mb-3">Reorder dates using drag and drop to indicate your preference.</p>
         <div
           ref="selectedDates"
           class="list-info-header d-flex justify-content-between align-items-center mb-4"
