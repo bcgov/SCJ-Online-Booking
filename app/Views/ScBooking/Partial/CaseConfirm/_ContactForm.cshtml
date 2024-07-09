@@ -55,7 +55,14 @@ else
     </div>
     <div class="col-6 col-md-4">
         <button type="submit" class="btn btn-secondary btn-block progress-spinner" id="btnSearch">
-            Confirm Booking
+            @if (@Model.SessionInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
+            {
+                <text>Confirm Request</text>
+            }
+            else
+            {
+                <text>Confirm Booking</text>
+            }
         </button>
     </div>
 </div>
