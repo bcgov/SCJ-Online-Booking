@@ -48,9 +48,8 @@
                 </div>
             </regular-booking>
 
-            <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
-                :initial-value="@selectedFairUseDateStrings" :max-selection-size="@ScMaxTrialDateSelections"
-                slot="fairUseBooking">
+            <fair-use-booking :dates="@availableFairUseDates" :initial-value="@selectedFairUseDateStrings"
+                :max-selection-size="@ScMaxTrialDateSelections" slot="fairUseBooking">
                 <template slot="mobileTabDescription">
                     Request up to @ScMaxTrialDateSelectionsString dates for a trial starting in the upcoming release of
                     dates.
@@ -109,6 +108,11 @@
                         <a target="_blank" href="https://www.bccourts.ca/supreme_court/scheduling/">bccourts.ca</a>
                         or call Supreme Court Scheduling at @Model.RegistryContactNumber.
                     </p>
+                </template>
+
+                <template slot="dateSelectionSectionHeader">
+                    Request trial start dates for @Model.SessionInfo.BookingLocationName
+                    (Trial length @Model.SessionInfo.EstimatedTrialLength days)
                 </template>
 
                 <template slot="dateSelectionHeader" slot-scope="{ maxSelectionSize }">

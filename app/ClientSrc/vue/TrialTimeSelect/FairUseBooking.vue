@@ -31,7 +31,7 @@
     </div>
 
     <div class="content-pad">
-      <h3 class="mt-0 mb-3">Choose trial start dates (Trial length {{ trialLength }} days)</h3>
+      <h3 class="mt-0 mb-3"><slot name="dateSelectionSectionHeader" /></h3>
 
       <slot v-if="dates.length === 0" name="noDatesError" />
     </div>
@@ -153,11 +153,6 @@ export default {
     dates: {
       type: Array,
       default: () => [],
-    },
-
-    trialLength: {
-      type: Number,
-      default: 0,
     },
 
     initialValue: {
