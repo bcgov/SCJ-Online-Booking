@@ -26,7 +26,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             FairUseStartDate = null;
             FairUseEndDate = null;
             FairUseResultDate = null;
-            FairUseNoticeDate = null;
+            FairUseSelectionDate = null;
             RegistryContactNumber = string.Empty;
         }
 
@@ -170,7 +170,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public DateTime? FairUseStartDate { get; set; }
         public DateTime? FairUseEndDate { get; set; }
         public DateTime? FairUseResultDate { get; set; }
-        public DateTime? FairUseNoticeDate { get; set; }
+        public DateTime? FairUseSelectionDate { get; set; }
 
         // Session object
         public ScSessionBookingInfo SessionInfo { get; set; }
