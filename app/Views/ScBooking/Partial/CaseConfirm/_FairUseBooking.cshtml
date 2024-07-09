@@ -8,7 +8,12 @@
 }
 
 <div class="content-pad bg-white mb-4">
-    <p class="mb-4"><b>Your availability for when to start your trial (listed in order of preference):</b></p>
+    <p class="mb-4">
+        <b>
+            Your availability for when to start your @Model.SessionInfo.EstimatedTrialLength day trial in
+            @Model.SessionInfo.BookingLocationName (listed in order of preference):
+        </b>
+    </p>
 
     <ol>
         @foreach (var dateString in formattedDates)
