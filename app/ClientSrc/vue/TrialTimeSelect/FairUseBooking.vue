@@ -31,7 +31,7 @@
     </div>
 
     <div class="content-pad">
-      <h3 class="mt-0 mb-3">Choose trial start dates (Trial length {{ trialLength }} days)</h3>
+      <h3 class="mt-0 mb-3"><slot name="dateSelectionSectionHeader" /></h3>
 
       <slot v-if="dates.length === 0" name="noDatesError" />
     </div>
@@ -85,7 +85,7 @@
 
       <div class="dates-intro content-pad selected-dates-intro">
         <h6>Your Availability</h6>
-        <p class="mb-3">You can reorder dates to indicate your preference.</p>
+        <p class="mb-3">Reorder dates using drag and drop to indicate your preference.</p>
         <div
           ref="selectedDates"
           class="list-info-header d-flex justify-content-between align-items-center mb-4"
@@ -153,11 +153,6 @@ export default {
     dates: {
       type: Array,
       default: () => [],
-    },
-
-    trialLength: {
-      type: Number,
-      default: 0,
     },
 
     initialValue: {

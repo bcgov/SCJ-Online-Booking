@@ -48,9 +48,8 @@
                 </div>
             </regular-booking>
 
-            <fair-use-booking :dates="@availableFairUseDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
-                :initial-value="@selectedFairUseDateStrings" :max-selection-size="@ScMaxTrialDateSelections"
-                slot="fairUseBooking">
+            <fair-use-booking :dates="@availableFairUseDates" :initial-value="@selectedFairUseDateStrings"
+                :max-selection-size="@ScMaxTrialDateSelections" slot="fairUseBooking">
                 <template slot="mobileTabDescription">
                     Request up to @ScMaxTrialDateSelectionsString dates for a trial starting in the upcoming release of
                     dates.
@@ -111,10 +110,15 @@
                     </p>
                 </template>
 
+                <template slot="dateSelectionSectionHeader">
+                    Request trial start dates for @Model.SessionInfo.BookingLocationName
+                    (Trial length @Model.SessionInfo.EstimatedTrialLength days)
+                </template>
+
                 <template slot="dateSelectionHeader" slot-scope="{ maxSelectionSize }">
-                    <h6>@fairUseStartDate</h6>
+                    <h6>Trial dates for @bookingPeriodName</h6>
                     <p class="mb-3">
-                        Choose up to {{ maxSelectionSize }} starting dates. Some dates are not available due to
+                        Request <b>up to {{ maxSelectionSize }} starting dates</b>. Some dates are not available due to
                         statutory holidays or court closures.
                     </p>
                 </template>
