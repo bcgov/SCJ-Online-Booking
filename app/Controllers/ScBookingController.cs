@@ -129,7 +129,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             if (model.HearingTypeId == -1)
             {
-                ModelState.AddModelError("HearingTypeId", "Please choose a booking type.");
+                ModelState.AddModelError("HearingTypeId", "Please choose what you are booking.");
             }
 
             // Extra fields for "Trial" booking type
