@@ -3,7 +3,7 @@
 @{
     // convert DateTimes to formatted strings
     List<string> formattedDates = Model.SessionInfo.SelectedFairUseTrialDates
-    .Select(date => date.ToString("dddd MMMM dd, yyyy"))
+    .Select(date => date.ToString("dddd MMMM d, yyyy"))
     .ToList();
 }
 

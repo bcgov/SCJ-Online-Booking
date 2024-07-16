@@ -81,7 +81,7 @@ namespace SCJ.Booking.MVC.Controllers
                     {
                         Date = date,
                         Weekday = date.DayOfWeek.ToString(),
-                        FormattedDate = date.ToString("MMMM dd, yyyy"),
+                        FormattedDate = date.ToString("MMMM d, yyyy"),
                         Times = new List<HearingTime>()
                     };
                 }

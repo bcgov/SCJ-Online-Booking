@@ -197,7 +197,7 @@ namespace SCJ.Booking.MVC.Services.SC
                     string emailBody = await GetTrialEmailBodyAsync();
                     string fileNumber = bookingInfo.FullCaseNumber;
                     string startDate = bookingInfo.SelectedRegularTrialDate?.ToString(
-                        "MMMM dd, yyyy"
+                        "MMMM d, yyyy"
                     );
                     string emailSubject = $"Trial booking for {fileNumber} starting on {startDate}";
                     await _mailService.QueueEmailAsync(
@@ -234,7 +234,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             // lottery date, when users will be notified
             string resultDate =
-                booking.FairUseFormula?.FairUseContactDate?.ToString("dddd MMMM dd, yyyy")
+                booking.FairUseFormula?.FairUseContactDate?.ToString("dddd MMMM d, yyyy")
                 ?? "[N/A]";
 
             // set ViewModel for the email
