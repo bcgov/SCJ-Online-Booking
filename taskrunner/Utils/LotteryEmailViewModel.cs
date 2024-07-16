@@ -26,7 +26,7 @@ namespace SCJ.Booking.TaskRunner.Utils
                     .TrialDateSelections.FirstOrDefault(x =>
                         x.Rank == bookingRequest.AllocatedSelectionRank
                     )
-                    ?.TrialStartDate.ToString("dddd, MMMM dd, yyyy") ?? "";
+                    ?.TrialStartDate.ToString("dddd MMMM dd, yyyy") ?? "";
 
             TrialBookingId = bookingRequest.TrialBookingId;
 

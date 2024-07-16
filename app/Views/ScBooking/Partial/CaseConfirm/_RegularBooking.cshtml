@@ -8,7 +8,7 @@
         @(Model.SessionInfo.EstimatedTrialLength == 1 ? "day" : "days")
     </p>
 
-    <p>Starting: @Model.SelectedRegularTrialDate?.ToString("dddd, MMMM dd, yyyy")</p>
+    <p>Starting: @Model.SelectedRegularTrialDate?.ToString("dddd MMMM dd, yyyy")</p>
 
     <p>Trial location: @Model.TrialLocationName</p>
 </div>

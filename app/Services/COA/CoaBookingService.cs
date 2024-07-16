@@ -394,7 +394,7 @@ namespace SCJ.Booking.MVC.Services.COA
                 CaseType = booking.CaseType,
                 TypeOfConference = booking.IsAppealHearing is true ? "Appeal" : "Chambers",
                 HearingLength = booking.IsFullDay is true ? "Full Day" : "Half Day",
-                Date = booking.SelectedDate?.ToString("dddd, MMMM dd, yyyy") ?? "",
+                Date = booking.SelectedDate?.ToString("dddd MMMM dd, yyyy") ?? "",
                 RelatedCasesString = "",
                 SelectedApplicationTypeNames = await GetApplicationTypeNames(
                     booking.CaseType,
