@@ -129,7 +129,7 @@ export default {
       this.selectedBookingTime = bookingTime;
 
       //check if date is still available
-      validateCaseDate(containerId, this.convertToTicks(bookingTime + "Z"));
+      validateCaseDate(containerId, this.convertToTicks(bookingTime));
     },
     convertToTicks(dt) {
       var date = new Date(dt);
