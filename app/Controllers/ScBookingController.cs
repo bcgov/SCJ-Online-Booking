@@ -143,6 +143,14 @@ namespace SCJ.Booking.MVC.Controllers
                     );
                 }
 
+                if (model.EstimatedTrialLength > 99)
+                {
+                    ModelState.AddModelError(
+                        "EstimatedTrialLength",
+                        "Estimated trial length must be between 1 and 99 days."
+                    );
+                }
+
                 if (model.IsHomeRegistry == null)
                 {
                     ModelState.AddModelError(
