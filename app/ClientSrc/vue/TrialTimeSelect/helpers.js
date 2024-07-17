@@ -11,7 +11,7 @@ import { parseISO, format } from "date-fns";
 export function formatDate(isoDate) {
   const parsedDate = parseISO(isoDate);
   const dayOfWeek = format(parsedDate, "EEEE");
-  const formattedDate = format(parsedDate, "MMMM dd, yyyy");
+  const formattedDate = format(parsedDate, "MMMM d, yyyy");
 
   return {
     isoDate,

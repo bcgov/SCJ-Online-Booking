@@ -61,7 +61,7 @@ namespace SCJ.Booking.MVC.Utils
         }
         public string FormattedConferenceDate
         {
-            get { return SelectedConferenceDate.ToString("dddd, MMMM dd, yyyy"); }
+            get { return SelectedConferenceDate.ToString("dddd MMMM d, yyyy"); }
         }
 
         public string FriendlyError

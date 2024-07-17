@@ -13,15 +13,15 @@
 
     string selectedRegularTrialDate = Model.SelectedRegularTrialDate?.ToString("yyyy-MM-dd") ?? "";
 
-    string fairUseStartDate = Model.FairUseStartDate?.ToString("dddd, MMMM dd, yyyy");
+    string fairUseStartDate = Model.FairUseStartDate?.ToString("dddd MMMM d, yyyy");
     string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
-    string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd, MMMM dd, yyyy");
+    string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd MMMM d, yyyy");
     string fairUseEndTime = Model.FairUseEndDate?.ToString("h:mm tt").ToLower();
     string currentMonth = Model.FairUseEndDate?.ToString("MMMM");
     string nextMonth = Model.FairUseEndDate?.AddMonths(1).ToString("MMMM");
     string bookingPeriodName = Model.FairUseSelectionDate?.ToString("MMMM yyyy");
 
-    string resultContactDate = Model.FairUseResultDate?.ToString("dddd, MMMM dd, yyyy");
+    string resultContactDate = Model.FairUseResultDate?.ToString("dddd MMMM d, yyyy");
 
     bool fairUseUnavailable = Model.FairUseStartDate is null || Model.FairUseEndDate is null;
     bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value
