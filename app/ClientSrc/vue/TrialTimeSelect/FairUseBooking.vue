@@ -50,10 +50,7 @@
           /></a>
         </div>
 
-        <div
-          class="alert sm-banner alert-warning m-0"
-          v-if="selected.length >= maxSelectionSize && !selectionSizeAlertHidden"
-        >
+        <div class="alert sm-banner alert-warning m-0" v-if="showSelectionSizeAlert">
           <i class="fa fa-exclamation-triangle" />
 
           Remove a chosen date before adding another.
@@ -62,7 +59,7 @@
             type="button"
             class="close d-md-none"
             aria-label="Close"
-            @click="selectionSizeAlertHidden = true"
+            @click="showSelectionSizeAlert = false"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -146,7 +143,8 @@ export default {
     showInfo: false,
 
     selected: [],
-    selectionSizeAlertHidden: false,
+    // show or hide "selection full" alert
+    showSelectionSizeAlert: false,
   }),
 
   props: {
@@ -209,14 +207,16 @@ export default {
      * @param {string} isoDate - date string to remove
      */
     select(isoDate) {
-      // reset "hidden" flag for the "selection full" alert
-      this.selectionSizeAlertHidden = false;
-
       // prevent adding duplicates
       if (this.selected.includes(isoDate)) return;
 
       // prevent adding more than maxSelectionSize
-      if (this.selected.length >= this.maxSelectionSize) return;
+      if (this.selected.length >= this.maxSelectionSize) {
+        // show the "selection full" alert
+        this.showSelectionSizeAlert = true;
+
+        return;
+      }
 
       this.selected.push(isoDate);
     },
@@ -228,6 +228,9 @@ export default {
      */
     unselect(isoDate) {
       this.selected = this.selected.filter((date) => date !== isoDate);
+
+      // hide the "selection full" alert
+      this.showSelectionSizeAlert = false;
     },
 
     /**
