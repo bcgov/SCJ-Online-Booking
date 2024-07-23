@@ -89,12 +89,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             newModel.CaseSearchResults = await _client.caseNumberValidAsync(searchableCaseNumber);
 
-            if ((newModel.CaseSearchResults?.Length ?? 0) == 0)
-            {
-                //get contact information
-                newModel.RegistryContactNumber = GetRegistryContactNumber(model.CaseRegistryId);
-            }
-            else
+            if ((newModel.CaseSearchResults?.Length ?? 0) > 0)
             {
                 _session.ScBookingInfo = new ScSessionBookingInfo
                 {
@@ -229,10 +224,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
                 SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
                 SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
-                SessionInfo = bookingInfo,
-                RegistryContactNumber = GetRegistryContactNumber(
-                    bookingInfo.TrialLocationRegistryId
-                )
+                SessionInfo = bookingInfo
             };
 
             model = await LoadAvailableTimesFormulaInfoAsync(model, null);
@@ -320,16 +312,6 @@ namespace SCJ.Booking.MVC.Services.SC
         {
             //check if the container ID is still available
             return schedule.AvailableDates.Any(x => x.ContainerID == containerId);
-        }
-
-        /// <summary>
-        ///     Get registry contact number
-        /// </summary>
-        public static string GetRegistryContactNumber(int registryId)
-        {
-            const int vancouverId = 1;
-            var numbers = ScPhoneNumbers.PhoneList;
-            return numbers.ContainsKey(registryId) ? numbers[registryId] : numbers[vancouverId];
         }
 
         /// <summary>
