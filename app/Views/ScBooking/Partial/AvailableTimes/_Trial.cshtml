@@ -27,6 +27,7 @@
     bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value
     < DateTime.Now);
 
+    int trialLength = Model.SessionInfo.EstimatedTrialLength ?? 0;
     int ScMaxTrialDateSelections = ScGeneral.ScMaxTrialDateSelections;
     string ScMaxTrialDateSelectionsString = ScGeneral.ScMaxTrialDateSelectionsString;
 }
@@ -38,7 +39,7 @@
     <div id="VueTrialTimeSelect" v-cloak>
         <trial-time-select-tabs initial-tab="@Model.TrialFormulaType" fair-use-unavailable="@fairUseUnavailable"
             fair-use-disabled="@fairUseDisabled">
-            <regular-booking :dates="@availableRegularDates" :trial-length="@Model.SessionInfo.EstimatedTrialLength"
+            <regular-booking :dates="@availableRegularDates" :trial-length="@trialLength"
                 initial-value="@selectedRegularTrialDate" slot="regularBooking">
                 <div slot="noDatesError" class="alert alert-danger" role="alert">
                     <i class="fa fa-ban"></i>
@@ -115,7 +116,7 @@
 
                 <template slot="dateSelectionSectionHeader">
                     Request trial start dates for @Model.SessionInfo.BookingLocationName
-                    (Trial length @Model.SessionInfo.EstimatedTrialLength days)
+                    (Trial length @trialLength @(trialLength == 1 ? "day" : "days"))
                 </template>
 
                 <template slot="dateSelectionHeader" slot-scope="{ maxSelectionSize }">
