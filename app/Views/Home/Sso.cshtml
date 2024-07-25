@@ -11,52 +11,55 @@
     </div>
 }
 
-<h2 class="mb-3">Log in to BC Courts Online Booking System</h2>
-<p>
-    Use one of the following methods to log in to the BC Courts Online Booking System.
-</p>
+<div class="body-content--inner">
+    <h2 class="mb-3">Log in to BC Courts Online Booking System</h2>
+    <p>
+        Use one of the following methods to log in to the BC Courts Online Booking System.
+    </p>
 
-<div class="login-options">
-    <div class="login-option bg-white">
-        <section class="description">
-            <img class="icon d-block mb-4" src="~/images/bceid.svg" alt="BCeID" />
+    <div class="login-options">
+        <div class="login-option bg-white">
+            <section class="description">
+                <img class="icon d-block mb-4" src="~/images/bceid.svg" alt="BCeID" />
 
-            <p>Use BCeID for secure access to online government services.</p>
-        </section>
+                <p>Use BCeID for secure access to online government services.</p>
+            </section>
 
-        <section class="actions">
-            <a href="@ViewBag.AppUrl?kc_idp_hint=@OpenIdConnectHelper.BceidIdp" class="btn d-inline-block">
-                Log in with BCeID
-            </a>
-
-            <p>
-                Don’t have a BCeID?
-                <a target="_blank" href="@Configuration["AppSettings:RegisterUrl"]">
-                    Register for a BCeID
+            <section class="actions">
+                <a href="@ViewBag.AppUrl?kc_idp_hint=@OpenIdConnectHelper.BceidIdp" class="btn d-inline-block">
+                    Log in with BCeID
                 </a>
-            </p>
-        </section>
-    </div>
 
-    <div class="login-option bg-white">
-        <section class="description">
-            <img class="icon d-block mb-4" src="~/images/bc-wallet.svg" alt="BC Wallet" />
+                <p>
+                    Don’t have a BCeID?
+                    <a target="_blank" href="@Configuration["AppSettings:RegisterUrl"]">
+                        Register for a BCeID
+                    </a>
+                </p>
+            </section>
+        </div>
 
-            <p>Use the Person credential in BC Wallet to securely prove who you are online and in-person.</p>
-        </section>
+        <div class="login-option bg-white">
+            <section class="description">
+                <img class="icon d-block mb-4" src="~/images/bc-wallet.svg" alt="BC Wallet" />
 
-        <section class="actions">
-            <a href="@ViewBag.AppUrl?kc_idp_hint=@OpenIdConnectHelper.DigitalCredentialIdp" class="btn d-inline-block">
-                Log in with BC Wallet
-            </a>
+                <p>Use the Person credential in BC Wallet to securely prove who you are online and in-person.</p>
+            </section>
 
-            <p>
-                Don’t have the Person credential?
-                <a target="_blank"
-                    href="https://www2.gov.bc.ca/gov/content/governments/government-id/person-credential/get-person-cred">
-                    Get your Person credential in BC wallet
+            <section class="actions">
+                <a href="@ViewBag.AppUrl?kc_idp_hint=@OpenIdConnectHelper.DigitalCredentialIdp"
+                    class="btn d-inline-block">
+                    Log in with BC Wallet
                 </a>
-            </p>
-        </section>
+
+                <p>
+                    Don’t have the Person credential?
+                    <a target="_blank"
+                        href="https://www2.gov.bc.ca/gov/content/governments/government-id/person-credential/get-person-cred">
+                        Get your Person credential in BC wallet
+                    </a>
+                </p>
+            </section>
+        </div>
     </div>
 </div>
