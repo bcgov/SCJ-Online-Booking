@@ -28,7 +28,6 @@ namespace SCJ.Booking.MVC.Utils
         public int? EstimatedTrialLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
-        public string SelectedConferenceDateTicks { get; set; }
 
         public DateTime? SelectedRegularTrialDate { get; set; }
         public List<DateTime> SelectedFairUseTrialDates { get; set; } = new List<DateTime>() { };

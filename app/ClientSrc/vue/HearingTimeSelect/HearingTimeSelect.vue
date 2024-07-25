@@ -126,22 +126,11 @@ export default {
     },
     selectTime(containerId, bookingTime) {
       this.selectedContainerId = containerId;
-      this.selectedBookingTime = bookingTime;
+      // store booking time as an ISO 8601 string
+      this.selectedBookingTime = new Date(bookingTime).toISOString();
 
       //check if date is still available
-      validateCaseDate(containerId, this.convertToTicks(bookingTime));
-    },
-    convertToTicks(dt) {
-      var date = new Date(dt);
-      var currentTime = date.getTime();
-
-      // 10,000 ticks in 1 millisecond
-      // jsTicks is number of ticks from midnight Jan 1, 1970
-      var jsTicks = currentTime * 10000;
-
-      // add 621355968000000000 to jsTicks
-      // netTicks is number of ticks from midnight Jan 1, 01 CE
-      return jsTicks + 621355968000000000;
+      validateCaseDate(containerId, bookingTime);
     },
   },
   created() {

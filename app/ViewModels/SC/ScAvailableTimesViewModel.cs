@@ -152,12 +152,9 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             {
                 var result = DateTime.MinValue;
 
-                if (
-                    !string.IsNullOrWhiteSpace(SelectedConferenceDate)
-                    && long.TryParse(SelectedConferenceDate, out long ticks)
-                )
+                if (!string.IsNullOrEmpty(SelectedConferenceDate))
                 {
-                    result = new DateTime(ticks);
+                    result = DateTime.Parse(SelectedConferenceDate);
                 }
                 return result;
             }

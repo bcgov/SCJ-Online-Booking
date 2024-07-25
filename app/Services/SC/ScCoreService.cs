@@ -276,7 +276,6 @@ namespace SCJ.Booking.MVC.Services.SC
 
             if (model.ContainerId > 0)
             {
-                bookingInfo.SelectedConferenceDateTicks = model.SelectedConferenceDate;
                 model.TimeSlotExpired = !IsTimeStillAvailable(schedule, model.ContainerId);
                 bookingInfo.ContainerId = model.ContainerId;
             }
