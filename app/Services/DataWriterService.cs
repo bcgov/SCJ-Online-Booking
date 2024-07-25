@@ -75,11 +75,11 @@ namespace SCJ.Booking.MVC.Services
             if (
                 !bookingInfo.EstimatedTrialLength.HasValue
                 || bookingInfo.EstimatedTrialLength.Value < 1
-                || bookingInfo.EstimatedTrialLength.Value > 99
+                || bookingInfo.EstimatedTrialLength.Value > 40
             )
             {
                 throw new InvalidOperationException(
-                    "HearingLength must be greater than zero and less than 100"
+                    "HearingLength must be greater than zero and less than 41"
                 );
             }
 
