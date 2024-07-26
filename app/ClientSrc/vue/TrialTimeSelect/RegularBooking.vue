@@ -4,7 +4,7 @@
       You can instantly book a trial date that is currently available in the system.
     </div>
 
-    <h3 class="mt-0 mb-5">Choose trial start date (Trial length {{ trialLengthDisplay }})</h3>
+    <h3 class="mt-0 mb-5">Choose trial start date (Trial length: {{ trialLengthDisplay }})</h3>
 
     <div class="mb-5">
       <slot v-if="dates.length === 0" name="noDatesError" />
