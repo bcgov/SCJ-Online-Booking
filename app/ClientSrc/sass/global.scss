@@ -684,7 +684,7 @@ select, input {
   }
 
   // display 2-column grid on larger screens
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-md) {
     grid-auto-flow: column;
 
     section.actions {
