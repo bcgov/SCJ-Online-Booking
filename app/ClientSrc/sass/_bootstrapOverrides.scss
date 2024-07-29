@@ -182,6 +182,9 @@ hr {
       content: "\f002";
     }
   }
+  &.no-after::after {
+    content: none;
+  }
 }
 
 .btn-secondary {
