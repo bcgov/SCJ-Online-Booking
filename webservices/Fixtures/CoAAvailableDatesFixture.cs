@@ -1110,7 +1110,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/14 00:00:00.0000000",
+                        "2024/12/14 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1118,7 +1118,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/18 00:00:00.0000000",
+                        "2024/12/18 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1126,7 +1126,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/19 00:00:00.0000000",
+                        "2024/12/19 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1134,7 +1134,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/20 00:00:00.0000000",
+                        "2024/12/20 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1142,7 +1142,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/21 00:00:00.0000000",
+                        "2024/12/21 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1150,7 +1150,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/22 00:00:00.0000000",
+                        "2024/12/22 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1158,7 +1158,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/27 00:00:00.0000000",
+                        "2024/12/27 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1166,7 +1166,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/28 00:00:00.0000000",
+                        "2024/12/28 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
@@ -1174,7 +1174,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 {
                     availability = "One hour",
                     scheduleDate = DateTime.Parse(
-                        "2023/12/29 00:00:00.0000000",
+                        "2024/12/29 00:00:00.0000000",
                         CultureInfo.InvariantCulture
                     )
                 },
