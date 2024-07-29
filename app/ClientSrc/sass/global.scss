@@ -682,3 +682,49 @@ input {
     }
   }
 }
+
+// SSO Login page
+.login-options {
+  display: grid;
+  grid-auto-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2.25em 0;
+  max-width: 45.75em;
+
+  .login-option {
+    padding: 1.5em;
+    display: flex;
+    gap: 2em;
+    flex-direction: column;
+    justify-content: space-between;
+
+    section.description {
+      .icon {
+        height: 3.25em;
+      }
+    }
+
+    section.actions {
+      font-size: 0.875em;
+
+      p {
+        font-size: 1em;
+      }
+
+      .btn {
+        margin: 0 0 0.85em;
+        padding: 0.5em 0.85em;
+        background: #2d5991;
+      }
+    }
+  }
+
+  // display 2-column grid on larger screens
+  @media (min-width: 768px) {
+    grid-auto-flow: column;
+
+    section.actions {
+      min-height: 7em;
+    }
+  }
+}
