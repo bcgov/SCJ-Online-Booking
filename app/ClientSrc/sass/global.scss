@@ -730,7 +730,9 @@ input {
 
 // external link icons
 .fa-external-link-alt:before {
-    color: #666;
+    color: #1a5a96;
     font-size: 0.85em;
     margin-right: 0.18em;
+    position: relative;
+    bottom: 1px;
 }
