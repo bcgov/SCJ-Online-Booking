@@ -719,11 +719,18 @@ input {
   }
 
   // display 2-column grid on larger screens
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-md) {
     grid-auto-flow: column;
 
     section.actions {
       min-height: 7em;
     }
   }
+}
+
+// external link icons
+.fa-external-link-alt:before {
+    color: #666;
+    font-size: 0.85em;
+    margin-right: 0.18em;
 }
