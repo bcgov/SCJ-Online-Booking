@@ -26,7 +26,11 @@ app:
 
   resources:
     limits:
-      memory: 128Mi
+      cpu: 200m
+      memory: 150Mi
+    requests:
+      cpu: 50m
+      memory: 75Mi
 
   env:
     aspNetCoreEnvironment: Development
@@ -49,7 +53,11 @@ taskrunner:
 
   resources:
     limits:
-      memory: 128Mi
+      cpu: 200m
+      memory: 150Mi
+    requests:
+      cpu: 50m
+      memory: 75Mi
 
   env:
     tagName: dev

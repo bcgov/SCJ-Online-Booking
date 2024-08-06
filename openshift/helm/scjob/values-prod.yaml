@@ -7,12 +7,29 @@ app:
     environment: prod
     aspNetCoreEnvironment: Production
 
+  resources:
+    limits:
+      cpu: 500m
+      memory: 400Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+
   # use the justice.gov.bc.ca reverse proxy IP list, but do not commit to source control
   allowedIPs: 1.2.3.4
 
 taskrunner:
   env:
     environment: prod
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 400Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+
 
 patroni:
   replicas: 3
