@@ -9,6 +9,9 @@
         }
     },
     "AppSettings": {
+        "LotteryEnabled": true,
+        "EmailEnabled": true,
+        "PurgeEnabled": true,
         "PurgeLotteryContactInfoAfterDays": 4,
         "PurgeLotteryRequestsAfterDays": 40
     }
