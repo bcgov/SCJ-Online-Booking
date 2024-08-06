@@ -26,6 +26,10 @@ namespace SCJ.Booking.TaskRunner
             var lotteryService = new LotteryService(configuration, dbContext);
             var lotteryCleanupService = new LotteryCleanupService(configuration, dbContext);
 
+            var emailEnabled = configuration.GetValue<bool>("AppSettings:EmailEnabled");
+            var lotteryEnabled = configuration.GetValue<bool>("AppSettings:LotteryEnabled");
+            var cleanupEnabled = configuration.GetValue<bool>("AppSettings:PurgeEnabled");
+
             logger.Information("SCJ.Booking.TaskRunner started");
             logger.Information(
                 $"Checking emails and lottery requests every {PollingFrequencySeconds} seconds"
@@ -41,15 +45,23 @@ namespace SCJ.Booking.TaskRunner
                     outputFile.WriteLine(secondsSinceEpoch);
                 }
 
-                await mailQueueService.SendEmailBatch();
+                if (emailEnabled)
+                {
+                    await mailQueueService.SendEmailBatch();
+                }
 
-                await lotteryService.RunNextLotteryStep();
+                if (lotteryEnabled)
+                {
+                    await lotteryService.RunNextLotteryStep();
+                }
 
-                // remove old lottery requests
-                await lotteryCleanupService.RemoveOldLotteryRequests();
-
-                // remove names and phone numbers from processed lottery requests
-                await lotteryCleanupService.RemovePersonalInfo();
+                if (cleanupEnabled)
+                {
+                    // remove old lottery requests
+                    await lotteryCleanupService.RemoveOldLotteryRequests();
+                    // remove names and phone numbers from processed lottery requests
+                    await lotteryCleanupService.RemovePersonalInfo();
+                }
 
                 // pause for 3 seconds
                 Thread.Sleep(PollingFrequencySeconds * 1000);
