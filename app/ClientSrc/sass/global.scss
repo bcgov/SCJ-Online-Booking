@@ -144,6 +144,7 @@ div.invalid-field-message {
     color: $white;
     background-color: #1f1f1f;
     padding: 10px 15px;
+    gap: 1rem;
 
     a {
       color: $white;
@@ -170,6 +171,12 @@ div.invalid-field-message {
       width: 100%;
       display: flex;
       justify-content: flex-end;
+      border-top: 1px solid rgba(255, 255, 255, 0.6);
+
+      @include breakpoint(md) {
+        // horizontal on larger screens; hide the top border
+        border-top: none;
+      }
     }
   }
 }
