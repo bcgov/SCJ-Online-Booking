@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -65,9 +66,13 @@ namespace SCJ.Booking.MVC.Controllers
                 );
             }
 
-            if (!model.CaseNumber.HasValue)
+            if (string.IsNullOrWhiteSpace(model.CaseNumber))
             {
                 ModelState.AddModelError("CaseNumber", "Please provide a Court File Number");
+            }
+            else if (!model.CaseNumber.All(char.IsDigit))
+            {
+                ModelState.AddModelError("CaseNumber", "Invalid number");
             }
 
             model.CaseLocationName = await _scCoreService.GetLocationNameAsync(
@@ -197,7 +202,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             var model = await _scCoreService.LoadAvailableTimesFormAsync();
 
-            if (model.CaseNumber == 0)
+            if (string.IsNullOrWhiteSpace(model.CaseNumber))
             {
                 return RedirectToAction("Index");
             }

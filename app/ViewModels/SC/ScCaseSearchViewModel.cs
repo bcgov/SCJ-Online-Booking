@@ -19,7 +19,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
 
         //Search fields
         [Display(Name = "Action Number")]
-        public int? CaseNumber { get; set; }
+        public string CaseNumber { get; set; }
 
         // Selected Registry ID
         [Required(ErrorMessage = "Please select the registry where the file was created.")]

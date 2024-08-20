@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SCJ.Booking.Data;
@@ -11,9 +12,10 @@ using SCJ.Booking.Data;
 namespace SCJ.Booking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240820223702_CaseNumberString")]
+    partial class CaseNumberString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +40,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DataProtectionKeys", (string)null);
+                    b.ToTable("DataProtectionKeys");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.BookingHistory", b =>
@@ -84,7 +86,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BookingHistory", (string)null);
+                    b.ToTable("BookingHistory");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.OidcUser", b =>
@@ -110,7 +112,7 @@ namespace SCJ.Booking.Data.Migrations
                     b.HasIndex("UniqueIdentifier", "CredentialType")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.QueuedEmail", b =>
@@ -145,7 +147,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailQueue", (string)null);
+                    b.ToTable("EmailQueue");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.ScLottery", b =>
@@ -178,7 +180,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScLotteries", (string)null);
+                    b.ToTable("ScLotteries");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.ScTrialBookingRequest", b =>
@@ -303,7 +305,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasIndex(new[] { "LotteryStartDate", "BookingLocationId", "BookHearingCode" }, "IX_TaskRunner_Lottery");
 
-                    b.ToTable("ScTrialBookingRequests", (string)null);
+                    b.ToTable("ScTrialBookingRequests");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.ScTrialDateSelection", b =>
@@ -331,7 +333,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasIndex("BookingRequestId");
 
-                    b.ToTable("ScTrialDateSelections", (string)null);
+                    b.ToTable("ScTrialDateSelections");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.BookingHistory", b =>

@@ -7,7 +7,7 @@ namespace SCJ.Booking.MVC.Utils
     public class ScSessionBookingInfo
     {
         public int PhysicalFileId { get; set; }
-        public int CaseNumber { get; set; }
+        public string CaseNumber { get; set; }
         public string FullCaseNumber { get; set; }
         public string LocationPrefix { get; set; }
 
