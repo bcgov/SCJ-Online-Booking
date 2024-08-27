@@ -21,7 +21,6 @@ namespace SCJ.Booking.MVC.Services.SC
 
         //Constructor
         public ScCoreService(
-            ApplicationDbContext dbContext,
             IConfiguration configuration,
             SessionService sessionService,
             ScCacheService scCacheService
@@ -93,7 +92,7 @@ namespace SCJ.Booking.MVC.Services.SC
             {
                 _session.ScBookingInfo = new ScSessionBookingInfo
                 {
-                    CaseNumber = model.CaseNumber.GetValueOrDefault(0),
+                    CaseNumber = model.CaseNumber,
                     LocationPrefix = newModel.LocationPrefix,
                     CaseSearchResults = newModel.CaseSearchResults,
                     CaseRegistryId = model.CaseRegistryId,

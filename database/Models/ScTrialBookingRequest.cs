@@ -15,7 +15,7 @@ namespace SCJ.Booking.Data.Models
         [MaxLength(2)]
         public string CaseRegistryCode { get; set; } = "";
 
-        public int CaseNumber { get; set; }
+        public string CaseNumber { get; set; }
         public decimal CeisPhysicalFileId { get; set; }
 
         [MaxLength(255)]

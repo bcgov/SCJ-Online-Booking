@@ -18,7 +18,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             ConferenceLocationRegistryId = -1;
             ContainerId = -1;
             SelectedConferenceDate = string.Empty;
-            CaseNumber = 0;
+            CaseNumber = string.Empty;
             HearingTypeId = -1;
             TrialFormulaType = string.Empty;
             AvailableRegularTrialDates = new List<DateTime> { };
@@ -31,7 +31,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         }
 
         //Search fields
-        public int CaseNumber { get; set; }
+        public string CaseNumber { get; set; }
         public int HearingTypeId { get; set; }
         public string TrialFormulaType { get; set; }
 

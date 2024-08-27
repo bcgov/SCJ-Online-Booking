@@ -6,7 +6,7 @@ namespace SCJ.Booking.UnitTest.Helpers
     {
         public int BookingLocationId { get; set; }
         public string BookHearingCode { get; set; }
-        public int CaseNumber { get; set; }
+        public string CaseNumber { get; set; }
         public string CaseRegistryCode { get; set; }
         public int CaseRegistryId { get; set; }
         public decimal CeisPhysicalFileId { get; set; }
