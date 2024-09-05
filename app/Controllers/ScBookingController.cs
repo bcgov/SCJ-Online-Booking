@@ -276,6 +276,12 @@ namespace SCJ.Booking.MVC.Controllers
                     "Please choose from the available dates."
                 );
             }
+            else if (model.TrialFormulaType == "")
+            {
+                // If the formula type field is empty
+                // (e.g. user tampered with the form or submitted without JavaScript)
+                ModelState.AddModelError("TrialFormulaType", "Please choose what you are booking.");
+            }
 
             if (!ModelState.IsValid)
             {
