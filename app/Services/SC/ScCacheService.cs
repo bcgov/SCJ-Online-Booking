@@ -178,7 +178,8 @@ namespace SCJ.Booking.MVC.Services.SC
             }
 
             // if there isn't a special formula location then use the general one
-            var all = new[] { "All", "All Other" };
+            // family (E) doesn't get include in "All Other"
+            var all = courtClass == "E" ? new[] { "All" } : new[] { "All", "All Other" };
 
             return formulas.FirstOrDefault(f =>
                 f.FormulaType == formulaType
