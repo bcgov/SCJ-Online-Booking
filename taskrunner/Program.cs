@@ -11,8 +11,6 @@ namespace SCJ.Booking.TaskRunner
 {
     internal class Program
     {
-        private const int PollingFrequencySeconds = 3;
-
         public static async Task Main(string[] args)
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-CA", false);
@@ -29,10 +27,11 @@ namespace SCJ.Booking.TaskRunner
             var emailEnabled = configuration.GetValue<bool>("AppSettings:EmailEnabled");
             var lotteryEnabled = configuration.GetValue<bool>("AppSettings:LotteryEnabled");
             var cleanupEnabled = configuration.GetValue<bool>("AppSettings:PurgeEnabled");
+            var pollingFrequencySeconds = configuration.GetValue<int>("AppSettings:PollingFrequencySeconds");
 
             logger.Information("SCJ.Booking.TaskRunner started");
             logger.Information(
-                $"Checking emails and lottery requests every {PollingFrequencySeconds} seconds"
+                $"Checking emails and lottery requests every {pollingFrequencySeconds} seconds"
             );
 
             while (true)
@@ -64,7 +63,7 @@ namespace SCJ.Booking.TaskRunner
                 }
 
                 // pause for 3 seconds
-                Thread.Sleep(PollingFrequencySeconds * 1000);
+                Thread.Sleep(pollingFrequencySeconds * 1000);
             }
         }
 
