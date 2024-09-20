@@ -9,6 +9,7 @@
         }
     },
     "AppSettings": {
+        "PollingFrequencySeconds": 5,
         "LotteryEnabled": true,
         "EmailEnabled": true,
         "PurgeEnabled": true,
