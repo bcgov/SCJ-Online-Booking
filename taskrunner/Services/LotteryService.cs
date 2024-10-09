@@ -11,6 +11,16 @@ using Serilog;
 
 namespace SCJ.Booking.TaskRunner.Services
 {
+    /// <summary>
+    /// This exception is thrown to indicate a fatal error during the first booking attempt,
+    /// which will cancel the lottery process.
+    /// </summary>
+    public class FatalBookingFailureException : Exception
+    {
+        public FatalBookingFailureException(string message)
+            : base(message) { }
+    }
+
     public class LotteryService
     {
         private readonly ApplicationDbContext _dbContext;
@@ -18,12 +28,16 @@ namespace SCJ.Booking.TaskRunner.Services
         private readonly IOnlineBooking _client;
         private readonly MailQueueService _mailQueueService;
 
+        // track the results of the first booking attempt
+        private bool _isFirstAttempt;
+
         public LotteryService(IConfiguration configuration, ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _logger = LogHelper.GetLogger(configuration);
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _mailQueueService = new MailQueueService(configuration, dbContext);
+            _isFirstAttempt = true;
         }
 
         /// <summary>
@@ -173,49 +187,68 @@ namespace SCJ.Booking.TaskRunner.Services
 
             foreach (var selection in orderedSelections)
             {
-                BookTrialHearingInfo scssTrialRequest =
-                    new()
-                    {
-                        BookingLocationID = entry.BookingLocationId,
-                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                        CourtClass = entry.CourtClassCode,
-                        FormulaType = ScFormulaType.FairUseBooking,
-                        HearingLength = entry.HearingLength,
-                        HearingType = ScHearingType.TRIAL,
-                        LocationID = entry.TrialLocationId,
-                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                        HearingDate = selection.TrialStartDate,
-                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
-                        SCJOB_Trial_Booking_Date = DateTime.Now
-                    };
-
-                _logger.Debug("BookTrialHearingAsync()");
-                _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
-
-                // try to book the selected date in SCSS
-                BookingHearingResult result = await _client.BookTrialHearingAsync(scssTrialRequest);
-
-                _logger.Debug(JsonSerializer.Serialize(result));
-
-                if (result.bookingResult.ToLower().StartsWith("success"))
+                try
                 {
-                    // successfully booked the selection
-                    trialBooked = true;
-                    _logger.Information(
-                        $"Successfully booked selection {selection.Rank} for {entry.CeisPhysicalFileId}"
+                    BookTrialHearingInfo scssTrialRequest =
+                        new()
+                        {
+                            BookingLocationID = entry.BookingLocationId,
+                            CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
+                            CourtClass = entry.CourtClassCode,
+                            FormulaType = ScFormulaType.FairUseBooking,
+                            HearingLength = entry.HearingLength,
+                            HearingType = ScHearingType.TRIAL,
+                            LocationID = entry.TrialLocationId,
+                            RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
+                            HearingDate = selection.TrialStartDate,
+                            SCJOB_Trial_Booking_ID = entry.TrialBookingId,
+                            SCJOB_Trial_Booking_Date = DateTime.Now
+                        };
+
+                    _logger.Debug("BookTrialHearingAsync()");
+                    _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
+
+                    // try to book the selected date in SCSS
+                    BookingHearingResult result = await _client.BookTrialHearingAsync(
+                        scssTrialRequest
                     );
-                    entry.AllocatedSelectionRank = selection.Rank;
-                    selection.BookingResult = new string(result.bookingResult.Truncate(255));
-                    entry.ProcessingTimestamp = DateTime.Now;
-                    entry.IsProcessed = true;
-                    await _dbContext.SaveChangesAsync();
-                    await QueueSuccessEmail(entry);
-                    break;
+
+                    _logger.Debug(JsonSerializer.Serialize(result));
+
+                    if (result.bookingResult.ToLower().StartsWith("success"))
+                    {
+                        // successfully booked the selection
+                        trialBooked = true;
+                        _logger.Information(
+                            $"Successfully booked selection {selection.Rank} for {entry.CeisPhysicalFileId}"
+                        );
+                        entry.AllocatedSelectionRank = selection.Rank;
+                        selection.BookingResult = new string(result.bookingResult.Truncate(255));
+                        entry.ProcessingTimestamp = DateTime.Now;
+                        entry.IsProcessed = true;
+                        await _dbContext.SaveChangesAsync();
+                        await QueueSuccessEmail(entry);
+                        _isFirstAttempt = false;
+                        break;
+                    }
+                    else
+                    {
+                        // Handle failure of the first booking attempt: stop the lottery process
+                        if (_isFirstAttempt)
+                        {
+                            throw new FatalBookingFailureException(
+                                $"First booking attempt failed for request {entry.CeisPhysicalFileId}. \nBooking result: {result.bookingResult}"
+                            );
+                        }
+
+                        // record the failure
+                        selection.BookingResult = new string(result.bookingResult.Truncate(255));
+                    }
                 }
-                else
+                catch (FatalBookingFailureException ex)
                 {
-                    // record the failure
-                    selection.BookingResult = new string(result.bookingResult.Truncate(255));
+                    _logger.Error($"Fatal error: {ex.Message}");
+                    throw; // propagate to stop the process
                 }
             }
 
