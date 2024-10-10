@@ -12,6 +12,7 @@
         "PollingFrequencySeconds": 5,
         "LotteryEnabled": true,
         "EmailEnabled": true,
+        "EmailLotteryResultEnabled": true,
         "PurgeEnabled": true,
         "PurgeLotteryContactInfoAfterDays": 4,
         "PurgeLotteryRequestsAfterDays": 40

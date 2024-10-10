@@ -51,11 +51,26 @@ namespace SCJ.Booking.TaskRunner.Services
         public async Task SendEmailBatch()
         {
             var mailService = new MailService(_configuration, _logger);
+            var emailLotteryResultEnabled = _configuration.GetValue<bool>(
+                "AppSettings:EmailLotteryResultEnabled"
+            );
 
             _logger.Debug("Checking mail queue");
 
-            // get the successful court booking emails in batches of 5 to send out
-            var emailBatch = _dbContext.Set<QueuedEmail>().Take(5);
+            IQueryable<QueuedEmail> emailBatch;
+
+            // If lottery booking emails are disabled, exclude them from the batch
+            if (!emailLotteryResultEnabled)
+            {
+                emailBatch = _dbContext
+                    .Set<QueuedEmail>()
+                    .Where(email => !email.IsLotteryResult)
+                    .Take(5);
+            }
+            else
+            {
+                emailBatch = _dbContext.Set<QueuedEmail>().Take(5);
+            }
 
             try
             {
