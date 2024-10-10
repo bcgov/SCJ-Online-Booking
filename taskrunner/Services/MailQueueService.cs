@@ -1,3 +1,4 @@
+using DotEnv.Core;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Models;
@@ -50,12 +51,29 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         public async Task SendEmailBatch()
         {
+            IConfiguration configuration = GetConfiguration();
+
+            var emailLotteryResultEnabled = configuration.GetValue<bool>(
+                "AppSettings:EmailLotteryResultEnabled"
+            );
             var mailService = new MailService(_configuration, _logger);
 
             _logger.Debug("Checking mail queue");
 
-            // get the successful court booking emails in batches of 5 to send out
-            var emailBatch = _dbContext.Set<QueuedEmail>().Take(5);
+            IQueryable<QueuedEmail> emailBatch;
+
+            // If lottery booking emails are disabled, exclude them from the batch
+            if (!emailLotteryResultEnabled)
+            {
+                emailBatch = _dbContext
+                    .Set<QueuedEmail>()
+                    .Where(email => !email.IsLotteryResult)
+                    .Take(5);
+            }
+            else
+            {
+                emailBatch = _dbContext.Set<QueuedEmail>().Take(5);
+            }
 
             try
             {
@@ -75,6 +93,20 @@ namespace SCJ.Booking.TaskRunner.Services
             {
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        private static IConfiguration GetConfiguration()
+        {
+            new EnvLoader().Load();
+
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("servicesettings.json", true, true)
+                .AddEnvironmentVariables();
+
+            IConfiguration configuration = builder.Build();
+
+            return configuration;
         }
     }
 }
