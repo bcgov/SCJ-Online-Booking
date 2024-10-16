@@ -276,7 +276,7 @@ namespace SCJ.Booking.MVC.Controllers
                     "Please choose from the available dates."
                 );
             }
-            else if (model.TrialFormulaType == "")
+            else if (model.HearingTypeId == ScHearingType.TRIAL && model.TrialFormulaType == "")
             {
                 // If the formula type field is empty
                 // (e.g. user tampered with the form or submitted without JavaScript)
