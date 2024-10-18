@@ -52,6 +52,9 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </returns>
         public async Task<bool> RunNextLotteryStep()
         {
+            // @TEMP: always throw a fatal exception to test OpenShift config
+            throw new FatalBookingFailureException("Temporary test exception!");
+
             var lotteryInProgress = await _dbContext.ScLotteries.FirstOrDefaultAsync(x =>
                 x.CompletionTime == null
             );
