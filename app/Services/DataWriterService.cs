@@ -92,16 +92,7 @@ namespace SCJ.Booking.MVC.Services
             var fairUseContactDate = formula.FairUseContactDate.Value.Date;
             var bookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value;
 
-            var lotteryStartDate =
-                fairUseContactDate > bookingPeriodEndDate
-                    ? fairUseContactDate
-                    : bookingPeriodEndDate;
-
-            if (lotteryStartDate.Hour is > 2 and < 18)
-            {
-                // don't start the lottery after 2:59am or before 6:00pm
-                lotteryStartDate = lotteryStartDate.Date.AddHours(18);
-            }
+            var lotteryStartDate = bookingPeriodEndDate.Date.AddDays(1);
 
             var bookingRequest = new ScTrialBookingRequest
             {
