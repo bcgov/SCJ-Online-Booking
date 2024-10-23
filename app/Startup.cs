@@ -10,10 +10,12 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SCJ.Booking.Data;
@@ -269,6 +271,24 @@ namespace SCJ.Booking.MVC
                     "{controller}/{action}/{caseId}/{locationId}/{containerId}/{bookingTime}"
                 );
             });
+
+            // Resolve the required services here
+            var distributedCache = app.ApplicationServices.GetRequiredService<IDistributedCache>();
+            var distributedTicketStore = new DistributedTicketStore(
+                distributedCache,
+                TimeSpan.FromMinutes(AuthExpiryMinutes)
+            );
+
+            // Get the CookieAuthenticationOptions and set the SessionStore dynamically
+            var cookieOptionsMonitor = app.ApplicationServices.GetRequiredService<
+                IOptionsMonitor<CookieAuthenticationOptions>
+            >();
+            var cookieOptions = cookieOptionsMonitor.Get(
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+
+            // Set the SessionStore to DistributedTicketStore
+            cookieOptions.SessionStore = distributedTicketStore;
         }
 
         // automatically run migrations at startup
@@ -277,8 +297,8 @@ namespace SCJ.Booking.MVC
             var platform = new Platform();
 
             using (
-                IServiceScope serviceScope = app.ApplicationServices
-                    .GetRequiredService<IServiceScopeFactory>()
+                IServiceScope serviceScope = app
+                    .ApplicationServices.GetRequiredService<IServiceScopeFactory>()
                     .CreateScope()
             )
             {
