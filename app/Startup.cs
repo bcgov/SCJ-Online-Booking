@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -273,9 +273,9 @@ namespace SCJ.Booking.MVC
             });
 
             // Resolve the required services here
-            var memoryCache = app.ApplicationServices.GetRequiredService<IMemoryCache>();
-            var memoryTicketStore = new MemoryTicketStore(
-                memoryCache,
+            var distributedCache = app.ApplicationServices.GetRequiredService<IDistributedCache>();
+            var distributedTicketStore = new DistributedTicketStore(
+                distributedCache,
                 TimeSpan.FromMinutes(AuthExpiryMinutes)
             );
 
@@ -287,8 +287,8 @@ namespace SCJ.Booking.MVC
                 CookieAuthenticationDefaults.AuthenticationScheme
             );
 
-            // Set the SessionStore to MemoryTicketStore
-            cookieOptions.SessionStore = memoryTicketStore;
+            // Set the SessionStore to DistributedTicketStore
+            cookieOptions.SessionStore = distributedTicketStore;
         }
 
         // automatically run migrations at startup
