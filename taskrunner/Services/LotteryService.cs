@@ -52,31 +52,39 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </returns>
         public async Task<bool> RunNextLotteryStep()
         {
-            // @TEMP: always throw a fatal exception to test OpenShift config
-            throw new FatalBookingFailureException("Temporary test exception!");
-
-            var lotteryInProgress = await _dbContext.ScLotteries.FirstOrDefaultAsync(x =>
-                x.CompletionTime == null
-            );
-
-            if (lotteryInProgress == null)
+            try
             {
-                return await StartLottery();
-            }
-            else
-            {
-                var nextEntry = await GetNextLotteryEntry(lotteryInProgress);
+                // @TEMP: always throw a fatal exception to test OpenShift config
+                throw new FatalBookingFailureException("Temporary test exception!");
 
-                if (nextEntry != null)
+                var lotteryInProgress = await _dbContext.ScLotteries.FirstOrDefaultAsync(x =>
+                    x.CompletionTime == null
+                );
+
+                if (lotteryInProgress == null)
                 {
-                    await ProcessSingleEntry(nextEntry);
-                    return true;
+                    return await StartLottery();
                 }
                 else
                 {
-                    await FinishLottery(lotteryInProgress);
-                    return await CheckRequestsReadyToProcess() != null;
+                    var nextEntry = await GetNextLotteryEntry(lotteryInProgress);
+
+                    if (nextEntry != null)
+                    {
+                        await ProcessSingleEntry(nextEntry);
+                        return true;
+                    }
+                    else
+                    {
+                        await FinishLottery(lotteryInProgress);
+                        return await CheckRequestsReadyToProcess() != null;
+                    }
                 }
+            }
+            catch (FatalBookingFailureException ex)
+            {
+                _logger.Error($"Fatal error: {ex.Message}");
+                Environment.Exit(1); // exit the process with a non-zero code
             }
         }
 
@@ -190,68 +198,58 @@ namespace SCJ.Booking.TaskRunner.Services
 
             foreach (var selection in orderedSelections)
             {
-                try
+                BookTrialHearingInfo scssTrialRequest =
+                    new()
+                    {
+                        BookingLocationID = entry.BookingLocationId,
+                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
+                        CourtClass = entry.CourtClassCode,
+                        FormulaType = ScFormulaType.FairUseBooking,
+                        HearingLength = entry.HearingLength,
+                        HearingType = ScHearingType.TRIAL,
+                        LocationID = entry.TrialLocationId,
+                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
+                        HearingDate = selection.TrialStartDate,
+                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
+                        SCJOB_Trial_Booking_Date = DateTime.Now
+                    };
+
+                _logger.Debug("BookTrialHearingAsync()");
+                _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
+
+                // try to book the selected date in SCSS
+                BookingHearingResult result = await _client.BookTrialHearingAsync(scssTrialRequest);
+
+                _logger.Debug(JsonSerializer.Serialize(result));
+
+                if (result.bookingResult.ToLower().StartsWith("success"))
                 {
-                    BookTrialHearingInfo scssTrialRequest =
-                        new()
-                        {
-                            BookingLocationID = entry.BookingLocationId,
-                            CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                            CourtClass = entry.CourtClassCode,
-                            FormulaType = ScFormulaType.FairUseBooking,
-                            HearingLength = entry.HearingLength,
-                            HearingType = ScHearingType.TRIAL,
-                            LocationID = entry.TrialLocationId,
-                            RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                            HearingDate = selection.TrialStartDate,
-                            SCJOB_Trial_Booking_ID = entry.TrialBookingId,
-                            SCJOB_Trial_Booking_Date = DateTime.Now
-                        };
-
-                    _logger.Debug("BookTrialHearingAsync()");
-                    _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
-
-                    // try to book the selected date in SCSS
-                    BookingHearingResult result = await _client.BookTrialHearingAsync(
-                        scssTrialRequest
+                    // successfully booked the selection
+                    trialBooked = true;
+                    _logger.Information(
+                        $"Successfully booked selection {selection.Rank} for {entry.CeisPhysicalFileId}"
                     );
-
-                    _logger.Debug(JsonSerializer.Serialize(result));
-
-                    if (result.bookingResult.ToLower().StartsWith("success"))
-                    {
-                        // successfully booked the selection
-                        trialBooked = true;
-                        _logger.Information(
-                            $"Successfully booked selection {selection.Rank} for {entry.CeisPhysicalFileId}"
-                        );
-                        entry.AllocatedSelectionRank = selection.Rank;
-                        selection.BookingResult = new string(result.bookingResult.Truncate(255));
-                        entry.ProcessingTimestamp = DateTime.Now;
-                        entry.IsProcessed = true;
-                        await _dbContext.SaveChangesAsync();
-                        await QueueSuccessEmail(entry);
-                        _isFirstAttempt = false;
-                        break;
-                    }
-                    else
-                    {
-                        // Handle failure of the first booking attempt: stop the lottery process
-                        if (_isFirstAttempt)
-                        {
-                            throw new FatalBookingFailureException(
-                                $"First booking attempt failed for request {entry.CeisPhysicalFileId}. \nBooking result: {result.bookingResult}"
-                            );
-                        }
-
-                        // record the failure
-                        selection.BookingResult = new string(result.bookingResult.Truncate(255));
-                    }
+                    entry.AllocatedSelectionRank = selection.Rank;
+                    selection.BookingResult = new string(result.bookingResult.Truncate(255));
+                    entry.ProcessingTimestamp = DateTime.Now;
+                    entry.IsProcessed = true;
+                    await _dbContext.SaveChangesAsync();
+                    await QueueSuccessEmail(entry);
+                    _isFirstAttempt = false;
+                    break;
                 }
-                catch (FatalBookingFailureException ex)
+                else
                 {
-                    _logger.Error($"Fatal error: {ex.Message}");
-                    Environment.Exit(1); // exit the process with a non-zero code
+                    // Handle failure of the first booking attempt: stop the lottery process
+                    if (_isFirstAttempt)
+                    {
+                        throw new FatalBookingFailureException(
+                            $"First booking attempt failed for request {entry.CeisPhysicalFileId}. \nBooking result: {result.bookingResult}"
+                        );
+                    }
+
+                    // record the failure
+                    selection.BookingResult = new string(result.bookingResult.Truncate(255));
                 }
             }
 
