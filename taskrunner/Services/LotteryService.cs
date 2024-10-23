@@ -11,6 +11,16 @@ using Serilog;
 
 namespace SCJ.Booking.TaskRunner.Services
 {
+    /// <summary>
+    /// This exception is thrown to indicate a fatal error during the first booking attempt,
+    /// which will cancel the lottery process.
+    /// </summary>
+    public class FatalBookingFailureException : Exception
+    {
+        public FatalBookingFailureException(string message)
+            : base(message) { }
+    }
+
     public class LotteryService
     {
         private readonly ApplicationDbContext _dbContext;
@@ -18,12 +28,16 @@ namespace SCJ.Booking.TaskRunner.Services
         private readonly IOnlineBooking _client;
         private readonly MailQueueService _mailQueueService;
 
+        // track the results of the first booking attempt
+        private bool _isFirstAttempt;
+
         public LotteryService(IConfiguration configuration, ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _logger = LogHelper.GetLogger(configuration);
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _mailQueueService = new MailQueueService(configuration, dbContext);
+            _isFirstAttempt = true;
         }
 
         /// <summary>
@@ -38,28 +52,36 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </returns>
         public async Task<bool> RunNextLotteryStep()
         {
-            var lotteryInProgress = await _dbContext.ScLotteries.FirstOrDefaultAsync(x =>
-                x.CompletionTime == null
-            );
-
-            if (lotteryInProgress == null)
+            try
             {
-                return await StartLottery();
-            }
-            else
-            {
-                var nextEntry = await GetNextLotteryEntry(lotteryInProgress);
+                var lotteryInProgress = await _dbContext.ScLotteries.FirstOrDefaultAsync(x =>
+                    x.CompletionTime == null
+                );
 
-                if (nextEntry != null)
+                if (lotteryInProgress == null)
                 {
-                    await ProcessSingleEntry(nextEntry);
-                    return true;
+                    return await StartLottery();
                 }
                 else
                 {
-                    await FinishLottery(lotteryInProgress);
-                    return await CheckRequestsReadyToProcess() != null;
+                    var nextEntry = await GetNextLotteryEntry(lotteryInProgress);
+
+                    if (nextEntry != null)
+                    {
+                        await ProcessSingleEntry(nextEntry);
+                        return true;
+                    }
+                    else
+                    {
+                        await FinishLottery(lotteryInProgress);
+                        return await CheckRequestsReadyToProcess() != null;
+                    }
                 }
+            }
+            catch (FatalBookingFailureException ex)
+            {
+                _logger.Error($"Fatal error: {ex.Message}");
+                return false;
             }
         }
 
@@ -210,10 +232,19 @@ namespace SCJ.Booking.TaskRunner.Services
                     entry.IsProcessed = true;
                     await _dbContext.SaveChangesAsync();
                     await QueueSuccessEmail(entry);
+                    _isFirstAttempt = false;
                     break;
                 }
                 else
                 {
+                    // Handle failure of the first booking attempt: stop the lottery process
+                    if (_isFirstAttempt)
+                    {
+                        throw new FatalBookingFailureException(
+                            $"First booking attempt failed for request {entry.CeisPhysicalFileId}. \nBooking result: {result.bookingResult}"
+                        );
+                    }
+
                     // record the failure
                     selection.BookingResult = new string(result.bookingResult.Truncate(255));
                 }
