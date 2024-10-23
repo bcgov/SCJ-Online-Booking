@@ -84,7 +84,7 @@ namespace SCJ.Booking.TaskRunner.Services
             catch (FatalBookingFailureException ex)
             {
                 _logger.Error($"Fatal error: {ex.Message}");
-                Environment.Exit(1); // exit the process with a non-zero code
+                return false;
             }
         }
 
