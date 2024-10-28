@@ -126,7 +126,7 @@ namespace SCJ.Booking.MVC.Services.SC
                     bookingInfo.IsBooked = true;
 
                     var emailBody = await GetConferenceEmailBodyAsync();
-                    const string emailSubject = "BC Courts Booking Confirmation";
+                    const string emailSubject = "BC Courts Online Booking Confirmation";
 
                     //send email
                     await _mailService.QueueEmailAsync(

@@ -1,6 +1,6 @@
 @model ScAvailableTimesViewModel
 @{
-    ViewData["Title"] = "AvailableTimes";
+    ViewData["Title"] = (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL) ? "Request Trial Date(s)" : "Book Your Hearing";
 
     var bookingInfo = Model.SessionInfo;
 }

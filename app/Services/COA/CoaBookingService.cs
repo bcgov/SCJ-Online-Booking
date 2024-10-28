@@ -22,7 +22,7 @@ namespace SCJ.Booking.MVC.Services.COA
     public class CoaBookingService
     {
         public readonly bool IsLocalDevEnvironment;
-        private const string EmailSubject = "BC Courts Booking Confirmation";
+        private const string EmailSubject = "BC Courts Online Booking Confirmation";
         private readonly IOnlineBooking _client;
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
