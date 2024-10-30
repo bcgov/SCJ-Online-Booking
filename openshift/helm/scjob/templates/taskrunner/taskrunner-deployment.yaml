@@ -42,12 +42,12 @@ spec:
               value: {{ .Values.taskrunner.env.tagName }}
             - name: SC_MAIL_USERNAME
               value: {{ .Values.taskrunner.env.scMailUsername }}
-            - name: CA_MAIL_USERNAME
-              value: {{ .Values.taskrunner.env.caMailUsername }}
+            - name: COA_MAIL_USERNAME
+              value: {{ .Values.taskrunner.env.coaMailUsername }}
             - name: SC_EMAIL
               value: {{ .Values.taskrunner.env.scEmail }}
-            - name: CA_EMAIL
-              value: {{ .Values.taskrunner.env.caEmail }}
+            - name: COA_EMAIL
+              value: {{ .Values.taskrunner.env.coaEmail }}
             - name: ConnectionString
               valueFrom:
                 secretKeyRef:

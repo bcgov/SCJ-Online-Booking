@@ -62,9 +62,9 @@ taskrunner:
   env:
     tagName: dev
     scMailUsername: no-reply_SC_Booking
-    caMailUsername: no-reply_CA_Booking
+    coaMailUsername: no-reply_CA_Booking
     scEmail: noreply_BCSC_Booking@bccourts.ca
-    caEmail: noreply_BCCA_Booking@bccourts.ca
+    coaEmail: noreply_BCCA_Booking@bccourts.ca
 
 patroni:
   componentName: patroni
