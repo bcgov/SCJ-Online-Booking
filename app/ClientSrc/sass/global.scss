@@ -273,6 +273,7 @@ div.invalid-field-message {
     left: 16px;
   }
   label {
+    white-space: normal;
     width: 100%;
     font-weight: 400;
     border: solid 1px $grey-border;
@@ -737,9 +738,9 @@ input {
 
 // external link icons
 .fa-external-link-alt:before {
-    color: #1a5a96;
-    font-size: 0.85em;
-    margin-right: 0.18em;
-    position: relative;
-    bottom: 1px;
+  color: #1a5a96;
+  font-size: 0.85em;
+  margin-right: 0.18em;
+  position: relative;
+  bottom: 1px;
 }
