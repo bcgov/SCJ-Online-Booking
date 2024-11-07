@@ -169,6 +169,55 @@ namespace SCJ.Booking.MVC.Controllers
             );
         }
 
+        [Route("/api/lottery-requests/{year}/{month}")]
+        public async Task<ActionResult> LotteryRequests(int year, int month)
+        {
+            if (!IsAllowedToExportJson(Request))
+            {
+                return new UnauthorizedResult();
+            }
+
+            DateTime startDate = new(year, month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddSeconds(-1);
+
+            var requests = await _dbContext
+                .ScTrialBookingRequests.Where(r =>
+                    r.FairUseBookingPeriodEndDate >= startDate
+                    && r.FairUseBookingPeriodEndDate <= endDate
+                )
+                .GroupBy(r => new
+                {
+                    r.BookingLocationId,
+                    r.BookHearingCode,
+                    r.FairUseBookingPeriodStartDate,
+                    r.FairUseBookingPeriodEndDate
+                })
+                .Select(g => new
+                {
+                    g.Key.BookingLocationId,
+                    g.Key.BookHearingCode,
+                    g.Key.FairUseBookingPeriodStartDate,
+                    g.Key.FairUseBookingPeriodEndDate,
+                    TrialRequests = g.Select(r => new
+                        {
+                            r.CreationTimestamp,
+                            r.TrialBookingId,
+                            r.FairUseSort,
+                            r.HearingLength,
+                            DateSelections = r
+                                .TrialDateSelections.OrderBy(s => s.Rank)
+                                .Select(s => new { s.Rank, s.TrialStartDate, }),
+                        })
+                        .ToList()
+                })
+                .ToListAsync();
+
+            return Json(
+                requests,
+                new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.Never }
+            );
+        }
+
         private bool IsAllowedToExportJson(HttpRequest request)
         {
             var userToken = Request
