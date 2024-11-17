@@ -9,7 +9,6 @@ Superior Courts Judiciary Online Booking
 ### Visual Studio Code setup
 (assuming you have an ARM macbook)
 
-- Install the .NET 6 SDK Installer for ARM
 - Install the .NET 8 SDK Installer for ARM
 - Install C# extension for Visual Studio Code
 - Install C# Dev Kit for Visual Studio Code
@@ -51,7 +50,7 @@ Make sure you are using Node 18 by running `node -v`
 
 `dotnet test`
 
-\tests\bin\Debug\net6.0\scj-booking.sqlite will be generated.  You can use https://sqlitestudio.pl/ to inspect this file and look at test results. 
+\tests\bin\Debug\net8.0\scj-booking.sqlite will be generated.  You can use https://sqlitestudio.pl/ to inspect this file and look at test results. 
 
 ### Debugging
 
