@@ -20,7 +20,7 @@
     "dependencies": {
         "@bcgov/bc-sans": "^1.0.1",
         "@fortawesome/fontawesome-free": "^5.15.4",
-        "axios": "^1.6.0",
+        "axios": "^1.7.4",
         "bootstrap-datepicker": "^1.9.0",
         "browserslist": "^4.20.2",
         "caniuse-lite": "^1.0.30001320",
