@@ -62,10 +62,10 @@ module.exports = (env) => {
             include: /ClientSrc/,
             loader: "vue-loader",
             options: {
-              loaders: { js: { loader: "babel-loader", options: { presets: "es2015" } } },
+              loaders: { js: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } } },
             },
           },
-          { test: /\.js$/, include: /ClientSrc/, use: "babel-loader?presets=es2015" },
+          { test: /\.js$/, include: /ClientSrc/, use: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } } },
           {
             test: /\.(scss|css)/,
             use: [
