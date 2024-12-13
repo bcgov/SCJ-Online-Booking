@@ -86,7 +86,10 @@ namespace SCJ.Booking.MVC
                 });
 
                 // Use a PostgreSQL table for session encryption keys
-                services.AddDataProtection().PersistKeysToDbContext<ApplicationDbContext>();
+                services
+                    .AddDataProtection()
+                    .PersistKeysToDbContext<ApplicationDbContext>()
+                    .SetApplicationName("SCJ-Online-Booking");
             }
 
             // this setting is needed because NTLM auth does not work by default on Unix
