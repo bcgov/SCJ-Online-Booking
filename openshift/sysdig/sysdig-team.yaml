@@ -24,6 +24,4 @@ objects:
           - name: duncan@oxd.com
             role: ROLE_TEAM_EDIT
           - name: jennifer.dowd@gov.bc.ca
-            role: ROLE_TEAM_READ
-          - name: alexander.aleshchenko@gov.bc.ca
-            role: ROLE_TEAM_READ
+            role: ROLE_TEAM_MANAGER
