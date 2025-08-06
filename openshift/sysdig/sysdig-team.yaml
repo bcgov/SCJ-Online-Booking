@@ -1,27 +1,23 @@
-apiVersion: template.openshift.io/v1
-kind: Template
+apiVersion: ops.gov.bc.ca/v1alpha1
+kind: SysdigTeam
 metadata:
   name: bc7c5c-sysdigteam
-objects:
-  - apiVersion: ops.gov.bc.ca/v1alpha1
-    kind: SysdigTeam
-    metadata:
-      name: bc7c5c-sysdigteam
-    spec:
-      team:
-        description: SCJ Booking sysdig team
-        users:
-          - name: mike@oxd.com
-            role: ROLE_TEAM_MANAGER
-          - name: ryan.wirth@bccourts.ca
-            role: ROLE_TEAM_MANAGER
-          - name: lorne.lovett@bccourts.ca
-            role: ROLE_TEAM_MANAGER
-          - name: dominik@oxd.com
-            role: ROLE_TEAM_MANAGER
-          - name: manuji@oxd.com
-            role: ROLE_TEAM_EDIT
-          - name: duncan@oxd.com
-            role: ROLE_TEAM_EDIT
-          - name: jennifer.dowd@gov.bc.ca
-            role: ROLE_TEAM_MANAGER
+  namespace: bc7c5c-tools
+spec:
+  team:
+    description: SCJ Booking sysdig team
+    users:
+      - name: mike@oxd.com
+        role: ROLE_TEAM_MANAGER
+      - name: ryan.wirth@bccourts.ca
+        role: ROLE_TEAM_MANAGER
+      - name: lorne.lovett@bccourts.ca
+        role: ROLE_TEAM_MANAGER
+      - name: dominik@oxd.com
+        role: ROLE_TEAM_MANAGER
+      - name: manuji@oxd.com
+        role: ROLE_TEAM_EDIT
+      - name: duncan@oxd.com
+        role: ROLE_TEAM_EDIT
+      - name: jennifer.dowd@gov.bc.ca
+        role: ROLE_TEAM_MANAGER
