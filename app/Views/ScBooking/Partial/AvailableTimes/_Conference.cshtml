@@ -16,9 +16,11 @@
 <form method="post" id="availableTimesForm">
     <div class="row no-gutters">
         <div class="col-8 col-md-4 mx-auto">
-            <button type="button" id="datepicker" class="btn btn-quaternary btn-block">
-                Choose a date
-            </button>
+            <div class="datepicker-input-wrapper position-relative">
+                <input type="text" id="datepicker" class="btn btn-quaternary btn-block pr-5" placeholder="Choose a date"
+                    readonly aria-hidden="true" tabindex="-1" />
+                <span class="datepicker-calendar-icon"><i class="fas fa-calendar-alt"></i></span>
+            </div>
         </div>
     </div>
 

@@ -2,7 +2,7 @@
 * Court of Appeal styles
 */
 
-@import "variables";
+@use "variables" as *;
 
 .body-content {
   &--inner {

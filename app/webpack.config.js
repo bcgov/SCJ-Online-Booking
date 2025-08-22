@@ -44,9 +44,9 @@ module.exports = (env) => {
         minimizer: [new CssMinimizerPlugin()],
       },
       resolve: {
-        extensions: [".js", ".vue", ",scss"],
+        extensions: [".js", ".vue", ".scss"],
         alias: {
-          vue$: "vue/dist/vue",
+          vue$: "vue/dist/vue.esm-bundler.js",
         },
       },
       entry: entries,
@@ -62,10 +62,16 @@ module.exports = (env) => {
             include: /ClientSrc/,
             loader: "vue-loader",
             options: {
-              loaders: { js: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } } },
+              loaders: {
+                js: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } },
+              },
             },
           },
-          { test: /\.js$/, include: /ClientSrc/, use: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } } },
+          {
+            test: /\.js$/,
+            include: /ClientSrc/,
+            use: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } },
+          },
           {
             test: /\.(scss|css)/,
             use: [
@@ -94,6 +100,11 @@ module.exports = (env) => {
               },
             ],
           },
+        }),
+        new (require("webpack").DefinePlugin)({
+          __VUE_OPTIONS_API__: true,
+          __VUE_PROD_DEVTOOLS__: false,
+          __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
         }),
       ],
     },

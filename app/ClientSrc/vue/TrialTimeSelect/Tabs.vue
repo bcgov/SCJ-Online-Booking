@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../sass/variables";
+@use "../../sass/variables" as *;
 
 ul {
   display: flex;

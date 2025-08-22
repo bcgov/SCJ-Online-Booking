@@ -3,6 +3,8 @@
 */
 /** Base typographic rules **/
 
+@use "variables" as *;
+
 // font * 1rem = 16px *
 h1,
 h2,
@@ -215,6 +217,7 @@ hr {
   padding: 8px 2px;
   &:hover {
     background-color: $blue-medium;
+    color: $white;
   }
   &:focus,
   &.selected,
@@ -243,6 +246,24 @@ hr {
     font-family: "Font Awesome 5 Free";
     content: "\f073";
     margin-left: auto;
+  }
+}
+
+input#datepicker.btn.btn-quaternary.btn-block {
+  @extend .btn;
+  @extend .btn-quaternary;
+  @extend .btn-block;
+  text-align: left;
+  position: relative;
+  // Remove default input background for readonly
+  &[readonly] {
+    background-color: transparent;
+    cursor: pointer;
+  }
+  // Placeholder color default
+  &::placeholder {
+    color: $blue-light;
+    opacity: 1;
   }
 }
 
@@ -372,6 +393,10 @@ hr {
               color: $white;
               background-color: $blue-calendar;
             }
+          }
+          &.disabled {
+            color: #ccc;
+            background-color: transparent;
           }
         }
       }

@@ -2,7 +2,8 @@
 * Supreme Court styles
 */
 
-@import "variables";
+@use "variables" as *;
+@use "sass:color";
 
 // Step 2: "Choose booking type" fields
 input.EstimatedTrialLength {
@@ -20,6 +21,21 @@ input.EstimatedTrialLength {
 
 /*Available Times slider*/
 .swiper-container {
+  width: calc(100% - 60px);
+
+  @include breakpoint(lg) {
+    width: 100% !important;
+  }
+
+  .swiper-slide-active {
+    .custom-slide-header {
+      color: $blue-calendar;
+    }
+  }
+}
+
+.swiper {
+  overflow: hidden;
   width: calc(100% - 60px);
 
   @include breakpoint(lg) {
@@ -80,7 +96,7 @@ a.custom-slide-time {
   text-decoration: none;
   color: $blue;
   background-color: $blue-active-lighter;
-  border: 1px solid darken(#eff2f5, 10%);
+  border: 1px solid color.adjust(#eff2f5, $lightness: -10%);
   font-weight: 700;
 
   &.selected,
@@ -92,5 +108,61 @@ a.custom-slide-time {
   &:hover {
     background-color: $blue-active;
     color: $white;
+  }
+}
+
+/* Styles added during Vue3 upgrade to make the datepicker use an input
+(for compatibility with the datepicker library) but look like a button so
+it matches the Vue2 design. */
+
+.datepicker-input-wrapper {
+  position: relative;
+  width: 100%;
+
+  .datepicker-calendar-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $blue-light;
+    font-size: 1.2em;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &:hover .datepicker-calendar-icon,
+  &:focus-within .datepicker-calendar-icon {
+    color: $white;
+  }
+
+  &:hover input#datepicker.btn.btn-quaternary.btn-block::placeholder,
+  &:focus-within input#datepicker.btn.btn-quaternary.btn-block::placeholder {
+    color: $white !important;
+    opacity: 1;
+  }
+
+  input#datepicker.btn.btn-quaternary.btn-block {
+    @extend .btn;
+    @extend .btn-quaternary;
+    @extend .btn-block;
+    text-align: left;
+    position: relative;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $blue-medium !important;
+      color: $white !important;
+      border-color: $blue-medium !important;
+    }
+
+    &[readonly] {
+      cursor: pointer;
+    }
+
+    &::placeholder {
+      color: $blue-light;
+      opacity: 1;
+    }
   }
 }

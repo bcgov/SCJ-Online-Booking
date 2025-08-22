@@ -97,7 +97,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../sass/variables";
+@use "../../sass/variables" as *;
 
 .btn-show-more {
   margin: 0 auto;
