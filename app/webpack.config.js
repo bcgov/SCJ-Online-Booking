@@ -63,11 +63,6 @@ module.exports = (env) => {
             loader: "vue-loader",
           },
           {
-            test: /\.js$/,
-            include: /ClientSrc/,
-            use: "vue-loader",
-          },
-          {
             test: /\.(scss|css)/,
             use: [
               {

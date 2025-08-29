@@ -17,7 +17,7 @@
         />
       </div>
 
-      <slot name="howItWorksDescription" />
+      <slot name="howItWorksDescription"></slot>
 
       <div v-if="showInfo" class="expand-content"><slot name="datesInfo" /></div>
 
@@ -79,7 +79,7 @@
           @click="select(date.isoDate)"
         >
           <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
-          <strong>{{ date.formattedDate }}</strong>
+          <strong>&nbsp;{{ date.formattedDate }}</strong>
         </div>
       </div>
 
@@ -102,24 +102,30 @@
 
       <div class="mb-5 dates-list content-pad selected-dates">
         <div class="draggable-dates">
-          <draggable v-model="selected" handle=".grab-button" direction="vertical">
-            <div
-              class="date-wrap date-button d-flex justify-content-stretch align-items-center"
-              v-for="date in formattedSelection"
-              :key="date.isoDate"
-            >
-              <div class="btn-icon grab-button d-flex justify-content-center align-items-center">
-                <i class="fas fa-grip-horizontal" />
+          <draggable
+            v-model="selected"
+            handle=".grab-button"
+            direction="vertical"
+            item-key="isoDate"
+          >
+            <template #item="{ element: isoDate }">
+              <div
+                class="date-wrap date-button d-flex justify-content-stretch align-items-center"
+                :key="isoDate"
+              >
+                <div class="btn-icon grab-button d-flex justify-content-center align-items-center">
+                  <i class="fas fa-grip-horizontal" />
+                </div>
+                <div class="label-button selected text-center m-0">
+                  <input type="hidden" :value="isoDate" name="SelectedFairUseTrialDates" />
+                  <span class="font-weight-normal">{{ formatDateObj(isoDate).dayOfWeek }}</span>
+                  <strong>&nbsp;{{ formatDateObj(isoDate).formattedDate }}</strong>
+                </div>
+                <button @click="unselect(isoDate)" class="btn-icon delete-button" type="button">
+                  <i class="fas fa-trash" />
+                </button>
               </div>
-              <div class="label-button selected text-center m-0">
-                <input type="hidden" :value="date.isoDate" name="SelectedFairUseTrialDates" />
-                <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
-                <strong>{{ date.formattedDate }}</strong>
-              </div>
-              <button @click="unselect(date.isoDate)" class="btn-icon delete-button" type="button">
-                <i class="fas fa-trash" />
-              </button>
-            </div>
+            </template>
           </draggable>
 
           <div class="alert alert-warning" v-if="formattedSelection.length === 0">
@@ -205,6 +211,11 @@ export default {
       return {
         selected: this.selected.includes(date.isoDate),
       };
+    },
+    formatDateObj(isoDate) {
+      // Find the date object from the original dates array and format it
+      const dateObj = this.dates.find((d) => d === isoDate || d.isoDate === isoDate);
+      return dateObj ? formatDate(dateObj) : { dayOfWeek: "", formattedDate: "" };
     },
 
     /**
@@ -368,5 +379,34 @@ a > i {
       flex-grow: 1;
     }
   }
+}
+</style>
+<style lang="scss">
+.trial-time-select-fair-use-booking .expand-content .step {
+  position: relative;
+  &:not(:last-of-type) {
+    border-left: 1px solid #c8e0f2;
+  }
+  padding-left: 1.8em;
+  padding-bottom: 1em;
+  margin-left: 1em;
+}
+.trial-time-select-fair-use-booking .expand-content .step .number {
+  $icon-size: 2em;
+  $font-size: 1.2em;
+  font-size: $font-size;
+  position: absolute;
+  top: (1em - $font-size) * 0.5;
+  left: -$icon-size * 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  color: #4bb3f4;
+  border: 1px solid #4bb3f4;
+  border-radius: 100%;
+  height: $icon-size;
+  width: $icon-size;
+  font-weight: 700;
 }
 </style>

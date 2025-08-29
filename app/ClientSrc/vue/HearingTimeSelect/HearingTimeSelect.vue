@@ -131,7 +131,7 @@ export default {
     toSlide() {
       const $ = window.$;
       const i = $("#selectedDate").val();
-      if (this.swiper && i !== '' && !isNaN(i)) {
+      if (this.swiper && i !== "" && !isNaN(i)) {
         this.swiper.slideTo(Number(i), 0);
       }
     },
@@ -156,7 +156,7 @@ export default {
   async created() {
     try {
       const response = await axios.get(
-        `/scjob/booking/api/sc-available-dates-by-location/${this.locationId}/${this.hearingType}`,
+        `/scjob/booking/api/sc-available-dates-by-location/${this.locationId}/${this.hearingType}`
       );
       this.availabletimes = response.data;
     } catch (error) {
