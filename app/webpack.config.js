@@ -61,16 +61,11 @@ module.exports = (env) => {
             test: /\.vue$/,
             include: /ClientSrc/,
             loader: "vue-loader",
-            options: {
-              loaders: {
-                js: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } },
-              },
-            },
           },
           {
             test: /\.js$/,
             include: /ClientSrc/,
-            use: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } },
+            use: "vue-loader",
           },
           {
             test: /\.(scss|css)/,
