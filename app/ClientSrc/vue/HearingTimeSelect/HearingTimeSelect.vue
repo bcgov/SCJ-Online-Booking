@@ -131,8 +131,8 @@ export default {
     toSlide() {
       const $ = window.$;
       const i = $("#selectedDate").val();
-      if (this.swiper && i !== undefined) {
-        this.swiper.slideTo(i, 0);
+      if (this.swiper && i !== '' && !isNaN(i)) {
+        this.swiper.slideTo(Number(i), 0);
       }
     },
     keyboardSelection(containerId, bookingTime) {
