@@ -252,7 +252,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../sass/variables";
+@use "../../sass/variables" as *;
 
 .column-container {
   display: grid;
