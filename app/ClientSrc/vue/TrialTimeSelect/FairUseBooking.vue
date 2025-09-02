@@ -315,41 +315,6 @@ export default {
   .expand-header {
     cursor: pointer;
   }
-
-  .expand-content {
-    .step {
-      position: relative;
-
-      &:not(:last-of-type) {
-        border-left: 1px solid #c8e0f2;
-      }
-
-      padding-left: 1.8em;
-      padding-bottom: 1em;
-      margin-left: 1em;
-
-      // circled number icon
-      .number {
-        $icon-size: 2em;
-        $font-size: 1.2em;
-
-        font-size: $font-size;
-        position: absolute;
-        top: (1em - $font-size) * 0.5;
-        left: -$icon-size * 0.5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: $white;
-        color: $blue-light;
-        border: 1px solid $blue-light;
-        border-radius: 100%;
-        height: $icon-size;
-        width: $icon-size;
-        font-weight: 700;
-      }
-    }
-  }
 }
 
 // underline icons in links
@@ -392,31 +357,36 @@ a > i {
 }
 </style>
 <style lang="scss">
-.trial-time-select-fair-use-booking .expand-content .step {
-  position: relative;
-  &:not(:last-of-type) {
-    border-left: 1px solid #c8e0f2;
+.trial-time-select-fair-use-booking {
+  .expand-content {
+    .step {
+      position: relative;
+      &:not(:last-of-type) {
+        border-left: 1px solid #c8e0f2;
+      }
+      padding-left: 1.8em;
+      padding-bottom: 1em;
+      margin-left: 1em;
+
+      .number {
+        $icon-size: 2em;
+        $font-size: 1.2em;
+        font-size: $font-size;
+        position: absolute;
+        top: (1em - $font-size) * 0.5;
+        left: -$icon-size * 0.5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        color: #4bb3f4;
+        border: 1px solid #4bb3f4;
+        border-radius: 100%;
+        height: $icon-size;
+        width: $icon-size;
+        font-weight: 700;
+      }
+    }
   }
-  padding-left: 1.8em;
-  padding-bottom: 1em;
-  margin-left: 1em;
-}
-.trial-time-select-fair-use-booking .expand-content .step .number {
-  $icon-size: 2em;
-  $font-size: 1.2em;
-  font-size: $font-size;
-  position: absolute;
-  top: (1em - $font-size) * 0.5;
-  left: -$icon-size * 0.5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
-  color: #4bb3f4;
-  border: 1px solid #4bb3f4;
-  border-radius: 100%;
-  height: $icon-size;
-  width: $icon-size;
-  font-weight: 700;
 }
 </style>
