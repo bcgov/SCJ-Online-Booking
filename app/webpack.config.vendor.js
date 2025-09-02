@@ -153,6 +153,22 @@ module.exports = (env) => {
               to: "lib/bootstrap-datepicker.js",
               toType: "file",
             },
+            {
+              from: "node_modules/jquery-validation/dist/",
+              to: "lib/jquery-validate",
+              noErrorOnMissing: true,
+              globOptions: {
+                ignore: ["**/localization/**"],
+              },
+            },
+            {
+              from: "node_modules/jquery-validation-unobtrusive/dist/",
+              to: "lib/jquery-validation-unobtrusive",
+              noErrorOnMissing: true,
+              globOptions: {
+                ignore: ["**/localization/**"],
+              },
+            },
           ],
         }),
         new webpack.DefinePlugin({
