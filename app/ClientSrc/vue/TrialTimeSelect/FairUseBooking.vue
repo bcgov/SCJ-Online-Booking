@@ -118,8 +118,8 @@
                 </div>
                 <div class="label-button selected text-center m-0">
                   <input type="hidden" :value="isoDate" name="SelectedFairUseTrialDates" />
-                  <span class="font-weight-normal">{{ formatDateObj(isoDate).dayOfWeek }}</span>
-                  <strong>&nbsp;{{ formatDateObj(isoDate).formattedDate }}</strong>
+                  <span class="font-weight-normal">{{ formatIsoDate(isoDate).dayOfWeek }}</span>
+                  <strong>&nbsp;{{ formatIsoDate(isoDate).formattedDate }}</strong>
                 </div>
                 <button @click="unselect(isoDate)" class="btn-icon delete-button" type="button">
                   <i class="fas fa-trash" />
@@ -207,15 +207,25 @@ export default {
   },
 
   methods: {
+    /**
+     * Returns an object with CSS classes for a given date.
+     * The 'selected' class is applied if the date is included in the selected dates.
+     *
+     * @param {Object} date - The date object containing an isoDate property.
+     */
     dateClasses(date) {
       return {
         selected: this.selected.includes(date.isoDate),
       };
     },
-    formatDateObj(isoDate) {
-      // Find the date object from the original dates array and format it
-      const dateObj = this.dates.find((d) => d === isoDate || d.isoDate === isoDate);
-      return dateObj ? formatDate(dateObj) : { dayOfWeek: "", formattedDate: "" };
+
+    /**
+     * Formats an ISO date string using the formatDate utility.
+     *
+     * @param {string} isoDate - The ISO date string to format.
+     */
+    formatIsoDate(isoDate) {
+      return formatDate(isoDate);
     },
 
     /**
