@@ -23,11 +23,11 @@
     <template v-slot:fairUseBooking>
       <fair-use-booking :dates="availableFairUseDates" :initial-value="selectedFairUseDateStrings">
         <template v-slot:mobileTabDescription>
-          Request up to {{ ScMaxTrialDateSelectionsString }} dates for a trial starting in the
+          Request up to {{ scMaxTrialDateSelectionsString }} dates for a trial starting in the
           upcoming release of dates.
         </template>
 
-        <template #noDatesError>
+        <template v-slot:noDatesError>
           <div class="alert alert-danger" role="alert">
             <i class="fa fa-ban"></i>
             There are no dates set for the upcoming release. You can instantly book a trial date
@@ -39,7 +39,7 @@
           <p class="mb-3">
             <strong>A trial date is not being booked at this stage.</strong> You are providing your
             availability for a trial to start on <strong>one</strong> (out of a maximum of
-            {{ ScMaxTrialDateSelectionsString }}) of your requested dates for
+            {{ scMaxTrialDateSelectionsString }}) of your requested dates for
             <b>{{ bookingPeriodName }}</b
             >.
           </p>
@@ -50,7 +50,7 @@
           </p>
         </template>
 
-        <template #datesInfo>
+        <template v-slot:datesInfo>
           <div class="step">
             <span class="number">1</span>
             <div class="description">
@@ -108,7 +108,7 @@
     </template>
 
     <template v-slot:fairUseTabDescription>
-      Request up to {{ ScMaxTrialDateSelectionsString }} dates for a trial starting in the upcoming
+      Request up to {{ scMaxTrialDateSelectionsString }} dates for a trial starting in the upcoming
       release of dates.
     </template>
 
@@ -188,12 +188,12 @@ export default {
       type: String,
       required: true,
     },
-    ScMaxTrialDateSelections: {
+    scMaxTrialDateSelections: {
       type: Number,
       required: false,
       default: 0,
     },
-    ScMaxTrialDateSelectionsString: {
+    scMaxTrialDateSelectionsString: {
       type: String,
       required: false,
       default: "",

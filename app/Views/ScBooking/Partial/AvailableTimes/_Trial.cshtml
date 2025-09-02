@@ -28,8 +28,8 @@
     < DateTime.Now);
 
     int trialLength = Model.SessionInfo.EstimatedTrialLength ?? 0;
-    int ScMaxTrialDateSelections = ScGeneral.ScMaxTrialDateSelections;
-    string ScMaxTrialDateSelectionsString = ScGeneral.ScMaxTrialDateSelectionsString;
+    int scMaxTrialDateSelections = ScGeneral.ScMaxTrialDateSelections;
+    string scMaxTrialDateSelectionsString = ScGeneral.ScMaxTrialDateSelectionsString;
 }
 
 <form method="post" id="availableTimesForm">
@@ -44,8 +44,8 @@
             fair-use-start-date="@fairUseStartDate" fair-use-start-time="@fairUseStartTime"
             :fair-use-unavailable='@Html.Raw(Json.Serialize(fairUseUnavailable))' initial-tab="@Model.TrialFormulaType"
             next-month="@nextMonth" result-contact-date="@resultContactDate"
-            :sc-max-trial-date-selections="@ScMaxTrialDateSelections"
-            sc-max-trial-date-selections-string="@ScMaxTrialDateSelectionsString"
+            :sc-max-trial-date-selections="@scMaxTrialDateSelections"
+            sc-max-trial-date-selections-string="@scMaxTrialDateSelectionsString"
             :selected-fair-use-date-strings='@Html.Raw(selectedFairUseDateStrings)'
             selected-regular-trial-date="@selectedRegularTrialDate"
             session-info-booking-location-name="@Model.SessionInfo.BookingLocationName" :trial-length="@trialLength" />
