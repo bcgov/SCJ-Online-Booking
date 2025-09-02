@@ -1,7 +1,7 @@
 <template>
   <div class="trial-time-select-tabs">
     <ul class="p-0 m-0" v-if="!fairUseUnavailable">
-      <li :class="{ selected: tab === 'Fair-Use', disabled: fairUseDisabled }">
+      <li :class="['tab-li', { selected: tab === 'Fair-Use', disabled: fairUseDisabled }]">
         <label role="button" @click="checkFairUseDisabled">
           <div>
             <input type="radio" value="Fair-Use" v-model="tab" />
@@ -16,7 +16,7 @@
         </label>
       </li>
 
-      <li :class="{ selected: tab === 'Regular' }">
+      <li :class="['tab-li', { selected: tab === 'Regular' }]">
         <label role="button">
           <div>
             <input type="radio" value="Regular" v-model="tab" />
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../sass/variables";
+@use "../../sass/variables" as *;
 
 ul {
   display: flex;
@@ -149,6 +149,10 @@ ul {
       color: $grey-medium;
     }
   }
+}
+
+.tab-li label {
+  white-space: normal !important;
 }
 
 // minimal tab styles on small screens

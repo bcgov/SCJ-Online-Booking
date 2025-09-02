@@ -3,9 +3,9 @@
 */
 
 // Import partial stylesheets
-@import "variables";
-@import "bootstrapOverrides";
-@import "accessibility";
+@use "variables" as *;
+@use "bootstrapOverrides";
+@use "accessibility";
 
 html,
 body {
@@ -115,16 +115,16 @@ div.invalid-field-message {
 .header-logo-div {
   .container {
     @include breakpoint(sm) {
-      background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top
-        no-repeat;
+      background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top no-repeat;
       background-color: $black;
     }
-
-    background-color: $black;
-    border-top: 10px solid #000;
-    margin-right: auto;
-    padding-left: 0;
-    padding-right: 0;
+    & {
+      background-color: $black;
+      border-top: 10px solid #000;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 
   .header-logo {
@@ -581,7 +581,9 @@ div#progress-overlay {
   border: 2px solid $blue-dark;
   border-radius: 5px;
   padding: 0.75em 1em;
-  transition: background-color ease 0.2s, color ease 0.2s;
+  transition:
+    background-color ease 0.2s,
+    color ease 0.2s;
 
   &:hover {
     background-color: $blue-medium;

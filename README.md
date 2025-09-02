@@ -42,7 +42,7 @@ Make sure you are using Node 18 by running `node -v`
 
 `npm install`
 
-`npm run webpackBuild` or  `npm run webpackWatch`
+`npm run build` or  `npm run watch`
 
 ### Running tests
 

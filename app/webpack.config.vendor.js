@@ -73,7 +73,6 @@ module.exports = (env) => {
           "@fortawesome/fontawesome-free/css/regular.css",
           "@fortawesome/fontawesome-free/css/solid.css",
           "@bcgov/bc-sans/css/BCSans.css",
-          "swiper/css/swiper.css",
           "bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css",
         ],
       },
@@ -140,13 +139,6 @@ module.exports = (env) => {
             {
               // the min version is packaged above (vendor.min.css)
               // Just copy the regular version for Development
-              from: "node_modules/swiper/css/swiper.css",
-              to: "css/swiper.css",
-              toType: "file",
-            },
-            {
-              // the min version is packaged above (vendor.min.css)
-              // Just copy the regular version for Development
               from: "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css",
               to: "css/bootstrap-datepicker3.standalone.css",
               toType: "file",
@@ -160,6 +152,22 @@ module.exports = (env) => {
               from: "node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js",
               to: "lib/bootstrap-datepicker.js",
               toType: "file",
+            },
+            {
+              from: "node_modules/jquery-validation/dist/",
+              to: "lib/jquery-validate",
+              noErrorOnMissing: true,
+              globOptions: {
+                ignore: ["**/localization/**"],
+              },
+            },
+            {
+              from: "node_modules/jquery-validation-unobtrusive/dist/",
+              to: "lib/jquery-validation-unobtrusive",
+              noErrorOnMissing: true,
+              globOptions: {
+                ignore: ["**/localization/**"],
+              },
             },
           ],
         }),
