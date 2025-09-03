@@ -11,7 +11,7 @@ namespace SCJ.Booking.MVC.Controllers
 {
     [Route("booking/sc/[action]")]
     [Authorize]
-    public class ScBookingController : Controller
+    public class ScCoreController : Controller
     {
         //Services
         private readonly ScCoreService _scCoreService;
@@ -22,7 +22,7 @@ namespace SCJ.Booking.MVC.Controllers
         private readonly SessionService _session;
 
         //Constructor
-        public ScBookingController(
+        public ScCoreController(
             SessionService sessionService,
             ScCoreService scCoreService,
             ScTrialBookingService scTrialBookingService,
@@ -193,6 +193,10 @@ namespace SCJ.Booking.MVC.Controllers
             if (model.HearingTypeId == ScHearingType.TRIAL)
             {
                 return RedirectToAction("AvailableTimes", "ScTrial");
+            }
+            else if (model.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+            {
+                return RedirectToAction("AvailableTimes", "ScLongChambers");
             }
             else
             {

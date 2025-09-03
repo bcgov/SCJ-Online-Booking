@@ -23,7 +23,7 @@
     <h2>Find the Case for Your Booking</h2>
     <p>Before you can book a trial or hearing, use the following to find the case.</p>
 
-    <form method="GET" action="~/booking/sc/search">
+    <form method="GET" action="~/booking/sc/search#caseCount">
         <div class="row no-gutters">
             <div class="col-md-6">
                 <div class="form-group">
@@ -94,7 +94,7 @@
                 @Html.HiddenFor(m => m.CaseSearchResults[i].styleOfCause)
                 @Html.HiddenFor(m => m.CaseSearchResults[i].physicalFileId)
             }
-            <h3>@caseCount @results found</h3>
+            <h3 id="caseCount">@caseCount @results found</h3>
             <div class="col p-0">
 
                 <div class="form-group">

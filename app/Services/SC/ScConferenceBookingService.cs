@@ -162,7 +162,7 @@ namespace SCJ.Booking.MVC.Services.SC
         }
 
         /// <summary>
-        ///     Renders the template for the email body to a string (~/Views/ScBooking/Email.cshtml)
+        ///     Renders the template for the email body to a string (~/Views/ScCore/Email.cshtml)
         /// </summary>
         private async Task<string> GetConferenceEmailBodyAsync()
         {
@@ -189,13 +189,13 @@ namespace SCJ.Booking.MVC.Services.SC
             //Render the email template
             string template = booking.HearingTypeId switch
             {
-                ScHearingType.AWS => "ScBooking/Emails/Email-CV-AWS",
-                ScHearingType.JMC => "ScBooking/Emails/Email-JMC",
-                ScHearingType.PTC => "ScBooking/Emails/Email-CV-PTC",
-                ScHearingType.TCH => "ScBooking/Emails/Email-CV-TCH",
-                ScHearingType.TMC => "ScBooking/Emails/Email-TMC",
-                ScHearingType.CPC => "ScBooking/Emails/Email-CPC",
-                ScHearingType.JCC => "ScBooking/Emails/Email-JCC",
+                ScHearingType.AWS => "ScCore/Emails/Email-CV-AWS",
+                ScHearingType.JMC => "ScCore/Emails/Email-JMC",
+                ScHearingType.PTC => "ScCore/Emails/Email-CV-PTC",
+                ScHearingType.TCH => "ScCore/Emails/Email-CV-TCH",
+                ScHearingType.TMC => "ScCore/Emails/Email-TMC",
+                ScHearingType.CPC => "ScCore/Emails/Email-CPC",
+                ScHearingType.JCC => "ScCore/Emails/Email-JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
             };
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

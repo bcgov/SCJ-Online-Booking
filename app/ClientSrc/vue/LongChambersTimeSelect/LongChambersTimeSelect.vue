@@ -1,9 +1,11 @@
 <template>
-  <trial-time-select-tabs
+  <chambers-time-select-tabs
     :initial-tab="initialTab"
     :fair-use-unavailable="fairUseUnavailable"
     :fair-use-disabled="fairUseDisabled"
+    hearing-type-name="chambers"
   >
+    >
     <template v-slot:regularBooking>
       <regular-booking
         :dates="availableRegularDates"
@@ -13,7 +15,7 @@
         <template v-slot:noDatesError>
           <div class="alert alert-danger" role="alert">
             <i class="fa fa-ban"></i>
-            There are currently no trial dates available at {{ sessionInfoBookingLocationName }}.
+            There are currently no chambers dates available at {{ sessionInfoBookingLocationName }}.
             Try again at a later time as more dates become available in the system.
           </div>
         </template>
@@ -21,24 +23,29 @@
     </template>
 
     <template v-slot:fairUseBooking>
-      <fair-use-booking :dates="availableFairUseDates" :initial-value="selectedFairUseDateStrings">
+      <fair-use-booking
+        :dates="availableFairUseDates"
+        :initial-value="selectedFairUseDateStrings"
+        :max-selection-size="scMaxTrialDateSelections"
+        hearing-type-name="chambers"
+      >
         <template v-slot:mobileTabDescription>
-          Request up to {{ scMaxTrialDateSelectionsString }} dates for a trial starting in the
+          Request up to {{ scMaxTrialDateSelectionsString }} dates for a chambers starting in the
           upcoming release of dates.
         </template>
 
         <template v-slot:noDatesError>
           <div class="alert alert-danger" role="alert">
             <i class="fa fa-ban"></i>
-            There are no dates set for the upcoming release. You can instantly book a trial date
+            There are no dates set for the upcoming release. You can instantly book a chambers date
             that is currently available in the system instead.
           </div>
         </template>
 
         <template v-slot:howItWorksDescription>
           <p class="mb-3">
-            <strong>A trial date is not being booked at this stage.</strong> You are providing your
-            availability for a trial to start on <strong>one</strong> (out of a maximum of
+            <strong>A chambers date is not being booked at this stage.</strong> You are providing
+            your availability for a chambers to start on <strong>one</strong> (out of a maximum of
             {{ scMaxTrialDateSelectionsString }}) of your requested dates for
             <b>{{ bookingPeriodName }}</b
             >.
@@ -60,7 +67,8 @@
                 <span class="d-sm-inline-block">{{ fairUseEndDate }} {{ fairUseEndTime }}</span>
               </h4>
               <p>
-                Period to provide trial date availability for <b>{{ bookingPeriodName }}</b> dates.
+                Period to provide chambers date availability for
+                <b>{{ bookingPeriodName }}</b> dates.
               </p>
             </div>
           </div>
@@ -76,10 +84,10 @@
           <div class="step">
             <span class="number">3</span>
             <div class="description">
-              <h4>If a trial date is set for your case</h4>
+              <h4>If a chambers date is set for your case</h4>
               <p>
-                You must file your Notice of Trial within 30 days of receiving the confirmation
-                email in order to confirm the trial date.
+                You must file your Notice of Chambers within 30 days of receiving the confirmation
+                email in order to confirm the chambers date.
               </p>
             </div>
           </div>
@@ -93,12 +101,12 @@
         </template>
 
         <template v-slot:dateSelectionSectionHeader>
-          Request trial start dates for {{ sessionInfoBookingLocationName }} (Trial length:
+          Request chambers start dates for {{ sessionInfoBookingLocationName }} (Chambers length:
           {{ trialLength }} {{ trialLength == 1 ? "day" : "days" }})
         </template>
 
         <template v-slot:dateSelectionHeader="{ maxSelectionSize }">
-          <h6>Trial dates for {{ bookingPeriodName }}</h6>
+          <h6>Chambers dates for {{ bookingPeriodName }}</h6>
           <p class="mb-3">
             Request <b>up to {{ maxSelectionSize }} starting dates</b>. Some dates are not available
             due to statutory holidays or court closures.
@@ -108,8 +116,8 @@
     </template>
 
     <template v-slot:fairUseTabDescription>
-      Request up to {{ scMaxTrialDateSelectionsString }} dates for a trial starting in the upcoming
-      release of dates.
+      Request up to {{ scMaxTrialDateSelectionsString }} dates for a chambers starting in the
+      upcoming release of dates.
     </template>
 
     <template v-slot:fairUseDisabledAlert>
@@ -118,20 +126,20 @@
     </template>
 
     <template v-slot:regularTabDescription>
-      You can instantly book a trial date that is currently available in the system.
+      You can instantly book a chambers date that is currently available in the system.
     </template>
-  </trial-time-select-tabs>
+  </chambers-time-select-tabs>
 </template>
 
 <script>
-import TrialTimeSelectTabs from "../_shared/Tabs";
+import ChambersTimeSelectTabs from "../_shared/Tabs";
 import RegularBooking from "../_shared/RegularBooking";
 import FairUseBooking from "../_shared/FairUseBooking";
 
 export default {
   name: "LongChambersTimeSelect",
   components: {
-    TrialTimeSelectTabs,
+    ChambersTimeSelectTabs,
     RegularBooking,
     FairUseBooking,
   },

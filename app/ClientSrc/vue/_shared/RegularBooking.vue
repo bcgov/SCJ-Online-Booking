@@ -24,7 +24,7 @@
           v-model="selected"
         />
         <span class="font-weight-normal">{{ date.dayOfWeek }}</span>
-        <strong>{{ date.formattedDate }}</strong>
+        <strong>&nbsp;{{ date.formattedDate }}</strong>
       </label>
     </div>
 

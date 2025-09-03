@@ -257,8 +257,8 @@ namespace SCJ.Booking.MVC.Services.SC
 
             var template =
                 booking.TrialFormulaType == ScFormulaType.FairUseBooking
-                    ? "ScBooking/Emails/Email-Trial-FairUse"
-                    : "ScBooking/Emails/Email-Trial-Regular";
+                    ? "ScCore/Emails/Email-Trial-FairUse"
+                    : "ScCore/Emails/Email-Trial-Regular";
 
             // @TODO: html email body?
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

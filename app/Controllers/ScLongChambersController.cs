@@ -48,7 +48,6 @@ namespace SCJ.Booking.MVC.Controllers
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             // Trial bookings: get lists of available trial dates
-            // Trial bookings: get lists of available trial dates
             (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
                 await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
                     ScFormulaType.RegularBooking,
@@ -84,7 +83,7 @@ namespace SCJ.Booking.MVC.Controllers
             model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
 
             // Require ContainerId value for non-trial hearing types
-            if (model.HearingTypeId != ScHearingType.TRIAL && model.ContainerId == -1)
+            if (model.ContainerId == -1)
             {
                 ModelState.AddModelError(
                     "ContainerId",
@@ -112,7 +111,7 @@ namespace SCJ.Booking.MVC.Controllers
                     "Please choose from the available dates."
                 );
             }
-            else if (model.HearingTypeId == ScHearingType.TRIAL && model.TrialFormulaType == "")
+            else if (model.TrialFormulaType == "")
             {
                 // If the formula type field is empty
                 // (e.g. user tampered with the form or submitted without JavaScript)
@@ -123,25 +122,24 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 model.SessionInfo = bookingInfo;
                 // Trial bookings: get lists of available trial dates
-                if (model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
-                {
-                    model = await _scCoreService.LoadAvailableTimesFormulaInfoAsync(
-                        model,
-                        bookingInfo.FairUseFormula
+
+                model = await _scCoreService.LoadAvailableTimesFormulaInfoAsync(
+                    model,
+                    bookingInfo.FairUseFormula
+                );
+
+                (model.AvailableRegularTrialDates, _) =
+                    await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
+                        ScFormulaType.RegularBooking,
+                        null
                     );
 
-                    (model.AvailableRegularTrialDates, _) =
-                        await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
-                            ScFormulaType.RegularBooking,
-                            null
-                        );
+                (model.AvailableFairUseTrialDates, _) =
+                    await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
+                        ScFormulaType.FairUseBooking,
+                        null
+                    );
 
-                    (model.AvailableFairUseTrialDates, _) =
-                        await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
-                            ScFormulaType.FairUseBooking,
-                            null
-                        );
-                }
                 return View(model);
             }
 

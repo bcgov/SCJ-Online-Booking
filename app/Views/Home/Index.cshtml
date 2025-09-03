@@ -46,7 +46,8 @@
                     <ul>
                         @foreach (var bookingType in Model.AvailableBookingTypes)
                         {
-                            var bookingTypeName = (bookingType == "Trials") ? bookingType : bookingType + "s";
+                            var pluralTypes = new[] { "Trials", "Chambers" };
+                            var bookingTypeName = pluralTypes.Contains(bookingType) ? bookingType : bookingType + "s";
 
                             <li>@bookingTypeName</li>
                         }

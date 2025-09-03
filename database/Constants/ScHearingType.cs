@@ -12,6 +12,9 @@ namespace SCJ.Booking.Data.Constants
         public const int JCC = 9005;
         public const int TRIAL = 9001;
 
+        // @TODO - get the real Long Chambers hearing type ID
+        public const int LONG_CHAMBERS = 9999;
+
         public const int UNMET_DEMAND = 20538;
         public const int UNKNOWN = 0;
 
@@ -39,6 +42,7 @@ namespace SCJ.Booking.Data.Constants
                 { "TMC", TMC },
                 { "CPC", CPC },
                 { "JCC", JCC },
+                { "Chambers", LONG_CHAMBERS },
                 { "UNMET_DEMAND", UNMET_DEMAND },
                 { "UNKNOWN", UNKNOWN },
             };
@@ -52,6 +56,7 @@ namespace SCJ.Booking.Data.Constants
                 { PTC, "CV-Pre-Trial Conference (CV-PTC)" },
                 { TCH, "CV-Telephone Conference Hearing (CV-TCH)" },
                 { TRIAL, "Trial" },
+                { LONG_CHAMBERS, "Chambers" },
                 { TMC, "Trial Management Conference (TMC)" },
                 { CPC, "Case Planning Conference (CPC)" },
                 { JCC, "Judicial Case Conference (JCC)" },

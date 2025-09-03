@@ -21,7 +21,9 @@
           <div>
             <input type="radio" value="Regular" v-model="tab" />
             <strong class="d-md-none">Book now</strong>
-            <strong class="d-none d-md-block">Book currently available trial dates</strong>
+            <strong class="d-none d-md-block"
+              >Book currently available {{ hearingTypeName }} dates</strong
+            >
           </div>
           <div class="d-none d-md-block">
             <slot name="regularTabDescription" />
@@ -73,6 +75,11 @@ export default {
     fairUseUnavailable: {
       type: Boolean,
       default: false,
+    },
+
+    hearingTypeName: {
+      type: String,
+      default: "trial",
     },
   },
 

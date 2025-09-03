@@ -130,7 +130,7 @@
 
           <div class="alert alert-warning" v-if="formattedSelection.length === 0">
             <i class="fa fa-exclamation-triangle" />
-            Choose at least one starting date for your trial.
+            Choose at least one starting date for your {{ hearingTypeName }}.
           </div>
         </div>
       </div>
@@ -173,6 +173,11 @@ export default {
     maxSelectionSize: {
       type: Number,
       default: 5,
+    },
+
+    hearingTypeName: {
+      type: String,
+      default: "trial",
     },
   },
 
