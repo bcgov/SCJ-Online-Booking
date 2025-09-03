@@ -192,11 +192,11 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (model.HearingTypeId == ScHearingType.TRIAL)
             {
-                return Redirect("/scjob/booking/sc-trial/available-times");
+                return RedirectToAction("AvailableTimes", "ScTrial");
             }
             else
             {
-                return Redirect("/scjob/booking/sc-conference/available-times");
+                return RedirectToAction("AvailableTimes", "ScConference");
             }
         }
 

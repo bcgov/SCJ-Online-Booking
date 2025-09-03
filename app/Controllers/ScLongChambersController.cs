@@ -48,22 +48,20 @@ namespace SCJ.Booking.MVC.Controllers
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             // Trial bookings: get lists of available trial dates
-            if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
-            {
-                (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
-                    await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
-                        ScFormulaType.RegularBooking,
-                        bookingInfo.RegularFormula
-                    );
+            // Trial bookings: get lists of available trial dates
+            (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
+                await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
+                    ScFormulaType.RegularBooking,
+                    bookingInfo.RegularFormula
+                );
 
-                (model.AvailableFairUseTrialDates, bookingInfo.FairUseFormula) =
-                    await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
-                        ScFormulaType.FairUseBooking,
-                        bookingInfo.FairUseFormula
-                    );
+            (model.AvailableFairUseTrialDates, bookingInfo.FairUseFormula) =
+                await _scLongChambersBookingService.GetAvailableTrialDatesAsync(
+                    ScFormulaType.FairUseBooking,
+                    bookingInfo.FairUseFormula
+                );
 
-                _session.ScBookingInfo = bookingInfo;
-            }
+            _session.ScBookingInfo = bookingInfo;
 
             if (bookingInfo.FairUseFormula is null)
             {
@@ -216,12 +214,12 @@ namespace SCJ.Booking.MVC.Controllers
                 if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
                 {
                     // Redirect to "TrialBooked" page for Regular
-                    return Redirect("/scjob/booking/sc-long-chambers/trial-booked");
+                    return RedirectToAction("TrialBooked");
                 }
                 else
                 {
                     // Redirect to "RequestSubmitted" page for Fair-Use
-                    return Redirect("/scjob/booking/sc-long-chambers/trial-request-submitted");
+                    return RedirectToAction("RequestSubmitted");
                 }
             }
             catch (InvalidOperationException ex)
