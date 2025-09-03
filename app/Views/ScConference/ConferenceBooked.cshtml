@@ -1,5 +1,6 @@
 @inject SessionService SessionService
 @{
+    Layout = "~/Views/ScBooking/_Layout.cshtml";
     ViewData["Title"] = "Your Booking is Confirmed";
 
     var bookingInfo = SessionService.ScBookingInfo;

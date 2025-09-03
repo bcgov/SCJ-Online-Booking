@@ -129,7 +129,7 @@ import RegularBooking from "../_shared/RegularBooking";
 import FairUseBooking from "../_shared/FairUseBooking";
 
 export default {
-  name: "TrialTimeSelect",
+  name: "LongChambersTimeSelect",
   components: {
     TrialTimeSelectTabs,
     RegularBooking,

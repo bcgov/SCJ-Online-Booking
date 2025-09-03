@@ -1,0 +1,35 @@
+@model ScAvailableTimesViewModel
+@{
+    Layout = "~/Views/ScBooking/_Layout.cshtml";
+    ViewData["Title"] = "Request Trial Date(s)";
+
+    var bookingInfo = Model.SessionInfo;
+}
+
+<div class="body-content--inner">
+    <div class="d-flex justify-content-between steps-link">
+        <h5>4 steps to complete your booking</h5>
+        <h6><a href="/scjob/booking/sc">Cancel</a></h6>
+    </div>
+    <hr />
+    <h6>Step 3</h6>
+
+    <h2>Request Trial Date(s)</h2>
+
+    <div style="margin-bottom: 30px">
+        <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
+        <h5>@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
+        <p>@bookingInfo.SelectedCourtClassName</p>
+    </div>
+
+    <partial name="Partial/AvailableTimes/_Trial" model="Model" />
+
+    @section Styles {
+        <link rel="stylesheet" href="/scjob/dist/vue/TrialTimeSelect.js.css" asp-append-version="true" />
+    }
+
+    @section Scripts {
+        <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/vue/TrialTimeSelect.js" asp-append-version="true"></script>
+    }
+</div>

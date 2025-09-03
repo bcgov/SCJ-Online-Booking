@@ -2,7 +2,8 @@
 @model ScCaseConfirmViewModel
 
 @{
-    ViewData["Title"] = (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL) ? "Review Your Request" : "Complete Your Booking";
+    Layout = "~/Views/ScBooking/_Layout.cshtml";
+    ViewData["Title"] = "Review Your Request";
 }
 
 <div class="body-content--inner">
@@ -16,14 +17,7 @@
 
     <div class="row no-gutters booking-confirmation">
         <div class="col">
-            @if (@Model.SessionInfo.HearingTypeId == @ScHearingType.TRIAL)
-            {
-                <partial name="Partial/CaseConfirm/_Trial" model="Model" />
-            }
-            else
-            {
-                <partial name="Partial/CaseConfirm/_Conference" model="Model" />
-            }
+            <partial name="Partial/CaseConfirm/_LongChambers" model="Model" />
         </div>
     </div>
 </div>

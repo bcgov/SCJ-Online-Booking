@@ -1,0 +1,76 @@
+@model ScAvailableTimesViewModel
+@using SCJ.Booking.Data.Constants
+
+@{
+    List<string> regularDatesList = Model.AvailableRegularTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+    string availableRegularDates = Json.Serialize(regularDatesList).ToString();
+
+    List<string> fairUseDatesList = Model.AvailableFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+    string availableFairUseDates = Json.Serialize(fairUseDatesList).ToString();
+
+    List<string> selectedFairUseList = Model.SelectedFairUseTrialDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+    string selectedFairUseDateStrings = Json.Serialize(selectedFairUseList).ToString();
+
+    string selectedRegularTrialDate = Model.SelectedRegularTrialDate?.ToString("yyyy-MM-dd") ?? "";
+
+    string fairUseStartDate = Model.FairUseStartDate?.ToString("dddd MMMM d, yyyy");
+    string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
+    string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd MMMM d, yyyy");
+    string fairUseEndTime = Model.FairUseEndDate?.ToString("h:mm tt").ToLower();
+    string currentMonth = Model.FairUseEndDate?.ToString("MMMM");
+    string nextMonth = Model.FairUseEndDate?.AddMonths(1).ToString("MMMM");
+    string bookingPeriodName = Model.FairUseSelectionDate?.ToString("MMMM yyyy");
+
+    string resultContactDate = Model.FairUseResultDate?.ToString("dddd MMMM d, yyyy");
+
+    bool fairUseUnavailable = Model.FairUseStartDate is null || Model.FairUseEndDate is null;
+    bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value
+    < DateTime.Now);
+
+    int trialLength = Model.SessionInfo.EstimatedTrialLength ?? 0;
+    int scMaxTrialDateSelections = ScGeneral.ScMaxTrialDateSelections;
+    string scMaxTrialDateSelectionsString = ScGeneral.ScMaxTrialDateSelectionsString;
+}
+
+<form method="post" id="availableTimesForm">
+
+    @Html.HiddenFor(m => m.HearingTypeId)
+
+    <div id="VueLongChambersTimeSelect" v-cloak>
+        <long-chambers-time-select :available-fair-use-dates='@Html.Raw(availableFairUseDates)'
+            :available-regular-dates='@Html.Raw(availableRegularDates)' booking-period-name="@bookingPeriodName"
+            current-month="@currentMonth" :fair-use-disabled='@Html.Raw(Json.Serialize(fairUseDisabled))'
+            fair-use-end-date="@fairUseEndDate" fair-use-end-time="@fairUseEndTime"
+            fair-use-start-date="@fairUseStartDate" fair-use-start-time="@fairUseStartTime"
+            :fair-use-unavailable='@Html.Raw(Json.Serialize(fairUseUnavailable))' initial-tab="@Model.TrialFormulaType"
+            next-month="@nextMonth" result-contact-date="@resultContactDate"
+            :sc-max-trial-date-selections="@scMaxTrialDateSelections"
+            sc-max-trial-date-selections-string="@scMaxTrialDateSelectionsString"
+            :selected-fair-use-date-strings='@Html.Raw(selectedFairUseDateStrings)'
+            selected-regular-trial-date="@selectedRegularTrialDate"
+            session-info-booking-location-name="@Model.SessionInfo.BookingLocationName" :trial-length="@trialLength" />
+    </div>
+
+    <div class="content-pad bg-white">
+        <span asp-validation-for="SelectedRegularTrialDate" class="text-danger"></span>
+        <span asp-validation-for="SelectedFairUseTrialDates" class="text-danger"></span>
+        <span asp-validation-for="TrialFormulaType" class="text-danger"></span>
+    </div>
+
+    <div class="row no-gutters">
+        <div class="col-6 col-md-8 d-flex align-items-center text-link">
+            <span>
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <a asp-action="BookingType">Step 2: Choose Your Booking Type</a>
+            </span>
+        </div>
+        <div class="col-6 col-md-4">
+            @if (Model.AvailableFairUseTrialDates.Any() || Model.AvailableRegularTrialDates.Any())
+            {
+                <button type="submit" class="btn btn-secondary btn-block" id="btnNext">
+                    Review Your Request
+                </button>
+            }
+        </div>
+    </div>
+</form>
