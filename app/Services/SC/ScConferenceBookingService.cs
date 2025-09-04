@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -53,6 +54,64 @@ namespace SCJ.Booking.MVC.Services.SC
         }
 
         /// <summary>
+        ///     Loads the available times form with session info
+        /// </summary>
+        public ScAvailableTimesViewModel LoadAvailableTimesFormAsync()
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            //Model instance
+            var model = new ScAvailableTimesViewModel
+            {
+                CaseNumber = bookingInfo.CaseNumber,
+                HearingTypeId = bookingInfo.HearingTypeId,
+                AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
+                ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
+                SessionInfo = bookingInfo
+            };
+
+            return model;
+        }
+
+        /// <summary>
+        ///    Saves the available times form to session
+        /// </summary>
+        public async Task SaveAvailableTimesFormAsync(ScAvailableTimesViewModel model)
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            // check the schedule again to make sure the time slot wasn't taken by someone else
+            AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+                bookingInfo.BookingLocationRegistryId,
+                bookingInfo.HearingTypeId
+            );
+
+            if (model.ContainerId > 0)
+            {
+                model.TimeSlotExpired = !IsTimeStillAvailable(schedule, model.ContainerId);
+                bookingInfo.ContainerId = model.ContainerId;
+            }
+
+            bookingInfo.SelectedConferenceDate = model.ParsedConferenceDate;
+            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
+            bookingInfo.SelectedFairUseTrialDates = model
+                .SelectedFairUseTrialDates.Take(ScGeneral.ScMaxTrialDateSelections)
+                .ToList();
+            bookingInfo.TrialFormulaType = model.TrialFormulaType;
+
+            _session.ScBookingInfo = bookingInfo;
+        }
+
+        /// <summary>
+        ///     Check if a time slot is still available for a court booking
+        /// </summary>
+        public static bool IsTimeStillAvailable(AvailableDatesByLocation schedule, int containerId)
+        {
+            //check if the container ID is still available
+            return schedule.AvailableDates.Any(x => x.ContainerID == containerId);
+        }
+
+        /// <summary>
         ///     Book court case
         /// </summary>
         public async Task<ScCaseConfirmViewModel> BookConferenceAsync(
@@ -75,7 +134,7 @@ namespace SCJ.Booking.MVC.Services.SC
             );
 
             //ensure time slot is still available
-            if (ScCoreService.IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
+            if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
                 string userDisplayName = OpenIdConnectHelper.GetUserFullName(user);
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");

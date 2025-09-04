@@ -242,86 +242,9 @@ namespace SCJ.Booking.MVC.Services.SC
             _session.ScBookingInfo = bookingInfo;
         }
 
-        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesFormAsync()
-        {
-            var bookingInfo = _session.ScBookingInfo;
-
-            //Model instance
-            var model = new ScAvailableTimesViewModel
-            {
-                CaseNumber = bookingInfo.CaseNumber,
-                HearingTypeId = bookingInfo.HearingTypeId,
-                AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
-                ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
-                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
-                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
-                SessionInfo = bookingInfo
-            };
-
-            model = await LoadAvailableTimesFormulaInfoAsync(model, null);
-
-            model.TrialFormulaType =
-                bookingInfo.FairUseFormula is null && bookingInfo.RegularFormula is not null
-                    ? ScFormulaType.RegularBooking
-                    : bookingInfo.TrialFormulaType;
-
-            return model;
-        }
-
-        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesFormulaInfoAsync(
-            ScAvailableTimesViewModel model,
-            FormulaLocation fairUseFormula
-        )
-        {
-            var bookingInfo = _session.ScBookingInfo;
-
-            fairUseFormula ??= await _cache.GetFormulaLocationAsync(
-                ScFormulaType.FairUseBooking,
-                bookingInfo.TrialLocationRegistryId,
-                bookingInfo.SelectedCourtFile?.courtClassCode ?? ""
-            );
-
-            // The fair use start/end dates are the period inwhich dates are selected for the lottery
-            model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
-            model.FairUseEndDate = fairUseFormula?.FairUseBookingPeriodEndDate;
-
-            // The fair use "result date" is the date when the lottery takes place and users are notified
-            model.FairUseResultDate = fairUseFormula?.FairUseContactDate;
-
-            // The fair use "selection date" is the period inwhich the trials booked by
-            // the lottery take place. Example: "June 2025" for trials in June 2025
-            model.FairUseSelectionDate = fairUseFormula?.StartDate;
-
-            return model;
-        }
-
-        public async Task SaveAvailableTimesFormAsync(ScAvailableTimesViewModel model)
-        {
-            var bookingInfo = _session.ScBookingInfo;
-
-            // check the schedule again to make sure the time slot wasn't taken by someone else
-            AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
-                bookingInfo.BookingLocationRegistryId,
-                bookingInfo.HearingTypeId
-            );
-
-            if (model.ContainerId > 0)
-            {
-                model.TimeSlotExpired = !IsTimeStillAvailable(schedule, model.ContainerId);
-                bookingInfo.ContainerId = model.ContainerId;
-            }
-
-            bookingInfo.SelectedConferenceDate = model.ParsedConferenceDate;
-            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
-            bookingInfo.SelectedFairUseTrialDates = model
-                .SelectedFairUseTrialDates.Take(ScGeneral.ScMaxTrialDateSelections)
-                .ToList();
-            bookingInfo.TrialFormulaType = model.TrialFormulaType;
-
-            _session.ScBookingInfo = bookingInfo;
-        }
-
-        // Returns booking types from the cache
+        /// <summary>
+        ///     Returns booking types from the cache
+        /// </summary>
         public async Task<List<string>> GetAvailableBookingTypesAsync()
         {
             var supportedTypes = ScHearingType.HearingTypeIdMap.Keys.Select(keyName => keyName);
@@ -333,15 +256,6 @@ namespace SCJ.Booking.MVC.Services.SC
         public async Task<string> GetLocationNameAsync(int registryId)
         {
             return await _cache.GetLocationNameAsync(registryId);
-        }
-
-        /// <summary>
-        ///     Check if a time slot is still available for a court booking
-        /// </summary>
-        public static bool IsTimeStillAvailable(AvailableDatesByLocation schedule, int containerId)
-        {
-            //check if the container ID is still available
-            return schedule.AvailableDates.Any(x => x.ContainerID == containerId);
         }
 
         /// <summary>

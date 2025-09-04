@@ -38,7 +38,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc-long-chambers/available-times")]
         public async Task<IActionResult> AvailableTimesAsync()
         {
-            var model = await _scCoreService.LoadAvailableTimesFormAsync();
+            var model = await _scLongChambersBookingService.LoadAvailableTimesFormAsync();
 
             if (string.IsNullOrWhiteSpace(model.CaseNumber))
             {
@@ -123,7 +123,7 @@ namespace SCJ.Booking.MVC.Controllers
                 model.SessionInfo = bookingInfo;
                 // Trial bookings: get lists of available trial dates
 
-                model = await _scCoreService.LoadAvailableTimesFormulaInfoAsync(
+                model = await _scLongChambersBookingService.LoadAvailableTimesFormulaInfoAsync(
                     model,
                     bookingInfo.FairUseFormula
                 );
@@ -143,7 +143,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            await _scCoreService.SaveAvailableTimesFormAsync(model);
+            _scLongChambersBookingService.SaveAvailableTimesFormAsync(model);
 
             return RedirectToAction("CaseConfirm");
         }

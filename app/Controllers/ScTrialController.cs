@@ -38,7 +38,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc-trial/available-times")]
         public async Task<IActionResult> AvailableTimesAsync()
         {
-            var model = await _scCoreService.LoadAvailableTimesFormAsync();
+            var model = await _scTrialBookingService.LoadAvailableTimesFormAsync();
 
             if (string.IsNullOrWhiteSpace(model.CaseNumber))
             {
@@ -124,7 +124,7 @@ namespace SCJ.Booking.MVC.Controllers
                 // Trial bookings: get lists of available trial dates
                 if (model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
-                    model = await _scCoreService.LoadAvailableTimesFormulaInfoAsync(
+                    model = await _scTrialBookingService.LoadAvailableTimesFormulaInfoAsync(
                         model,
                         bookingInfo.FairUseFormula
                     );
@@ -144,7 +144,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            await _scCoreService.SaveAvailableTimesFormAsync(model);
+            _scTrialBookingService.SaveAvailableTimesFormAsync(model);
 
             return RedirectToAction("CaseConfirm");
         }

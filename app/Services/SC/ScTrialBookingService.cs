@@ -58,6 +58,81 @@ namespace SCJ.Booking.MVC.Services.SC
         }
 
         /// <summary>
+        ///     Loads the available times form with session info
+        /// </summary>
+        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesFormAsync()
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            //Model instance
+            var model = new ScAvailableTimesViewModel
+            {
+                CaseNumber = bookingInfo.CaseNumber,
+                HearingTypeId = bookingInfo.HearingTypeId,
+                AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
+                ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
+                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
+                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
+                SessionInfo = bookingInfo
+            };
+
+            model = await LoadAvailableTimesFormulaInfoAsync(model, null);
+
+            model.TrialFormulaType =
+                bookingInfo.FairUseFormula is null && bookingInfo.RegularFormula is not null
+                    ? ScFormulaType.RegularBooking
+                    : bookingInfo.TrialFormulaType;
+
+            return model;
+        }
+
+        /// <summary>
+        ///    Loads the available times form with formula info
+        /// </summary>
+        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesFormulaInfoAsync(
+            ScAvailableTimesViewModel model,
+            FormulaLocation fairUseFormula
+        )
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            fairUseFormula ??= await _cache.GetFormulaLocationAsync(
+                ScFormulaType.FairUseBooking,
+                bookingInfo.TrialLocationRegistryId,
+                bookingInfo.SelectedCourtFile?.courtClassCode ?? ""
+            );
+
+            // The fair use start/end dates are the period inwhich dates are selected for the lottery
+            model.FairUseStartDate = fairUseFormula?.FairUseBookingPeriodStartDate;
+            model.FairUseEndDate = fairUseFormula?.FairUseBookingPeriodEndDate;
+
+            // The fair use "result date" is the date when the lottery takes place and users are notified
+            model.FairUseResultDate = fairUseFormula?.FairUseContactDate;
+
+            // The fair use "selection date" is the period inwhich the trials booked by
+            // the lottery take place. Example: "June 2025" for trials in June 2025
+            model.FairUseSelectionDate = fairUseFormula?.StartDate;
+
+            return model;
+        }
+
+        /// <summary>
+        ///    Saves the available times form to session
+        /// </summary>
+        public void SaveAvailableTimesFormAsync(ScAvailableTimesViewModel model)
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
+            bookingInfo.SelectedFairUseTrialDates = model
+                .SelectedFairUseTrialDates.Take(ScGeneral.ScMaxTrialDateSelections)
+                .ToList();
+            bookingInfo.TrialFormulaType = model.TrialFormulaType;
+
+            _session.ScBookingInfo = bookingInfo;
+        }
+
+        /// <summary>
         ///     Book trial
         /// </summary>
         public async Task<ScCaseConfirmViewModel> BookTrialAsync(
