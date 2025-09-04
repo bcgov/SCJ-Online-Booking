@@ -184,8 +184,7 @@ namespace SCJ.Booking.MVC.Services.SC
                     await _dbWriterService.SaveBookingHistory(
                         userId,
                         "SC",
-                        bookingInfo.BookingLocationName,
-                        ScHearingType.TRIAL,
+                        ScHearingType.LONG_CHAMBERS,
                         ScFormulaType.RegularBooking
                     );
 
