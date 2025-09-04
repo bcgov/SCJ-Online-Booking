@@ -18,7 +18,7 @@ using Serilog;
 
 namespace SCJ.Booking.MVC.Services.SC
 {
-    public class ScTrialBookingService
+    public class ScFairBookingService
     {
         public readonly bool IsLocalDevEnvironment;
 
@@ -32,7 +32,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly ApplicationDbContext _dbContext;
 
         //Constructor
-        public ScTrialBookingService(
+        public ScFairBookingService(
             ApplicationDbContext dbContext,
             IConfiguration configuration,
             SessionService sessionService,

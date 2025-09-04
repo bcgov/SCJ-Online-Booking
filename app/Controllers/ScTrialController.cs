@@ -17,7 +17,7 @@ namespace SCJ.Booking.MVC.Controllers
     {
         //Services
         private readonly ScCoreService _scCoreService;
-        private readonly ScTrialBookingService _scTrialBookingService;
+        private readonly ScFairBookingService _scFairBookingService;
 
         // Strongly typed session
         private readonly SessionService _session;
@@ -26,19 +26,19 @@ namespace SCJ.Booking.MVC.Controllers
         public ScTrialController(
             SessionService sessionService,
             ScCoreService scCoreService,
-            ScTrialBookingService scTrialBookingService
+            ScFairBookingService scFairBookingService
         )
         {
             _session = sessionService;
             _scCoreService = scCoreService;
-            _scTrialBookingService = scTrialBookingService;
+            _scFairBookingService = scFairBookingService;
         }
 
         [HttpGet]
         [Route("~/booking/sc-trial/available-times")]
         public async Task<IActionResult> AvailableTimesAsync()
         {
-            var model = await _scTrialBookingService.LoadAvailableTimesFormAsync();
+            var model = await _scFairBookingService.LoadAvailableTimesFormAsync();
 
             if (string.IsNullOrWhiteSpace(model.CaseNumber))
             {
@@ -49,13 +49,13 @@ namespace SCJ.Booking.MVC.Controllers
 
             // Trial bookings: get lists of available trial dates
             (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
-                await _scTrialBookingService.GetAvailableTrialDatesAsync(
+                await _scFairBookingService.GetAvailableTrialDatesAsync(
                     ScFormulaType.RegularBooking,
                     bookingInfo.RegularFormula
                 );
 
             (model.AvailableFairUseTrialDates, bookingInfo.FairUseFormula) =
-                await _scTrialBookingService.GetAvailableTrialDatesAsync(
+                await _scFairBookingService.GetAvailableTrialDatesAsync(
                     ScFormulaType.FairUseBooking,
                     bookingInfo.FairUseFormula
                 );
@@ -124,19 +124,19 @@ namespace SCJ.Booking.MVC.Controllers
                 // Trial bookings: get lists of available trial dates
                 if (model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
-                    model = await _scTrialBookingService.LoadAvailableTimesFormulaInfoAsync(
+                    model = await _scFairBookingService.LoadAvailableTimesFormulaInfoAsync(
                         model,
                         bookingInfo.FairUseFormula
                     );
 
                     (model.AvailableRegularTrialDates, _) =
-                        await _scTrialBookingService.GetAvailableTrialDatesAsync(
+                        await _scFairBookingService.GetAvailableTrialDatesAsync(
                             ScFormulaType.RegularBooking,
                             null
                         );
 
                     (model.AvailableFairUseTrialDates, _) =
-                        await _scTrialBookingService.GetAvailableTrialDatesAsync(
+                        await _scFairBookingService.GetAvailableTrialDatesAsync(
                             ScFormulaType.FairUseBooking,
                             null
                         );
@@ -144,7 +144,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            _scTrialBookingService.SaveAvailableTimesFormAsync(model);
+            _scFairBookingService.SaveAvailableTimesFormAsync(model);
 
             return RedirectToAction("CaseConfirm");
         }
@@ -208,7 +208,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             try
             {
-                await _scTrialBookingService.BookTrialAsync(model, user);
+                await _scFairBookingService.BookTrialAsync(model, user);
 
                 if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
                 {
