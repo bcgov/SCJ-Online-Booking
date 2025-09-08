@@ -110,8 +110,8 @@ namespace SCJ.Booking.MVC.Utils
             var dbCtx =
                 tokenCtx.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
 
-            var user = await dbCtx.Users.FirstOrDefaultAsync(
-                u => u.CredentialType == idpType && u.UniqueIdentifier == identifier
+            var user = await dbCtx.Users.FirstOrDefaultAsync(u =>
+                u.CredentialType == idpType && u.UniqueIdentifier == identifier
             );
 
             long userId;

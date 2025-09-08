@@ -132,7 +132,7 @@ $(document).ready(function () {
   //Display Show Available Dates button when all fields are correctly selected
   //and display errors for required preliminary questions
   $(
-    '.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]'
+    '.preliminary_questions input[type="radio"], input[name="SelectedCases"], select[name="HearingTypeId"]',
   ).change(function () {
     const isAppeal = $('input[name="IsAppealHearing"]:checked').val();
     const isDateAgreed = $('input[name="DateIsAgreed"]:checked').val();
@@ -153,7 +153,7 @@ $(document).ready(function () {
 
     // show warning alert if the date hasn't been agreed upon
     const $dateAgreedAlerts = $(
-      ".alert--preliminary_question.appeal, .alert--preliminary_question.chambers"
+      ".alert--preliminary_question.appeal, .alert--preliminary_question.chambers",
     ).hide();
     if (isDateAgreed === "false" && !$("#DateIsAgreed > label").hasClass("disabled")) {
       if (isAppeal === "true") {

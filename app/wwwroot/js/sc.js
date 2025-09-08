@@ -45,18 +45,18 @@ $(document).ready(function () {
 
 // Shows or hides the additional form fields for Trials
 function showTrialFields() {
-  const selectedHearingType = $("input[name=HearingTypeId]:checked").val();
+  const hearingTypeId = $("input[name=HearingTypeId]:checked").val();
 
-  const trialOrChambersSelected = selectedHearingType === "9001" || selectedHearingType === "9999";
+  const fairTypeSelected = hearingTypeId === "9001" || hearingTypeId === "9012";
 
   $("#existing-trial-error").hide();
   $("#btnNext").show();
 
-  if (trialOrChambersSelected && checkExistingTrialBookings()) {
+  if (fairTypeSelected && checkExistingTrialBookings()) {
     $("#existing-trial-error").show();
     $("#btnNext").hide();
   } else {
-    $("#trial-additional-fields").toggle(trialOrChambersSelected);
+    $("#trial-additional-fields").toggle(fairTypeSelected);
   }
 
   const notHomeRegistry = $("input[name=IsHomeRegistry]:checked").val() === "false";

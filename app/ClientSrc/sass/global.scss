@@ -115,7 +115,8 @@ div.invalid-field-message {
 .header-logo-div {
   .container {
     @include breakpoint(sm) {
-      background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top no-repeat;
+      background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top
+        no-repeat;
       background-color: $black;
     }
     & {

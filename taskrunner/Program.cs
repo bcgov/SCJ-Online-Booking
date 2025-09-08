@@ -27,7 +27,9 @@ namespace SCJ.Booking.TaskRunner
             var emailEnabled = configuration.GetValue<bool>("AppSettings:EmailEnabled");
             var lotteryEnabled = configuration.GetValue<bool>("AppSettings:LotteryEnabled");
             var cleanupEnabled = configuration.GetValue<bool>("AppSettings:PurgeEnabled");
-            var pollingFrequencySeconds = configuration.GetValue<int>("AppSettings:PollingFrequencySeconds");
+            var pollingFrequencySeconds = configuration.GetValue<int>(
+                "AppSettings:PollingFrequencySeconds"
+            );
 
             logger.Information("SCJ.Booking.TaskRunner started");
             logger.Information(
