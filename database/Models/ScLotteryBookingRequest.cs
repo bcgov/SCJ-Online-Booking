@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCJ.Booking.Data.Models
 {
-    public class ScTrialBookingRequest
+    public class ScLotteryBookingRequest
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,6 +21,7 @@ namespace SCJ.Booking.Data.Models
         [MaxLength(255)]
         public string StyleOfCause { get; set; } = "";
 
+        public int HearingTypeId { get; set; }
         public int TrialLocationId { get; set; }
         public int BookingLocationId { get; set; }
         public string? TrialLocationName { get; set; }
@@ -51,8 +52,8 @@ namespace SCJ.Booking.Data.Models
         public int LotteryPosition { get; set; }
         public bool IsProcessed { get; set; } = false;
         public int AllocatedSelectionRank { get; set; }
-        public ICollection<ScTrialDateSelection> TrialDateSelections { get; } =
-            new List<ScTrialDateSelection>();
+        public ICollection<ScLotteryDateSelection> TrialDateSelections { get; } =
+            new List<ScLotteryDateSelection>();
 
         [MaxLength(255)]
         public string? UnmetDemandBookingResult { get; set; }

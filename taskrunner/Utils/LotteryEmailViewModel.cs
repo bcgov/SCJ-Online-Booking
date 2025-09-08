@@ -5,7 +5,7 @@ namespace SCJ.Booking.TaskRunner.Utils
 {
     public class LotteryEmailViewModel
     {
-        public LotteryEmailViewModel(ScTrialBookingRequest bookingRequest)
+        public LotteryEmailViewModel(ScLotteryBookingRequest bookingRequest)
         {
             EmailAddress = bookingRequest.Email;
             Phone = bookingRequest.Phone;

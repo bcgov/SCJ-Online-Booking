@@ -23,9 +23,11 @@ namespace SCJ.Booking.Data
 
         public DbSet<OidcUser> Users => Set<OidcUser>();
 
-        public DbSet<ScTrialBookingRequest> ScTrialBookingRequests => Set<ScTrialBookingRequest>();
+        public DbSet<ScLotteryBookingRequest> ScLotteryBookingRequests =>
+            Set<ScLotteryBookingRequest>();
 
-        public DbSet<ScTrialDateSelection> ScTrialDateSelections => Set<ScTrialDateSelection>();
+        public DbSet<ScLotteryDateSelection> ScLotteryDateSelections =>
+            Set<ScLotteryDateSelection>();
 
         public DbSet<ScLottery> ScLotteries => Set<ScLottery>();
 
@@ -59,11 +61,11 @@ namespace SCJ.Booking.Data
                 .IsUnique();
 
             modelBuilder
-                .Entity<ScTrialBookingRequest>()
+                .Entity<ScLotteryBookingRequest>()
                 .HasIndex(r => new { r.CaseNumber }, "IX_CaseNumber_Ascending");
 
             modelBuilder
-                .Entity<ScTrialBookingRequest>()
+                .Entity<ScLotteryBookingRequest>()
                 .HasIndex(
                     r => new
                     {
@@ -75,23 +77,24 @@ namespace SCJ.Booking.Data
                 );
 
             modelBuilder
-                .Entity<ScTrialBookingRequest>()
+                .Entity<ScLotteryBookingRequest>()
                 .HasIndex(r => new { r.ProcessingTimestamp }, "IX_ProcessingTimestamp_Ascending");
 
             modelBuilder
-                .Entity<ScTrialBookingRequest>()
+                .Entity<ScLotteryBookingRequest>()
                 .HasIndex(
                     r => new
                     {
                         r.LotteryStartDate,
                         r.BookingLocationId,
+                        r.HearingTypeId,
                         r.BookHearingCode
                     },
                     "IX_TaskRunner_Lottery"
                 );
 
             modelBuilder
-                .Entity<ScTrialBookingRequest>()
+                .Entity<ScLotteryBookingRequest>()
                 .HasIndex(r => new { r.LotteryStartDate }, "IX_LotteryStartDate_Ascending");
 
             base.OnModelCreating(modelBuilder);

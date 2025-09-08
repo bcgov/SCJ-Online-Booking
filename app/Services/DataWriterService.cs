@@ -83,8 +83,8 @@ namespace SCJ.Booking.MVC.Services
                 );
             }
 
-            DbSet<ScTrialBookingRequest> trialBookingRequests =
-                _dbContext.Set<ScTrialBookingRequest>();
+            DbSet<ScLotteryBookingRequest> trialBookingRequests =
+                _dbContext.Set<ScLotteryBookingRequest>();
 
             var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var courtFile = bookingInfo.SelectedCourtFile;
@@ -94,10 +94,11 @@ namespace SCJ.Booking.MVC.Services
 
             var lotteryStartDate = bookingPeriodEndDate.Date.AddDays(1);
 
-            var bookingRequest = new ScTrialBookingRequest
+            var bookingRequest = new ScLotteryBookingRequest
             {
                 User = oidcUser,
                 BookHearingCode = formula.BookingHearingCode,
+                HearingTypeId = bookingInfo.HearingTypeId,
                 BookingLocationId = formula.BookingLocationID,
                 CeisPhysicalFileId = courtFile.physicalFileId.GetValueOrDefault(0),
                 CourtClassCode = courtFile.courtClassCode,
@@ -123,7 +124,7 @@ namespace SCJ.Booking.MVC.Services
             foreach (var date in bookingInfo.SelectedFairUseTrialDates)
             {
                 bookingRequest.TrialDateSelections.Add(
-                    new ScTrialDateSelection { Rank = selectionRank, TrialStartDate = date }
+                    new ScLotteryDateSelection { Rank = selectionRank, TrialStartDate = date }
                 );
                 selectionRank++;
             }

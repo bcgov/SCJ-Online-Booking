@@ -134,6 +134,7 @@ namespace SCJ.Booking.MVC.Controllers
                     LotteryId = l.Id,
                     l.BookingLocationId,
                     l.BookHearingCode,
+                    l.HearingTypeId,
                     l.FairUseBookingPeriodStartDate,
                     l.FairUseBookingPeriodEndDate,
                     l.InitiationTime,
@@ -181,7 +182,7 @@ namespace SCJ.Booking.MVC.Controllers
             DateTime endDate = startDate.AddMonths(1).AddSeconds(-1);
 
             var requests = await _dbContext
-                .ScTrialBookingRequests.Where(r =>
+                .ScLotteryBookingRequests.Where(r =>
                     r.FairUseBookingPeriodEndDate >= startDate
                     && r.FairUseBookingPeriodEndDate <= endDate
                 )

@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCJ.Booking.Data.Models
 {
-    public class ScTrialDateSelection
+    public class ScLotteryDateSelection
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public ScTrialBookingRequest BookingRequest { get; set; } = null!;
+        public ScLotteryBookingRequest BookingRequest { get; set; } = null!;
 
         public DateTime TrialStartDate { get; set; }
 

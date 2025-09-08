@@ -36,9 +36,9 @@ namespace SCJ.Booking.TaskRunner.Services
             );
             DateTime oldestDate = DateTime.Now.AddDays(-maxDays);
 
-            // get entries from ScTrialBookingRequests where ProcessingTimestamp is older than oldestDate
+            // get entries from ScLotteryBookingRequests where ProcessingTimestamp is older than oldestDate
             var entriesToUpdate = await _dbContext
-                .ScTrialBookingRequests.Where(e => e.ProcessingTimestamp < oldestDate)
+                .ScLotteryBookingRequests.Where(e => e.ProcessingTimestamp < oldestDate)
                 .Where(e => e.Email != anonymizedEmail && e.RequestedByName != anonymizedName)
                 .ToListAsync();
 
@@ -49,7 +49,7 @@ namespace SCJ.Booking.TaskRunner.Services
             }
 
             _logger.Information(
-                "Updating {count} old entries from ScTrialBookingRequests with anonymized details",
+                "Updating {count} old entries from ScLotteryBookingRequests with anonymized details",
                 entriesToUpdate.Count
             );
 
@@ -65,7 +65,7 @@ namespace SCJ.Booking.TaskRunner.Services
             await _dbContext.SaveChangesAsync();
 
             _logger.Information(
-                "Updated {count} entries from ScTrialBookingRequests",
+                "Updated {count} entries from ScLotteryBookingRequests",
                 entriesToUpdate.Count
             );
         }
@@ -81,9 +81,9 @@ namespace SCJ.Booking.TaskRunner.Services
             int maxDays = _configuration.GetValue<int>("AppSettings:PurgeLotteryRequestsAfterDays");
             DateTime oldestDate = DateTime.Now.AddDays(-maxDays);
 
-            // get entries from ScTrialBookingRequests where ProcessingTimestamp is older than oldestDate
+            // get entries from ScLotteryBookingRequests where ProcessingTimestamp is older than oldestDate
             var entriesToDelete = await _dbContext
-                .ScTrialBookingRequests.Where(e => e.ProcessingTimestamp < oldestDate)
+                .ScLotteryBookingRequests.Where(e => e.ProcessingTimestamp < oldestDate)
                 .ToListAsync();
 
             if (entriesToDelete.Count == 0)
@@ -93,7 +93,7 @@ namespace SCJ.Booking.TaskRunner.Services
             }
 
             _logger.Information(
-                "Deleting {count} old entries from ScTrialBookingRequests",
+                "Deleting {count} old entries from ScLotteryBookingRequests",
                 entriesToDelete.Count
             );
 
@@ -107,7 +107,7 @@ namespace SCJ.Booking.TaskRunner.Services
             await _dbContext.SaveChangesAsync();
 
             _logger.Information(
-                "Deleted {count} entries from ScTrialBookingRequests",
+                "Deleted {count} entries from ScLotteryBookingRequests",
                 entriesToDelete.Count
             );
         }

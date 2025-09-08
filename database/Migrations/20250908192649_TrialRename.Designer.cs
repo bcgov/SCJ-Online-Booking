@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SCJ.Booking.Data;
@@ -11,9 +12,11 @@ using SCJ.Booking.Data;
 namespace SCJ.Booking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250908192649_TrialRename")]
+    partial class TrialRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,9 +176,6 @@ namespace SCJ.Booking.Data.Migrations
                     b.Property<DateTime>("FairUseBookingPeriodStartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("HearingTypeId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("InitiationTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -243,9 +243,6 @@ namespace SCJ.Booking.Data.Migrations
                     b.Property<int>("HearingLength")
                         .HasColumnType("integer");
 
-                    b.Property<int>("HearingTypeId")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("IsProcessed")
                         .HasColumnType("boolean");
 
@@ -307,7 +304,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasIndex(new[] { "ProcessingTimestamp", "Email", "RequestedByName" }, "IX_ProcessingTimestamp_Email_RequestedByName_Ascending");
 
-                    b.HasIndex(new[] { "LotteryStartDate", "BookingLocationId", "HearingTypeId", "BookHearingCode" }, "IX_TaskRunner_Lottery");
+                    b.HasIndex(new[] { "LotteryStartDate", "BookingLocationId", "BookHearingCode" }, "IX_TaskRunner_Lottery");
 
                     b.ToTable("ScLotteryBookingRequests");
                 });

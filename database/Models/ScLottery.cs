@@ -10,6 +10,8 @@ namespace SCJ.Booking.Data.Models
         public int Id { get; set; }
         public int BookingLocationId { get; set; }
 
+        public int HearingTypeId { get; set; }
+
         [MaxLength(10)]
         public string BookHearingCode { get; set; } = string.Empty;
 
@@ -22,7 +24,7 @@ namespace SCJ.Booking.Data.Models
         public DateTime InitiationTime { get; set; }
         public DateTime? CompletionTime { get; set; }
 
-        public ICollection<ScTrialBookingRequest> TrialBookingRequests { get; } =
-            new List<ScTrialBookingRequest>();
+        public ICollection<ScLotteryBookingRequest> TrialBookingRequests { get; } =
+            new List<ScLotteryBookingRequest>();
     }
 }

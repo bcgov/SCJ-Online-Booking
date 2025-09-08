@@ -98,6 +98,7 @@ namespace SCJ.Booking.TaskRunner.Services
             {
                 BookHearingCode = toProcess.BookHearingCode,
                 BookingLocationId = toProcess.BookingLocationId,
+                HearingTypeId = toProcess.HearingTypeId,
                 FairUseBookingPeriodStartDate = toProcess.FairUseBookingPeriodStartDate,
                 FairUseBookingPeriodEndDate = toProcess.FairUseBookingPeriodEndDate,
                 InitiationTime = DateTime.Now,
@@ -107,6 +108,7 @@ namespace SCJ.Booking.TaskRunner.Services
             // court class groupings
             var lotteryBatch = await GetLotteryBatch(
                 toProcess.BookingLocationId,
+                toProcess.HearingTypeId,
                 toProcess.BookHearingCode
             );
 
@@ -124,6 +126,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             _logger.Information("Lottery started!");
             _logger.Information($"BookingLocationId={newLottery.BookingLocationId}");
+            _logger.Information($"HearingTypeId={newLottery.HearingTypeId}");
             _logger.Information($"BookHearingCode={newLottery.BookHearingCode}");
             _logger.Information(
                 $"FairUseBookingPeriodEndDate={newLottery.FairUseBookingPeriodEndDate}"
@@ -136,10 +139,12 @@ namespace SCJ.Booking.TaskRunner.Services
         /// <summary>
         ///     Gets the next entry to process in the current running lottery
         /// </summary>
-        private async Task<ScTrialBookingRequest?> GetNextLotteryEntry(ScLottery lotteryInProgress)
+        private async Task<ScLotteryBookingRequest?> GetNextLotteryEntry(
+            ScLottery lotteryInProgress
+        )
         {
             return await _dbContext
-                .ScTrialBookingRequests.Include(x => x.TrialDateSelections)
+                .ScLotteryBookingRequests.Include(x => x.TrialDateSelections)
                 .Where(x => x.Lottery == lotteryInProgress && x.IsProcessed == false)
                 .OrderByDescending(x => x.FairUseSort)
                 .ThenBy(x => x.LotteryPosition)
@@ -152,13 +157,14 @@ namespace SCJ.Booking.TaskRunner.Services
         ///     This is just used to trigger the start of a lottery, prior to the
         ///     ranking of entries.
         /// </summary>
-        private async Task<ScTrialBookingRequest?> CheckRequestsReadyToProcess()
+        private async Task<ScLotteryBookingRequest?> CheckRequestsReadyToProcess()
         {
             return await _dbContext
-                .ScTrialBookingRequests.Where(x =>
+                .ScLotteryBookingRequests.Where(x =>
                     x.Lottery == null && x.LotteryStartDate < DateTime.Now && x.IsProcessed == false
                 )
                 .OrderBy(x => x.BookingLocationId)
+                .ThenBy(x => x.HearingTypeId)
                 .ThenBy(x => x.BookHearingCode)
                 .FirstOrDefaultAsync();
         }
@@ -167,14 +173,16 @@ namespace SCJ.Booking.TaskRunner.Services
         ///    Gets a batch of lottery entries based on trial booking location
         ///    and court class formula grouping
         /// </summary>
-        private async Task<List<ScTrialBookingRequest>> GetLotteryBatch(
+        private async Task<List<ScLotteryBookingRequest>> GetLotteryBatch(
             int bookingLocationId,
+            int hearingTypeId,
             string bookHearingCode
         )
         {
             return await _dbContext
-                .ScTrialBookingRequests.Where(x =>
+                .ScLotteryBookingRequests.Where(x =>
                     x.Lottery == null
+                    && x.HearingTypeId == hearingTypeId
                     && x.BookHearingCode == bookHearingCode
                     && x.BookingLocationId == bookingLocationId
                     && x.LotteryStartDate < DateTime.Now
@@ -188,7 +196,7 @@ namespace SCJ.Booking.TaskRunner.Services
         ///     then records an unmet demand for the first selection if booking is
         ///     unsuccessful
         /// </summary>
-        private async Task ProcessSingleEntry(ScTrialBookingRequest entry)
+        private async Task ProcessSingleEntry(ScLotteryBookingRequest entry)
         {
             bool trialBooked = false;
             var orderedSelections = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray();
@@ -263,7 +271,7 @@ namespace SCJ.Booking.TaskRunner.Services
         /// <summary>
         ///   Records an unmet demand (hearing type 20538) for the user's first lottery selection
         /// </summary>
-        private async Task RecordUnmetDemand(ScTrialBookingRequest entry)
+        private async Task RecordUnmetDemand(ScLotteryBookingRequest entry)
         {
             if (entry.TrialDateSelections.Any())
             {
@@ -322,13 +330,14 @@ namespace SCJ.Booking.TaskRunner.Services
             await _dbContext.SaveChangesAsync();
             _logger.Information("Lottery finished!");
             _logger.Information($"BookingLocationId={lotteryInProgress.BookingLocationId}");
+            _logger.Information($"HearingTypeId={lotteryInProgress.HearingTypeId}");
             _logger.Information($"BookHearingCode={lotteryInProgress.BookHearingCode}");
         }
 
         /// <summary>
         ///     Generates a booking success email and adds it to the mail queue
         /// </summary>
-        private async Task QueueSuccessEmail(ScTrialBookingRequest entry)
+        private async Task QueueSuccessEmail(ScLotteryBookingRequest entry)
         {
             var model = new LotteryEmailViewModel(entry);
             string emailText = await RazorHelper.RenderTemplate("Lottery-Success.cshtml", model);
@@ -347,7 +356,7 @@ namespace SCJ.Booking.TaskRunner.Services
         /// <summary>
         ///     Generates an unsuccessful booking email and adds it to the mail queue
         /// </summary>
-        private async Task QueueFailureEmail(ScTrialBookingRequest entry)
+        private async Task QueueFailureEmail(ScLotteryBookingRequest entry)
         {
             var model = new LotteryEmailViewModel(entry);
             string emailText = await RazorHelper.RenderTemplate("Lottery-Failure.cshtml", model);
