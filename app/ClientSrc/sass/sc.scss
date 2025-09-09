@@ -6,7 +6,8 @@
 @use "sass:color";
 
 // Step 2: "Choose booking type" fields
-input.EstimatedTrialLength {
+input.EstimatedTrialLength,
+select.EstimatedChambersLength {
   width: 4em;
 }
 

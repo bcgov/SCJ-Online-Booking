@@ -68,8 +68,73 @@
                     </div>
                 </div>
 
-                <div id="trial-additional-fields" class="mt-4" style="display: none;">
-                    <div class="form-group mb-5">
+                <div id="fair-additional-fields" class="mt-4" style="display: none;">
+                    <div id="chambers-additional-fields" class="form-group mb-5">
+                        <label for="EstimatedChambersLengthDays" class="form-section-label">
+                            Estimated length of chambers hearing
+                        </label>
+                        <div>
+                            <select asp-for="EstimatedChambersLengthDays"
+                                class="mr-2 form-control d-inline-block EstimatedChambersLength">
+                                <option value=""></option>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i == Model.EstimatedChambersLengthDays)
+                                    {
+                                        <option selected value="@i">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                }
+                            </select>
+                            <span>days</span>
+                            <div class="mt-2">
+                                <span asp-validation-for="EstimatedChambersLengthDays" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <p class="mt-4 mb-4">
+                            Contact the applicable
+                            <a href="https://www.bccourts.ca/supreme_court/scheduling" target="_blank"
+                                rel="noopener">Supreme
+                                Court scheduling office</a>
+                            <i class="fa fa-external-link-alt"></i> by telephone for estimated lengths of 6 days or
+                            more.
+                        </p>
+                        <div id="chambers-length-hours" class="form-group"
+                            style="display: @(Model.EstimatedChambersLengthDays == 1 ? "block" : "none")">
+                            <label for="EstimatedChambersLengthHours" class="form-section-label">
+                                Estimated time required
+                            </label>
+
+                            <div>
+                                <select asp-for="EstimatedChambersLengthHours"
+                                    class="mr-2 form-control d-inline-block EstimatedChambersLength">
+                                    <option value=""></option>
+                                    @for (decimal d = 2.5M; d <= 4.5M; d += 0.5M)
+                                    {
+                                        if (d == Model.EstimatedChambersLengthHours)
+                                        {
+                                            <option selectedvalue="@d">@d</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@d">@d</option>
+                                        }
+
+                                    }
+                                </select>
+                                <span>hours</span>
+                                <div class="mt-2">
+                                    <span asp-validation-for="EstimatedChambersLengthHours" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="trial-additional-fields" class="form-group mb-5">
                         <label for="EstimatedTrialLength" class="form-section-label">
                             Estimated length of trial
                         </label>
@@ -111,8 +176,9 @@
 
                     <div id="different-place-of-trial" class="form-group btn-radio-group mb-5">
                         <h6 class="form-section-label">
-                            Do you have an entered court order changing the place of trial, or is another place of trial
-                            stated on the initiating documents (e.g. Notice of Civil Claim, Notice of Family Claim)?
+                            Do you have an entered court order changing the place of trial, or is another place of
+                            trial stated on the initiating documents (e.g. Notice of Civil Claim, Notice of Family
+                            Claim)?
                         </h6>
 
                         <div class="check-group">

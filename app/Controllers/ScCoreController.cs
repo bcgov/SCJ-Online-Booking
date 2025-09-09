@@ -152,7 +152,42 @@ namespace SCJ.Booking.MVC.Controllers
                         "Estimated trial length must be between 1 and 40 days."
                     );
                 }
+            }
 
+            // Extra fields for "Trial" booking type
+            if (model.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+            {
+                if (
+                    model.EstimatedChambersLengthDays == null
+                    || model.EstimatedChambersLengthDays == 0
+                )
+                {
+                    ModelState.AddModelError(
+                        "EstimatedChambersLengthDays",
+                        "Provide the estimated length of your chambers hearing."
+                    );
+                }
+
+                if (model.EstimatedChambersLengthDays == 1)
+                {
+                    if (
+                        model.EstimatedChambersLengthHours == null
+                        || model.EstimatedChambersLengthHours == 0
+                    )
+                    {
+                        ModelState.AddModelError(
+                            "EstimatedChambersLengthHours",
+                            "Provide the estimated length of your chambers hearing."
+                        );
+                    }
+                }
+            }
+
+            if (
+                model.HearingTypeId == ScHearingType.TRIAL
+                || model.HearingTypeId == ScHearingType.LONG_CHAMBERS
+            )
+            {
                 if (model.IsHomeRegistry == null)
                 {
                     ModelState.AddModelError(

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using SCJ.Booking.Data;
 using SCJ.Booking.Data.Constants;
 using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels.SC;
@@ -141,6 +140,8 @@ namespace SCJ.Booking.MVC.Services.SC
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,
                 EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
+                EstimatedChambersLengthDays = bookingInfo.EstimatedChambersLengthDays,
+                EstimatedChambersLengthHours = bookingInfo.EstimatedChambersLengthHours,
                 IsHomeRegistry = bookingInfo.IsHomeRegistry,
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
                 TrialLocationRegistryId = bookingInfo.TrialLocationRegistryId,
@@ -193,7 +194,8 @@ namespace SCJ.Booking.MVC.Services.SC
             {
                 bookingInfo.IsHomeRegistry = model.IsHomeRegistry;
                 bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled;
-                bookingInfo.EstimatedTrialLength = model.EstimatedTrialLength;
+                bookingInfo.EstimatedChambersLengthDays = model.EstimatedChambersLengthDays;
+                bookingInfo.EstimatedChambersLengthHours = model.EstimatedChambersLengthHours;
 
                 if (model.IsHomeRegistry is true)
                 {

@@ -1,11 +1,11 @@
-$(document).ready(function () {
+$(function () {
   // show additional questions for "Trial" booking type
   if ($("input[name=HearingTypeId]:checked").length) {
     showTrialFields();
   }
 
   //Pre-filling input field based on selection of court class on the Supreme Court side
-  $("#courtClassDropdown").change(function () {
+  $("#courtClassDropdown").on("change", function () {
     var $caseNum = $("#caseNumberInput");
     // don't clear the case number if it already starts with the selected class prefix
     if ($caseNum.val().length === 0 || $caseNum.val().charAt(0) !== $(this).val()) {
@@ -14,7 +14,7 @@ $(document).ready(function () {
   });
 
   // show/hide extra fields for specific booking types
-  $("input[name=HearingTypeId]").change(function () {
+  $("input[name=HearingTypeId]").on("change", function () {
     var $courtClassDropdown = $("#courtClassDropdown");
 
     if ($(this).val() === "9543") {
@@ -35,10 +35,10 @@ $(document).ready(function () {
     showTrialFields();
   });
 
-  $("input[name=IsHomeRegistry]").change(showTrialFields);
-  $("input[name=IsLocationChangeFiled]").change(showTrialFields);
+  $("input[name=IsHomeRegistry]").on("change", showTrialFields);
+  $("input[name=IsLocationChangeFiled]").on("change", showTrialFields);
 
-  $("#dateBtn").click(function () {
+  $("#dateBtn").on("click", function () {
     $("#datepicker").datepicker().focus();
   });
 });
@@ -47,17 +47,26 @@ $(document).ready(function () {
 function showTrialFields() {
   const hearingTypeId = $("input[name=HearingTypeId]:checked").val();
 
-  const fairTypeSelected = hearingTypeId === "9001" || hearingTypeId === "9012";
+  const trialSelected = hearingTypeId === "9001";
+  const chambersSelected = hearingTypeId === "9012";
 
   $("#existing-trial-error").hide();
   $("#btnNext").show();
 
-  if (fairTypeSelected && checkExistingTrialBookings()) {
+  if (trialSelected && checkExistingTrialBookings()) {
     $("#existing-trial-error").show();
     $("#btnNext").hide();
+    $("#fair-additional-fields").hide();
   } else {
-    $("#trial-additional-fields").toggle(fairTypeSelected);
+    $("#trial-additional-fields").toggle(trialSelected);
+    $("#fair-additional-fields").toggle(trialSelected || chambersSelected);
   }
+
+  $("#chambers-additional-fields").toggle(chambersSelected);
+
+  $("select[name=EstimatedChambersLengthDays]").on("change", function () {
+    $("#chambers-length-hours").toggle($(this).val() === "1");
+  });
 
   const notHomeRegistry = $("input[name=IsHomeRegistry]:checked").val() === "false";
   $("#different-place-of-trial").toggle(notHomeRegistry);

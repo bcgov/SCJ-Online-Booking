@@ -23,6 +23,8 @@ namespace SCJ.Booking.MVC.ViewModels.SC
 
         [Display(Name = "Estimated Length of Trial")]
         public int? EstimatedTrialLength { get; set; }
+        public int? EstimatedChambersLengthDays { get; set; }
+        public decimal? EstimatedChambersLengthHours { get; set; } = 0M;
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
         public int TrialLocationRegistryId { get; set; }
