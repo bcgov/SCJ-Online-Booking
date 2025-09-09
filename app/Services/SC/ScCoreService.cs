@@ -85,7 +85,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 ? $"{prefix}{model.CaseNumber}"
                 : $"{prefix}{model.SelectedCourtClass}{model.CaseNumber}";
 
-            newModel.CaseSearchResults = await _client.caseNumberValidAsync(searchableCaseNumber);
+            newModel.CaseSearchResults = await _client.scCaseNumberValidAsync(searchableCaseNumber);
 
             if ((newModel.CaseSearchResults?.Length ?? 0) > 0)
             {
@@ -235,10 +235,11 @@ namespace SCJ.Booking.MVC.Services.SC
                     bookingInfo.BookingLocationRegistryId
                 );
 
-                bookingInfo.AvailableConferenceDates = await _client.AvailableDatesByLocationAsync(
-                    bookingInfo.BookingLocationRegistryId,
-                    bookingInfo.HearingTypeId
-                );
+                bookingInfo.AvailableConferenceDates =
+                    await _client.scConfAvailableDatesByLocationAsync(
+                        bookingInfo.BookingLocationRegistryId,
+                        bookingInfo.HearingTypeId
+                    );
             }
 
             _session.ScBookingInfo = bookingInfo;
@@ -268,7 +269,7 @@ namespace SCJ.Booking.MVC.Services.SC
         /// </remarks>
         private async Task<CourtFile> GetCourtFile(string searchableCaseNumber)
         {
-            var searchResult = await _client.caseNumberValidAsync(searchableCaseNumber);
+            var searchResult = await _client.scCaseNumberValidAsync(searchableCaseNumber);
             if (!searchResult.Any())
             {
                 return null;

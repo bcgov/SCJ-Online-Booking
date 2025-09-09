@@ -109,7 +109,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
 
-            Location[] locations = await client.getLocationsAsync();
+            Location[] locations = await client.scGetLocationsAsync();
 
             await SaveObjectAsync(ScLocationInfoKey, locations);
 
@@ -147,7 +147,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             var client = OnlineBookingClientFactory.GetClient(_configuration);
 
-            var formulas = await client.AvailableTrialBookingFormulasByLocationAsync("", "");
+            var formulas = await client.scAvailableFormulasByHearingTypeAndLocationAsync("", "");
 
             await SaveObjectAsync(ScAvailableBookingFormulas, formulas);
 

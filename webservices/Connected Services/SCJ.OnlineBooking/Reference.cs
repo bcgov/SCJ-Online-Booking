@@ -1687,44 +1687,44 @@ namespace SCJ.OnlineBooking
     {
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/caseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/caseNumberValidResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.CourtFile[]> caseNumberValidAsync(string caseNum);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.CourtFile[]> scCaseNumberValidAsync(string caseNum);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/getLocations", ReplyAction="http://tempuri.org/IOnlineBooking/getLocationsResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> getLocationsAsync();
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> scGetLocationsAsync();
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableDatesByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableDatesByLocationResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID, int hearingTypeID);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableDatesByLocation> scConfAvailableDatesByLocationAsync(int locationID, int hearingTypeID);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/BookingHearing", ReplyAction="http://tempuri.org/IOnlineBooking/BookingHearingResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookingHearingAsync(SCJ.OnlineBooking.BookHearingInfo bookInfo);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scConfBookHearingAsync(SCJ.OnlineBooking.BookHearingInfo bookInfo);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoACaseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/CoACaseNumberValidResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.COACaseList> CoACaseNumberValidAsync(string caseNum);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.COACaseList> coaCaseNumberValidAsync(string caseNum);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/COAAvailableDates", ReplyAction="http://tempuri.org/IOnlineBooking/COAAvailableDatesResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAAvailableDates> COAAvailableDatesAsync();
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAAvailableDates> coaAvailableAppealDatesAsync();
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAQueueHearing", ReplyAction="http://tempuri.org/IOnlineBooking/CoAQueueHearingResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> CoAQueueHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> coaQueueAppealHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAAvailableDatesChambers", ReplyAction="http://tempuri.org/IOnlineBooking/CoAAvailableDatesChambersResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersAvailableDates> CoAAvailableDatesChambersAsync();
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersAvailableDates> coaAvailableCHDatesAsync();
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAChambersQueueHearing", ReplyAction="http://tempuri.org/IOnlineBooking/CoAChambersQueueHearingResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> CoAChambersQueueHearingAsync(SCJ.OnlineBooking.CoAChambersBookingHearingInfo bookingInfo);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> coaQueueCHHearingAsync(SCJ.OnlineBooking.CoAChambersBookingHearingInfo bookingInfo);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsList", ReplyAction="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsListResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersApplications[]> coaCHApplicationListAsync(string type);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocationResponse" +
             "")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync(string locationID, string formula);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(string locationID, string formula);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocationResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> AvailableTrialDatesByLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> scAvailableDatesByHearingTypeAndLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/BookTrialHearing", ReplyAction="http://tempuri.org/IOnlineBooking/BookTrialHearingResponse")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookTrialHearingAsync(SCJ.OnlineBooking.BookTrialHearingInfo bookingInfo);
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scTrialBookHearingAsync(SCJ.OnlineBooking.BookTrialHearingInfo bookingInfo);
 
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypes", ReplyAction="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypesResponse")]
         System.Threading.Tasks.Task<string[]> GetAvailableBookingTypesAsync();
@@ -1780,69 +1780,69 @@ namespace SCJ.OnlineBooking
         {
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CourtFile[]> caseNumberValidAsync(string caseNum)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CourtFile[]> scCaseNumberValidAsync(string caseNum)
         {
-            return base.Channel.caseNumberValidAsync(caseNum);
+            return base.Channel.scCaseNumberValidAsync(caseNum);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> getLocationsAsync()
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> scGetLocationsAsync()
         {
-            return base.Channel.getLocationsAsync();
+            return base.Channel.scGetLocationsAsync();
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableDatesByLocation> AvailableDatesByLocationAsync(int locationID, int hearingTypeID)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableDatesByLocation> scConfAvailableDatesByLocationAsync(int locationID, int hearingTypeID)
         {
-            return base.Channel.AvailableDatesByLocationAsync(locationID, hearingTypeID);
+            return base.Channel.scConfAvailableDatesByLocationAsync(locationID, hearingTypeID);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookingHearingAsync(SCJ.OnlineBooking.BookHearingInfo bookInfo)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scConfBookHearingAsync(SCJ.OnlineBooking.BookHearingInfo bookInfo)
         {
-            return base.Channel.BookingHearingAsync(bookInfo);
+            return base.Channel.scConfBookHearingAsync(bookInfo);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.COACaseList> CoACaseNumberValidAsync(string caseNum)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.COACaseList> coaCaseNumberValidAsync(string caseNum)
         {
-            return base.Channel.CoACaseNumberValidAsync(caseNum);
+            return base.Channel.coaCaseNumberValidAsync(caseNum);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAAvailableDates> COAAvailableDatesAsync()
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAAvailableDates> coaAvailableAppealDatesAsync()
         {
-            return base.Channel.COAAvailableDatesAsync();
+            return base.Channel.coaAvailableAppealDatesAsync();
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> CoAQueueHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> coaQueueAppealHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo)
         {
-            return base.Channel.CoAQueueHearingAsync(bookingInfo);
+            return base.Channel.coaQueueAppealHearingAsync(bookingInfo);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersAvailableDates> CoAAvailableDatesChambersAsync()
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersAvailableDates> coaAvailableCHDatesAsync()
         {
-            return base.Channel.CoAAvailableDatesChambersAsync();
+            return base.Channel.coaAvailableCHDatesAsync();
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> CoAChambersQueueHearingAsync(SCJ.OnlineBooking.CoAChambersBookingHearingInfo bookingInfo)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> coaQueueCHHearingAsync(SCJ.OnlineBooking.CoAChambersBookingHearingInfo bookingInfo)
         {
-            return base.Channel.CoAChambersQueueHearingAsync(bookingInfo);
+            return base.Channel.coaQueueCHHearingAsync(bookingInfo);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersApplications[]> coaCHApplicationListAsync(string type)
         {
-            return base.Channel.CoAChambersApplicationsListAsync(type);
+            return base.Channel.coaCHApplicationListAsync(type);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync(string locationID, string formula)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(string locationID, string formula)
         {
-            return base.Channel.AvailableTrialBookingFormulasByLocationAsync(locationID, formula);
+            return base.Channel.scAvailableFormulasByHearingTypeAndLocationAsync(locationID, formula);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> AvailableTrialDatesByLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> scAvailableDatesByHearingTypeAndLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo)
         {
-            return base.Channel.AvailableTrialDatesByLocationAsync(requestInfo);
+            return base.Channel.scAvailableDatesByHearingTypeAndLocationAsync(requestInfo);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> BookTrialHearingAsync(SCJ.OnlineBooking.BookTrialHearingInfo bookingInfo)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scTrialBookHearingAsync(SCJ.OnlineBooking.BookTrialHearingInfo bookingInfo)
         {
-            return base.Channel.BookTrialHearingAsync(bookingInfo);
+            return base.Channel.scTrialBookHearingAsync(bookingInfo);
         }
 
         public System.Threading.Tasks.Task<string[]> GetAvailableBookingTypesAsync()

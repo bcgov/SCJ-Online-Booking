@@ -31,13 +31,13 @@ namespace SCJ.Booking.UnitTest
             const int trialManagementConference = 9090;
 
             AvailableDatesByLocation vancouverResults = _soapClient
-                .AvailableDatesByLocationAsync(vancouver, trialManagementConference)
+                .scConfAvailableDatesByLocationAsync(vancouver, trialManagementConference)
                 .Result;
 
             Assert.NotNull(vancouverResults);
 
             AvailableDatesByLocation victoriaResults = _soapClient
-                .AvailableDatesByLocationAsync(victoria, trialManagementConference)
+                .scConfAvailableDatesByLocationAsync(victoria, trialManagementConference)
                 .Result;
 
             Assert.NotNull(victoriaResults);
@@ -61,7 +61,7 @@ namespace SCJ.Booking.UnitTest
                 requestedBy = "John Smith 604-555-1212 somebody@email.com"
             };
 
-            BookingHearingResult result = _soapClient.BookingHearingAsync(booking).Result;
+            BookingHearingResult result = _soapClient.scConfBookHearingAsync(booking).Result;
 
             Assert.NotNull(result);
         }
@@ -82,7 +82,7 @@ namespace SCJ.Booking.UnitTest
                 requestedBy = "John Smith 604-555-1212 somebody@email.com"
             };
 
-            BookingHearingResult result = _soapClient.BookingHearingAsync(booking).Result;
+            BookingHearingResult result = _soapClient.scConfBookHearingAsync(booking).Result;
 
             Assert.NotNull(result);
         }
@@ -90,7 +90,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CaseNumberInvalid()
         {
-            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("VAM14761").Result;
+            CourtFile[] searchResults = _soapClient.scCaseNumberValidAsync("VAM14761").Result;
 
             // If no case is found then 0 is returned
             Assert.True(searchResults.Length == 0);
@@ -99,7 +99,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CaseNumberValid()
         {
-            CourtFile[] searchResults = _soapClient.caseNumberValidAsync("KEM111").Result;
+            CourtFile[] searchResults = _soapClient.scCaseNumberValidAsync("KEM111").Result;
 
             Assert.True(searchResults.Length > 0);
         }
@@ -107,7 +107,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void GetLocations()
         {
-            Location[] locations = _soapClient.getLocationsAsync().Result;
+            Location[] locations = _soapClient.scGetLocationsAsync().Result;
 
             Assert.NotEmpty(locations);
         }
@@ -115,7 +115,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoACaseNumberValidAsync_Civil()
         {
-            COACaseList result = _soapClient.CoACaseNumberValidAsync("CA39029").Result;
+            COACaseList result = _soapClient.coaCaseNumberValidAsync("CA39029").Result;
             Assert.NotNull(result);
             Assert.True(result.CaseList[0].CaseId == 37351);
             Assert.True(result.CaseType == "Civil");
@@ -124,7 +124,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoACaseNumberValidAsync_Criminal()
         {
-            COACaseList result = _soapClient.CoACaseNumberValidAsync("CA42024").Result;
+            COACaseList result = _soapClient.coaCaseNumberValidAsync("CA42024").Result;
             Assert.NotNull(result);
             Assert.True(result.CaseList[0].CaseId == 40368);
             Assert.True(result.CaseType == "Criminal");
@@ -133,7 +133,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoACaseNumberValidAsync_Invalid()
         {
-            COACaseList result = _soapClient.CoACaseNumberValidAsync("12345").Result;
+            COACaseList result = _soapClient.coaCaseNumberValidAsync("12345").Result;
             Assert.NotNull(result);
             Assert.True(result.CaseList.Length == 1);
             Assert.True(result.CaseType == "Not Found");
@@ -142,7 +142,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void COAAvailableDatesAsync()
         {
-            CoAAvailableDates result = _soapClient.COAAvailableDatesAsync().Result;
+            CoAAvailableDates result = _soapClient.coaAvailableAppealDatesAsync().Result;
             Assert.NotNull(result);
             Assert.True(result.AvailableDates.Any());
         }
@@ -179,7 +179,7 @@ namespace SCJ.Booking.UnitTest
                 RelatedCases = ""
             };
 
-            _ = _soapClient.CoAQueueHearingAsync(booking).Result;
+            _ = _soapClient.coaQueueAppealHearingAsync(booking).Result;
         }
 
         [Fact]
@@ -189,10 +189,10 @@ namespace SCJ.Booking.UnitTest
             // 255 is the maximum character limit for the definition
             // 255 is the limit for names too, but the longest one right now is 50. Average is about 25-30
 
-            var criminal = _soapClient.CoAChambersApplicationsListAsync("Criminal").Result;
+            var criminal = _soapClient.coaCHApplicationListAsync("Criminal").Result;
             Assert.NotNull(criminal);
 
-            var civil = _soapClient.CoAChambersApplicationsListAsync("Civil").Result;
+            var civil = _soapClient.coaCHApplicationListAsync("Civil").Result;
             Assert.NotNull(civil);
         }
 
@@ -215,7 +215,7 @@ namespace SCJ.Booking.UnitTest
                 RelatedCases = ""
             };
 
-            var result = _soapClient.CoAChambersQueueHearingAsync(booking).Result;
+            var result = _soapClient.coaQueueCHHearingAsync(booking).Result;
 
             Assert.NotEmpty(result.bookingResult);
         }
@@ -223,7 +223,7 @@ namespace SCJ.Booking.UnitTest
         [Fact]
         public void CoAAvailableDatesChambersAsync()
         {
-            var result = _soapClient.CoAAvailableDatesChambersAsync().Result;
+            var result = _soapClient.coaAvailableCHDatesAsync().Result;
             Assert.True(result.AvailableDates.Any());
         }
 
@@ -250,14 +250,16 @@ namespace SCJ.Booking.UnitTest
                     HearingType = 9001, // Unmet demand is 20538
                     LocationID = 41
                 };
-            var result = _soapClient.BookTrialHearingAsync(bookingInfo).Result;
+            var result = _soapClient.scTrialBookHearingAsync(bookingInfo).Result;
             Assert.StartsWith("success", result.bookingResult, StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
         public void AvailableTrialBookingFormulasByLocationAsync()
         {
-            var result = _soapClient.AvailableTrialBookingFormulasByLocationAsync("", "").Result;
+            var result = _soapClient
+                .scAvailableFormulasByHearingTypeAndLocationAsync("", "")
+                .Result;
 
             Assert.True(result.Length > 0);
         }
@@ -276,7 +278,7 @@ namespace SCJ.Booking.UnitTest
                     FormulaType = "Regular",
                     LocationID = 1
                 };
-            var result = _soapClient.AvailableTrialDatesByLocationAsync(regular).Result;
+            var result = _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(regular).Result;
             Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
         }
 
@@ -294,7 +296,7 @@ namespace SCJ.Booking.UnitTest
                     FormulaType = "Fair-Use",
                     LocationID = 1
                 };
-            var result = _soapClient.AvailableTrialDatesByLocationAsync(fairUse).Result;
+            var result = _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(fairUse).Result;
             Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
         }
     }

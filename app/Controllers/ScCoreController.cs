@@ -172,7 +172,7 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     if (
                         model.EstimatedChambersLengthHours == null
-                        || model.EstimatedChambersLengthHours == 0
+                        || model.EstimatedChambersLengthHours == 0M
                     )
                     {
                         ModelState.AddModelError(

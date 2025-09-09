@@ -223,7 +223,9 @@ namespace SCJ.Booking.TaskRunner.Services
                 _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
 
                 // try to book the selected date in SCSS
-                BookingHearingResult result = await _client.BookTrialHearingAsync(scssTrialRequest);
+                BookingHearingResult result = await _client.scTrialBookHearingAsync(
+                    scssTrialRequest
+                );
 
                 _logger.Debug(JsonSerializer.Serialize(result));
 
@@ -296,7 +298,7 @@ namespace SCJ.Booking.TaskRunner.Services
                 _logger.Debug("Record unmet demand");
                 _logger.Debug(JsonSerializer.Serialize(unmetDemandRequest));
 
-                BookingHearingResult result = await _client.BookTrialHearingAsync(
+                BookingHearingResult result = await _client.scTrialBookHearingAsync(
                     unmetDemandRequest
                 );
 

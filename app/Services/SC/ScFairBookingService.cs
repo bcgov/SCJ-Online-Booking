@@ -244,7 +244,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 _logger.Information("BOOKING SUPREME COURT => BookTrialHearingAsync()");
                 _logger.Information(JsonSerializer.Serialize(requestPayload));
 
-                BookingHearingResult result = await _client.BookTrialHearingAsync(requestPayload);
+                BookingHearingResult result = await _client.scTrialBookHearingAsync(requestPayload);
 
                 //get the raw result
                 bookingInfo.ApiBookingResultMessage = result.bookingResult;
@@ -371,7 +371,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 };
 
             AvailableTrialDatesResult availableDates =
-                await _client.AvailableTrialDatesByLocationAsync(trialDatesRequestInfo);
+                await _client.scAvailableDatesByHearingTypeAndLocationAsync(trialDatesRequestInfo);
 
             if (availableDates.AvailableTrialDates.AvailablesDatesInfo == null)
             {

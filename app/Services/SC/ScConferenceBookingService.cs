@@ -81,7 +81,7 @@ namespace SCJ.Booking.MVC.Services.SC
             var bookingInfo = _session.ScBookingInfo;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
-            AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+            AvailableDatesByLocation schedule = await _client.scConfAvailableDatesByLocationAsync(
                 bookingInfo.BookingLocationRegistryId,
                 bookingInfo.HearingTypeId
             );
@@ -128,7 +128,7 @@ namespace SCJ.Booking.MVC.Services.SC
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
-            AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+            AvailableDatesByLocation schedule = await _client.scConfAvailableDatesByLocationAsync(
                 bookingInfo.BookingLocationRegistryId,
                 bookingInfo.HearingTypeId
             );
@@ -155,7 +155,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 _logger.Information(JsonSerializer.Serialize(requestPayload));
 
                 //submit booking
-                BookingHearingResult result = await _client.BookingHearingAsync(requestPayload);
+                BookingHearingResult result = await _client.scConfBookHearingAsync(requestPayload);
 
                 //get the raw result
                 bookingInfo.ApiBookingResultMessage = result.bookingResult;

@@ -12,7 +12,7 @@ namespace SCJ.OnlineBooking
     /// </summary>
     public class FakeOnlineBookingClient : IOnlineBooking
     {
-        public async Task<CourtFile[]> caseNumberValidAsync(string caseNum)
+        public async Task<CourtFile[]> scCaseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
 
@@ -70,14 +70,14 @@ namespace SCJ.OnlineBooking
             return result.ToList().OrderBy(x => x.styleOfCause).ToArray();
         }
 
-        public async Task<Location[]> getLocationsAsync()
+        public async Task<Location[]> scGetLocationsAsync()
         {
             await Task.Delay(100);
 
             return ScLocationFixture.All;
         }
 
-        public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(
+        public async Task<AvailableDatesByLocation> scConfAvailableDatesByLocationAsync(
             int locationID,
             int hearingTypeID
         )
@@ -90,13 +90,13 @@ namespace SCJ.OnlineBooking
             return result;
         }
 
-        public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
+        public async Task<BookingHearingResult> scConfBookHearingAsync(BookHearingInfo bookInfo)
         {
             await Task.Delay(100);
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<COACaseList> CoACaseNumberValidAsync(string caseNum)
+        public async Task<COACaseList> coaCaseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
 
@@ -131,7 +131,7 @@ namespace SCJ.OnlineBooking
             return CoAClassInfoFixture.NotFound;
         }
 
-        public async Task<CoAAvailableDates> COAAvailableDatesAsync()
+        public async Task<CoAAvailableDates> coaAvailableAppealDatesAsync()
         {
             await Task.Delay(100);
 
@@ -142,7 +142,7 @@ namespace SCJ.OnlineBooking
             return result;
         }
 
-        public async Task<BookingHearingResult> CoAQueueHearingAsync(
+        public async Task<BookingHearingResult> coaQueueAppealHearingAsync(
             CoABookingHearingInfo bookingInfo
         )
         {
@@ -151,7 +151,7 @@ namespace SCJ.OnlineBooking
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<CoAChambersAvailableDates> CoAAvailableDatesChambersAsync()
+        public async Task<CoAChambersAvailableDates> coaAvailableCHDatesAsync()
         {
             await Task.Delay(100);
 
@@ -162,7 +162,7 @@ namespace SCJ.OnlineBooking
             return result;
         }
 
-        public async Task<BookingHearingResult> CoAChambersQueueHearingAsync(
+        public async Task<BookingHearingResult> coaQueueCHHearingAsync(
             CoAChambersBookingHearingInfo bookingInfo
         )
         {
@@ -171,7 +171,7 @@ namespace SCJ.OnlineBooking
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type)
+        public async Task<CoAChambersApplications[]> coaCHApplicationListAsync(string type)
         {
             await Task.Delay(100);
 
@@ -188,7 +188,7 @@ namespace SCJ.OnlineBooking
             return null;
         }
 
-        public async Task<FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync(
+        public async Task<FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(
             string locationID,
             string formula
         )
@@ -220,7 +220,7 @@ namespace SCJ.OnlineBooking
                 .ToArray();
         }
 
-        public async Task<AvailableTrialDatesResult> AvailableTrialDatesByLocationAsync(
+        public async Task<AvailableTrialDatesResult> scAvailableDatesByHearingTypeAndLocationAsync(
             AvailableTrialDatesRequestInfo requestInfo
         )
         {
@@ -229,7 +229,7 @@ namespace SCJ.OnlineBooking
             return ScAvailableTrialDatesFixture.Dates;
         }
 
-        public async Task<BookingHearingResult> BookTrialHearingAsync(
+        public async Task<BookingHearingResult> scTrialBookHearingAsync(
             BookTrialHearingInfo bookingInfo
         )
         {

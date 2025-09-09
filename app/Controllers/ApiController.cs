@@ -46,7 +46,7 @@ namespace SCJ.Booking.MVC.Controllers
         )
         {
             // call the remote API
-            AvailableDatesByLocation soapResult = await _client.AvailableDatesByLocationAsync(
+            AvailableDatesByLocation soapResult = await _client.scConfAvailableDatesByLocationAsync(
                 locationId,
                 hearingType
             );
