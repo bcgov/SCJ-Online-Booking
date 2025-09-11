@@ -37,6 +37,7 @@ input.EstimatedTrialLength {
 .swiper {
   overflow: hidden;
   width: calc(100% - 60px);
+  margin-left: 30px;
 
   @include breakpoint(lg) {
     width: 100% !important;
