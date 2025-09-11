@@ -250,9 +250,6 @@ hr {
 }
 
 input#datepicker.btn.btn-quaternary.btn-block {
-  @extend .btn;
-  @extend .btn-quaternary;
-  @extend .btn-block;
   text-align: left;
   position: relative;
   // Remove default input background for readonly
