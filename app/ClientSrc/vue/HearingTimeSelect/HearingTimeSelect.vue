@@ -1,6 +1,6 @@
 <template>
   <div class="row no-gutters">
-    <div class="col">
+    <div class="col swiper-container">
       <swiper
         ref="mySwiper"
         :modules="modules"
@@ -57,11 +57,11 @@
             </div>
           </div>
         </swiper-slide>
-
-        <!-- Navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
       </swiper>
+
+      <!-- Navigation buttons -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
 
       <input type="hidden" id="selectedDate" />
       <button type="button" class="btn btn-primary" id="slideBtn" hidden @click="toSlide()">
@@ -75,9 +75,7 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation } from "swiper/modules";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
+import "swiper/swiper-bundle.css";
 
 import axios from "axios";
 
@@ -156,7 +154,7 @@ export default {
   async created() {
     try {
       const response = await axios.get(
-        `/scjob/booking/api/sc-available-dates-by-location/${this.locationId}/${this.hearingType}`,
+        `/scjob/booking/api/sc-available-dates-by-location/${this.locationId}/${this.hearingType}`
       );
       this.availabletimes = response.data;
     } catch (error) {
@@ -165,3 +163,84 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@use "../../sass/variables" as *;
+@use "sass:color";
+
+.swiper-container {
+  width: calc(100% - 60px);
+
+  .swiper-slide-active {
+    .custom-slide-header {
+      color: $blue-calendar;
+    }
+  }
+}
+
+.swiper {
+  overflow: hidden;
+  width: calc(100% - 60px);
+  margin-left: 30px;
+
+  .swiper-slide-active {
+    .custom-slide-header {
+      color: $blue-calendar;
+    }
+  }
+}
+
+.swiper-button-prev {
+  left: 0;
+  color: $blue-medium;
+}
+
+.swiper-button-next {
+  right: 0;
+  color: $blue-medium;
+}
+
+.custom-slide-header {
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.custom-slide-times {
+  border-radius: 0.3rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  height: 342px;
+  overflow: auto;
+  padding: 10px 8px;
+
+  button {
+    white-space: nowrap;
+    font-size: 1.37rem;
+  }
+}
+
+a.custom-slide-time {
+  display: block;
+  border-radius: 0.3rem;
+  padding: 10px 5px;
+  margin: 5px 5px 10px 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: $blue;
+  background-color: $blue-active-lighter;
+  border: 1px solid color.adjust(#eff2f5, $lightness: -10%);
+  font-weight: 700;
+
+  &.selected,
+  &:focus {
+    background-color: $blue-active;
+    color: $white;
+  }
+
+  &:hover {
+    background-color: $blue-active;
+    color: $white;
+  }
+}
+</style>
