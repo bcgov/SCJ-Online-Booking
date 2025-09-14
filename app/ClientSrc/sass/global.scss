@@ -367,6 +367,11 @@ div.invalid-field-message {
 .availableTimesContainer {
   height: 400px;
   margin-top: 30px;
+
+  @include breakpoint(lg) {
+    margin-left: -30px;
+    margin-right: -30px;
+  }
 }
 
 .no-search-results {

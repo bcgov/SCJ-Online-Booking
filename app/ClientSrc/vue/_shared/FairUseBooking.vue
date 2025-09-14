@@ -384,8 +384,8 @@ a > i {
         justify-content: center;
         align-items: center;
         background-color: #fff;
-        color: #4bb3f4;
-        border: 1px solid #4bb3f4;
+        color: #0a5288;
+        border: 1px solid #0a5288;
         border-radius: 100%;
         height: $icon-size;
         width: $icon-size;

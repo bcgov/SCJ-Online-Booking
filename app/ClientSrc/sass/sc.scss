@@ -3,7 +3,6 @@
 */
 
 @use "variables" as *;
-@use "sass:color";
 
 // Step 2: "Choose booking type" fields
 input.EstimatedTrialLength,
@@ -17,98 +16,6 @@ select.EstimatedChambersLength {
     select {
       max-width: 350px;
     }
-  }
-}
-
-/*Available Times slider*/
-.swiper-container {
-  width: calc(100% - 60px);
-
-  @include breakpoint(lg) {
-    width: 100% !important;
-  }
-
-  .swiper-slide-active {
-    .custom-slide-header {
-      color: $blue-calendar;
-    }
-  }
-}
-
-.swiper {
-  overflow: hidden;
-  width: calc(100% - 60px);
-
-  @include breakpoint(lg) {
-    width: 100% !important;
-  }
-
-  .swiper-slide-active {
-    .custom-slide-header {
-      color: $blue-calendar;
-    }
-  }
-}
-
-.swiper-button-prev {
-  left: 0;
-  color: $blue-medium;
-
-  @include breakpoint(lg) {
-    left: -30px;
-  }
-}
-
-.swiper-button-next {
-  right: 0;
-  color: $blue-medium;
-
-  @include breakpoint(lg) {
-    right: -30px;
-  }
-}
-
-.custom-slide-header {
-  margin-bottom: 10px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.custom-slide-times {
-  border-radius: 0.3rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  height: 342px;
-  overflow: auto;
-  padding: 10px 8px;
-
-  button {
-    white-space: nowrap;
-    font-size: 1.37rem;
-  }
-}
-
-a.custom-slide-time {
-  display: block;
-  border-radius: 0.3rem;
-  padding: 10px 5px;
-  margin: 5px 5px 10px 5px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  color: $blue;
-  background-color: $blue-active-lighter;
-  border: 1px solid color.adjust(#eff2f5, $lightness: -10%);
-  font-weight: 700;
-
-  &.selected,
-  &:focus {
-    background-color: $blue-active;
-    color: $white;
-  }
-
-  &:hover {
-    background-color: $blue-active;
-    color: $white;
   }
 }
 
