@@ -205,7 +205,7 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     ModelState.AddModelError(
                         "IsHomeRegistry",
-                        "Indicate if the chambers is taking place in the home registry."
+                        "Indicate if the chambers hearing is taking place in the home registry."
                     );
                 }
 
@@ -223,7 +223,7 @@ namespace SCJ.Booking.MVC.Controllers
                     {
                         ModelState.AddModelError(
                             "TrialLocationRegistryId",
-                            "Please choose a chambers location."
+                            "Please choose a location for the chambers hearing."
                         );
                     }
                 }
