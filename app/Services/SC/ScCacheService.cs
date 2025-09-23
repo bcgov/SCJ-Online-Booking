@@ -79,20 +79,20 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///     Gets the list of Supreme Court locations as a dictionary
         /// </summary>
-        public async Task<Dictionary<int, string>> GetLocationDictionaryAsync()
+        public Dictionary<int, string> GetLocationDictionary()
         {
-            if (await ExistsAsync(ScRegistryDropdownKey))
+            if (Exists(ScRegistryDropdownKey))
             {
-                return await GetObjectAsync<Dictionary<int, string>>(ScRegistryDropdownKey);
+                return GetObject<Dictionary<int, string>>(ScRegistryDropdownKey);
             }
 
-            Dictionary<int, string> locationList = (await GetLocationsAsync())
-                .Select(x => new { x.locationID, x.locationName })
+            Dictionary<int, string> locationList = GetLocationsAsync()
+                .Result.Select(x => new { x.locationID, x.locationName })
                 .Distinct()
                 .OrderBy(x => x.locationName)
                 .ToDictionary(x => x.locationID, x => x.locationName);
 
-            await SaveObjectAsync(ScRegistryDropdownKey, locationList);
+            SaveObject(ScRegistryDropdownKey, locationList);
 
             return locationList;
         }
@@ -186,6 +186,23 @@ namespace SCJ.Booking.MVC.Services.SC
                 && f.LocationID == locationId
                 && all.Contains(f.BookingHearingCode)
             );
+        }
+
+        /// <summary>
+        ///     Gets the list of chambers hearing sub types
+        /// </summary>
+        public Dictionary<int, string> GetChambersHearingSubTypes()
+        {
+            // TODO: this needs to use the API method when it's available
+            return new Dictionary<int, string>
+            {
+                { 9012, "Chambers (default or other)" },
+                { 9020, "Chambers Judicial Review" },
+                { 9022, "Chambers Petition" },
+                { 9013, "Chambers Summary Trial" },
+                { 9014, "Chambers Appeal from Associate Judge or Registrar" },
+                { 9010, "Appeal from Provincial Court" }
+            };
         }
     }
 }

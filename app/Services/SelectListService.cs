@@ -24,8 +24,8 @@ namespace SCJ.Booking.MVC.Services
             get
             {
                 return _cacheService
-                    .GetLocationDictionaryAsync()
-                    .Result.Select(x => new SelectListItem(x.Value, x.Key.ToString()));
+                    .GetLocationDictionary()
+                    .Select(x => new SelectListItem(x.Value, x.Key.ToString()));
             }
         }
 
@@ -63,6 +63,39 @@ namespace SCJ.Booking.MVC.Services
                     }
                 );
                 return new SelectList(items, "Value", "Text");
+            }
+        }
+
+        /// <summary>
+        ///     Gets the list of estimated days for chambers bookings
+        /// </summary>
+        public static IEnumerable<SelectListItem> ChambersDays
+        {
+            get
+            {
+                var items = new List<SelectListItem>();
+                for (int i = 1; i <= 5; i++)
+                {
+                    items.Add(new SelectListItem(i.ToString(), i.ToString()));
+                }
+                return new SelectList(items, "Value", "Text");
+            }
+        }
+
+        /// <summary>
+        ///     Gets the list of chambers hearing sub types
+        /// </summary>
+        public IEnumerable<SelectListItem> ChambersHearingSubTypes
+        {
+            get
+            {
+                Dictionary<int, string> items = _cacheService.GetChambersHearingSubTypes();
+                var selectListItems = new List<SelectListItem>();
+                foreach (KeyValuePair<int, string> pair in items)
+                {
+                    selectListItems.Add(new SelectListItem(pair.Value, pair.Key.ToString()));
+                }
+                return new SelectList(selectListItems, "Value", "Text");
             }
         }
     }

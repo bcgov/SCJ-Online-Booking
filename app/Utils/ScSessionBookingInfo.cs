@@ -27,7 +27,7 @@ namespace SCJ.Booking.MVC.Utils
         public string HearingTypeName { get; set; }
         public int? EstimatedTrialLength { get; set; }
         public int? EstimatedChambersLengthDays { get; set; }
-        public decimal? EstimatedChambersLengthHours { get; set; } = 0M;
+        public int? ChambersHearingSubType { get; set; } = 9012;
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
 
