@@ -62,8 +62,8 @@ function showTrialFields() {
     $("#fair-additional-fields").toggle(trialSelected || chambersSelected);
   }
 
-  $("#txtChambers").toggle(chambersSelected);
-  $("#txtTrial").toggle(!chambersSelected);
+  $(".txtChambers").toggle(chambersSelected);
+  $(".txtTrial").toggle(!chambersSelected);
 
   $("#chambers-additional-fields").toggle(chambersSelected);
 

@@ -169,10 +169,7 @@ namespace SCJ.Booking.MVC.Controllers
                 }
             }
 
-            if (
-                model.HearingTypeId == ScHearingType.TRIAL
-                || model.HearingTypeId == ScHearingType.LONG_CHAMBERS
-            )
+            if (model.HearingTypeId == ScHearingType.TRIAL)
             {
                 if (model.IsHomeRegistry == null)
                 {
@@ -197,6 +194,36 @@ namespace SCJ.Booking.MVC.Controllers
                         ModelState.AddModelError(
                             "TrialLocationRegistryId",
                             "Please choose a trial location."
+                        );
+                    }
+                }
+            }
+
+            if (model.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+            {
+                if (model.IsHomeRegistry == null)
+                {
+                    ModelState.AddModelError(
+                        "IsHomeRegistry",
+                        "Indicate if the chambers hearing is taking place in the home registry."
+                    );
+                }
+
+                if (model.IsHomeRegistry == false)
+                {
+                    if (model.IsLocationChangeFiled == null)
+                    {
+                        ModelState.AddModelError(
+                            "IsLocationChangeFiled",
+                            "Please choose an option."
+                        );
+                    }
+
+                    if (model.TrialLocationRegistryId == -1)
+                    {
+                        ModelState.AddModelError(
+                            "TrialLocationRegistryId",
+                            "Please choose a location for the chambers hearing."
                         );
                     }
                 }

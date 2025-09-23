@@ -4,7 +4,16 @@
 @{
     ViewData["Title"] = "Choose Your Booking Type";
 
-    var bookingInfo = Model.SessionInfo;
+    ScSessionBookingInfo bookingInfo = Model.SessionInfo;
+
+    string trialDisplay = "inline-block";
+    string chambersDisplay = "none";
+
+    if (Model.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+    {
+        trialDisplay = "none";
+        chambersDisplay = "inline-block";
+    }
 }
 
 <div class="body-content--inner">
@@ -84,8 +93,8 @@
                             </div>
                         </div>
 
-                        <label for="EstimatedChambersLengthDays" class="form-section-label">
-                            Estimated length of chambers hearing
+                        <label for="EstimatedChambersLengthDays" class="form-section-label mt-5">
+                            Requested days of chambers hearing
                         </label>
                         <div>
                             <select asp-for="EstimatedChambersLengthDays"
@@ -93,7 +102,7 @@
                                 asp-items="SelectListService.ChambersDays">
                                 <option value=""></option>
                             </select>
-                            <span>days</span>
+                            <span>day(s)</span>
                             <div class="mt-2">
                                 <span asp-validation-for="EstimatedChambersLengthDays" class="text-danger"></span>
                             </div>
@@ -110,7 +119,7 @@
 
                     </div>
 
-                    <div id="trial-additional-fields" class="form-group mb-5">
+                    <div id="trial-additional-fields" class="form-group mb-5 mt-4">
                         <label for="EstimatedTrialLength" class="form-section-label">
                             Estimated length of trial
                         </label>
@@ -129,12 +138,10 @@
                     <div class="form-group btn-radio-group mb-5">
                         <h6 class="form-section-label">
                             Is the
-                            <span id="txtTrial"
-                                style="display: @(Model.HearingTypeId != 9012 ? "inline-block" : "none");">
+                            <span class="txtTrial" style="display: @trialDisplay;">
                                 trial
                             </span>
-                            <span id="txtChambers"
-                                style="display: @(Model.HearingTypeId == 9012 ? "inline-block" : "none");">
+                            <span class="txtChambers" style="display: @chambersDisplay;">
                                 chambers hearing
                             </span>
                             taking place in the home registry?
@@ -160,10 +167,15 @@
                     </div>
 
                     <div id="different-place-of-trial" class="form-group btn-radio-group mb-5">
-                        <h6 class="form-section-label">
+                        <h6 class="form-section-label txtTrial" style="display: @trialDisplay;">
                             Do you have an entered court order changing the place of trial, or is another place of
                             trial stated on the initiating documents (e.g. Notice of Civil Claim, Notice of Family
                             Claim)?
+                        </h6>
+                        <h6 class="form-section-label txtChambers" style="display: @chambersDisplay;">
+                            Applications can be set outside the judicial district of the home location of the file
+                            if there is consent from all sides. Petitions require an entered order. Do you have
+                            consent or an entered order to have this heard outside of the judicial district?
                         </h6>
 
                         <div class="check-group">
@@ -187,16 +199,26 @@
 
                     <div id="trial-location-warning" class="alert alert-danger" role="alert">
                         <i class="fas fa-ban"></i>
-                        <span>
+                        <span class="txtTrial" style="display: @trialDisplay;">
                             You must have an entered court order changing the place of trial <b>or</b> have a different
                             place of trial stated on the initiating document (eg. Notice of Civil Claim, Notice of
                             Family Claim).
+                        </span>
+                        <span class="txtChambers" style="display: @chambersDisplay;">
+                            Applications require consent from all sides. Petitions require an entered order.
                         </span>
                     </div>
 
                     <div id="trial-location" class="form-group mb-5">
                         <label for="TrialLocation" class="form-section-label">
-                            Where will the trial be held?
+                            Where will the
+                            <span class="txtTrial" style="display: @trialDisplay;">
+                                trial
+                            </span>
+                            <span class="txtChambers" style="display: @chambersDisplay;">
+                                chambers
+                            </span>
+                            be held?
                         </label>
 
                         <select asp-for="TrialLocationRegistryId" asp-items="SelectListService.SupremeLocations"
