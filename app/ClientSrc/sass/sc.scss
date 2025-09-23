@@ -15,6 +15,10 @@ select.EstimatedChambersLength {
   .form-group {
     select {
       max-width: 350px;
+
+      &.ChambersHearingSubType {
+        max-width: 425px;
+      }
     }
   }
 }

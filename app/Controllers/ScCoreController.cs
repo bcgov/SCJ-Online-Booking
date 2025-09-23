@@ -167,20 +167,6 @@ namespace SCJ.Booking.MVC.Controllers
                         "Provide the estimated length of your chambers hearing."
                     );
                 }
-
-                if (model.EstimatedChambersLengthDays == 1)
-                {
-                    if (
-                        model.EstimatedChambersLengthHours == null
-                        || model.EstimatedChambersLengthHours == 0M
-                    )
-                    {
-                        ModelState.AddModelError(
-                            "EstimatedChambersLengthHours",
-                            "Provide the estimated length of your chambers hearing."
-                        );
-                    }
-                }
             }
 
             if (

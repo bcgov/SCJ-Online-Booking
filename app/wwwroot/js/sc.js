@@ -62,11 +62,10 @@ function showTrialFields() {
     $("#fair-additional-fields").toggle(trialSelected || chambersSelected);
   }
 
-  $("#chambers-additional-fields").toggle(chambersSelected);
+  $("#txtChambers").toggle(chambersSelected);
+  $("#txtTrial").toggle(!chambersSelected);
 
-  $("select[name=EstimatedChambersLengthDays]").on("change", function () {
-    $("#chambers-length-hours").toggle($(this).val() === "1");
-  });
+  $("#chambers-additional-fields").toggle(chambersSelected);
 
   const notHomeRegistry = $("input[name=IsHomeRegistry]:checked").val() === "false";
   $("#different-place-of-trial").toggle(notHomeRegistry);
