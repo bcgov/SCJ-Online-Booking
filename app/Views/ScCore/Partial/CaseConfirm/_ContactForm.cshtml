@@ -5,12 +5,12 @@
 @if (@Model.SessionInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
 {
     <p>Please provide the following contact information. Your email address will be used to let you know whether a trial
-    date is set for your case, and your phone number may be used later for booking and coordination purposes.</p>
+        date is set for your case, and your phone number may be used later for booking and coordination purposes.</p>
 }
 else
 {
     <p>We will contact you regarding this booking. Please provide the following
-    contact information.</p>
+        contact information.</p>
 }
 
 <div class="row no-gutters justify-content-between form-group" style="margin-top: 16px;">
@@ -44,6 +44,11 @@ else
                 @if (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
                     <text>Request Trial </text>
+                    @(Model.SessionInfo.TrialFormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+                }
+                else if (Model.SessionInfo.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+                {
+                    <text>Request Chambers </text>
                     @(Model.SessionInfo.TrialFormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
                 }
                 else

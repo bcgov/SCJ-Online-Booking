@@ -105,7 +105,11 @@ export default {
         if (value == "Fair-Use" && !this.fairUseUnavailable && !this.fairUseDisabled) {
           nextButton.innerText = "Review Your Request";
         } else {
-          nextButton.innerText = "Book Trial Date";
+          if (this.hearingTypeName === "chambers") {
+            nextButton.innerText = "Book Chambers Date";
+          } else {
+            nextButton.innerText = "Book Trial Date";
+          }
         }
       }
     },

@@ -3,7 +3,7 @@
     :initial-tab="initialTab"
     :fair-use-unavailable="fairUseUnavailable"
     :fair-use-disabled="fairUseDisabled"
-    hearing-type-name="chambers"
+    hearing-type-name="chambers hearing"
   >
     >
     <template v-slot:regularBooking>
@@ -11,6 +11,7 @@
         :dates="availableRegularDates"
         :trial-length="trialLength"
         :initial-value="selectedRegularTrialDate"
+        hearing-type-name="chambers hearing"
       >
         <template v-slot:noDatesError>
           <div class="alert alert-danger" role="alert">
