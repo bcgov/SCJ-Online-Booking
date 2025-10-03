@@ -189,10 +189,10 @@ namespace SCJ.Booking.MVC.Controllers
                         );
                     }
 
-                    if (model.TrialLocationRegistryId == -1)
+                    if (model.AlternateLocationRegistryId == -1)
                     {
                         ModelState.AddModelError(
-                            "TrialLocationRegistryId",
+                            "AlternateLocationRegistryId",
                             "Please choose a trial location."
                         );
                     }
@@ -219,10 +219,10 @@ namespace SCJ.Booking.MVC.Controllers
                         );
                     }
 
-                    if (model.TrialLocationRegistryId == -1)
+                    if (model.AlternateLocationRegistryId == -1)
                     {
                         ModelState.AddModelError(
-                            "TrialLocationRegistryId",
+                            "AlternateLocationRegistryId",
                             "Please choose a location for the chambers hearing."
                         );
                     }

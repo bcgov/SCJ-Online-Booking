@@ -15,16 +15,16 @@ namespace SCJ.Booking.Data.Models
         [MaxLength(2)]
         public string CaseRegistryCode { get; set; } = "";
 
-        public string CaseNumber { get; set; }
+        public string CaseNumber { get; set; } = "";
         public decimal CeisPhysicalFileId { get; set; }
 
         [MaxLength(255)]
         public string StyleOfCause { get; set; } = "";
 
         public int HearingTypeId { get; set; }
-        public int TrialLocationId { get; set; }
+        public int LocationId { get; set; }
         public int BookingLocationId { get; set; }
-        public string? TrialLocationName { get; set; }
+        public string? LocationName { get; set; }
         public DateTime FairUseBookingPeriodEndDate { get; set; }
         public DateTime FairUseBookingPeriodStartDate { get; set; }
         public DateTime LotteryStartDate { get; set; }
@@ -48,11 +48,11 @@ namespace SCJ.Booking.Data.Models
         public string Email { get; set; } = "";
 
         public DateTime CreationTimestamp { get; set; }
-        public string TrialBookingId { get; set; } = "";
+        public string LotteryEntryId { get; set; } = "";
         public int LotteryPosition { get; set; }
         public bool IsProcessed { get; set; } = false;
         public int AllocatedSelectionRank { get; set; }
-        public ICollection<ScLotteryDateSelection> TrialDateSelections { get; } =
+        public ICollection<ScLotteryDateSelection> DateSelections { get; } =
             new List<ScLotteryDateSelection>();
 
         [MaxLength(255)]

@@ -13,7 +13,7 @@ namespace SCJ.OnlineBooking
 
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CourtFile", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CourtFile : object
     {
@@ -140,7 +140,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Location", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class Location : object
     {
@@ -222,7 +222,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AvailableDatesByLocation", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class AvailableDatesByLocation : object
     {
@@ -259,7 +259,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BookingDetail", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class BookingDetail : object
     {
@@ -296,7 +296,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ContainerInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class ContainerInfo : object
     {
@@ -333,7 +333,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BookHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class BookHearingInfo : object
     {
@@ -445,7 +445,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BookingHearingResult", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class BookingHearingResult : object
     {
@@ -467,7 +467,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="COACaseList", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class COACaseList : object
     {
@@ -504,7 +504,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAClassInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CoAClassInfo : object
     {
@@ -556,7 +556,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAAvailableDates", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CoAAvailableDates : object
     {
@@ -593,7 +593,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ShedulesInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class ShedulesInfo : object
     {
@@ -630,7 +630,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoABookingHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class CoABookingHearingInfo : object
     {
@@ -772,7 +772,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAChambersAvailableDates", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CoAChambersAvailableDates : object
     {
@@ -809,7 +809,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAChambersShedulesInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CoAChambersShedulesInfo : object
     {
@@ -846,7 +846,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAChambersBookingHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class CoAChambersBookingHearingInfo : object
     {
@@ -988,7 +988,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CoAChambersApplications", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class CoAChambersApplications : object
     {
@@ -1055,7 +1055,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FormulaLocation", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class FormulaLocation : object
     {
@@ -1073,6 +1073,8 @@ namespace SCJ.OnlineBooking
         private System.Nullable<System.DateTime> FairUseContactDateField;
 
         private string FormulaTypeField;
+
+        private int HearingTypeIdField;
 
         private string LocationCodeField;
 
@@ -1174,6 +1176,19 @@ namespace SCJ.OnlineBooking
         }
 
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingTypeId
+        {
+            get
+            {
+                return this.HearingTypeIdField;
+            }
+            set
+            {
+                this.HearingTypeIdField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string LocationCode
         {
             get
@@ -1227,7 +1242,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDatesRequestInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class AvailableTrialDatesRequestInfo : object
     {
@@ -1241,6 +1256,8 @@ namespace SCJ.OnlineBooking
         private string FormulaTypeField;
 
         private int HearingLengthField;
+
+        private int HearingTypeIdField;
 
         private int LocationIDField;
 
@@ -1312,6 +1329,19 @@ namespace SCJ.OnlineBooking
         }
 
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingTypeId
+        {
+            get
+            {
+                return this.HearingTypeIdField;
+            }
+            set
+            {
+                this.HearingTypeIdField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int LocationID
         {
             get
@@ -1339,7 +1369,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDatesResult", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class AvailableTrialDatesResult : object
     {
@@ -1361,7 +1391,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDates", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class AvailableTrialDates : object
     {
@@ -1473,7 +1503,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AvailableTrialDatesInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
     public partial class AvailableTrialDatesInfo : object
     {
@@ -1510,7 +1540,7 @@ namespace SCJ.OnlineBooking
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BookTrialHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
     public partial class BookTrialHearingInfo : object
     {
@@ -1681,62 +1711,248 @@ namespace SCJ.OnlineBooking
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="SCCHHearingSubTypeDetails", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking.Objects")]
+    public partial class SCCHHearingSubTypeDetails : object
+    {
+
+        private string ChambersDescriptionField;
+
+        private int HearingSubTypeIdField;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ChambersDescription
+        {
+            get
+            {
+                return this.ChambersDescriptionField;
+            }
+            set
+            {
+                this.ChambersDescriptionField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingSubTypeId
+        {
+            get
+            {
+                return this.HearingSubTypeIdField;
+            }
+            set
+            {
+                this.HearingSubTypeIdField = value;
+            }
+        }
+    }
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BookingSCCHHearingInfo", Namespace="http://schemas.datacontract.org/2004/07/SCSSOnlineBooking")]
+    public partial class BookingSCCHHearingInfo : object
+    {
+
+        private int BookingLocationIDField;
+
+        private decimal CEIS_Physical_File_IDField;
+
+        private string CourtClassField;
+
+        private string FormulaTypeField;
+
+        private System.DateTime HearingDateField;
+
+        private int HearingLengthField;
+
+        private int HearingTypeIdField;
+
+        private int LocationIDField;
+
+        private string RequestedByField;
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BookingLocationID
+        {
+            get
+            {
+                return this.BookingLocationIDField;
+            }
+            set
+            {
+                this.BookingLocationIDField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal CEIS_Physical_File_ID
+        {
+            get
+            {
+                return this.CEIS_Physical_File_IDField;
+            }
+            set
+            {
+                this.CEIS_Physical_File_IDField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CourtClass
+        {
+            get
+            {
+                return this.CourtClassField;
+            }
+            set
+            {
+                this.CourtClassField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FormulaType
+        {
+            get
+            {
+                return this.FormulaTypeField;
+            }
+            set
+            {
+                this.FormulaTypeField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime HearingDate
+        {
+            get
+            {
+                return this.HearingDateField;
+            }
+            set
+            {
+                this.HearingDateField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingLength
+        {
+            get
+            {
+                return this.HearingLengthField;
+            }
+            set
+            {
+                this.HearingLengthField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HearingTypeId
+        {
+            get
+            {
+                return this.HearingTypeIdField;
+            }
+            set
+            {
+                this.HearingTypeIdField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int LocationID
+        {
+            get
+            {
+                return this.LocationIDField;
+            }
+            set
+            {
+                this.LocationIDField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string RequestedBy
+        {
+            get
+            {
+                return this.RequestedByField;
+            }
+            set
+            {
+                this.RequestedByField = value;
+            }
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="SCJ.OnlineBooking.IOnlineBooking")]
     public interface IOnlineBooking
     {
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/caseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/caseNumberValidResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scCaseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/scCaseNumberValidResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.CourtFile[]> scCaseNumberValidAsync(string caseNum);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/getLocations", ReplyAction="http://tempuri.org/IOnlineBooking/getLocationsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scGetLocations", ReplyAction="http://tempuri.org/IOnlineBooking/scGetLocationsResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.Location[]> scGetLocationsAsync();
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableDatesByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableDatesByLocationResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scConfAvailableDatesByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/scConfAvailableDatesByLocationResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableDatesByLocation> scConfAvailableDatesByLocationAsync(int locationID, int hearingTypeID);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/BookingHearing", ReplyAction="http://tempuri.org/IOnlineBooking/BookingHearingResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scConfBookHearing", ReplyAction="http://tempuri.org/IOnlineBooking/scConfBookHearingResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scConfBookHearingAsync(SCJ.OnlineBooking.BookHearingInfo bookInfo);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoACaseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/CoACaseNumberValidResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/coaCaseNumberValid", ReplyAction="http://tempuri.org/IOnlineBooking/coaCaseNumberValidResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.COACaseList> coaCaseNumberValidAsync(string caseNum);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/COAAvailableDates", ReplyAction="http://tempuri.org/IOnlineBooking/COAAvailableDatesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/coaAvailableAppealDates", ReplyAction="http://tempuri.org/IOnlineBooking/coaAvailableAppealDatesResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAAvailableDates> coaAvailableAppealDatesAsync();
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAQueueHearing", ReplyAction="http://tempuri.org/IOnlineBooking/CoAQueueHearingResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/coaQueueAppealHearing", ReplyAction="http://tempuri.org/IOnlineBooking/coaQueueAppealHearingResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> coaQueueAppealHearingAsync(SCJ.OnlineBooking.CoABookingHearingInfo bookingInfo);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAAvailableDatesChambers", ReplyAction="http://tempuri.org/IOnlineBooking/CoAAvailableDatesChambersResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/coaAvailableCHDates", ReplyAction="http://tempuri.org/IOnlineBooking/coaAvailableCHDatesResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersAvailableDates> coaAvailableCHDatesAsync();
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAChambersQueueHearing", ReplyAction="http://tempuri.org/IOnlineBooking/CoAChambersQueueHearingResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/coaQueueCHHearing", ReplyAction="http://tempuri.org/IOnlineBooking/coaQueueCHHearingResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> coaQueueCHHearingAsync(SCJ.OnlineBooking.CoAChambersBookingHearingInfo bookingInfo);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsList", ReplyAction="http://tempuri.org/IOnlineBooking/CoAChambersApplicationsListResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/coaCHApplicationList", ReplyAction="http://tempuri.org/IOnlineBooking/coaCHApplicationListResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.CoAChambersApplications[]> coaCHApplicationListAsync(string type);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableTrialBookingFormulasByLocationResponse" +
-            "")]
-        System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(string locationID, string formula);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scAvailableFormulasByHearingTypeAndLocation", ReplyAction="http://tempuri.org/IOnlineBooking/scAvailableFormulasByHearingTypeAndLocationResp" +
+            "onse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(string locationID, string formula, string hearingTypeId);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocation", ReplyAction="http://tempuri.org/IOnlineBooking/AvailableTrialDatesByLocationResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scAvailableDatesByHearingTypeAndLocation", ReplyAction="http://tempuri.org/IOnlineBooking/scAvailableDatesByHearingTypeAndLocationRespons" +
+            "e")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> scAvailableDatesByHearingTypeAndLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/BookTrialHearing", ReplyAction="http://tempuri.org/IOnlineBooking/BookTrialHearingResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scTrialBookHearing", ReplyAction="http://tempuri.org/IOnlineBooking/scTrialBookHearingResponse")]
         System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scTrialBookHearingAsync(SCJ.OnlineBooking.BookTrialHearingInfo bookingInfo);
 
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypes", ReplyAction="http://tempuri.org/IOnlineBooking/GetAvailableBookingTypesResponse")]
-        System.Threading.Tasks.Task<string[]> GetAvailableBookingTypesAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scGetAvailableBookingTypes", ReplyAction="http://tempuri.org/IOnlineBooking/scGetAvailableBookingTypesResponse")]
+        System.Threading.Tasks.Task<string[]> scGetAvailableBookingTypesAsync();
+
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scCHHearingSubType", ReplyAction="http://tempuri.org/IOnlineBooking/scCHHearingSubTypeResponse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.SCCHHearingSubTypeDetails[]> scCHHearingSubTypeAsync();
+
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlineBooking/scCHBookHearing", ReplyAction="http://tempuri.org/IOnlineBooking/scCHBookHearingResponse")]
+        System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scCHBookHearingAsync(SCJ.OnlineBooking.BookingSCCHHearingInfo bookInfo);
     }
 
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     public interface IOnlineBookingChannel : SCJ.OnlineBooking.IOnlineBooking, System.ServiceModel.IClientChannel
     {
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     public partial class OnlineBookingClient : System.ServiceModel.ClientBase<SCJ.OnlineBooking.IOnlineBooking>, SCJ.OnlineBooking.IOnlineBooking
     {
 
@@ -1830,9 +2046,9 @@ namespace SCJ.OnlineBooking
             return base.Channel.coaCHApplicationListAsync(type);
         }
 
-        public System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(string locationID, string formula)
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(string locationID, string formula, string hearingTypeId)
         {
-            return base.Channel.scAvailableFormulasByHearingTypeAndLocationAsync(locationID, formula);
+            return base.Channel.scAvailableFormulasByHearingTypeAndLocationAsync(locationID, formula, hearingTypeId);
         }
 
         public System.Threading.Tasks.Task<SCJ.OnlineBooking.AvailableTrialDatesResult> scAvailableDatesByHearingTypeAndLocationAsync(SCJ.OnlineBooking.AvailableTrialDatesRequestInfo requestInfo)
@@ -1845,15 +2061,32 @@ namespace SCJ.OnlineBooking
             return base.Channel.scTrialBookHearingAsync(bookingInfo);
         }
 
-        public System.Threading.Tasks.Task<string[]> GetAvailableBookingTypesAsync()
+        public System.Threading.Tasks.Task<string[]> scGetAvailableBookingTypesAsync()
         {
-            return base.Channel.GetAvailableBookingTypesAsync();
+            return base.Channel.scGetAvailableBookingTypesAsync();
+        }
+
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.SCCHHearingSubTypeDetails[]> scCHHearingSubTypeAsync()
+        {
+            return base.Channel.scCHHearingSubTypeAsync();
+        }
+
+        public System.Threading.Tasks.Task<SCJ.OnlineBooking.BookingHearingResult> scCHBookHearingAsync(SCJ.OnlineBooking.BookingSCCHHearingInfo bookInfo)
+        {
+            return base.Channel.scCHBookHearingAsync(bookInfo);
         }
 
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
+
+        #if !NET6_0_OR_GREATER
+        public virtual System.Threading.Tasks.Task CloseAsync()
+        {
+            return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
+        }
+        #endif
 
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {

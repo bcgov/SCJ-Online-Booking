@@ -108,22 +108,22 @@ namespace SCJ.Booking.MVC.Services
                 Email = userInfo.Email,
                 Phone = userInfo.Phone,
                 RequestedByName = userInfo.ContactName,
-                TrialLocationName = bookingInfo.BookingLocationName,
+                LocationName = bookingInfo.BookingLocationName,
                 FairUseSort = courtFile.fairUseSort,
                 CaseNumber = bookingInfo.CaseNumber,
                 StyleOfCause = courtFile.styleOfCause ?? string.Empty,
-                TrialLocationId = bookingInfo.TrialLocationRegistryId,
+                LocationId = bookingInfo.AlternateLocationRegistryId,
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
                 HearingLength = bookingInfo.EstimatedTrialLength.Value,
                 LotteryStartDate = lotteryStartDate,
-                TrialBookingId = bookingInfo.TrialBookingId
+                LotteryEntryId = bookingInfo.LotteryEntryId
             };
 
             int selectionRank = 1;
             foreach (var date in bookingInfo.SelectedFairUseTrialDates)
             {
-                bookingRequest.TrialDateSelections.Add(
+                bookingRequest.DateSelections.Add(
                     new ScLotteryDateSelection { Rank = selectionRank, TrialStartDate = date }
                 );
                 selectionRank++;

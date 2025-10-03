@@ -15,15 +15,15 @@ namespace SCJ.Booking.MVC.Utils
         public string CaseLocationName { get; set; }
 
         // this is the alternate trial location the user selected from the dropdown
-        public int TrialLocationRegistryId { get; set; }
+        public int AlternateLocationRegistryId { get; set; }
 
-        // this is the internal id that is used for booking trials and conferences
+        // this is the internal id that is used for booking via the API
         public int BookingLocationRegistryId { get; set; }
 
         public string BookingLocationName { get; set; }
         public int ContainerId { get; set; }
         public int HearingTypeId { get; set; }
-        public string TrialFormulaType { get; set; }
+        public string FormulaType { get; set; }
         public string HearingTypeName { get; set; }
         public int? EstimatedTrialLength { get; set; }
         public int? EstimatedChambersLengthDays { get; set; }
@@ -79,6 +79,6 @@ namespace SCJ.Booking.MVC.Utils
 
         public FormulaLocation RegularFormula { get; set; }
         public FormulaLocation FairUseFormula { get; set; }
-        public string TrialBookingId { get; set; }
+        public string LotteryEntryId { get; set; }
     }
 }

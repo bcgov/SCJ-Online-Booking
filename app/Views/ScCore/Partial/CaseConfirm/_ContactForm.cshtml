@@ -2,7 +2,7 @@
 
 <h4>Provide Your Contact Information</h4>
 
-@if (@Model.SessionInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
+@if (@Model.SessionInfo.FormulaType == ScFormulaType.FairUseBooking)
 {
     <p>Please provide the following contact information. Your email address will be used to let you know whether a trial
         date is set for your case, and your phone number may be used later for booking and coordination purposes.</p>
@@ -44,12 +44,12 @@ else
                 @if (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
                 {
                     <text>Request Trial </text>
-                    @(Model.SessionInfo.TrialFormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
                 }
                 else if (Model.SessionInfo.HearingTypeId == ScHearingType.LONG_CHAMBERS)
                 {
                     <text>Request Chambers </text>
-                    @(Model.SessionInfo.TrialFormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
                 }
                 else
                 {
@@ -60,7 +60,7 @@ else
     </div>
     <div class="col-6 col-md-4">
         <button type="submit" class="btn btn-secondary btn-block progress-spinner" id="btnSearch">
-            @if (@Model.SessionInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
+            @if (@Model.SessionInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
                 <text>Confirm Request</text>
             }

@@ -91,16 +91,16 @@ public class DatabaseUtils
                     Phone = record.Phone,
                     RequestedByName = record.RequestedByName,
                     StyleOfCause = record.StyleOfCause,
-                    TrialBookingId = record.TrialBookingId,
-                    TrialLocationId = record.TrialLocationId,
-                    TrialLocationName = record.TrialLocationName,
+                    LotteryEntryId = record.TrialBookingId,
+                    LocationId = record.TrialLocationId,
+                    LocationName = record.TrialLocationName,
                     HearingTypeId = ScHearingType.TRIAL,
                     User = testUser
                 };
 
                 if (record.Selection1.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
+                    entity.DateSelections.Add(
                         new ScLotteryDateSelection
                         {
                             Rank = 1,
@@ -111,7 +111,7 @@ public class DatabaseUtils
 
                 if (record.Selection2.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
+                    entity.DateSelections.Add(
                         new ScLotteryDateSelection
                         {
                             Rank = 2,
@@ -122,7 +122,7 @@ public class DatabaseUtils
 
                 if (record.Selection3.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
+                    entity.DateSelections.Add(
                         new ScLotteryDateSelection
                         {
                             Rank = 3,
@@ -133,7 +133,7 @@ public class DatabaseUtils
 
                 if (record.Selection4.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
+                    entity.DateSelections.Add(
                         new ScLotteryDateSelection
                         {
                             Rank = 4,
@@ -144,7 +144,7 @@ public class DatabaseUtils
 
                 if (record.Selection5.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
+                    entity.DateSelections.Add(
                         new ScLotteryDateSelection
                         {
                             Rank = 5,

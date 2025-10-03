@@ -144,7 +144,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 ChambersHearingSubType = bookingInfo.ChambersHearingSubType,
                 IsHomeRegistry = bookingInfo.IsHomeRegistry,
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
-                TrialLocationRegistryId = bookingInfo.TrialLocationRegistryId,
+                AlternateLocationRegistryId = bookingInfo.AlternateLocationRegistryId,
                 FutureTrialBooked = bookingInfo.SelectedCourtFile?.futureTrialHearing ?? false,
                 SessionInfo = bookingInfo
             };
@@ -167,21 +167,21 @@ namespace SCJ.Booking.MVC.Services.SC
                 if (model.IsHomeRegistry is true)
                 {
                     // trial is at the home registry
-                    bookingInfo.TrialLocationRegistryId = bookingInfo.CaseRegistryId;
+                    bookingInfo.AlternateLocationRegistryId = bookingInfo.CaseRegistryId;
                 }
                 else if (model.IsHomeRegistry is false && model.IsLocationChangeFiled is true)
                 {
                     // trial is somewhere besides the home registry
-                    bookingInfo.TrialLocationRegistryId = model.TrialLocationRegistryId;
+                    bookingInfo.AlternateLocationRegistryId = model.AlternateLocationRegistryId;
                 }
 
                 bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
-                    bookingInfo.TrialLocationRegistryId
+                    bookingInfo.AlternateLocationRegistryId
                 );
 
                 FormulaLocation location = await _cache.GetFormulaLocationAsync(
-                    bookingInfo.TrialFormulaType,
-                    bookingInfo.TrialLocationRegistryId,
+                    bookingInfo.FormulaType,
+                    bookingInfo.AlternateLocationRegistryId,
                     bookingInfo.SelectedCourtFile?.courtClassCode
                 );
 
@@ -200,21 +200,21 @@ namespace SCJ.Booking.MVC.Services.SC
                 if (model.IsHomeRegistry is true)
                 {
                     // trial is at the home registry
-                    bookingInfo.TrialLocationRegistryId = bookingInfo.CaseRegistryId;
+                    bookingInfo.AlternateLocationRegistryId = bookingInfo.CaseRegistryId;
                 }
                 else if (model.IsHomeRegistry is false && model.IsLocationChangeFiled is true)
                 {
                     // trial is somewhere besides the home registry
-                    bookingInfo.TrialLocationRegistryId = model.TrialLocationRegistryId;
+                    bookingInfo.AlternateLocationRegistryId = model.AlternateLocationRegistryId;
                 }
 
                 bookingInfo.BookingLocationName = await _cache.GetLocationNameAsync(
-                    bookingInfo.TrialLocationRegistryId
+                    bookingInfo.AlternateLocationRegistryId
                 );
 
                 FormulaLocation location = await _cache.GetFormulaLocationAsync(
-                    bookingInfo.TrialFormulaType,
-                    bookingInfo.TrialLocationRegistryId,
+                    bookingInfo.FormulaType,
+                    bookingInfo.AlternateLocationRegistryId,
                     bookingInfo.SelectedCourtFile?.courtClassCode
                 );
 

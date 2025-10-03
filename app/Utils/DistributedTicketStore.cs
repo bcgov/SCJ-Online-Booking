@@ -40,14 +40,14 @@ public class DistributedTicketStore : ITicketStore
         await _distributedCache.SetStringAsync(key, ticketData, options);
     }
 
-    public async Task<AuthenticationTicket?> RetrieveAsync(string key)
+    public async Task<AuthenticationTicket> RetrieveAsync(string key)
     {
         var ticketData = await _distributedCache.GetStringAsync(key);
         if (ticketData != null)
         {
             return DeserializeTicket(ticketData);
         }
-        return null;
+        return default(AuthenticationTicket);
     }
 
     public Task RemoveAsync(string key)

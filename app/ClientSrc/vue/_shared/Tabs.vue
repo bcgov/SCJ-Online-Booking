@@ -33,7 +33,7 @@
     </ul>
 
     <div class="bg-white">
-      <input type="hidden" name="TrialFormulaType" :value="tab" />
+      <input type="hidden" name="FormulaType" :value="tab" />
 
       <!-- show "fair use disabled" alert text in a floating banner on small screens -->
       <div class="alert sm-banner alert-warning m-0 d-md-none" v-if="showFairUseDisabledAlert">

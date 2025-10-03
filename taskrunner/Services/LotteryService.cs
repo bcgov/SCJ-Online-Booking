@@ -144,7 +144,7 @@ namespace SCJ.Booking.TaskRunner.Services
         )
         {
             return await _dbContext
-                .ScLotteryBookingRequests.Include(x => x.TrialDateSelections)
+                .ScLotteryBookingRequests.Include(x => x.DateSelections)
                 .Where(x => x.Lottery == lotteryInProgress && x.IsProcessed == false)
                 .OrderByDescending(x => x.FairUseSort)
                 .ThenBy(x => x.LotteryPosition)
@@ -199,7 +199,7 @@ namespace SCJ.Booking.TaskRunner.Services
         private async Task ProcessSingleEntry(ScLotteryBookingRequest entry)
         {
             bool trialBooked = false;
-            var orderedSelections = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray();
+            var orderedSelections = entry.DateSelections.OrderBy(d => d.Rank).ToArray();
 
             foreach (var selection in orderedSelections)
             {
@@ -212,10 +212,10 @@ namespace SCJ.Booking.TaskRunner.Services
                         FormulaType = ScFormulaType.FairUseBooking,
                         HearingLength = entry.HearingLength,
                         HearingType = ScHearingType.TRIAL,
-                        LocationID = entry.TrialLocationId,
+                        LocationID = entry.LocationId,
                         RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
                         HearingDate = selection.TrialStartDate,
-                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
+                        SCJOB_Trial_Booking_ID = entry.LotteryEntryId,
                         SCJOB_Trial_Booking_Date = DateTime.Now
                     };
 
@@ -275,9 +275,9 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         private async Task RecordUnmetDemand(ScLotteryBookingRequest entry)
         {
-            if (entry.TrialDateSelections.Any())
+            if (entry.DateSelections.Any())
             {
-                var firstSelection = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray()[0];
+                var firstSelection = entry.DateSelections.OrderBy(d => d.Rank).ToArray()[0];
 
                 BookTrialHearingInfo unmetDemandRequest =
                     new()
@@ -288,10 +288,10 @@ namespace SCJ.Booking.TaskRunner.Services
                         FormulaType = ScFormulaType.FairUseBooking,
                         HearingLength = entry.HearingLength,
                         HearingType = ScHearingType.UNMET_DEMAND,
-                        LocationID = entry.TrialLocationId,
+                        LocationID = entry.LocationId,
                         RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
                         HearingDate = firstSelection.TrialStartDate,
-                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
+                        SCJOB_Trial_Booking_ID = entry.LotteryEntryId,
                         SCJOB_Trial_Booking_Date = DateTime.Now
                     };
 
