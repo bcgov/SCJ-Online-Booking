@@ -163,19 +163,9 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             var user = _session.GetUserInformation();
 
-            string locationName;
-            if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
-            {
-                locationName = await _scCoreService.GetLocationNameAsync(
-                    bookingInfo.TrialLocationRegistryId
-                );
-            }
-            else
-            {
-                locationName = await _scCoreService.GetLocationNameAsync(
-                    bookingInfo.BookingLocationRegistryId
-                );
-            }
+            string locationName = await _scCoreService.GetLocationNameAsync(
+                bookingInfo.TrialLocationRegistryId
+            );
 
             //Time-slot is still available
             var model = new ScCaseConfirmViewModel

@@ -47,7 +47,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
-            // Trial bookings: get lists of available trial dates
+            // Chambers bookings: get lists of available chambers dates
             (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
                 await _scFairBookingService.GetAvailableTrialDatesAsync(
                     ScFormulaType.RegularBooking,
@@ -82,15 +82,6 @@ namespace SCJ.Booking.MVC.Controllers
             var bookingInfo = _session.ScBookingInfo;
             model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
 
-            // Require ContainerId value for non-trial hearing types
-            if (model.ContainerId == -1)
-            {
-                ModelState.AddModelError(
-                    "ContainerId",
-                    "Please choose from one of the available times."
-                );
-            }
-
             if (
                 model.TrialFormulaType == ScFormulaType.RegularBooking
                 && !model.SelectedRegularTrialDate.HasValue
@@ -121,7 +112,7 @@ namespace SCJ.Booking.MVC.Controllers
             if (!ModelState.IsValid)
             {
                 model.SessionInfo = bookingInfo;
-                // Trial bookings: get lists of available trial dates
+                // Chambers bookings: get lists of available chambers dates
 
                 model = await _scFairBookingService.LoadAvailableTimesFormulaInfoAsync(
                     model,
@@ -162,19 +153,9 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             var user = _session.GetUserInformation();
 
-            string locationName;
-            if (bookingInfo.HearingTypeId == ScHearingType.TRIAL)
-            {
-                locationName = await _scCoreService.GetLocationNameAsync(
-                    bookingInfo.TrialLocationRegistryId
-                );
-            }
-            else
-            {
-                locationName = await _scCoreService.GetLocationNameAsync(
-                    bookingInfo.BookingLocationRegistryId
-                );
-            }
+            string locationName = await _scCoreService.GetLocationNameAsync(
+                bookingInfo.TrialLocationRegistryId
+            );
 
             //Time-slot is still available
             var model = new ScCaseConfirmViewModel
@@ -211,8 +192,8 @@ namespace SCJ.Booking.MVC.Controllers
 
                 if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
                 {
-                    // Redirect to "TrialBooked" page for Regular
-                    return RedirectToAction("TrialBooked");
+                    // Redirect to "ChambersBooked" page for Regular
+                    return RedirectToAction("ChambersBooked");
                 }
                 else
                 {
@@ -230,8 +211,8 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpGet]
-        [Route("~/booking/sc-long-chambers/trial-booked")]
-        public IActionResult TrialBooked()
+        [Route("~/booking/sc-long-chambers/chambers-booked")]
+        public IActionResult ChambersBooked()
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
@@ -244,7 +225,7 @@ namespace SCJ.Booking.MVC.Controllers
         }
 
         [HttpGet]
-        [Route("~/booking/sc-long-chambers/trial-request-submitted")]
+        [Route("~/booking/sc-long-chambers/chambers-request-submitted")]
         public IActionResult RequestSubmitted()
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;

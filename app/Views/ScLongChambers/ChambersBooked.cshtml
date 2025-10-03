@@ -13,7 +13,13 @@
             {
                 <h2>@ViewData["Title"]</h2>
 
-                <p class="mb-3">Please file a Notice of Trial within 30 days to confirm this trial.</p>
+                <p class="mb-3">You must file your court documents according to the <em>Supreme Court Rules</em> for your
+                    particular application or petition. Please visit
+                    <a target="_blank" rel="noopener"
+                        href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/">
+                        Supreme Court Act, Rules and Forms</a>
+                    for more information.
+                </p>
 
                 <p class="mb-3">The following information will be sent to you by email.</p>
             }
@@ -41,25 +47,20 @@
             </div>
 
             <div class="mb-4">
-                <h2>Trial Details</h2>
+                <h2>Chambers Hearing Details</h2>
 
                 @{
-                    var trialLength = bookingInfo.EstimatedTrialLength;
-
-                    var trialDate = bookingInfo.SelectedRegularTrialDate?.ToString("dddd MMMM d, yyyy") ?? "";
+                    var chambersLength = bookingInfo.EstimatedChambersLengthDays;
+                    var startDate = bookingInfo.SelectedRegularTrialDate?.ToString("dddd MMMM d, yyyy") ?? "";
                 }
-                <p>Trial length: @trialLength @(trialLength == 1 ? "day" : "days")</p>
-
-                <p>Starting: @trialDate</p>
-
+                <p>Requested days: @chambersLength</p>
+                <p>Starting: @startDate</p>
                 <p class="mb-3">Location: @bookingInfo.BookingLocationName</p>
             </div>
 
             <div class="mb-4">
                 <h2>Contact Information</h2>
-
                 <p>Email: @userInfo.Email</p>
-
                 <p>Phone number: @userInfo.Phone</p>
             </div>
 
