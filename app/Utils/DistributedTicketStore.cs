@@ -40,14 +40,16 @@ public class DistributedTicketStore : ITicketStore
         await _distributedCache.SetStringAsync(key, ticketData, options);
     }
 
-    public async Task<AuthenticationTicket> RetrieveAsync(string key)
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+    public async Task<AuthenticationTicket?> RetrieveAsync(string key)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     {
         var ticketData = await _distributedCache.GetStringAsync(key);
         if (ticketData != null)
         {
             return DeserializeTicket(ticketData);
         }
-        return default(AuthenticationTicket);
+        return null;
     }
 
     public Task RemoveAsync(string key)
