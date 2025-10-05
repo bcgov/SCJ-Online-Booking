@@ -5,7 +5,7 @@
     </div>
 
     <h3 class="mt-0 mb-5">
-      Choose {{ hearingTypeName }} start date (Trial length: {{ trialLengthDisplay }})
+      Choose {{ hearingTypeName }} start date (Trial length: {{ lengthDisplay }})
     </h3>
 
     <div class="mb-5">
@@ -62,7 +62,7 @@ export default {
       default: () => [],
     },
 
-    trialLength: {
+    length: {
       type: Number,
       default: 0,
     },
@@ -94,10 +94,10 @@ export default {
       return this.formattedDates.slice(0, this.numShowing);
     },
 
-    trialLengthDisplay() {
-      const days = this.trialLength === 1 ? "day" : "days";
+    lengthDisplay() {
+      const days = this.length === 1 ? "day" : "days";
 
-      return `${this.trialLength} ${days}`;
+      return `${this.length} ${days}`;
     },
   },
 };

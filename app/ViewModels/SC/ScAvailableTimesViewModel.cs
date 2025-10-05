@@ -20,9 +20,9 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             SelectedConferenceDate = string.Empty;
             CaseNumber = string.Empty;
             HearingTypeId = -1;
-            TrialFormulaType = string.Empty;
-            AvailableRegularTrialDates = new List<DateTime> { };
-            AvailableFairUseTrialDates = new List<DateTime> { };
+            FormulaType = string.Empty;
+            AvailableRegularDates = new List<DateTime> { };
+            AvailableFairUseDates = new List<DateTime> { };
             FairUseStartDate = null;
             FairUseEndDate = null;
             FairUseResultDate = null;
@@ -33,7 +33,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         //Search fields
         public string CaseNumber { get; set; }
         public int HearingTypeId { get; set; }
-        public string TrialFormulaType { get; set; }
+        public string FormulaType { get; set; }
 
         //Available dates
         public AvailableDatesByLocation AvailableConferenceDates { get; set; }
@@ -160,10 +160,10 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             }
         }
 
-        public List<DateTime> AvailableRegularTrialDates { get; set; }
-        public List<DateTime> AvailableFairUseTrialDates { get; set; }
-        public DateTime? SelectedRegularTrialDate { get; set; }
-        public List<DateTime> SelectedFairUseTrialDates { get; set; } = new();
+        public List<DateTime> AvailableRegularDates { get; set; }
+        public List<DateTime> AvailableFairUseDates { get; set; }
+        public DateTime? SelectedRegularDate { get; set; }
+        public List<DateTime> SelectedFairUseDates { get; set; } = new();
         public DateTime? FairUseStartDate { get; set; }
         public DateTime? FairUseEndDate { get; set; }
         public DateTime? FairUseResultDate { get; set; }

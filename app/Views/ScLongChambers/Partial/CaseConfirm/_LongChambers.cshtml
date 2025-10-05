@@ -2,11 +2,11 @@
 @{
     var bookingInfo = @Model.SessionInfo;
 }
-@if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
+@if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
 {
     <p class="mb-4">Please review the following information to ensure that it is accurate. Dates are not guaranteed at this
-    stage, you
-    are submitting a request.</p>
+        stage, you
+        are submitting a request.</p>
 }
 else
 {
@@ -21,7 +21,7 @@ else
     </div>
 </div>
 
-@if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
+@if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
 {
     <partial name="Partial/CaseConfirm/_FairUseBooking" model="Model" />
 }

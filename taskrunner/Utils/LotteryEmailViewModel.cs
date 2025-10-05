@@ -19,16 +19,16 @@ namespace SCJ.Booking.TaskRunner.Utils
                     ? "1 day"
                     : $"{bookingRequest.HearingLength} days";
 
-            TrialLocationName = bookingRequest.TrialLocationName ?? "";
+            TrialLocationName = bookingRequest.LocationName ?? "";
 
             FairUseDate =
                 bookingRequest
-                    .TrialDateSelections.FirstOrDefault(x =>
+                    .DateSelections.FirstOrDefault(x =>
                         x.Rank == bookingRequest.AllocatedSelectionRank
                     )
                     ?.TrialStartDate.ToString("dddd MMMM d, yyyy") ?? "";
 
-            TrialBookingId = bookingRequest.TrialBookingId;
+            TrialBookingId = bookingRequest.LotteryEntryId;
 
             NextMonth = bookingRequest.FairUseBookingPeriodStartDate.AddMonths(1).ToString("MMMM");
         }

@@ -71,17 +71,17 @@ namespace SCJ.Booking.MVC.Services.SC
                 HearingTypeId = bookingInfo.HearingTypeId,
                 AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
                 ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
-                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
-                SelectedFairUseTrialDates = bookingInfo.SelectedFairUseTrialDates,
+                SelectedRegularDate = bookingInfo.SelectedRegularTrialDate,
+                SelectedFairUseDates = bookingInfo.SelectedFairUseTrialDates,
                 SessionInfo = bookingInfo
             };
 
             model = await LoadAvailableTimesFormulaInfoAsync(model, null);
 
-            model.TrialFormulaType =
+            model.FormulaType =
                 bookingInfo.FairUseFormula is null && bookingInfo.RegularFormula is not null
                     ? ScFormulaType.RegularBooking
-                    : bookingInfo.TrialFormulaType;
+                    : bookingInfo.FormulaType;
 
             return model;
         }
@@ -98,7 +98,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             fairUseFormula ??= await _cache.GetFormulaLocationAsync(
                 ScFormulaType.FairUseBooking,
-                bookingInfo.TrialLocationRegistryId,
+                bookingInfo.AlternateLocationRegistryId,
                 bookingInfo.SelectedCourtFile?.courtClassCode ?? ""
             );
 
@@ -123,11 +123,11 @@ namespace SCJ.Booking.MVC.Services.SC
         {
             var bookingInfo = _session.ScBookingInfo;
 
-            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularTrialDate;
+            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularDate;
             bookingInfo.SelectedFairUseTrialDates = model
-                .SelectedFairUseTrialDates.Take(ScGeneral.ScMaxTrialDateSelections)
+                .SelectedFairUseDates.Take(ScGeneral.ScMaxTrialDateSelections)
                 .ToList();
-            bookingInfo.TrialFormulaType = model.TrialFormulaType;
+            bookingInfo.FormulaType = model.FormulaType;
 
             _session.ScBookingInfo = bookingInfo;
         }
@@ -164,9 +164,9 @@ namespace SCJ.Booking.MVC.Services.SC
             _session.UserInfo = userInfo;
 
             // generate a trial booking id (for troubleshooting between SCSS and SCJOB)
-            var trialBookingId = GenerateTrialBookingId() + "-" + userId;
+            var lotteryEntryId = GenerateTrialBookingId() + "-" + userId;
 
-            if (bookingInfo.TrialFormulaType == ScFormulaType.FairUseBooking)
+            if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
                 if (await CheckIfTrialAlreadyRequestedAsync())
                 {
@@ -183,7 +183,7 @@ namespace SCJ.Booking.MVC.Services.SC
                         ScFormulaType.FairUseBooking
                     );
 
-                    bookingInfo.TrialBookingId = trialBookingId;
+                    bookingInfo.LotteryEntryId = lotteryEntryId;
                     _session.ScBookingInfo = bookingInfo;
                     await _dbWriterService.SaveFairUseRequest(userId, bookingInfo, userInfo);
 
@@ -203,7 +203,7 @@ namespace SCJ.Booking.MVC.Services.SC
                     );
                 }
             }
-            else if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
+            else if (bookingInfo.FormulaType == ScFormulaType.RegularBooking)
             {
                 // Available dates
                 (List<DateTime> availableTrialDates, _) = await GetAvailableTrialDatesAsync(
@@ -234,10 +234,10 @@ namespace SCJ.Booking.MVC.Services.SC
                         FormulaType = ScFormulaType.RegularBooking,
                         HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
                         HearingType = bookingInfo.HearingTypeId,
-                        LocationID = bookingInfo.TrialLocationRegistryId,
+                        LocationID = bookingInfo.AlternateLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                         HearingDate = bookingInfo.SelectedRegularTrialDate.Value,
-                        SCJOB_Trial_Booking_ID = trialBookingId,
+                        SCJOB_Trial_Booking_ID = lotteryEntryId,
                         SCJOB_Trial_Booking_Date = DateTime.Now
                     };
 
@@ -252,7 +252,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 //test to see if the booking was successful
                 if (result.bookingResult.ToLower().StartsWith("success"))
                 {
-                    bookingInfo.TrialBookingId = trialBookingId;
+                    bookingInfo.LotteryEntryId = lotteryEntryId;
                     _session.ScBookingInfo = bookingInfo;
 
                     //create database entry
@@ -324,14 +324,14 @@ namespace SCJ.Booking.MVC.Services.SC
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
                 TrialLocationName = await _cache.GetLocationNameAsync(
-                    booking.TrialLocationRegistryId
+                    booking.AlternateLocationRegistryId
                 ),
                 ResultDate = resultDate,
-                TrialBookingId = booking.TrialBookingId
+                LotteryEntryId = booking.LotteryEntryId
             };
 
             var template =
-                booking.TrialFormulaType == ScFormulaType.FairUseBooking
+                booking.FormulaType == ScFormulaType.FairUseBooking
                     ? "ScCore/Emails/Email-Trial-FairUse"
                     : "ScCore/Emails/Email-Trial-Regular";
 
@@ -349,7 +349,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             formula ??= await _cache.GetFormulaLocationAsync(
                 formulaType,
-                bookingInfo.TrialLocationRegistryId,
+                bookingInfo.AlternateLocationRegistryId,
                 courtClassCode
             );
 
@@ -361,7 +361,7 @@ namespace SCJ.Booking.MVC.Services.SC
             AvailableTrialDatesRequestInfo trialDatesRequestInfo =
                 new()
                 {
-                    LocationID = bookingInfo.TrialLocationRegistryId,
+                    LocationID = bookingInfo.AlternateLocationRegistryId,
                     BookingLocationID = formula.BookingLocationID,
                     Courtclass = courtClassCode,
                     FormulaType = formulaType,

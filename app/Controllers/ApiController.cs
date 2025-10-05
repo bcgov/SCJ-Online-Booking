@@ -143,12 +143,12 @@ namespace SCJ.Booking.MVC.Controllers
                         .TrialBookingRequests.OrderBy(x => x.ProcessingTimestamp)
                         .Select(r => new
                         {
-                            r.TrialBookingId,
+                            r.LotteryEntryId,
                             r.FairUseSort,
                             r.LotteryPosition,
                             r.HearingLength,
                             DateSelections = r
-                                .TrialDateSelections.OrderBy(s => s.Rank)
+                                .DateSelections.OrderBy(s => s.Rank)
                                 .Select(s => new
                                 {
                                     s.Rank,
@@ -202,11 +202,11 @@ namespace SCJ.Booking.MVC.Controllers
                     TrialRequests = g.Select(r => new
                         {
                             r.CreationTimestamp,
-                            r.TrialBookingId,
+                            r.LotteryEntryId,
                             r.FairUseSort,
                             r.HearingLength,
                             DateSelections = r
-                                .TrialDateSelections.OrderBy(s => s.Rank)
+                                .DateSelections.OrderBy(s => s.Rank)
                                 .Select(s => new { s.Rank, s.TrialStartDate, }),
                         })
                         .ToList()

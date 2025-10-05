@@ -190,7 +190,8 @@ namespace SCJ.OnlineBooking
 
         public async Task<FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(
             string locationID,
-            string formula
+            string formula,
+            string hearingTypeId
         )
         {
             await Task.Delay(100);
@@ -259,10 +260,20 @@ namespace SCJ.OnlineBooking
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<string[]> GetAvailableBookingTypesAsync()
+        public async Task<string[]> scGetAvailableBookingTypesAsync()
         {
             await Task.Delay(100);
             return ScAvailableBookingTypesFixture.BookingTypes;
+        }
+
+        public Task<BookingHearingResult> scCHBookHearingAsync(BookingSCCHHearingInfo bookInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SCCHHearingSubTypeDetails[]> scCHHearingSubTypeAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

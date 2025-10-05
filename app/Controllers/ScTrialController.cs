@@ -48,13 +48,13 @@ namespace SCJ.Booking.MVC.Controllers
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             // Trial bookings: get lists of available trial dates
-            (model.AvailableRegularTrialDates, bookingInfo.RegularFormula) =
+            (model.AvailableRegularDates, bookingInfo.RegularFormula) =
                 await _scFairBookingService.GetAvailableTrialDatesAsync(
                     ScFormulaType.RegularBooking,
                     bookingInfo.RegularFormula
                 );
 
-            (model.AvailableFairUseTrialDates, bookingInfo.FairUseFormula) =
+            (model.AvailableFairUseDates, bookingInfo.FairUseFormula) =
                 await _scFairBookingService.GetAvailableTrialDatesAsync(
                     ScFormulaType.FairUseBooking,
                     bookingInfo.FairUseFormula
@@ -64,12 +64,11 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (bookingInfo.FairUseFormula is null)
             {
-                model.TrialFormulaType = ScFormulaType.RegularBooking;
+                model.FormulaType = ScFormulaType.RegularBooking;
             }
             else
             {
-                model.TrialFormulaType =
-                    bookingInfo.TrialFormulaType ?? ScFormulaType.FairUseBooking;
+                model.FormulaType = bookingInfo.FormulaType ?? ScFormulaType.FairUseBooking;
             }
 
             return View(model);
@@ -92,8 +91,8 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             if (
-                model.TrialFormulaType == ScFormulaType.RegularBooking
-                && !model.SelectedRegularTrialDate.HasValue
+                model.FormulaType == ScFormulaType.RegularBooking
+                && !model.SelectedRegularDate.HasValue
             )
             {
                 ModelState.AddModelError(
@@ -102,8 +101,8 @@ namespace SCJ.Booking.MVC.Controllers
                 );
             }
             else if (
-                model.TrialFormulaType == ScFormulaType.FairUseBooking
-                && model.SelectedFairUseTrialDates.Count == 0
+                model.FormulaType == ScFormulaType.FairUseBooking
+                && model.SelectedFairUseDates.Count == 0
             )
             {
                 ModelState.AddModelError(
@@ -111,11 +110,11 @@ namespace SCJ.Booking.MVC.Controllers
                     "Please choose from the available dates."
                 );
             }
-            else if (model.HearingTypeId == ScHearingType.TRIAL && model.TrialFormulaType == "")
+            else if (model.HearingTypeId == ScHearingType.TRIAL && model.FormulaType == "")
             {
                 // If the formula type field is empty
                 // (e.g. user tampered with the form or submitted without JavaScript)
-                ModelState.AddModelError("TrialFormulaType", "Please choose what you are booking.");
+                ModelState.AddModelError("FormulaType", "Please choose what you are booking.");
             }
 
             if (!ModelState.IsValid)
@@ -129,13 +128,13 @@ namespace SCJ.Booking.MVC.Controllers
                         bookingInfo.FairUseFormula
                     );
 
-                    (model.AvailableRegularTrialDates, _) =
+                    (model.AvailableRegularDates, _) =
                         await _scFairBookingService.GetAvailableTrialDatesAsync(
                             ScFormulaType.RegularBooking,
                             null
                         );
 
-                    (model.AvailableFairUseTrialDates, _) =
+                    (model.AvailableFairUseDates, _) =
                         await _scFairBookingService.GetAvailableTrialDatesAsync(
                             ScFormulaType.FairUseBooking,
                             null
@@ -164,7 +163,7 @@ namespace SCJ.Booking.MVC.Controllers
             var user = _session.GetUserInformation();
 
             string locationName = await _scCoreService.GetLocationNameAsync(
-                bookingInfo.TrialLocationRegistryId
+                bookingInfo.AlternateLocationRegistryId
             );
 
             //Time-slot is still available
@@ -200,7 +199,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 await _scFairBookingService.BookTrialAsync(model, user);
 
-                if (bookingInfo.TrialFormulaType == ScFormulaType.RegularBooking)
+                if (bookingInfo.FormulaType == ScFormulaType.RegularBooking)
                 {
                     // Redirect to "TrialBooked" page for Regular
                     return RedirectToAction("TrialBooked");

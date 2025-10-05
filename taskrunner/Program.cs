@@ -76,15 +76,14 @@ namespace SCJ.Booking.TaskRunner
 
             if (configuration["ConnectionString"] != null)
             {
-                connectionString = configuration["ConnectionString"];
+                connectionString = configuration["ConnectionString"] ?? "";
                 provider = ServiceConfig.DataProviderNpgsql;
             }
             else
             {
-                provider = configuration[ServiceConfig.DataProviderKey.Replace("__", ":")];
-                connectionString = configuration[
-                    ServiceConfig.ConnectionStringKey.Replace("__", ":")
-                ];
+                provider = configuration[ServiceConfig.DataProviderKey.Replace("__", ":")] ?? "";
+                connectionString =
+                    configuration[ServiceConfig.ConnectionStringKey.Replace("__", ":")] ?? "";
             }
 
             var applicationDbContext = new ApplicationDbContext(connectionString, provider);

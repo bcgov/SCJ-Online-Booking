@@ -46,7 +46,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
 
         // multiple requested dates for "fair use" lottery
         public List<string> FairUseDates { get; set; }
-        public string TrialBookingId { get; set; }
+        public string LotteryEntryId { get; set; }
         public string RegistryContactNumber { get; set; }
     }
 }

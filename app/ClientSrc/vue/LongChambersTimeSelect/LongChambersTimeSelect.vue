@@ -9,8 +9,8 @@
     <template v-slot:regularBooking>
       <regular-booking
         :dates="availableRegularDates"
-        :trial-length="trialLength"
-        :initial-value="selectedRegularTrialDate"
+        :length="chambersLength"
+        :initial-value="selectedRegularDate"
         hearing-type-name="chambers hearing"
       >
         <template v-slot:noDatesError>
@@ -27,12 +27,12 @@
       <fair-use-booking
         :dates="availableFairUseDates"
         :initial-value="selectedFairUseDateStrings"
-        :max-selection-size="scMaxTrialDateSelections"
-        hearing-type-name="chambers"
+        :max-selection-size="scMaxChambersDateSelections"
+        hearing-type-name="chambers hearing"
       >
         <template v-slot:mobileTabDescription>
-          Request up to {{ scMaxTrialDateSelectionsString }} dates for a chambers starting in the
-          upcoming release of dates.
+          Request up to {{ scMaxChambersDateSelectionsString }} dates for a chambers hearing
+          starting in the upcoming release of dates.
         </template>
 
         <template v-slot:noDatesError>
@@ -45,9 +45,9 @@
 
         <template v-slot:howItWorksDescription>
           <p class="mb-3">
-            <strong>A chambers date is not being booked at this stage.</strong> You are providing
-            your availability for a chambers to start on <strong>one</strong> (out of a maximum of
-            {{ scMaxTrialDateSelectionsString }}) of your requested dates for
+            <strong>A chambers hearing date is not being booked at this stage.</strong> You are
+            providing your availability for a chambers hearing to start on <strong>one</strong> (out
+            of a maximum of {{ scMaxChambersDateSelectionsString }}) of your requested dates for
             <b>{{ bookingPeriodName }}</b
             >.
           </p>
@@ -85,10 +85,18 @@
           <div class="step">
             <span class="number">3</span>
             <div class="description">
-              <h4>If a chambers date is set for your case</h4>
+              <h4>If a chambers hearing date is set for your case</h4>
               <p>
-                You must file your Notice of Chambers within 30 days of receiving the confirmation
-                email in order to confirm the chambers date.
+                You must file your court documents according to the <em>Supreme Court Rules</em> for
+                your particular application or petition. Please visit
+                <a
+                  target="_blank"
+                  rel="noopener"
+                  href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/"
+                >
+                  Supreme Court Act, Rules and Forms</a
+                >
+                for more information.
               </p>
             </div>
           </div>
@@ -102,8 +110,10 @@
         </template>
 
         <template v-slot:dateSelectionSectionHeader>
-          Request chambers start dates for {{ sessionInfoBookingLocationName }} (Chambers length:
-          {{ trialLength }} {{ trialLength == 1 ? "day" : "days" }})
+          Request chambers hearing start dates for {{ sessionInfoBookingLocationName }} ({{
+            chambersLength
+          }}
+          {{ chambersLength == 1 ? "day" : "days" }})
         </template>
 
         <template v-slot:dateSelectionHeader="{ maxSelectionSize }">
@@ -117,7 +127,7 @@
     </template>
 
     <template v-slot:fairUseTabDescription>
-      Request up to {{ scMaxTrialDateSelectionsString }} dates for a chambers starting in the
+      Request up to {{ scMaxChambersDateSelectionsString }} dates for a chambers starting in the
       upcoming release of dates.
     </template>
 
@@ -197,12 +207,12 @@ export default {
       type: String,
       required: true,
     },
-    scMaxTrialDateSelections: {
+    scMaxChambersDateSelections: {
       type: Number,
       required: false,
       default: 0,
     },
-    scMaxTrialDateSelectionsString: {
+    scMaxChambersDateSelectionsString: {
       type: String,
       required: false,
       default: "",
@@ -211,7 +221,7 @@ export default {
       type: Array,
       required: true,
     },
-    selectedRegularTrialDate: {
+    selectedRegularDate: {
       type: String,
       required: true,
     },
@@ -219,7 +229,7 @@ export default {
       type: String,
       required: true,
     },
-    trialLength: {
+    chambersLength: {
       type: Number,
       required: true,
     },

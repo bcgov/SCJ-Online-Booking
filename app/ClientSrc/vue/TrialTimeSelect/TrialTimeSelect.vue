@@ -7,7 +7,7 @@
     <template v-slot:regularBooking>
       <regular-booking
         :dates="availableRegularDates"
-        :trial-length="trialLength"
+        :length="trialLength"
         :initial-value="selectedRegularTrialDate"
       >
         <template v-slot:noDatesError>

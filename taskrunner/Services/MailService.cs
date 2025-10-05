@@ -31,7 +31,7 @@ namespace SCJ.Booking.TaskRunner.Services
         {
             if (_isLocalDevEnvironment)
             {
-                var fromEmail = _configuration["SENDGRID_FROM_EMAIL"];
+                var fromEmail = _configuration["SENDGRID_FROM_EMAIL"] ?? "";
                 await SendGridSendEmail(fromEmail, email.ToEmail, email.Subject, email.Body);
             }
             else

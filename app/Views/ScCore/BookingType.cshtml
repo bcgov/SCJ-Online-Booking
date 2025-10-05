@@ -221,13 +221,13 @@
                             be held?
                         </label>
 
-                        <select asp-for="TrialLocationRegistryId" asp-items="SelectListService.SupremeLocations"
+                        <select asp-for="AlternateLocationRegistryId" asp-items="SelectListService.SupremeLocations"
                             class="form-control TrialLocation" id="TrialLocation">
                             <option value="-1">-- Pick a registry --</option>
                         </select>
 
                         <div>
-                            <span asp-validation-for="TrialLocationRegistryId" class="text-danger"></span>
+                            <span asp-validation-for="AlternateLocationRegistryId" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
