@@ -35,7 +35,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = StartDate
+                StartDate = StartDate,
+                HearingTypeId = 9001
             },
             new()
             {
@@ -49,7 +50,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -63,7 +65,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = StartDate
+                StartDate = StartDate,
+                HearingTypeId = 9001
             },
             new()
             {
@@ -77,7 +80,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = StartDate
+                StartDate = StartDate,
+                HearingTypeId = 9001
             },
             new()
             {
@@ -91,7 +95,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -105,7 +110,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VA",
                 LocationID = 1,
                 LocationName = "Vancouver",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -119,7 +125,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VI",
                 LocationID = 2,
                 LocationName = "Victoria",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -133,7 +140,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "VI",
                 LocationID = 2,
                 LocationName = "Victoria",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -147,7 +155,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "KE",
                 LocationID = 18,
                 LocationName = "Kelowna",
-                StartDate = StartDate
+                StartDate = StartDate,
+                HearingTypeId = 9001
             },
             new()
             {
@@ -161,7 +170,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "KE",
                 LocationID = 18,
                 LocationName = "Kelowna",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -175,7 +185,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = StartDate
+                StartDate = StartDate,
+                HearingTypeId = 9001
             },
             new()
             {
@@ -189,7 +200,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = StartDate
+                StartDate = StartDate,
+                HearingTypeId = 9001
             },
             new()
             {
@@ -203,7 +215,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = StartDate
+                StartDate = StartDate,
+                HearingTypeId = 9001
             },
             new()
             {
@@ -217,7 +230,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -231,7 +245,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             },
             new()
             {
@@ -245,7 +260,8 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                 LocationCode = "FJ",
                 LocationID = 13,
                 LocationName = "Fort St. John",
-                StartDate = DateTime.Now.Date.AddDays(60)
+                StartDate = DateTime.Now.Date.AddDays(60),
+                HearingTypeId = 9001
             }
         };
     }

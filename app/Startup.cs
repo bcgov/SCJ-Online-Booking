@@ -234,7 +234,7 @@ namespace SCJ.Booking.MVC
 
             //services
             services.AddTransient<ScCoreService>();
-            services.AddTransient<ScFairBookingService>();
+            services.AddTransient<ScLotteryEnabledBookingService>();
             services.AddTransient<ScConferenceBookingService>();
             services.AddTransient<CoaBookingService>();
             services.AddTransient<SelectListService>();
