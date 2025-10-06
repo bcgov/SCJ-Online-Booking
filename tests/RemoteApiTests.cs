@@ -1,5 +1,10 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using DotEnv.Core;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.Configuration;
+using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Xunit;
 
@@ -24,7 +29,7 @@ namespace SCJ.Booking.UnitTest
         private readonly IOnlineBooking _soapClient;
 
         [Fact]
-        public async System.Threading.Tasks.Task AvailableDatesByLocation()
+        public async Task AvailableDatesByLocation()
         {
             const int vancouver = 1;
             const int victoria = 2;
@@ -48,7 +53,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task BookingHearingFail()
+        public async Task BookingHearingFail()
         {
             // this booking will fail because the date is too close in the future
 
@@ -71,7 +76,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task BookingHearingSuccess()
+        public async Task BookingHearingSuccess()
         {
             const int trialManagementConference = 9090;
 
@@ -92,7 +97,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CaseNumberInvalid()
+        public async Task CaseNumberInvalid()
         {
             CourtFile[] searchResults = await _soapClient.scCaseNumberValidAsync("VAM14761");
 
@@ -101,7 +106,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CaseNumberValid()
+        public async Task CaseNumberValid()
         {
             CourtFile[] searchResults = await _soapClient.scCaseNumberValidAsync("KEM111");
 
@@ -109,7 +114,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task GetLocations()
+        public async Task GetLocations()
         {
             Location[] locations = await _soapClient.scGetLocationsAsync();
 
@@ -117,7 +122,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CoACaseNumberValidAsync_Civil()
+        public async Task CoACaseNumberValidAsync_Civil()
         {
             COACaseList result = await _soapClient.coaCaseNumberValidAsync("CA39029");
             Assert.NotNull(result);
@@ -126,7 +131,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CoACaseNumberValidAsync_Criminal()
+        public async Task CoACaseNumberValidAsync_Criminal()
         {
             COACaseList result = await _soapClient.coaCaseNumberValidAsync("CA42024");
             Assert.NotNull(result);
@@ -135,7 +140,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CoACaseNumberValidAsync_Invalid()
+        public async Task CoACaseNumberValidAsync_Invalid()
         {
             COACaseList result = await _soapClient.coaCaseNumberValidAsync("12345");
             Assert.NotNull(result);
@@ -144,7 +149,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task COAAvailableDatesAsync()
+        public async Task COAAvailableDatesAsync()
         {
             CoAAvailableDates result = await _soapClient.coaAvailableAppealDatesAsync();
             Assert.NotNull(result);
@@ -152,7 +157,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CoAQueueHearingAsync()
+        public async Task CoAQueueHearingAsync()
         {
             // civil case
             // case number = "CA39029"
@@ -187,7 +192,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CoAChambersApplicationsListAsync()
+        public async Task CoAChambersApplicationsListAsync()
         {
             // types: Civil, Criminal
             // 255 is the maximum character limit for the definition
@@ -201,7 +206,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CoAChambersQueueHearingAsync()
+        public async Task CoAChambersQueueHearingAsync()
         {
             // "Fail - Booking could not be completed. Please contact scheduling or select a different date/time."
             // "Success - Hearing Booked"
@@ -225,21 +230,21 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task CoAAvailableDatesChambersAsync()
+        public async Task CoAAvailableDatesChambersAsync()
         {
             var result = await _soapClient.coaAvailableCHDatesAsync();
             Assert.True(result.AvailableDates.Any());
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task GetAvailableBookingTypesAsync()
+        public async Task GetAvailableBookingTypesAsync()
         {
             var result = await _soapClient.scGetAvailableBookingTypesAsync();
             Assert.True(result.Length > 0);
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task BookTrialHearingAsync()
+        public async Task BookTrialHearingAsync()
         {
             BookTrialHearingInfo bookingInfo =
                 new()
@@ -259,7 +264,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task AvailableTrialBookingFormulasByLocationAsync()
+        public async Task AvailableTrialBookingFormulasByLocationAsync()
         {
             var result = await _soapClient.scAvailableFormulasByHearingTypeAndLocationAsync(
                 "",
@@ -271,7 +276,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task AvailableTrialDatesByLocationAsync_Regular()
+        public async Task AvailableTrialDatesByLocationAsync_Regular()
         {
             AvailableTrialDatesRequestInfo regular =
                 new()
@@ -289,7 +294,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task AvailableTrialDatesByLocationAsync_FairUse()
+        public async Task AvailableTrialDatesByLocationAsync_FairUse()
         {
             AvailableTrialDatesRequestInfo fairUse =
                 new()
@@ -304,6 +309,33 @@ namespace SCJ.Booking.UnitTest
                 };
             var result = await _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(fairUse);
             Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
+        }
+
+        [Fact]
+        public async Task GetLongChambersSubTypes()
+        {
+            var result = await _soapClient.scCHHearingSubTypeAsync();
+            Assert.True(result.Length > 0);
+        }
+
+        [Fact]
+        public async Task BookLongChambersHearingAsync()
+        {
+            BookingSCCHHearingInfo hearingInfo =
+                new()
+                {
+                    HearingDate = new DateTime(2025, 6, 22),
+                    HearingLength = 30,
+                    HearingTypeId = 9012,
+                    LocationID = 1,
+                    RequestedBy = "John Smith",
+                    BookingLocationID = 41,
+                    CEIS_Physical_File_ID = 3879m,
+                    CourtClass = "E",
+                    FormulaType = "Regular"
+                };
+            var result = await _soapClient.scCHBookHearingAsync(hearingInfo);
+            Assert.StartsWith("success", result.bookingResult, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

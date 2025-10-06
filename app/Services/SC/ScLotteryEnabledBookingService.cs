@@ -18,7 +18,7 @@ using Serilog;
 
 namespace SCJ.Booking.MVC.Services.SC
 {
-    public class ScFairBookingService
+    public class ScLotteryEnabledBookingService
     {
         public readonly bool IsLocalDevEnvironment;
 
@@ -32,7 +32,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly ApplicationDbContext _dbContext;
 
         //Constructor
-        public ScFairBookingService(
+        public ScLotteryEnabledBookingService(
             ApplicationDbContext dbContext,
             IConfiguration configuration,
             SessionService sessionService,
@@ -367,7 +367,8 @@ namespace SCJ.Booking.MVC.Services.SC
                     FormulaType = formulaType,
                     StartDate = formula.StartDate,
                     EndDate = formula.EndDate,
-                    HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1)
+                    HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
+                    HearingTypeId = bookingInfo.HearingTypeId
                 };
 
             AvailableTrialDatesResult availableDates =
