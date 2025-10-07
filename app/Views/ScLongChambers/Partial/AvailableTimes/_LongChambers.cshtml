@@ -27,7 +27,7 @@
     bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value
     < DateTime.Now);
 
-    int chambersLength = Model.SessionInfo.EstimatedChambersLengthDays ?? 0;
+    int chambersLength = Model.SessionInfo.BookingLength ?? 0;
     int maxChambersDateSelections = ScGeneral.ScMaxChambersDateSelections;
     string scMaxChambersDateSelectionsString = ScGeneral.ScMaxChambersDateSelectionsString;
 }
@@ -48,7 +48,8 @@
             sc-max-chambers-date-selections-string="@scMaxChambersDateSelectionsString"
             :selected-fair-use-date-strings='@Html.Raw(selectedFairUseDateStrings)'
             selected-regular-date="@selectedRegularDate"
-            session-info-booking-location-name="@Model.SessionInfo.BookingLocationName" :chambers-length="@chambersLength" />
+            session-info-booking-location-name="@Model.SessionInfo.BookingLocationName"
+            :chambers-length="@chambersLength" />
     </div>
 
     <div class="content-pad bg-white">

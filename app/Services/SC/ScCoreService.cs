@@ -139,8 +139,8 @@ namespace SCJ.Booking.MVC.Services.SC
             {
                 HearingTypeId = bookingInfo.HearingTypeId,
                 HearingTypeName = bookingInfo.HearingTypeName,
-                EstimatedTrialLength = bookingInfo.EstimatedTrialLength,
-                EstimatedChambersLengthDays = bookingInfo.EstimatedChambersLengthDays,
+                EstimatedTrialLength = bookingInfo.BookingLength,
+                EstimatedChambersLength = bookingInfo.BookingLength,
                 ChambersHearingSubType = bookingInfo.ChambersHearingSubType,
                 IsHomeRegistry = bookingInfo.IsHomeRegistry,
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
@@ -162,7 +162,7 @@ namespace SCJ.Booking.MVC.Services.SC
             {
                 bookingInfo.IsHomeRegistry = model.IsHomeRegistry;
                 bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled;
-                bookingInfo.EstimatedTrialLength = model.EstimatedTrialLength;
+                bookingInfo.BookingLength = model.EstimatedTrialLength;
 
                 if (model.IsHomeRegistry is true)
                 {
@@ -195,7 +195,7 @@ namespace SCJ.Booking.MVC.Services.SC
             {
                 bookingInfo.IsHomeRegistry = model.IsHomeRegistry;
                 bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled;
-                bookingInfo.EstimatedChambersLengthDays = model.EstimatedChambersLengthDays;
+                bookingInfo.BookingLength = model.EstimatedChambersLength;
                 bookingInfo.ChambersHearingSubType = model.ChambersHearingSubType;
 
                 if (model.IsHomeRegistry is true)

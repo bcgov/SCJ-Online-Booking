@@ -50,7 +50,7 @@
                 <h2>Chambers Hearing Details</h2>
 
                 @{
-                    var chambersLength = bookingInfo.EstimatedChambersLengthDays;
+                    var chambersLength = bookingInfo.BookingLength;
                     var startDate = bookingInfo.SelectedRegularDate?.ToString("dddd MMMM d, yyyy") ?? "";
                 }
                 <p>Requested days: @chambersLength</p>

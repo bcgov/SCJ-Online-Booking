@@ -22,9 +22,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             }
 
             TrialLength =
-                bookingInfo.EstimatedTrialLength == 1
-                    ? "1 day"
-                    : $"{bookingInfo.EstimatedTrialLength} days";
+                bookingInfo.BookingLength == 1 ? "1 day" : $"{bookingInfo.BookingLength} days";
         }
 
         public string EmailAddress { get; set; }

@@ -157,13 +157,10 @@ namespace SCJ.Booking.MVC.Controllers
             // Extra fields for "Trial" booking type
             if (model.HearingTypeId == ScHearingType.LONG_CHAMBERS)
             {
-                if (
-                    model.EstimatedChambersLengthDays == null
-                    || model.EstimatedChambersLengthDays == 0
-                )
+                if (model.EstimatedChambersLength == null || model.EstimatedChambersLength == 0)
                 {
                     ModelState.AddModelError(
-                        "EstimatedChambersLengthDays",
+                        "EstimatedChambersLength",
                         "Provide the estimated length of your chambers hearing."
                     );
                 }

@@ -233,7 +233,7 @@ namespace SCJ.Booking.MVC.Services.SC
                         CEIS_Physical_File_ID = bookingInfo.PhysicalFileId,
                         CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
                         FormulaType = ScFormulaType.RegularBooking,
-                        HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
+                        HearingLength = bookingInfo.BookingLength.GetValueOrDefault(1),
                         HearingType = bookingInfo.HearingTypeId,
                         LocationID = bookingInfo.AlternateLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
@@ -367,7 +367,7 @@ namespace SCJ.Booking.MVC.Services.SC
                     FormulaType = formulaType,
                     StartDate = formula.StartDate,
                     EndDate = formula.EndDate,
-                    HearingLength = bookingInfo.EstimatedTrialLength.GetValueOrDefault(1),
+                    HearingLength = bookingInfo.BookingLength.GetValueOrDefault(1),
                     HearingTypeId = bookingInfo.HearingTypeId
                 };
 

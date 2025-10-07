@@ -27,7 +27,7 @@
     bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value
     < DateTime.Now);
 
-    int trialLength = Model.SessionInfo.EstimatedTrialLength ?? 0;
+    int trialLength = Model.SessionInfo.BookingLength ?? 0;
     int scMaxTrialDateSelections = ScGeneral.ScMaxTrialDateSelections;
     string scMaxTrialDateSelectionsString = ScGeneral.ScMaxTrialDateSelectionsString;
 }

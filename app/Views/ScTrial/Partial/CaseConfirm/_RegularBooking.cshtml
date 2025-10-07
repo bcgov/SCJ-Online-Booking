@@ -4,8 +4,8 @@
 
 <div class="mb-4">
     <p>
-        Trial length: @Model.SessionInfo.EstimatedTrialLength
-        @(Model.SessionInfo.EstimatedTrialLength == 1 ? "day" : "days")
+        Trial length: @Model.SessionInfo.BookingLength
+        @(Model.SessionInfo.BookingLength == 1 ? "day" : "days")
     </p>
 
     <p>Starting: @Model.SelectedRegularDate?.ToString("dddd MMMM d, yyyy")</p>

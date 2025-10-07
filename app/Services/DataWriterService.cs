@@ -73,9 +73,9 @@ namespace SCJ.Booking.MVC.Services
             }
 
             if (
-                !bookingInfo.EstimatedTrialLength.HasValue
-                || bookingInfo.EstimatedTrialLength.Value < 1
-                || bookingInfo.EstimatedTrialLength.Value > 40
+                !bookingInfo.BookingLength.HasValue
+                || bookingInfo.BookingLength.Value < 1
+                || bookingInfo.BookingLength.Value > 40
             )
             {
                 throw new InvalidOperationException(
@@ -115,7 +115,7 @@ namespace SCJ.Booking.MVC.Services
                 LocationId = bookingInfo.AlternateLocationRegistryId,
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
-                HearingLength = bookingInfo.EstimatedTrialLength.Value,
+                HearingLength = bookingInfo.BookingLength.Value,
                 LotteryStartDate = lotteryStartDate,
                 LotteryEntryId = bookingInfo.LotteryEntryId
             };

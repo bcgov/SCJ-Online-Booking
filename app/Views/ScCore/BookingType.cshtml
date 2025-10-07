@@ -93,18 +93,18 @@
                             </div>
                         </div>
 
-                        <label for="EstimatedChambersLengthDays" class="form-section-label mt-5">
+                        <label for="EstimatedChambersLength" class="form-section-label mt-5">
                             Requested days of chambers hearing
                         </label>
                         <div>
-                            <select asp-for="EstimatedChambersLengthDays"
+                            <select asp-for="EstimatedChambersLength"
                                 class="mr-2 form-control d-inline-block EstimatedChambersLength"
                                 asp-items="SelectListService.ChambersDays">
                                 <option value=""></option>
                             </select>
                             <span>day(s)</span>
                             <div class="mt-2">
-                                <span asp-validation-for="EstimatedChambersLengthDays" class="text-danger"></span>
+                                <span asp-validation-for="EstimatedChambersLength" class="text-danger"></span>
                             </div>
                         </div>
 
