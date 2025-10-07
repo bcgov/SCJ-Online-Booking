@@ -89,7 +89,10 @@ namespace SCJ.Booking.MVC.Services.SC
             }
 
             Dictionary<int, string> locationList = GetLocationsAsync()
-                .Result.Select(x => new { x.locationID, x.locationName })
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult()
+                .Select(x => new { x.locationID, x.locationName })
                 .Distinct()
                 .OrderBy(x => x.locationName)
                 .ToDictionary(x => x.locationID, x => x.locationName);
@@ -205,7 +208,11 @@ namespace SCJ.Booking.MVC.Services.SC
             }
 
             IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
-            var subtypes = client.scCHHearingSubTypeAsync().Result;
+            var subtypes = client
+                .scCHHearingSubTypeAsync()
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
             var result = new OrderedDictionary();
 
             // 9012 first
