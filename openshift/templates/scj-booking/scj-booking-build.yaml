@@ -81,6 +81,8 @@ objects:
               value: "true"
             - name: DOTNET_TOOLS
               value: ${DOTNET_TOOLS}
+            - name: USE_FAKE_API
+              value: ${USE_FAKE_API}
       output:
         to:
           kind: ImageStreamTag
@@ -122,11 +124,11 @@ objects:
             kind: DockerImage
             name: ${DOTNET_RUNTIME_DOCKER_IMAGE}
       triggers:
-          - type: ImageChange
-            imageChange:
-              from:
-                kind: ImageStreamTag
-                name: ${NAME}-build:latest
+        - type: ImageChange
+          imageChange:
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}-build:latest
       resources:
         limits:
           cpu: '2'
@@ -164,11 +166,11 @@ objects:
             kind: DockerImage
             name: ${DOTNET_RUNTIME_DOCKER_IMAGE}
       triggers:
-          - type: ImageChange
-            imageChange:
-              from:
-                kind: ImageStreamTag
-                name: ${NAME}-build:latest
+        - type: ImageChange
+          imageChange:
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}-build:latest
       resources:
         limits:
           cpu: '2'
@@ -241,6 +243,9 @@ parameters:
   - name: DOTNET_RESTORE_SOURCES
     displayName: NuGet package sources
     description: Set this to override the NuGet.config sources.
+  - name: USE_FAKE_API
+    description: Set this to 'true' to use the fake API implementation for unit tests instead of the real one.
+    value: "true"
   - name: GITHUB_WEBHOOK_SECRET
     displayName: GitHub Webhook Secret
     description: A secret string used to configure the GitHub webhook.
