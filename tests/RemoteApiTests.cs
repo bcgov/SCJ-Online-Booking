@@ -1,9 +1,7 @@
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using DotEnv.Core;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
