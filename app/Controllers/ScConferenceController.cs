@@ -100,7 +100,7 @@ namespace SCJ.Booking.MVC.Controllers
                 Date = bookingInfo.FormattedConferenceDate,
                 Time = bookingInfo.FormattedConferenceTime,
                 TrialLocationName = locationName,
-                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
+                SelectedRegularTrialDate = bookingInfo.SelectedRegularDate,
                 FullDate = bookingInfo.SelectedConferenceDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone,

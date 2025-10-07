@@ -97,7 +97,7 @@ namespace SCJ.Booking.MVC.Controllers
             )
             {
                 ModelState.AddModelError(
-                    "SelectedFairUseTrialDates",
+                    "SelectedFairUseDates",
                     "Please choose from the available dates."
                 );
             }
@@ -162,7 +162,7 @@ namespace SCJ.Booking.MVC.Controllers
                 Date = bookingInfo.FormattedConferenceDate,
                 Time = bookingInfo.FormattedConferenceTime,
                 TrialLocationName = locationName,
-                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
+                SelectedRegularTrialDate = bookingInfo.SelectedRegularDate,
                 FullDate = bookingInfo.SelectedConferenceDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone,

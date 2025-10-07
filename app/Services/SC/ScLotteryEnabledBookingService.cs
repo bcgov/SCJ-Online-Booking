@@ -71,8 +71,8 @@ namespace SCJ.Booking.MVC.Services.SC
                 HearingTypeId = bookingInfo.HearingTypeId,
                 AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
                 ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
-                SelectedRegularDate = bookingInfo.SelectedRegularTrialDate,
-                SelectedFairUseDates = bookingInfo.SelectedFairUseTrialDates,
+                SelectedRegularDate = bookingInfo.SelectedRegularDate,
+                SelectedFairUseDates = bookingInfo.SelectedFairUseDates,
                 SessionInfo = bookingInfo
             };
 
@@ -123,8 +123,8 @@ namespace SCJ.Booking.MVC.Services.SC
         {
             var bookingInfo = _session.ScBookingInfo;
 
-            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularDate;
-            bookingInfo.SelectedFairUseTrialDates = model
+            bookingInfo.SelectedRegularDate = model.SelectedRegularDate;
+            bookingInfo.SelectedFairUseDates = model
                 .SelectedFairUseDates.Take(ScGeneral.ScMaxTrialDateSelections)
                 .ToList();
             bookingInfo.FormulaType = model.FormulaType;
@@ -213,8 +213,8 @@ namespace SCJ.Booking.MVC.Services.SC
 
                 // check if selected date exists in the available dates
                 bool dateAvailable =
-                    bookingInfo.SelectedRegularTrialDate.HasValue
-                    && availableTrialDates.Contains(bookingInfo.SelectedRegularTrialDate.Value);
+                    bookingInfo.SelectedRegularDate.HasValue
+                    && availableTrialDates.Contains(bookingInfo.SelectedRegularDate.Value);
 
                 // throw an exception if the date is no longer available
                 if (!dateAvailable)
@@ -236,7 +236,7 @@ namespace SCJ.Booking.MVC.Services.SC
                         HearingType = bookingInfo.HearingTypeId,
                         LocationID = bookingInfo.AlternateLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
-                        HearingDate = bookingInfo.SelectedRegularTrialDate.Value,
+                        HearingDate = bookingInfo.SelectedRegularDate.Value,
                         SCJOB_Trial_Booking_ID = lotteryEntryId,
                         SCJOB_Trial_Booking_Date = DateTime.Now
                     };
@@ -271,9 +271,7 @@ namespace SCJ.Booking.MVC.Services.SC
                     // send email
                     string emailBody = await GetTrialEmailBodyAsync();
                     string fileNumber = bookingInfo.FullCaseNumber;
-                    string startDate = bookingInfo.SelectedRegularTrialDate?.ToString(
-                        "MMMM d, yyyy"
-                    );
+                    string startDate = bookingInfo.SelectedRegularDate?.ToString("MMMM d, yyyy");
                     string emailSubject = $"Trial booking for {fileNumber} starting on {startDate}";
                     await _mailService.QueueEmailAsync(
                         "SC",

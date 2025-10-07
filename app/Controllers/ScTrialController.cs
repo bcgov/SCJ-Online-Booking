@@ -81,15 +81,6 @@ namespace SCJ.Booking.MVC.Controllers
             var bookingInfo = _session.ScBookingInfo;
             model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
 
-            // Require ContainerId value for non-trial hearing types
-            if (model.HearingTypeId != ScHearingType.TRIAL && model.ContainerId == -1)
-            {
-                ModelState.AddModelError(
-                    "ContainerId",
-                    "Please choose from one of the available times."
-                );
-            }
-
             if (
                 model.FormulaType == ScFormulaType.RegularBooking
                 && !model.SelectedRegularDate.HasValue
@@ -106,7 +97,7 @@ namespace SCJ.Booking.MVC.Controllers
             )
             {
                 ModelState.AddModelError(
-                    "SelectedFairUseTrialDates",
+                    "SelectedFairUseDates",
                     "Please choose from the available dates."
                 );
             }
@@ -173,7 +164,7 @@ namespace SCJ.Booking.MVC.Controllers
                 Date = bookingInfo.FormattedConferenceDate,
                 Time = bookingInfo.FormattedConferenceTime,
                 TrialLocationName = locationName,
-                SelectedRegularTrialDate = bookingInfo.SelectedRegularTrialDate,
+                SelectedRegularTrialDate = bookingInfo.SelectedRegularDate,
                 FullDate = bookingInfo.SelectedConferenceDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone,

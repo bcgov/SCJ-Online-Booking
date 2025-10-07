@@ -11,16 +11,14 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         {
             // format fair use dates
             FairUseDates = bookingInfo
-                .SelectedFairUseTrialDates.Select(date => date.ToString("dddd MMMM d, yyyy"))
+                .SelectedFairUseDates.Select(date => date.ToString("dddd MMMM d, yyyy"))
                 .ToList();
 
             // format regular use date
             RegularDate = "";
-            if (bookingInfo.SelectedRegularTrialDate.HasValue)
+            if (bookingInfo.SelectedRegularDate.HasValue)
             {
-                RegularDate = bookingInfo.SelectedRegularTrialDate.Value.ToString(
-                    "dddd MMMM d, yyyy"
-                );
+                RegularDate = bookingInfo.SelectedRegularDate.Value.ToString("dddd MMMM d, yyyy");
             }
 
             TrialLength =

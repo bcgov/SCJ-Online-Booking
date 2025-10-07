@@ -31,8 +31,8 @@ namespace SCJ.Booking.MVC.Utils
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
 
-        public DateTime? SelectedRegularTrialDate { get; set; }
-        public List<DateTime> SelectedFairUseTrialDates { get; set; } = new List<DateTime>() { };
+        public DateTime? SelectedRegularDate { get; set; }
+        public List<DateTime> SelectedFairUseDates { get; set; } = new List<DateTime>() { };
 
         //The result string returned by the SOAP API when the booking was booked
         public string ApiBookingResultMessage { get; set; }

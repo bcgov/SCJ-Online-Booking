@@ -2,7 +2,7 @@
 
 @{
     // convert DateTimes to formatted strings
-    List<string> formattedDates = Model.SessionInfo.SelectedFairUseTrialDates
+    List<string> formattedDates = Model.SessionInfo.SelectedFairUseDates
     .Select(date => date.ToString("dddd MMMM d, yyyy"))
     .ToList();
 }

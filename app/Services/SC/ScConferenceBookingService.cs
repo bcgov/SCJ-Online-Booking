@@ -93,8 +93,8 @@ namespace SCJ.Booking.MVC.Services.SC
             }
 
             bookingInfo.SelectedConferenceDate = model.ParsedConferenceDate;
-            bookingInfo.SelectedRegularTrialDate = model.SelectedRegularDate;
-            bookingInfo.SelectedFairUseTrialDates = model
+            bookingInfo.SelectedRegularDate = model.SelectedRegularDate;
+            bookingInfo.SelectedFairUseDates = model
                 .SelectedFairUseDates.Take(ScGeneral.ScMaxTrialDateSelections)
                 .ToList();
             bookingInfo.FormulaType = model.FormulaType;

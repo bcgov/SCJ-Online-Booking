@@ -117,7 +117,7 @@
                   <i class="fas fa-grip-horizontal" />
                 </div>
                 <div class="label-button selected text-center m-0">
-                  <input type="hidden" :value="isoDate" name="SelectedFairUseTrialDates" />
+                  <input type="hidden" :value="isoDate" name="SelectedFairUseDates" />
                   <span class="font-weight-normal">{{ formatIsoDate(isoDate).dayOfWeek }}</span>
                   <strong>&nbsp;{{ formatIsoDate(isoDate).formattedDate }}</strong>
                 </div>

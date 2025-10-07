@@ -51,7 +51,7 @@
 
                 @{
                     var chambersLength = bookingInfo.EstimatedChambersLengthDays;
-                    var startDate = bookingInfo.SelectedRegularTrialDate?.ToString("dddd MMMM d, yyyy") ?? "";
+                    var startDate = bookingInfo.SelectedRegularDate?.ToString("dddd MMMM d, yyyy") ?? "";
                 }
                 <p>Requested days: @chambersLength</p>
                 <p>Starting: @startDate</p>

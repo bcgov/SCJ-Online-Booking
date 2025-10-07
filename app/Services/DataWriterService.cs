@@ -121,7 +121,7 @@ namespace SCJ.Booking.MVC.Services
             };
 
             int selectionRank = 1;
-            foreach (var date in bookingInfo.SelectedFairUseTrialDates)
+            foreach (var date in bookingInfo.SelectedFairUseDates)
             {
                 bookingRequest.DateSelections.Add(
                     new ScLotteryDateSelection { Rank = selectionRank, TrialStartDate = date }
