@@ -87,7 +87,7 @@ namespace SCJ.Booking.MVC.Controllers
             )
             {
                 ModelState.AddModelError(
-                    "SelectedRegularTrialDate",
+                    "SelectedRegularDate",
                     "Please choose from one of the available dates."
                 );
             }
@@ -164,7 +164,7 @@ namespace SCJ.Booking.MVC.Controllers
                 Date = bookingInfo.FormattedConferenceDate,
                 Time = bookingInfo.FormattedConferenceTime,
                 TrialLocationName = locationName,
-                SelectedRegularTrialDate = bookingInfo.SelectedRegularDate,
+                SelectedRegularDate = bookingInfo.SelectedRegularDate,
                 FullDate = bookingInfo.SelectedConferenceDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone,
@@ -205,7 +205,7 @@ namespace SCJ.Booking.MVC.Controllers
             catch (InvalidOperationException ex)
             {
                 string errorMessage = ex.Message;
-                ModelState.AddModelError("SelectedRegularTrialDate", errorMessage);
+                ModelState.AddModelError("SelectedRegularDate", errorMessage);
                 model.SessionInfo = bookingInfo;
                 return View(model);
             }

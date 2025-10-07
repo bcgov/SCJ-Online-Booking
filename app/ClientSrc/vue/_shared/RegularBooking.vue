@@ -19,7 +19,7 @@
         :key="date.isoDate"
       >
         <input
-          name="SelectedRegularTrialDate"
+          name="SelectedRegularDate"
           class="d-none"
           type="radio"
           :value="date.isoDate"

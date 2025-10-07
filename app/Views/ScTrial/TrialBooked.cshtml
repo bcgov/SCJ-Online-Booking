@@ -46,7 +46,7 @@
                 @{
                     var trialLength = bookingInfo.EstimatedTrialLength;
 
-                    var trialDate = bookingInfo.SelectedRegularTrialDate?.ToString("dddd MMMM d, yyyy") ?? "";
+                    var trialDate = bookingInfo.SelectedRegularDate?.ToString("dddd MMMM d, yyyy") ?? "";
                 }
                 <p>Trial length: @trialLength @(trialLength == 1 ? "day" : "days")</p>
 
