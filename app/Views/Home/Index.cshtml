@@ -16,8 +16,8 @@
     <div class="col-12 col-lg-8 mx-auto">
         <h1>Book your trial, chambers and hearing online</h1>
         <p>
-            This online tool allows you to book a trial and certain hearings with the
-            <b>Supreme Court</b> and <b>Court of Appeal</b>
+            This online tool allows you to book a trial, chambers and certain hearings
+            with the <b>Supreme Court</b> and <b>Court of Appeal</b>
             at your convenience without waiting in a queue on the phone.
         </p>
     </div>
@@ -40,40 +40,42 @@
                     <h2 class="text-center">Supreme Court</h2>
 
 
-                        <p>
-                            You can now book the following hearings online
-                        </p>
+                    <p>
+                        You can now book the following hearings online
+                    </p>
 
-                        <ul>
-                            @if (Model.AvailableBookingTypes.Contains("Trials")) {
-                                <li>Trials</li>
+                    <ul>
+                        @if (Model.AvailableBookingTypes.Contains("Trials"))
+                        {
+                            <li>Trial</li>
+                        }
+
+                        @if (Model.AvailableBookingTypes.Contains("Chambers"))
+                        {
+                            <li>Chambers</li>
+                        }
+
+                        @{
+                            var specialTypes = new[] { "Trials", "Chambers" };
+                            var otherTypes = Model.AvailableBookingTypes
+                            .Where(bt => !specialTypes.Contains(bt))
+                            .Select(bt => bt + "s")
+                            .OrderBy(bt => bt)
+                            .ToList();
+
+                            string formattedList = "";
+                            if (otherTypes.Count == 1)
+                            {
+                                formattedList = otherTypes[0];
                             }
-
-                            @if (Model.AvailableBookingTypes.Contains("Chambers")) {
-                                <li>Chambers</li>
+                            else if (otherTypes.Count > 1)
+                            {
+                                formattedList = string.Join(", ", otherTypes.Take(otherTypes.Count - 1))
+                                + $", and {otherTypes.Last()}";
                             }
-
-                            @{
-                                var specialTypes = new[] { "Trials", "Chambers" };
-                                var otherTypes = Model.AvailableBookingTypes
-                                    .Where(bt => !specialTypes.Contains(bt))
-                                    .Select(bt => bt + "s")
-                                    .OrderBy(bt => bt)
-                                    .ToList();
-
-                                string formattedList = "";
-                                if (otherTypes.Count == 1)
-                                {
-                                    formattedList = otherTypes[0];
-                                }
-                                else if (otherTypes.Count > 1)
-                                {
-                                    formattedList = string.Join(", ", otherTypes.Take(otherTypes.Count - 1))
-                                        + $", and {otherTypes.Last()}";
-                                }
-                            }
-                            <li>@formattedList</li>
-                        </ul>
+                        }
+                        <li>@formattedList</li>
+                    </ul>
 
                 </div>
                 <a class="btn btn-primary btn-block" href="/scjob/booking/sc">Log in</a>

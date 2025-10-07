@@ -6,13 +6,15 @@ using Microsoft.Extensions.Configuration;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace SCJ.Booking.UnitTest
 {
     public class RemoteApiTests
     {
-        public RemoteApiTests()
+        public RemoteApiTests(ITestOutputHelper output)
         {
+            _output = output;
             new EnvLoader().Load();
             var reader = new EnvReader();
             bool useFakeApi = (reader["USE_FAKE_API"] ?? string.Empty).ToLower() == "true";
@@ -31,6 +33,7 @@ namespace SCJ.Booking.UnitTest
         }
 
         private readonly IOnlineBooking _soapClient;
+        private readonly ITestOutputHelper _output;
 
         [Fact]
         public async Task AvailableDatesByLocation()
@@ -291,7 +294,8 @@ namespace SCJ.Booking.UnitTest
                     EndDate = DateTime.Parse("2026/01/31"),
                     HearingLength = 5,
                     FormulaType = "Regular",
-                    LocationID = 1
+                    LocationID = 1,
+                    HearingTypeId = 9001
                 };
             var result = await _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(regular);
             Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
@@ -309,7 +313,8 @@ namespace SCJ.Booking.UnitTest
                     EndDate = DateTime.Parse("2025/08/31"), // these dates come from formulas by location
                     HearingLength = 5,
                     FormulaType = "Fair-Use",
-                    LocationID = 1
+                    LocationID = 1,
+                    HearingTypeId = 9001
                 };
             var result = await _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(fairUse);
             Assert.True(result.AvailableTrialDates.AvailablesDatesInfo.Length > 0);
@@ -340,6 +345,52 @@ namespace SCJ.Booking.UnitTest
                 };
             var result = await _soapClient.scCHBookHearingAsync(hearingInfo);
             Assert.StartsWith("success", result.bookingResult, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // This is mainly used for finding test data, but it also functions as a test
+        [Fact]
+        public async Task GetAllTrialFormulasAndAvailableDatesAsync()
+        {
+            var formulas = await _soapClient.scAvailableFormulasByHearingTypeAndLocationAsync(
+                "",
+                "",
+                ""
+            );
+
+            foreach (var formula in formulas)
+            {
+                if (formula.HearingTypeId == 9012)
+                {
+                    AvailableTrialDatesRequestInfo requestInfo =
+                        new()
+                        {
+                            BookingLocationID = formula.LocationID,
+                            Courtclass = formula.BookingHearingCode == "E" ? "E" : "M",
+                            StartDate = formula.StartDate,
+                            EndDate = formula.EndDate,
+                            HearingLength = 1,
+                            FormulaType = formula.FormulaType,
+                            LocationID = 1, // Vancouver
+                            HearingTypeId = formula.HearingTypeId
+                        };
+                    var datesResult =
+                        await _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(
+                            requestInfo
+                        );
+
+                    _output.WriteLine(
+                        $"Location: {formula.BookingLocationID} ({formula.HearingTypeId}) - {formula.FormulaType} - {formula.StartDate:d} to {formula.EndDate:d}"
+                    );
+                    _output.WriteLine(
+                        $"{formula.FairUseBookingPeriodStartDate} - {formula.FairUseBookingPeriodEndDate}"
+                    );
+                    _output.WriteLine($"{formula.BookingHearingCode}");
+                    _output.WriteLine(
+                        $"Available Dates: {datesResult?.AvailableTrialDates?.AvailablesDatesInfo?.Length}"
+                    );
+                    _output.WriteLine("");
+                }
+            }
         }
     }
 }
