@@ -2,7 +2,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SCJ.Booking.Data.Constants;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
@@ -100,7 +99,6 @@ namespace SCJ.Booking.MVC.Controllers
                 Date = bookingInfo.FormattedConferenceDate,
                 Time = bookingInfo.FormattedConferenceTime,
                 TrialLocationName = locationName,
-                SelectedRegularDate = bookingInfo.SelectedRegularDate,
                 FullDate = bookingInfo.SelectedConferenceDate,
                 EmailAddress = user.Email,
                 Phone = user.Phone,

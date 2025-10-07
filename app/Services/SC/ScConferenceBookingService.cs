@@ -33,9 +33,7 @@ namespace SCJ.Booking.MVC.Services.SC
             ApplicationDbContext dbContext,
             IConfiguration configuration,
             SessionService sessionService,
-            IViewRenderService viewRenderService,
-            ScCacheService scCacheService,
-            ScCoreService coreService
+            IViewRenderService viewRenderService
         )
         {
             //check if this is running on a developer workstation (outside OpenShift)
@@ -93,11 +91,6 @@ namespace SCJ.Booking.MVC.Services.SC
             }
 
             bookingInfo.SelectedConferenceDate = model.ParsedConferenceDate;
-            bookingInfo.SelectedRegularDate = model.SelectedRegularDate;
-            bookingInfo.SelectedFairUseDates = model
-                .SelectedFairUseDates.Take(ScGeneral.ScMaxTrialDateSelections)
-                .ToList();
-            bookingInfo.FormulaType = model.FormulaType;
 
             _session.ScBookingInfo = bookingInfo;
         }

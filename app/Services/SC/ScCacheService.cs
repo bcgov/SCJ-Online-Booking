@@ -169,7 +169,8 @@ namespace SCJ.Booking.MVC.Services.SC
         public async Task<FormulaLocation> GetFormulaLocationAsync(
             string formulaType,
             int locationId,
-            string courtClass
+            string courtClass,
+            int hearingTypeId
         )
         {
             var formulas = await AvailableTrialBookingFormulasByLocationAsync();
@@ -179,6 +180,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 f.FormulaType == formulaType
                 && f.LocationID == locationId
                 && f.BookingHearingCode == courtClass
+                && f.HearingTypeId == hearingTypeId
             );
 
             if (result != null)
@@ -193,6 +195,7 @@ namespace SCJ.Booking.MVC.Services.SC
             return formulas.FirstOrDefault(f =>
                 f.FormulaType == formulaType
                 && f.LocationID == locationId
+                && f.HearingTypeId == hearingTypeId
                 && all.Contains(f.BookingHearingCode)
             );
         }

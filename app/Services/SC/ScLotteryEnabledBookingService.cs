@@ -99,7 +99,8 @@ namespace SCJ.Booking.MVC.Services.SC
             fairUseFormula ??= await _cache.GetFormulaLocationAsync(
                 ScFormulaType.FairUseBooking,
                 bookingInfo.AlternateLocationRegistryId,
-                bookingInfo.SelectedCourtFile?.courtClassCode ?? ""
+                bookingInfo.SelectedCourtFile?.courtClassCode ?? "",
+                bookingInfo.HearingTypeId
             );
 
             // The fair use start/end dates are the period inwhich dates are selected for the lottery
@@ -348,7 +349,8 @@ namespace SCJ.Booking.MVC.Services.SC
             formula ??= await _cache.GetFormulaLocationAsync(
                 formulaType,
                 bookingInfo.AlternateLocationRegistryId,
-                courtClassCode
+                courtClassCode,
+                bookingInfo.HearingTypeId
             );
 
             if (formula == null)

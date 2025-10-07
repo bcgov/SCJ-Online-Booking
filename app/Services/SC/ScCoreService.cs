@@ -182,7 +182,8 @@ namespace SCJ.Booking.MVC.Services.SC
                 FormulaLocation location = await _cache.GetFormulaLocationAsync(
                     bookingInfo.FormulaType,
                     bookingInfo.AlternateLocationRegistryId,
-                    bookingInfo.SelectedCourtFile?.courtClassCode
+                    bookingInfo.SelectedCourtFile?.courtClassCode,
+                    bookingInfo.HearingTypeId
                 );
 
                 if (location is not null)
@@ -215,7 +216,8 @@ namespace SCJ.Booking.MVC.Services.SC
                 FormulaLocation location = await _cache.GetFormulaLocationAsync(
                     bookingInfo.FormulaType,
                     bookingInfo.AlternateLocationRegistryId,
-                    bookingInfo.SelectedCourtFile?.courtClassCode
+                    bookingInfo.SelectedCourtFile?.courtClassCode,
+                    bookingInfo.HearingTypeId
                 );
 
                 if (location is not null)

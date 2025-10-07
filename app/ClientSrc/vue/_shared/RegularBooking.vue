@@ -4,8 +4,12 @@
       You can instantly book a {{ hearingTypeName }} date that is currently available in the system.
     </div>
 
-    <h3 class="mt-0 mb-5">
+    <h3 class="mt-0 mb-5" v-if="hearingTypeName === 'trial'">
       Choose {{ hearingTypeName }} start date (Trial length: {{ lengthDisplay }})
+    </h3>
+
+    <h3 class="mt-0 mb-5" v-if="hearingTypeName !== 'trial'">
+      Choose {{ hearingTypeName }} start date ({{ lengthDisplay }})
     </h3>
 
     <div class="mb-5">

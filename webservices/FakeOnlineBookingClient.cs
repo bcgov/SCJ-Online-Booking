@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using SCJ.Booking.Data.Constants;
 using SCJ.Booking.RemoteAPIs.Fixtures;
 
@@ -195,29 +196,39 @@ namespace SCJ.OnlineBooking
         )
         {
             await Task.Delay(100);
+
+            if (string.IsNullOrEmpty(hearingTypeId))
+            {
+                return ScFormulaLocationsFixture
+                    .Locations(9001)
+                    .Concat(ScFormulaLocationsFixture.Locations(9012))
+                    .ToArray();
+            }
+
             if (string.IsNullOrEmpty(locationID) && string.IsNullOrEmpty(formula))
             {
-                return ScFormulaLocationsFixture.Locations;
+                return ScFormulaLocationsFixture.Locations(int.Parse(hearingTypeId));
             }
 
             if (string.IsNullOrEmpty(locationID))
             {
                 return ScFormulaLocationsFixture
-                    .Locations.Where(l => l.FormulaType == formula)
+                    .Locations(int.Parse(hearingTypeId))
+                    .Where(l => l.FormulaType == formula)
                     .ToArray();
             }
 
             if (string.IsNullOrEmpty(formula))
             {
                 return ScFormulaLocationsFixture
-                    .Locations.Where(l => l.LocationID == int.Parse(locationID))
+                    .Locations(int.Parse(hearingTypeId))
+                    .Where(l => l.LocationID == int.Parse(locationID))
                     .ToArray();
             }
 
             return ScFormulaLocationsFixture
-                .Locations.Where(l =>
-                    l.FormulaType == formula && l.LocationID == int.Parse(locationID)
-                )
+                .Locations(int.Parse(hearingTypeId))
+                .Where(l => l.FormulaType == formula && l.LocationID == int.Parse(locationID))
                 .ToArray();
         }
 
