@@ -266,14 +266,19 @@ namespace SCJ.OnlineBooking
             return ScAvailableBookingTypesFixture.BookingTypes;
         }
 
-        public Task<BookingHearingResult> scCHBookHearingAsync(BookingSCCHHearingInfo bookInfo)
+        public async Task<BookingHearingResult> scCHBookHearingAsync(
+            BookingSCCHHearingInfo bookInfo
+        )
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+            return ScBookingHearingResultFixture.Success;
         }
 
-        public Task<SCCHHearingSubTypeDetails[]> scCHHearingSubTypeAsync()
+        public async Task<SCCHHearingSubTypeDetails[]> scCHHearingSubTypeAsync()
         {
-            throw new NotImplementedException();
+            await Task.Delay(100);
+
+            return ScLongChambersHearingSubTypes.All;
         }
     }
 }

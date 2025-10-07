@@ -16,8 +16,9 @@
         <template v-slot:noDatesError>
           <div class="alert alert-danger" role="alert">
             <i class="fa fa-ban"></i>
-            There are currently no chambers dates available at {{ sessionInfoBookingLocationName }}.
-            Try again at a later time as more dates become available in the system.
+            There are currently no chambers hearing dates available at
+            {{ sessionInfoBookingLocationName }}. Try again at a later time as more dates become
+            available in the system.
           </div>
         </template>
       </regular-booking>
@@ -38,8 +39,8 @@
         <template v-slot:noDatesError>
           <div class="alert alert-danger" role="alert">
             <i class="fa fa-ban"></i>
-            There are no dates set for the upcoming release. You can instantly book a chambers date
-            that is currently available in the system instead.
+            There are no dates set for the upcoming release. You can instantly book a chambers
+            hearing date that is currently available in the system instead.
           </div>
         </template>
 
@@ -127,8 +128,8 @@
     </template>
 
     <template v-slot:fairUseTabDescription>
-      Request up to {{ scMaxChambersDateSelectionsString }} dates for a chambers starting in the
-      upcoming release of dates.
+      Request up to {{ scMaxChambersDateSelectionsString }} dates for a chambers hearing starting in
+      the upcoming release of dates.
     </template>
 
     <template v-slot:fairUseDisabledAlert>
@@ -137,7 +138,7 @@
     </template>
 
     <template v-slot:regularTabDescription>
-      You can instantly book a chambers date that is currently available in the system.
+      You can instantly book a chambers hearing date that is currently available in the system.
     </template>
   </chambers-time-select-tabs>
 </template>
