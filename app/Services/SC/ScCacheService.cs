@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
@@ -18,6 +19,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private const string ScRegistryDropdownKey = "SC_REGISTRY_DROPDOWN";
         private const string ScAvailableBookingTypes = "SC_AVAILABLE_BOOKING_TYPES";
         private const string ScAvailableBookingFormulas = "SC_AVAILABLE_BOOKING_FORMULAS";
+        private const string ScChambersHearingSubTypes = "SC_LONG_CHAMBERS_SUBTYPES";
 
         // services
         private readonly IConfiguration _configuration;
@@ -87,7 +89,10 @@ namespace SCJ.Booking.MVC.Services.SC
             }
 
             Dictionary<int, string> locationList = GetLocationsAsync()
-                .Result.Select(x => new { x.locationID, x.locationName })
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult()
+                .Select(x => new { x.locationID, x.locationName })
                 .Distinct()
                 .OrderBy(x => x.locationName)
                 .ToDictionary(x => x.locationID, x => x.locationName);
@@ -195,18 +200,48 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///     Gets the list of chambers hearing sub types
         /// </summary>
-        public Dictionary<int, string> GetChambersHearingSubTypes()
+        public OrderedDictionary GetChambersHearingSubTypes()
         {
-            // TODO: this needs to use the API method when it's available
-            return new Dictionary<int, string>
+            if (Exists(ScChambersHearingSubTypes))
             {
-                { 9012, "Chambers (default or other)" },
-                { 9020, "Chambers Judicial Review" },
-                { 9022, "Chambers Petition" },
-                { 9013, "Chambers Summary Trial" },
-                { 9014, "Chambers Appeal from Associate Judge or Registrar" },
-                { 9010, "Appeal from Provincial Court" }
-            };
+                return GetObject<OrderedDictionary>(ScChambersHearingSubTypes);
+            }
+
+            IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
+            var subtypes = client
+                .scCHHearingSubTypeAsync()
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+            var result = new OrderedDictionary();
+
+            // 9012 first
+            var first = subtypes.FirstOrDefault(s => s.HearingSubTypeId == 9012);
+            if (first != null)
+            {
+                result.Add(first.HearingSubTypeId, first.ChambersDescription);
+            }
+
+            // middle sorted alphabetically, excluding 9012 and 9010
+            var middle = subtypes
+                .Where(s => s.HearingSubTypeId != 9012 && s.HearingSubTypeId != 9010)
+                .OrderBy(s => s.ChambersDescription);
+
+            foreach (var subtype in middle)
+            {
+                result.Add(subtype.HearingSubTypeId, subtype.ChambersDescription);
+            }
+
+            // 9010 last
+            var last = subtypes.FirstOrDefault(s => s.HearingSubTypeId == 9010);
+            if (last != null)
+            {
+                result.Add(last.HearingSubTypeId, last.ChambersDescription);
+            }
+
+            SaveObject(ScChambersHearingSubTypes, result);
+
+            return result;
         }
     }
 }

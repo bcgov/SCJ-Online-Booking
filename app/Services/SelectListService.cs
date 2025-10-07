@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SCJ.Booking.Data.Constants;
@@ -89,11 +90,13 @@ namespace SCJ.Booking.MVC.Services
         {
             get
             {
-                Dictionary<int, string> items = _cacheService.GetChambersHearingSubTypes();
+                OrderedDictionary items = _cacheService.GetChambersHearingSubTypes();
                 var selectListItems = new List<SelectListItem>();
-                foreach (KeyValuePair<int, string> pair in items)
+                foreach (DictionaryEntry pair in items)
                 {
-                    selectListItems.Add(new SelectListItem(pair.Value, pair.Key.ToString()));
+                    selectListItems.Add(
+                        new SelectListItem(pair.Value as string, pair.Key.ToString())
+                    );
                 }
                 return new SelectList(selectListItems, "Value", "Text");
             }

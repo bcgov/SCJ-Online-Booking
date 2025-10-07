@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DotEnv.Core;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.RemoteAPIs;
 using SCJ.OnlineBooking;
@@ -14,16 +13,21 @@ namespace SCJ.Booking.UnitTest
     {
         public RemoteApiTests()
         {
-            _soapClient = new FakeOnlineBookingClient();
+            new EnvLoader().Load();
+            var reader = new EnvReader();
+            bool useFakeApi = (reader["USE_FAKE_API"] ?? string.Empty).ToLower() == "true";
 
-            // To connect these tests to the real API:
-            //  1. Comment out the line above that creates a FakeOnlineBookingClient
-            //  2. Uncomment the 3 lines below
-            //  3. Add 3 settings to test/.env : API_ENDPOINT, API_USERNAME, API_PASSWORD and change USE_FAKE_API to false
-
-            // new EnvLoader().Load();
-            // IConfiguration configuration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
-            // _soapClient = OnlineBookingClientFactory.GetClient(configuration);
+            if (useFakeApi)
+            {
+                _soapClient = new FakeOnlineBookingClient();
+            }
+            else
+            {
+                IConfiguration configuration = new ConfigurationBuilder()
+                    .AddEnvironmentVariables()
+                    .Build();
+                _soapClient = OnlineBookingClientFactory.GetClient(configuration);
+            }
         }
 
         private readonly IOnlineBooking _soapClient;
