@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using CsvHelper.Configuration.Attributes;
 using DotEnv.Core;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.RemoteAPIs;
@@ -347,49 +349,53 @@ namespace SCJ.Booking.UnitTest
             Assert.StartsWith("success", result.bookingResult, StringComparison.OrdinalIgnoreCase);
         }
 
-        // This is mainly used for finding test data, but it also functions as a test
+        // This is mainly used for finding test data, but it also functions as a test.
+        // Run this test from the Test Explorer in VS Code to see output in the "Test Results" window.
         [Fact]
-        public async Task GetAllTrialFormulasAndAvailableDatesAsync()
+        public async Task FindChambersAvailableDates()
         {
+            var hearingTypeId = Data.Constants.ScHearingType.LONG_CHAMBERS;
+
             var formulas = await _soapClient.scAvailableFormulasByHearingTypeAndLocationAsync(
                 "",
                 "",
-                ""
+                hearingTypeId.ToString()
             );
 
             foreach (var formula in formulas)
             {
-                if (formula.HearingTypeId == 9012)
-                {
-                    AvailableTrialDatesRequestInfo requestInfo =
-                        new()
-                        {
-                            BookingLocationID = formula.LocationID,
-                            Courtclass = formula.BookingHearingCode == "E" ? "E" : "M",
-                            StartDate = formula.StartDate,
-                            EndDate = formula.EndDate,
-                            HearingLength = 1,
-                            FormulaType = formula.FormulaType,
-                            LocationID = 1, // Vancouver
-                            HearingTypeId = formula.HearingTypeId
-                        };
-                    var datesResult =
-                        await _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(
-                            requestInfo
-                        );
+                // Determine a relevant court class to match the BookHearingCode of the formula.
+                // "E" is family. "M" is motor vehicle, but works for testing with "All" or "All Other"
+                // BookHearingCode values.
+                var courtClass = formula.BookingHearingCode == "E" ? "E" : "M";
 
-                    _output.WriteLine(
-                        $"Location: {formula.BookingLocationID} ({formula.HearingTypeId}) - {formula.FormulaType} - {formula.StartDate:d} to {formula.EndDate:d}"
-                    );
-                    _output.WriteLine(
-                        $"{formula.FairUseBookingPeriodStartDate} - {formula.FairUseBookingPeriodEndDate}"
-                    );
-                    _output.WriteLine($"{formula.BookingHearingCode}");
-                    _output.WriteLine(
-                        $"Available Dates: {datesResult?.AvailableTrialDates?.AvailablesDatesInfo?.Length}"
-                    );
-                    _output.WriteLine("");
-                }
+                AvailableTrialDatesRequestInfo requestInfo =
+                    new()
+                    {
+                        BookingLocationID = formula.LocationID,
+                        Courtclass = courtClass,
+                        StartDate = formula.StartDate,
+                        EndDate = formula.EndDate,
+                        HearingLength = 1, // 1 day
+                        FormulaType = formula.FormulaType,
+                        LocationID = 1, // Vancouver
+                        HearingTypeId = hearingTypeId, // long chambers
+                    };
+                var datesResult = await _soapClient.scAvailableDatesByHearingTypeAndLocationAsync(
+                    requestInfo
+                );
+
+                _output.WriteLine(
+                    $"Location: {formula.BookingLocationID} ({formula.HearingTypeId}) - {formula.FormulaType} - {formula.StartDate:d} to {formula.EndDate:d}"
+                );
+                _output.WriteLine(
+                    $"{formula.FairUseBookingPeriodStartDate} - {formula.FairUseBookingPeriodEndDate}"
+                );
+                _output.WriteLine($"{formula.BookingHearingCode}");
+                _output.WriteLine(
+                    $"Available Dates: {datesResult?.AvailableTrialDates?.AvailablesDatesInfo?.Length}"
+                );
+                _output.WriteLine("");
             }
         }
     }

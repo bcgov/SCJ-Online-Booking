@@ -17,7 +17,7 @@ namespace SCJ.Booking.MVC.Controllers
     {
         //Services
         private readonly ScCoreService _scCoreService;
-        private readonly ScLotteryEnabledBookingService _scLotteryEnabledBookingService;
+        private readonly ScLongChambersBookingService _scLongChambersBookingService;
 
         // Strongly typed session
         private readonly SessionService _session;
@@ -26,19 +26,19 @@ namespace SCJ.Booking.MVC.Controllers
         public ScLongChambersController(
             SessionService sessionService,
             ScCoreService scCoreService,
-            ScLotteryEnabledBookingService scLotteryEnabledBookingService
+            ScLongChambersBookingService scLongChambersBookingService
         )
         {
             _session = sessionService;
             _scCoreService = scCoreService;
-            _scLotteryEnabledBookingService = scLotteryEnabledBookingService;
+            _scLongChambersBookingService = scLongChambersBookingService;
         }
 
         [HttpGet]
         [Route("~/booking/sc-long-chambers/available-times")]
         public async Task<IActionResult> AvailableTimesAsync()
         {
-            var model = await _scLotteryEnabledBookingService.LoadAvailableTimesFormAsync();
+            var model = await _scLongChambersBookingService.LoadAvailableTimesFormAsync();
 
             if (string.IsNullOrWhiteSpace(model.CaseNumber))
             {
@@ -49,13 +49,13 @@ namespace SCJ.Booking.MVC.Controllers
 
             // Chambers bookings: get lists of available chambers dates
             (model.AvailableRegularDates, bookingInfo.RegularFormula) =
-                await _scLotteryEnabledBookingService.GetAvailableTrialDatesAsync(
+                await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
                     ScFormulaType.RegularBooking,
                     bookingInfo.RegularFormula
                 );
 
             (model.AvailableFairUseDates, bookingInfo.FairUseFormula) =
-                await _scLotteryEnabledBookingService.GetAvailableTrialDatesAsync(
+                await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
                     ScFormulaType.FairUseBooking,
                     bookingInfo.FairUseFormula
                 );
@@ -113,19 +113,19 @@ namespace SCJ.Booking.MVC.Controllers
                 model.SessionInfo = bookingInfo;
                 // Chambers bookings: get lists of available chambers dates
 
-                model = await _scLotteryEnabledBookingService.LoadAvailableTimesFormulaInfoAsync(
+                model = await _scLongChambersBookingService.LoadAvailableTimesFormulaInfoAsync(
                     model,
                     bookingInfo.FairUseFormula
                 );
 
                 (model.AvailableRegularDates, _) =
-                    await _scLotteryEnabledBookingService.GetAvailableTrialDatesAsync(
+                    await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
                         ScFormulaType.RegularBooking,
                         null
                     );
 
                 (model.AvailableFairUseDates, _) =
-                    await _scLotteryEnabledBookingService.GetAvailableTrialDatesAsync(
+                    await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
                         ScFormulaType.FairUseBooking,
                         null
                     );
@@ -133,7 +133,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            _scLotteryEnabledBookingService.SaveAvailableTimesFormAsync(model);
+            _scLongChambersBookingService.SaveAvailableTimesFormAsync(model);
 
             return RedirectToAction("CaseConfirm");
         }
@@ -186,7 +186,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             try
             {
-                await _scLotteryEnabledBookingService.BookTrialAsync(model, user);
+                await _scLongChambersBookingService.CreateBookingAsync(model, user);
 
                 if (bookingInfo.FormulaType == ScFormulaType.RegularBooking)
                 {

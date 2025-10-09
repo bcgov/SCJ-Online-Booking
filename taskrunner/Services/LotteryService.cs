@@ -342,7 +342,10 @@ namespace SCJ.Booking.TaskRunner.Services
         private async Task QueueSuccessEmail(ScLotteryBookingRequest entry)
         {
             var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate("Lottery-Success.cshtml", model);
+            string emailText = await RazorHelper.RenderTemplate(
+                "Trial-Lottery-Success.cshtml",
+                model
+            );
             string subject =
                 $"Trial booking for {model.FullCaseNumber} starting on {model.FairUseDate}";
 
@@ -361,7 +364,10 @@ namespace SCJ.Booking.TaskRunner.Services
         private async Task QueueFailureEmail(ScLotteryBookingRequest entry)
         {
             var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate("Lottery-Failure.cshtml", model);
+            string emailText = await RazorHelper.RenderTemplate(
+                "Trial-Lottery-Failure.cshtml",
+                model
+            );
             string subject = $"No trial booking for {model.FullCaseNumber}";
 
             await _mailQueueService.QueueEmailAsync(

@@ -26,7 +26,7 @@ namespace SCJ.Booking.MVC.Utils
         public string FormulaType { get; set; }
         public string HearingTypeName { get; set; }
         public int? BookingLength { get; set; }
-        public int? ChambersHearingSubType { get; set; } = 9012;
+        public int? ChambersHearingSubTypeId { get; set; } = 9012;
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
 

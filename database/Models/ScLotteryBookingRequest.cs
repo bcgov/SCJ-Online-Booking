@@ -36,6 +36,11 @@ namespace SCJ.Booking.Data.Models
         public string BookHearingCode { get; set; } = "";
 
         public int HearingLength { get; set; }
+
+        public int? LongChambersHearingSubTypeId { get; set; }
+
+        public string LongChambersHearingSubTypeName { get; set; } = "";
+
         public int FairUseSort { get; set; }
 
         [MaxLength(40)]

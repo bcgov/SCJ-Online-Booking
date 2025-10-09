@@ -55,7 +55,7 @@ namespace SCJ.Booking.MVC.Services.COA
             _coaCacheService = coaCacheService;
             _viewRenderService = viewRenderService;
             _mailService = new MailQueueService(configuration, dbContext);
-            _dbWriterService = new DataWriterService(dbContext);
+            _dbWriterService = new DataWriterService(dbContext, null);
         }
 
         /// <summary>

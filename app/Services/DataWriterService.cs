@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.EntityFrameworkCore;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Models;
+using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.Services
@@ -10,11 +12,13 @@ namespace SCJ.Booking.MVC.Services
     public class DataWriterService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ScCacheService _cacheService;
 
         //Constructor
-        public DataWriterService(ApplicationDbContext dbContext)
+        public DataWriterService(ApplicationDbContext dbContext, ScCacheService cacheService)
         {
             _dbContext = dbContext;
+            _cacheService = cacheService;
         }
 
         public async Task SaveBookingHistory(
@@ -49,7 +53,7 @@ namespace SCJ.Booking.MVC.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task SaveFairUseRequest(
+        public async Task SaveLotteryEntry(
             long userId,
             ScSessionBookingInfo bookingInfo,
             SessionUserInfo userInfo
@@ -94,6 +98,19 @@ namespace SCJ.Booking.MVC.Services
 
             var lotteryStartDate = bookingPeriodEndDate.Date.AddDays(1);
 
+            var subTypes = _cacheService.GetChambersHearingSubTypes();
+
+            string chambersHearingSubTypeName = "";
+            if (
+                bookingInfo.ChambersHearingSubTypeId.HasValue
+                && bookingInfo.ChambersHearingSubTypeId > 0
+                && subTypes.Contains(bookingInfo.ChambersHearingSubTypeId.Value)
+            )
+            {
+                chambersHearingSubTypeName =
+                    subTypes[bookingInfo.ChambersHearingSubTypeId.Value] as string;
+            }
+
             var bookingRequest = new ScLotteryBookingRequest
             {
                 User = oidcUser,
@@ -116,6 +133,8 @@ namespace SCJ.Booking.MVC.Services
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
                 HearingLength = bookingInfo.BookingLength.Value,
+                LongChambersHearingSubTypeId = bookingInfo.ChambersHearingSubTypeId,
+                LongChambersHearingSubTypeName = chambersHearingSubTypeName,
                 LotteryStartDate = lotteryStartDate,
                 LotteryEntryId = bookingInfo.LotteryEntryId
             };

@@ -33,7 +33,8 @@ namespace SCJ.Booking.MVC.Services.SC
             ApplicationDbContext dbContext,
             IConfiguration configuration,
             SessionService sessionService,
-            IViewRenderService viewRenderService
+            IViewRenderService viewRenderService,
+            ScCacheService cacheService
         )
         {
             //check if this is running on a developer workstation (outside OpenShift)
@@ -48,7 +49,7 @@ namespace SCJ.Booking.MVC.Services.SC
             _session = sessionService;
             _viewRenderService = viewRenderService;
             _mailService = new MailQueueService(configuration, dbContext);
-            _dbWriterService = new DataWriterService(dbContext);
+            _dbWriterService = new DataWriterService(dbContext, cacheService);
         }
 
         /// <summary>

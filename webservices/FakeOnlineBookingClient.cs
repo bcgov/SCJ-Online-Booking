@@ -199,10 +199,22 @@ namespace SCJ.OnlineBooking
 
             if (string.IsNullOrEmpty(hearingTypeId))
             {
-                return ScFormulaLocationsFixture
+                var results = ScFormulaLocationsFixture
                     .Locations(9001)
-                    .Concat(ScFormulaLocationsFixture.Locations(9012))
-                    .ToArray();
+                    .Concat(ScFormulaLocationsFixture.Locations(9012));
+
+                // filter the results to exclude anything that doesn't match the other filters
+                if (!string.IsNullOrEmpty(locationID))
+                {
+                    results = results.Where(x => x.BookingLocationID == int.Parse(locationID));
+                }
+
+                if (!string.IsNullOrEmpty(formula))
+                {
+                    results = results.Where(x => x.FormulaType == formula);
+                }
+
+                return results.ToArray();
             }
 
             if (string.IsNullOrEmpty(locationID) && string.IsNullOrEmpty(formula))
