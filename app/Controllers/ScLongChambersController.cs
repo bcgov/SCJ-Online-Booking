@@ -13,199 +13,41 @@ namespace SCJ.Booking.MVC.Controllers
 {
     [Route("booking/sc-long-chambers/[action]")]
     [Authorize]
-    public class ScLongChambersController : Controller
+    public class ScLongChambersController : ScLotteryEnabledControllerBase
     {
-        //Services
-        private readonly ScCoreService _scCoreService;
-        private readonly ScLongChambersBookingService _scLongChambersBookingService;
-
-        // Strongly typed session
-        private readonly SessionService _session;
-
-        //Constructor
         public ScLongChambersController(
             SessionService sessionService,
             ScCoreService scCoreService,
             ScLongChambersBookingService scLongChambersBookingService
         )
-        {
-            _session = sessionService;
-            _scCoreService = scCoreService;
-            _scLongChambersBookingService = scLongChambersBookingService;
-        }
+            : base(sessionService, scCoreService, scLongChambersBookingService) { }
 
         [HttpGet]
         [Route("~/booking/sc-long-chambers/available-times")]
-        public async Task<IActionResult> AvailableTimesAsync()
+        public new async Task<IActionResult> AvailableTimesAsync()
         {
-            var model = await _scLongChambersBookingService.LoadAvailableTimesFormAsync();
-
-            if (string.IsNullOrWhiteSpace(model.CaseNumber))
-            {
-                return RedirectToAction("Index");
-            }
-
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
-
-            // Chambers bookings: get lists of available chambers dates
-            (model.AvailableRegularDates, bookingInfo.RegularFormula) =
-                await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
-                    ScFormulaType.RegularBooking,
-                    bookingInfo.RegularFormula
-                );
-
-            (model.AvailableFairUseDates, bookingInfo.FairUseFormula) =
-                await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
-                    ScFormulaType.FairUseBooking,
-                    bookingInfo.FairUseFormula
-                );
-
-            _session.ScBookingInfo = bookingInfo;
-
-            if (bookingInfo.FairUseFormula is null)
-            {
-                model.FormulaType = ScFormulaType.RegularBooking;
-            }
-            else
-            {
-                model.FormulaType = bookingInfo.FormulaType ?? ScFormulaType.FairUseBooking;
-            }
-
-            return View(model);
+            return await base.AvailableTimesAsync();
         }
 
         [HttpPost]
         [Route("~/booking/sc-long-chambers/available-times")]
-        public async Task<IActionResult> AvailableTimesAsync(ScAvailableTimesViewModel model)
+        public new async Task<IActionResult> AvailableTimesAsync(ScAvailableTimesViewModel model)
         {
-            var bookingInfo = _session.ScBookingInfo;
-            model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
-
-            if (
-                model.FormulaType == ScFormulaType.RegularBooking
-                && !model.SelectedRegularDate.HasValue
-            )
-            {
-                ModelState.AddModelError(
-                    "SelectedRegularDate",
-                    "Please choose from one of the available dates."
-                );
-            }
-            else if (
-                model.FormulaType == ScFormulaType.FairUseBooking
-                && model.SelectedFairUseDates.Count == 0
-            )
-            {
-                ModelState.AddModelError(
-                    "SelectedFairUseDates",
-                    "Please choose from the available dates."
-                );
-            }
-            else if (model.FormulaType == "")
-            {
-                // If the formula type field is empty
-                // (e.g. user tampered with the form or submitted without JavaScript)
-                ModelState.AddModelError("FormulaType", "Please choose what you are booking.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                model.SessionInfo = bookingInfo;
-                // Chambers bookings: get lists of available chambers dates
-
-                model = await _scLongChambersBookingService.LoadAvailableTimesFormulaInfoAsync(
-                    model,
-                    bookingInfo.FairUseFormula
-                );
-
-                (model.AvailableRegularDates, _) =
-                    await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
-                        ScFormulaType.RegularBooking,
-                        null
-                    );
-
-                (model.AvailableFairUseDates, _) =
-                    await _scLongChambersBookingService.GetAvailableBookingDatesAsync(
-                        ScFormulaType.FairUseBooking,
-                        null
-                    );
-
-                return View(model);
-            }
-
-            _scLongChambersBookingService.SaveAvailableTimesFormAsync(model);
-
-            return RedirectToAction("CaseConfirm");
+            return await base.AvailableTimesAsync(model);
         }
 
         [HttpGet]
         [Route("~/booking/sc-long-chambers/case-confirm")]
-        public async Task<IActionResult> CaseConfirmAsync()
+        public new async Task<IActionResult> CaseConfirmAsync()
         {
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
-
-            if (bookingInfo.SelectedCourtFile is null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            //user information
-            var user = _session.GetUserInformation();
-
-            string locationName = await _scCoreService.GetLocationNameAsync(
-                bookingInfo.AlternateLocationRegistryId
-            );
-
-            //Time-slot is still available
-            var model = new ScCaseConfirmViewModel
-            {
-                Date = bookingInfo.FormattedConferenceDate,
-                Time = bookingInfo.FormattedConferenceTime,
-                TrialLocationName = locationName,
-                SelectedRegularDate = bookingInfo.SelectedRegularDate,
-                EmailAddress = user.Email,
-                Phone = user.Phone,
-                SessionInfo = bookingInfo
-            };
-
-            return View(model);
+            return await base.CaseConfirmAsync();
         }
 
         [HttpPost]
         [Route("~/booking/sc-long-chambers/case-confirm")]
         public async Task<IActionResult> CaseConfirm(ScCaseConfirmViewModel model)
         {
-            var bookingInfo = _session.ScBookingInfo;
-            if (!ModelState.IsValid)
-            {
-                model.SessionInfo = bookingInfo;
-                return View(model);
-            }
-
-            ClaimsPrincipal user = HttpContext.User;
-
-            try
-            {
-                await _scLongChambersBookingService.CreateBookingAsync(model, user);
-
-                if (bookingInfo.FormulaType == ScFormulaType.RegularBooking)
-                {
-                    // Redirect to "ChambersBooked" page for Regular
-                    return RedirectToAction("ChambersBooked");
-                }
-                else
-                {
-                    // Redirect to "RequestSubmitted" page for Fair-Use
-                    return RedirectToAction("RequestSubmitted");
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                string errorMessage = ex.Message;
-                ModelState.AddModelError("SelectedRegularDate", errorMessage);
-                model.SessionInfo = bookingInfo;
-                return View(model);
-            }
+            return await base.CaseConfirm(model, "ChambersBooked");
         }
 
         [HttpGet]

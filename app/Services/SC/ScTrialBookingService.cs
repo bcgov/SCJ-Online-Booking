@@ -12,7 +12,9 @@ using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Services.SC
 {
-    public class ScTrialBookingService : ScLotteryEnabledBookingServiceBase
+    public class ScTrialBookingService
+        : ScLotteryEnabledBookingServiceBase,
+            IScLotteryEnabledBookingService
     {
         public ScTrialBookingService(
             ApplicationDbContext dbContext,

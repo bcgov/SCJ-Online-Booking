@@ -18,7 +18,7 @@ namespace SCJ.Booking.MVC.Services.SC
 {
     public abstract class ScLotteryEnabledBookingServiceBase
     {
-        public readonly bool IsLocalDevEnvironment;
+        public bool IsLocalDevEnvironment { get; protected set; }
 
         protected readonly IOnlineBooking _client;
         protected readonly ILogger _logger;
