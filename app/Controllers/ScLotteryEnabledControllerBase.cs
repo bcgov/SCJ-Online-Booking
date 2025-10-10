@@ -30,7 +30,7 @@ namespace SCJ.Booking.MVC.Controllers
             _bookingService = bookingService;
         }
 
-        public async Task<IActionResult> AvailableTimesAsync()
+        protected async Task<IActionResult> AvailableTimesAsync()
         {
             var model = await _bookingService.LoadAvailableTimesFormAsync();
 
@@ -68,7 +68,7 @@ namespace SCJ.Booking.MVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> AvailableTimesAsync(ScAvailableTimesViewModel model)
+        protected async Task<IActionResult> AvailableTimesAsync(ScAvailableTimesViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
             model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
@@ -129,7 +129,7 @@ namespace SCJ.Booking.MVC.Controllers
             return RedirectToAction("CaseConfirm");
         }
 
-        public async Task<IActionResult> CaseConfirmAsync()
+        protected async Task<IActionResult> CaseConfirmAsync()
         {
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
