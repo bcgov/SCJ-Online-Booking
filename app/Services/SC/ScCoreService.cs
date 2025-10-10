@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data.Constants;
@@ -253,9 +255,25 @@ namespace SCJ.Booking.MVC.Services.SC
         public async Task<List<string>> GetAvailableBookingTypesAsync()
         {
             var supportedTypes = ScHearingType.HearingTypeIdMap.Keys.Select(keyName => keyName);
-            return (await _cache.GetAvailableBookingTypesAsync())
-                .Intersect(supportedTypes)
-                .ToList();
+            try
+            {
+                return (await _cache.GetAvailableBookingTypesAsync())
+                    .Intersect(supportedTypes)
+                    .ToList();
+            }
+            catch (CommunicationException)
+            {
+                if (IsLocalDevEnvironment)
+                {
+                    throw new ConfigurationErrorsException(
+                        "scGetAvailableBookingTypesAsync() failed. Check API_ENDPOINT connection or set USE_FAKE_API=true for localdev."
+                    );
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         public async Task<string> GetLocationNameAsync(int registryId)

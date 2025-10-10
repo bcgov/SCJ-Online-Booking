@@ -2,11 +2,9 @@
 
 @{
     int hearingTypeId = Model.SessionInfo.HearingTypeId;
-    string goBackAction = "AvailableTimes";
-    if (hearingTypeId == ScHearingType.TRIAL || hearingTypeId == ScHearingType.LONG_CHAMBERS)
-    {
-        goBackAction = "AvailableDates";
-    }
+    string goBackAction = (hearingTypeId == ScHearingType.TRIAL || hearingTypeId == ScHearingType.LONG_CHAMBERS)
+    ? "AvailableDates"
+    : "AvailableTimes";
 }
 
 <h4>Provide Your Contact Information</h4>

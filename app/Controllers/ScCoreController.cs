@@ -161,7 +161,7 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     ModelState.AddModelError(
                         "EstimatedChambersLength",
-                        "Provide the estimated length of your chambers hearing."
+                        "Provide the requested days of your chambers hearing."
                     );
                 }
             }
@@ -202,7 +202,7 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     ModelState.AddModelError(
                         "IsHomeRegistry",
-                        "Indicate if the chambers hearing is taking place in the home registry."
+                        "Indicate if the chambers is taking place in the home registry."
                     );
                 }
 
