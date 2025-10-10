@@ -6,11 +6,11 @@ using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels.SC
 {
-    public class ScAvailableTimesViewModel
+    public class ScAvailableSlotsViewModel
     {
         private const string DateFormat = "yyyy-MM-dd";
 
-        public ScAvailableTimesViewModel()
+        public ScAvailableSlotsViewModel()
         {
             //Default values
             AvailableConferenceDates = new AvailableDatesByLocation();

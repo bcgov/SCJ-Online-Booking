@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SCJ.Booking.MVC.Utils;
-using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.ViewModels.SC
 {

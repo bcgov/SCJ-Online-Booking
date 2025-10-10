@@ -237,11 +237,11 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (model.HearingTypeId == ScHearingType.TRIAL)
             {
-                return RedirectToAction("AvailableTimes", "ScTrial");
+                return RedirectToAction("AvailableDates", "ScTrial");
             }
             else if (model.HearingTypeId == ScHearingType.LONG_CHAMBERS)
             {
-                return RedirectToAction("AvailableTimes", "ScLongChambers");
+                return RedirectToAction("AvailableDates", "ScLongChambers");
             }
             else
             {

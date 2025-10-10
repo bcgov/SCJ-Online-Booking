@@ -55,12 +55,12 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///     Loads the available times form with session info
         /// </summary>
-        public ScAvailableTimesViewModel LoadAvailableTimesFormAsync()
+        public ScAvailableSlotsViewModel LoadAvailableSlotsFormAsync()
         {
             var bookingInfo = _session.ScBookingInfo;
 
             //Model instance
-            var model = new ScAvailableTimesViewModel
+            var model = new ScAvailableSlotsViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 HearingTypeId = bookingInfo.HearingTypeId,
@@ -75,7 +75,7 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///    Saves the available times form to session
         /// </summary>
-        public async Task SaveAvailableTimesFormAsync(ScAvailableTimesViewModel model)
+        public async Task SaveAvailableSlotsFormAsync(ScAvailableSlotsViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
 

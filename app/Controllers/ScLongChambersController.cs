@@ -23,17 +23,17 @@ namespace SCJ.Booking.MVC.Controllers
             : base(sessionService, scCoreService, scLongChambersBookingService) { }
 
         [HttpGet]
-        [Route("~/booking/sc-long-chambers/available-times")]
-        public new async Task<IActionResult> AvailableTimesAsync()
+        [Route("~/booking/sc-long-chambers/available-dates")]
+        public new async Task<IActionResult> AvailableDatesAsync()
         {
-            return await base.AvailableTimesAsync();
+            return await base.AvailableDatesAsync();
         }
 
         [HttpPost]
-        [Route("~/booking/sc-long-chambers/available-times")]
-        public new async Task<IActionResult> AvailableTimesAsync(ScAvailableTimesViewModel model)
+        [Route("~/booking/sc-long-chambers/available-dates")]
+        public new async Task<IActionResult> AvailableDatesAsync(ScAvailableSlotsViewModel model)
         {
-            return await base.AvailableTimesAsync(model);
+            return await base.AvailableDatesAsync(model);
         }
 
         [HttpGet]
@@ -54,28 +54,14 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc-long-chambers/chambers-booked")]
         public IActionResult ChambersBooked()
         {
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
-
-            if (bookingInfo.SelectedCourtFile is null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return View();
+            return base.AppearanceBooked();
         }
 
         [HttpGet]
         [Route("~/booking/sc-long-chambers/chambers-request-submitted")]
-        public IActionResult RequestSubmitted()
+        public new IActionResult RequestSubmitted()
         {
-            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
-
-            if (bookingInfo.SelectedCourtFile is null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return View();
+            return base.RequestSubmitted();
         }
     }
 }

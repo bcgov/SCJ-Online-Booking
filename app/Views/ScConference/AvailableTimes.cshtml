@@ -1,4 +1,4 @@
-@model ScAvailableTimesViewModel
+@model ScAvailableSlotsViewModel
 @{
     Layout = "~/Views/ScCore/_Layout.cshtml";
     ViewData["Title"] = "Book Your Hearing";
@@ -72,7 +72,7 @@
                     clearBtn: true,
                     endDate: @Json.Serialize(Model.LastAvailableDate),
                     datesDisabled: @Json.Serialize(Model.DisabledDates)
-                                                                            }).on('changeDate', function (event) {
+                                                                                    }).on('changeDate', function (event) {
                         var selectedDate = event.format();
                         var dates = @availableDates;
                         if (dates) {

@@ -1,5 +1,14 @@
 @model ScCaseConfirmViewModel
 
+@{
+    int hearingTypeId = Model.SessionInfo.HearingTypeId;
+    string goBackAction = "AvailableTimes";
+    if (hearingTypeId == ScHearingType.TRIAL || hearingTypeId == ScHearingType.LONG_CHAMBERS)
+    {
+        goBackAction = "AvailableDates";
+    }
+}
+
 <h4>Provide Your Contact Information</h4>
 
 @if (@Model.SessionInfo.FormulaType == ScFormulaType.FairUseBooking)
@@ -39,14 +48,14 @@ else
     <div class="col-6 col-md-8 d-flex align-items-center text-link">
         <span>
             <i class="fas fa-arrow-left"></i>
-            <a asp-action="AvailableTimes">Step 3:
+            <a asp-action="@goBackAction">Step 3:
 
-                @if (Model.SessionInfo.HearingTypeId == ScHearingType.TRIAL)
+                @if (hearingTypeId == ScHearingType.TRIAL)
                 {
                     <text>Request Trial </text>
                     @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
                 }
-                else if (Model.SessionInfo.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+                else if (hearingTypeId == ScHearingType.LONG_CHAMBERS)
                 {
                     <text>Request Chambers </text>
                     @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")

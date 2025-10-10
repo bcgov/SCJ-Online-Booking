@@ -30,9 +30,9 @@ namespace SCJ.Booking.MVC.Controllers
             _bookingService = bookingService;
         }
 
-        protected async Task<IActionResult> AvailableTimesAsync()
+        protected async Task<IActionResult> AvailableDatesAsync()
         {
-            var model = await _bookingService.LoadAvailableTimesFormAsync();
+            var model = await _bookingService.LoadAvailableDatesFormAsync();
 
             if (string.IsNullOrWhiteSpace(model.CaseNumber))
             {
@@ -68,7 +68,7 @@ namespace SCJ.Booking.MVC.Controllers
             return View(model);
         }
 
-        protected async Task<IActionResult> AvailableTimesAsync(ScAvailableTimesViewModel model)
+        protected async Task<IActionResult> AvailableDatesAsync(ScAvailableSlotsViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
             model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
@@ -104,7 +104,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 model.SessionInfo = bookingInfo;
 
-                model = await _bookingService.LoadAvailableTimesFormulaInfoAsync(
+                model = await _bookingService.LoadAvailableDatesFormulaInfoAsync(
                     model,
                     bookingInfo.FairUseFormula
                 );
@@ -124,7 +124,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View(model);
             }
 
-            _bookingService.SaveAvailableTimesFormAsync(model);
+            _bookingService.SaveAvailableDatesFormAsync(model);
 
             return RedirectToAction("CaseConfirm");
         }
@@ -196,6 +196,30 @@ namespace SCJ.Booking.MVC.Controllers
                 model.SessionInfo = bookingInfo;
                 return View(model);
             }
+        }
+
+        protected IActionResult AppearanceBooked()
+        {
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+
+            if (bookingInfo.SelectedCourtFile is null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        protected IActionResult RequestSubmitted()
+        {
+            ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
+
+            if (bookingInfo.SelectedCourtFile is null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View();
         }
     }
 }

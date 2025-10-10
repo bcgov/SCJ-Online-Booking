@@ -1,7 +1,7 @@
-@model ScAvailableTimesViewModel
+@model ScAvailableSlotsViewModel
 @{
     Layout = "~/Views/ScCore/_Layout.cshtml";
-    ViewData["Title"] = "Request Trial Date(s)";
+    ViewData["Title"] = "Request Chambers Hearing Date(s)";
 
     var bookingInfo = Model.SessionInfo;
 }
@@ -14,7 +14,7 @@
     <hr />
     <h6>Step 3</h6>
 
-    <h2>Request Trial Date(s)</h2>
+    <h2>Request Chambers Hearing Date(s)</h2>
 
     <div style="margin-bottom: 30px">
         <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
@@ -22,14 +22,14 @@
         <p>@bookingInfo.SelectedCourtClassName</p>
     </div>
 
-    <partial name="Partial/_AvailableTimes" model="Model" />
+    <partial name="Partial/_AvailableDates" model="Model" />
 
     @section Styles {
-        <link rel="stylesheet" href="/scjob/dist/vue/TrialTimeSelect.js.css" asp-append-version="true" />
+        <link rel="stylesheet" href="/scjob/dist/vue/LongChambersTimeSelect.js.css" asp-append-version="true" />
     }
 
     @section Scripts {
         <script src="/scjob/dist/vendor.js" asp-append-version="true"></script>
-        <script src="/scjob/dist/vue/TrialTimeSelect.js" asp-append-version="true"></script>
+        <script src="/scjob/dist/vue/LongChambersTimeSelect.js" asp-append-version="true"></script>
     }
 </div>

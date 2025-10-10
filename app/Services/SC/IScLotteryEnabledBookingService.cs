@@ -11,14 +11,14 @@ namespace SCJ.Booking.MVC.Services.SC
     {
         bool IsLocalDevEnvironment { get; }
 
-        Task<ScAvailableTimesViewModel> LoadAvailableTimesFormAsync();
+        Task<ScAvailableSlotsViewModel> LoadAvailableDatesFormAsync();
 
-        Task<ScAvailableTimesViewModel> LoadAvailableTimesFormulaInfoAsync(
-            ScAvailableTimesViewModel model,
+        Task<ScAvailableSlotsViewModel> LoadAvailableDatesFormulaInfoAsync(
+            ScAvailableSlotsViewModel model,
             FormulaLocation fairUseFormula
         );
 
-        void SaveAvailableTimesFormAsync(ScAvailableTimesViewModel model);
+        void SaveAvailableDatesFormAsync(ScAvailableSlotsViewModel model);
 
         Task<Tuple<List<DateTime>, FormulaLocation>> GetAvailableBookingDatesAsync(
             string formulaType,

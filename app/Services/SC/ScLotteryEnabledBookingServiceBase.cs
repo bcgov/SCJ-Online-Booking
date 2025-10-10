@@ -58,12 +58,12 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///     Loads the available times form with session info
         /// </summary>
-        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesFormAsync()
+        public async Task<ScAvailableSlotsViewModel> LoadAvailableDatesFormAsync()
         {
             var bookingInfo = _session.ScBookingInfo;
 
             //Model instance
-            var model = new ScAvailableTimesViewModel
+            var model = new ScAvailableSlotsViewModel
             {
                 CaseNumber = bookingInfo.CaseNumber,
                 HearingTypeId = bookingInfo.HearingTypeId,
@@ -74,7 +74,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 SessionInfo = bookingInfo
             };
 
-            model = await LoadAvailableTimesFormulaInfoAsync(model, null);
+            model = await LoadAvailableDatesFormulaInfoAsync(model, null);
 
             model.FormulaType =
                 bookingInfo.FairUseFormula is null && bookingInfo.RegularFormula is not null
@@ -87,8 +87,8 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///    Loads the available times form with formula info
         /// </summary>
-        public async Task<ScAvailableTimesViewModel> LoadAvailableTimesFormulaInfoAsync(
-            ScAvailableTimesViewModel model,
+        public async Task<ScAvailableSlotsViewModel> LoadAvailableDatesFormulaInfoAsync(
+            ScAvailableSlotsViewModel model,
             FormulaLocation fairUseFormula
         )
         {
@@ -118,7 +118,7 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///    Saves the available times form to session
         /// </summary>
-        public void SaveAvailableTimesFormAsync(ScAvailableTimesViewModel model)
+        public void SaveAvailableDatesFormAsync(ScAvailableSlotsViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
 
