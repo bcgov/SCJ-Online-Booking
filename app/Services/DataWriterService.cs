@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.EntityFrameworkCore;
@@ -98,13 +99,13 @@ namespace SCJ.Booking.MVC.Services
 
             var lotteryStartDate = bookingPeriodEndDate.Date.AddDays(1);
 
-            var subTypes = _cacheService.GetChambersHearingSubTypes();
+            var subTypes = _cacheService.GetChambersHearingSubTypeDictionary();
 
             string chambersHearingSubTypeName = "";
             if (
                 bookingInfo.ChambersHearingSubTypeId.HasValue
                 && bookingInfo.ChambersHearingSubTypeId > 0
-                && subTypes.Contains(bookingInfo.ChambersHearingSubTypeId.Value)
+                && subTypes.ContainsKey(bookingInfo.ChambersHearingSubTypeId.Value)
             )
             {
                 chambersHearingSubTypeName =

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -245,6 +246,13 @@ namespace SCJ.Booking.MVC.Services.SC
             SaveObject(ScChambersHearingSubTypes, result);
 
             return result;
+        }
+
+        public Dictionary<int, string> GetChambersHearingSubTypeDictionary()
+        {
+            return GetChambersHearingSubTypes()
+                .Cast<System.Collections.DictionaryEntry>()
+                .ToDictionary(x => Convert.ToInt32(x.Key), x => x.Value as string);
         }
     }
 }

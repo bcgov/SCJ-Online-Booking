@@ -2,7 +2,7 @@
   <chambers-time-select-tabs
     :initial-tab="initialTab"
     :fair-use-unavailable="fairUseUnavailable"
-    :fair-use-disabled="fairUseDisabled"
+    :fair-use-disabled="fairUseDisabled || hasExistingChambersRequest"
     hearing-type-name="chambers hearing"
   >
     >
@@ -132,7 +132,12 @@
       the upcoming release of dates.
     </template>
 
-    <template v-slot:fairUseDisabledAlert>
+    <template v-slot:fairUseDisabledAlert v-if="hasExistingChambersRequest">
+      A request for upcoming chambers hearing dates has already been submitted for this fair-use
+      period.
+    </template>
+
+    <template v-slot:fairUseDisabledAlert v-if="!hasExistingChambersRequest">
       The {{ currentMonth }} booking period ended on {{ fairUseEndDate }}. The next booking period
       will open in {{ nextMonth }}.
     </template>
@@ -232,6 +237,10 @@ export default {
     },
     chambersLength: {
       type: Number,
+      required: true,
+    },
+    hasExistingChambersRequest: {
+      type: Boolean,
       required: true,
     },
   },

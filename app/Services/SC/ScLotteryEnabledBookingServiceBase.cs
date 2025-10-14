@@ -261,5 +261,21 @@ namespace SCJ.Booking.MVC.Services.SC
                 && r.IsProcessed == false
             );
         }
+
+        public async Task<bool> CheckIfTrialAlreadyRequestedAsync()
+        {
+            // This is required by the interface so the base controller will work with either
+            // the trial service or the chambers service. Only the trial service
+            // actually implements this - the chambers service will throw this error if called.
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> CheckIfLongChambersAlreadyRequestedAsync()
+        {
+            // This is required by the interface so the base controller will work with either
+            // the trial service or the chambers service. Only the chambers service
+            // actually implements this - the trial service will throw this error if called.
+            throw new NotImplementedException();
+        }
     }
 }

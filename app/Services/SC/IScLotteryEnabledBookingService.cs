@@ -27,7 +27,9 @@ namespace SCJ.Booking.MVC.Services.SC
 
         string GenerateLotteryEntryId();
 
-        Task<bool> CheckIfBookingAlreadyRequestedAsync();
+        Task<bool> CheckIfTrialAlreadyRequestedAsync();
+
+        Task<bool> CheckIfLongChambersAlreadyRequestedAsync();
 
         Task<bool> CheckIfBookingAlreadyRequestedAsync(int hearingTypeId);
 

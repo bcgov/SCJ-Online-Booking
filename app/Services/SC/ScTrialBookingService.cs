@@ -62,7 +62,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
-                if (await CheckIfBookingAlreadyRequestedAsync())
+                if (await CheckIfTrialAlreadyRequestedAsync())
                 {
                     bookingInfo.ApiBookingResultMessage =
                         "A trial has already been requested for this case.";
@@ -193,7 +193,7 @@ namespace SCJ.Booking.MVC.Services.SC
             return model;
         }
 
-        public new async Task<bool> CheckIfBookingAlreadyRequestedAsync()
+        public new async Task<bool> CheckIfTrialAlreadyRequestedAsync()
         {
             var booking = _session.ScBookingInfo;
 

@@ -28,6 +28,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             FairUseResultDate = null;
             FairUseSelectionDate = null;
             RegistryContactNumber = string.Empty;
+            HasExistingLongChambersRequest = false;
         }
 
         //Search fields
@@ -172,5 +173,8 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         // Session object
         public ScSessionBookingInfo SessionInfo { get; set; }
         public string RegistryContactNumber { get; set; }
+
+        // Indicates if there is an existing chambers lottery entry for the same case
+        public bool HasExistingLongChambersRequest { get; set; }
     }
 }

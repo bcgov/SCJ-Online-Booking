@@ -16,7 +16,6 @@ namespace SCJ.Booking.MVC.Controllers
         //Services
         private readonly ScCoreService _scCoreService;
         private readonly ScTrialBookingService _scTrialBookingService;
-        private readonly ScConferenceBookingService _scConferenceBookingService;
 
         // Strongly typed session
         private readonly SessionService _session;
@@ -25,14 +24,12 @@ namespace SCJ.Booking.MVC.Controllers
         public ScCoreController(
             SessionService sessionService,
             ScCoreService scCoreService,
-            ScTrialBookingService scTrialBookingService,
-            ScConferenceBookingService scConferenceBookingService
+            ScTrialBookingService scTrialBookingService
         )
         {
             _session = sessionService;
             _scCoreService = scCoreService;
             _scTrialBookingService = scTrialBookingService;
-            _scConferenceBookingService = scConferenceBookingService;
         }
 
         [HttpGet]
@@ -119,7 +116,7 @@ namespace SCJ.Booking.MVC.Controllers
             }
 
             model.HasExistingTrialRequest =
-                await _scTrialBookingService.CheckIfBookingAlreadyRequestedAsync();
+                await _scTrialBookingService.CheckIfTrialAlreadyRequestedAsync();
             model.AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync();
 
             return View(model);

@@ -30,11 +30,13 @@
     int chambersLength = Model.SessionInfo.BookingLength ?? 0;
     int maxChambersDateSelections = ScGeneral.ScMaxChambersDateSelections;
     string scMaxChambersDateSelectionsString = ScGeneral.ScMaxChambersDateSelectionsString;
+    bool hasExistingChambersRequest = Model.HasExistingLongChambersRequest;
 }
 
 <form method="post" id="availableTimesForm">
 
     @Html.HiddenFor(m => m.HearingTypeId)
+    @Html.HiddenFor(m => m.HasExistingLongChambersRequest)
 
     <div id="VueLongChambersTimeSelect" v-cloak>
         <long-chambers-time-select :available-fair-use-dates='@Html.Raw(availableFairUseDates)'
@@ -49,7 +51,8 @@
             :selected-fair-use-date-strings='@Html.Raw(selectedFairUseDateStrings)'
             selected-regular-date="@selectedRegularDate"
             session-info-booking-location-name="@Model.SessionInfo.BookingLocationName"
-            :chambers-length="@chambersLength" />
+            :chambers-length="@chambersLength"
+            :has-existing-chambers-request='@Html.Raw(Json.Serialize(hasExistingChambersRequest))' />
     </div>
 
     <div class="content-pad bg-white">

@@ -65,6 +65,12 @@ namespace SCJ.Booking.MVC.Controllers
                 model.FormulaType = bookingInfo.FormulaType ?? ScFormulaType.FairUseBooking;
             }
 
+            if (bookingInfo.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+            {
+                model.HasExistingLongChambersRequest =
+                    await _bookingService.CheckIfLongChambersAlreadyRequestedAsync();
+            }
+
             return View(model);
         }
 
