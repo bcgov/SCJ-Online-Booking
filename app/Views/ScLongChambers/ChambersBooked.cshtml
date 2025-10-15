@@ -1,7 +1,7 @@
 @inject SessionService SessionService
 @{
     Layout = "~/Views/ScCore/_Layout.cshtml";
-    ViewData["Title"] = "Your Booking is Reserved Tentatively";
+    ViewData["Title"] = "Your booking is reserved tentatively";
 
     var bookingInfo = SessionService.ScBookingInfo;
     var userInfo = SessionService.UserInfo;
@@ -47,7 +47,7 @@
             </div>
 
             <div class="mb-4">
-                <h2>Chambers Hearing Details</h2>
+                <h2>Chambers hearing details</h2>
 
                 @{
                     var chambersLength = bookingInfo.BookingLength;
@@ -59,14 +59,14 @@
             </div>
 
             <div class="mb-4">
-                <h2>Contact Information</h2>
+                <h2>Contact information</h2>
                 <p>Email: @userInfo.Email</p>
                 <p>Phone number: @userInfo.Phone</p>
             </div>
 
             <div class="mb-4">
                 <a class="btn btn-primary d-inline-block mt-0" href="/scjob/booking/sc" role="button">
-                    Make Another Booking
+                    Make another booking
                 </a>
             </div>
 

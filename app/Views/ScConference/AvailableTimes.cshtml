@@ -1,7 +1,7 @@
 @model ScAvailableSlotsViewModel
 @{
     Layout = "~/Views/ScCore/_Layout.cshtml";
-    ViewData["Title"] = "Book Your Hearing";
+    ViewData["Title"] = "Book your hearing";
 
     var bookingInfo = Model.SessionInfo;
 }
@@ -15,7 +15,7 @@
     <h6>Step 3</h6>
 
 
-    <h2>Book Your Hearing</h2>
+    <h2>Book your hearing</h2>
 
     <div style="margin-bottom: 30px">
         <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
@@ -39,7 +39,7 @@
             <div class="col-6 col-md-8 d-flex align-items-center text-link">
                 <span>
                     <i class="fas fa-long-arrow-alt-left"></i>
-                    <a asp-action="BookingType" asp-action="BookingType">Step 2: Choose Your Booking Type</a>
+                    <a asp-action="BookingType" asp-action="BookingType">Step 2: Choose your booking type</a>
                 </span>
             </div>
             <div class="col-6 col-md-4">
@@ -72,7 +72,7 @@
                     clearBtn: true,
                     endDate: @Json.Serialize(Model.LastAvailableDate),
                     datesDisabled: @Json.Serialize(Model.DisabledDates)
-                                                                                    }).on('changeDate', function (event) {
+                                                                                                    }).on('changeDate', function (event) {
                         var selectedDate = event.format();
                         var dates = @availableDates;
                         if (dates) {

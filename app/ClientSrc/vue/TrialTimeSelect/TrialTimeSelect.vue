@@ -93,7 +93,7 @@
         </template>
 
         <template v-slot:dateSelectionSectionHeader>
-          Request trial start dates for {{ sessionInfoBookingLocationName }} (Trial length:
+          Request trial start dates for {{ sessionInfoBookingLocationName }} (trial length:
           {{ trialLength }} {{ trialLength == 1 ? "day" : "days" }})
         </template>
 

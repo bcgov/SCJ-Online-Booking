@@ -3,7 +3,7 @@
 @model ScCaseSearchViewModel
 
 @{
-    ViewData["Title"] = "Find the Case for Your Booking";
+    ViewData["Title"] = "Find the case for your booking";
 
     var courtCases = Model.Cases;
     var caseCount = courtCases?.Count ?? 0;
@@ -20,7 +20,7 @@
     <h5>4 steps to complete your booking</h5>
     <hr />
     <h6>Step 1</h6>
-    <h2>Find the Case for Your Booking</h2>
+    <h2>Find the case for your booking</h2>
     <p>Before you can book a trial, chambers or hearing, use the following to find the case.</p>
 
     <form method="GET" action="~/booking/sc/search#caseCount">
@@ -36,7 +36,7 @@
                 </div>
             <div class="form-group">
                 <label for="courtClassDropdown" id="courtClassLabel">
-                    Choose the court class (Optional)
+                    Choose the court class (optional)
                 </label>
                 <select asp-for="SelectedCourtClass" class="form-control" id="courtClassDropdown" aria-label="Court classes" asp-items="SelectListService.ScCourtClasses">
                     <option value="">-- Pick a class --</option>
@@ -77,7 +77,7 @@
         <div class="row no-gutters">
             <div class="col-6 col-md-3">
                 <button type="submit" id="SearchForCase" class="btn btn-primary btn-block">
-                    Search for Case
+                    Search for case
                 </button>
             </div>
         </div>
@@ -128,7 +128,7 @@
             <div class="row no-gutters">
                 <div class="col-6 col-md-3 ml-auto">
                     <button formaction="case-selected" class="btn btn-secondary btn-block">
-                        Confirm Case
+                        Confirm case
                     </button>
                 </div>
             </div>

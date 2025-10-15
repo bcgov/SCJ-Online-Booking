@@ -1,7 +1,7 @@
 @inject SessionService SessionService
 @{
     Layout = "~/Views/ScCore/_Layout.cshtml";
-    ViewData["Title"] = "Your Booking is Confirmed";
+    ViewData["Title"] = "Your booking is confirmed";
 
     var bookingInfo = SessionService.ScBookingInfo;
     var userInfo = SessionService.UserInfo;
@@ -75,12 +75,12 @@
                             <p>@bookingInfo.SelectedCourtClassName</p>
                         </div>
                         <div class="form-group" style="margin-bottom: 8px">
-                            <h6>Hearing Date</h6>
+                            <h6>Hearing date</h6>
                             <p>@bookingInfo.FormattedConferenceDate</p>
                             <p>@bookingInfo.FormattedConferenceTime</p>
                         </div>
                         <div class="form-group">
-                            <h6>Contact Information</h6>
+                            <h6>Contact information</h6>
                             <p>@userInfo.Email</p>
                             <p>@userInfo.Phone</p>
                         </div>
@@ -99,7 +99,7 @@
         </div>
         <div class="col-6 col-md-4">
             <a class="btn btn-primary btn-block" href="/scjob/booking/sc" role="button">
-                Book Another Hearing
+                Book another hearing
             </a>
         </div>
     </div>

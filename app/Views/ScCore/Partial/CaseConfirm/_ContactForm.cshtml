@@ -7,7 +7,7 @@
     : "AvailableTimes";
 }
 
-<h4>Provide Your Contact Information</h4>
+<h4>Provide your contact information</h4>
 
 @if (@Model.SessionInfo.FormulaType == ScFormulaType.FairUseBooking)
 {
@@ -50,17 +50,17 @@ else
 
                 @if (hearingTypeId == ScHearingType.TRIAL)
                 {
-                    <text>Request Trial </text>
-                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+                    <text>Request trial </text>
+                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "date" : "date(s)")
                 }
                 else if (hearingTypeId == ScHearingType.LONG_CHAMBERS)
                 {
-                    <text>Request Chambers </text>
-                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "Date" : "Date(s)")
+                    <text>Request chambers </text>
+                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "date" : "date(s)")
                 }
                 else
                 {
-                    <text>Book Your Hearing</text>
+                    <text>Book your hearing</text>
                 }
             </a>
         </span>
@@ -69,11 +69,11 @@ else
         <button type="submit" class="btn btn-secondary btn-block progress-spinner" id="btnSearch">
             @if (@Model.SessionInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
-                <text>Confirm Request</text>
+                <text>Confirm request</text>
             }
             else
             {
-                <text>Confirm Booking</text>
+                <text>Confirm booking</text>
             }
         </button>
     </div>

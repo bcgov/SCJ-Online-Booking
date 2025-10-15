@@ -1,7 +1,7 @@
 @model ScAvailableSlotsViewModel
 @{
     Layout = "~/Views/ScCore/_Layout.cshtml";
-    ViewData["Title"] = "Request Trial Date(s)";
+    ViewData["Title"] = "Request trial date(s)";
 
     var bookingInfo = Model.SessionInfo;
 }
@@ -14,10 +14,10 @@
     <hr />
     <h6>Step 3</h6>
 
-    <h2>Request Trial Date(s)</h2>
+    <h2>Request trial date(s)</h2>
 
     <div style="margin-bottom: 30px">
-        <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
+        <div class="uppercase-sm">File number: @bookingInfo.FullCaseNumber</div>
         <h5>@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
         <p>@bookingInfo.SelectedCourtClassName</p>
     </div>

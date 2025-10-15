@@ -61,14 +61,14 @@
         <div class="col-6 col-md-8 d-flex align-items-center text-link">
             <span>
                 <i class="fas fa-long-arrow-alt-left"></i>
-                <a asp-controller="ScCore" asp-action="BookingType">Step 2: Choose Your Booking Type</a>
+                <a asp-controller="ScCore" asp-action="BookingType">Step 2: Choose your booking type</a>
             </span>
         </div>
         <div class="col-6 col-md-4">
             @if (Model.AvailableFairUseDates.Any() || Model.AvailableRegularDates.Any())
             {
                 <button type="submit" class="btn btn-secondary btn-block" id="btnNext">
-                    Review Your Request
+                    Review your request
                 </button>
             }
         </div>

@@ -5,7 +5,7 @@
     </div>
 
     <h3 class="mt-0 mb-5" v-if="hearingTypeName === 'trial'">
-      Choose {{ hearingTypeName }} start date (Trial length: {{ lengthDisplay }})
+      Choose {{ hearingTypeName }} start date (trial length: {{ lengthDisplay }})
     </h3>
 
     <h3 class="mt-0 mb-5" v-if="hearingTypeName !== 'trial'">
