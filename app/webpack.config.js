@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const RemovePlugin = require("remove-files-webpack-plugin");
 const bundleOutputDir = "./wwwroot/dist";
 const { VueLoaderPlugin } = require("vue-loader");
 
@@ -77,20 +76,6 @@ module.exports = (env) => {
       plugins: [
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin(),
-        new RemovePlugin({
-          after: {
-            root: "./wwwroot/dist/css",
-            include: [],
-            test: [
-              {
-                folder: "./",
-                method: (absoluteItemPath) => {
-                  return !new RegExp(/\.css$/, "m").test(absoluteItemPath);
-                },
-              },
-            ],
-          },
-        }),
         new (require("webpack").DefinePlugin)({
           __VUE_OPTIONS_API__: true,
           __VUE_PROD_DEVTOOLS__: false,
