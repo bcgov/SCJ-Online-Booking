@@ -4,6 +4,7 @@
 @{
     Layout = "~/Views/ScCore/_Layout.cshtml";
     ViewData["Title"] = "Review your request";
+    ScSessionBookingInfo bookingInfo = @Model.SessionInfo;
 }
 
 <div class="body-content--inner">
@@ -17,7 +18,36 @@
 
     <div class="row no-gutters booking-confirmation">
         <div class="col">
-            <partial name="Partial/CaseConfirm/_LongChambers" model="Model" />
+
+            @if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+            {
+                <p class="mb-4">Please review the following information to ensure that it is accurate. Dates are not
+                    guaranteed at this
+                    stage, you
+                    are submitting a request.</p>
+            }
+            else
+            {
+                <p class="mb-4">Review the following information to ensure that it is accurate before completing your
+                    booking.</p>
+            }
+
+            <div class="row no-gutters justify-content-between booking-confirmation--details">
+                <div class="col-12">
+                    <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
+                    <h5 style="margin-bottom: 4px">@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
+                    <p>@bookingInfo.SelectedCourtClassName</p>
+                </div>
+            </div>
+
+            @if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+            {
+                <partial name="Partial/CaseConfirm/_FairUseBooking" model="Model" />
+            }
+            else
+            {
+                <partial name="Partial/CaseConfirm/_RegularBooking" model="Model" />
+            }
         </div>
     </div>
 </div>
