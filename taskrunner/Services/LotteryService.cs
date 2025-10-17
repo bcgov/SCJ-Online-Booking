@@ -104,7 +104,7 @@ namespace SCJ.Booking.TaskRunner.Services
                 InitiationTime = DateTime.Now,
             };
 
-            // group the lottery entries into batches (mini lotteries) by trial booking location and
+            // group the lottery entries into batches (mini lotteries) by booking location and
             // court class groupings
             var lotteryBatch = await GetLotteryBatch(
                 toProcess.BookingLocationId,
@@ -153,7 +153,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
         /// <summary>
         ///     Gets the first booking request that is ready to process, ordered
-        ///     by trial booking location and then by court class formula grouping.
+        ///     by booking location and then by court class formula grouping.
         ///     This is just used to trigger the start of a lottery, prior to the
         ///     ranking of entries.
         /// </summary>
@@ -170,7 +170,7 @@ namespace SCJ.Booking.TaskRunner.Services
         }
 
         /// <summary>
-        ///    Gets a batch of lottery entries based on trial booking location
+        ///    Gets a batch of lottery entries based on booking location
         ///    and court class formula grouping
         /// </summary>
         private async Task<List<ScLotteryBookingRequest>> GetLotteryBatch(
@@ -203,31 +203,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             foreach (var selection in orderedSelections)
             {
-                BookTrialHearingInfo scssTrialRequest =
-                    new()
-                    {
-                        BookingLocationID = entry.BookingLocationId,
-                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                        CourtClass = entry.CourtClassCode,
-                        FormulaType = ScFormulaType.FairUseBooking,
-                        HearingLength = entry.HearingLength,
-                        HearingType = ScHearingType.TRIAL,
-                        LocationID = entry.LocationId,
-                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                        HearingDate = selection.TrialStartDate,
-                        SCJOB_Trial_Booking_ID = entry.LotteryEntryId,
-                        SCJOB_Trial_Booking_Date = DateTime.Now
-                    };
-
-                _logger.Debug("BookTrialHearingAsync()");
-                _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
-
-                // try to book the selected date in SCSS
-                BookingHearingResult result = await _client.scTrialBookHearingAsync(
-                    scssTrialRequest
-                );
-
-                _logger.Debug(JsonSerializer.Serialize(result));
+                BookingHearingResult result = await TryBookingHearing(entry, selection);
 
                 if (result.bookingResult.ToLower().StartsWith("success"))
                 {
@@ -241,7 +217,14 @@ namespace SCJ.Booking.TaskRunner.Services
                     entry.ProcessingTimestamp = DateTime.Now;
                     entry.IsProcessed = true;
                     await _dbContext.SaveChangesAsync();
-                    await QueueSuccessEmail(entry);
+                    if (entry.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+                    {
+                        await QueueLongChambersSuccessEmail(entry);
+                    }
+                    else
+                    {
+                        await QueueTrialSuccessEmail(entry);
+                    }
                     _isFirstAttempt = false;
                     break;
                 }
@@ -266,7 +249,14 @@ namespace SCJ.Booking.TaskRunner.Services
                 entry.ProcessingTimestamp = DateTime.Now;
                 entry.IsProcessed = true;
                 await _dbContext.SaveChangesAsync();
-                await QueueFailureEmail(entry);
+                if (entry.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+                {
+                    await QueueLongChambersFailureEmail(entry);
+                }
+                else
+                {
+                    await QueueTrialFailureEmail(entry);
+                }
             }
         }
 
@@ -275,31 +265,15 @@ namespace SCJ.Booking.TaskRunner.Services
         /// </summary>
         private async Task RecordUnmetDemand(ScLotteryBookingRequest entry)
         {
+            _logger.Debug("Record unmet demand");
             if (entry.DateSelections.Any())
             {
                 var firstSelection = entry.DateSelections.OrderBy(d => d.Rank).ToArray()[0];
 
-                BookTrialHearingInfo unmetDemandRequest =
-                    new()
-                    {
-                        BookingLocationID = entry.BookingLocationId,
-                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                        CourtClass = entry.CourtClassCode,
-                        FormulaType = ScFormulaType.FairUseBooking,
-                        HearingLength = entry.HearingLength,
-                        HearingType = ScHearingType.UNMET_DEMAND,
-                        LocationID = entry.LocationId,
-                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                        HearingDate = firstSelection.TrialStartDate,
-                        SCJOB_Trial_Booking_ID = entry.LotteryEntryId,
-                        SCJOB_Trial_Booking_Date = DateTime.Now
-                    };
-
-                _logger.Debug("Record unmet demand");
-                _logger.Debug(JsonSerializer.Serialize(unmetDemandRequest));
-
-                BookingHearingResult result = await _client.scTrialBookHearingAsync(
-                    unmetDemandRequest
+                BookingHearingResult result = await TryBookingHearing(
+                    entry,
+                    firstSelection,
+                    isUnmetDemand: true
                 );
 
                 if (result.bookingResult.ToLower().StartsWith("success"))
@@ -337,9 +311,83 @@ namespace SCJ.Booking.TaskRunner.Services
         }
 
         /// <summary>
-        ///     Generates a booking success email and adds it to the mail queue
+        ///    Tries to book a hearing for a lottery date selection
         /// </summary>
-        private async Task QueueSuccessEmail(ScLotteryBookingRequest entry)
+        private async Task<BookingHearingResult> TryBookingHearing(
+            ScLotteryBookingRequest bookingRequest,
+            ScLotteryDateSelection dateSelection,
+            bool isUnmetDemand = false
+        )
+        {
+            BookingHearingResult result;
+            if (bookingRequest.HearingTypeId == ScHearingType.TRIAL)
+            {
+                int hearingType = isUnmetDemand ? ScHearingType.UNMET_DEMAND : ScHearingType.TRIAL;
+
+                BookTrialHearingInfo scssTrialRequest =
+                    new()
+                    {
+                        BookingLocationID = bookingRequest.BookingLocationId,
+                        CEIS_Physical_File_ID = bookingRequest.CeisPhysicalFileId,
+                        CourtClass = bookingRequest.CourtClassCode,
+                        FormulaType = ScFormulaType.FairUseBooking,
+                        HearingLength = bookingRequest.HearingLength,
+                        HearingType = hearingType,
+                        LocationID = bookingRequest.LocationId,
+                        RequestedBy =
+                            $"{bookingRequest.RequestedByName} {bookingRequest.Phone} {bookingRequest.Email}",
+                        HearingDate = dateSelection.StartDate,
+                        SCJOB_Trial_Booking_ID = bookingRequest.LotteryEntryId,
+                        SCJOB_Trial_Booking_Date = DateTime.Now
+                    };
+
+                _logger.Debug("scTrialBookHearingAsync()");
+                _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
+
+                // try to book the selected date in SCSS
+                result = await _client.scTrialBookHearingAsync(scssTrialRequest);
+
+                _logger.Debug(JsonSerializer.Serialize(result));
+            }
+            else
+            {
+                int hearingType = isUnmetDemand
+                    ? ScHearingType.UNMET_DEMAND
+                    : bookingRequest.LongChambersHearingSubTypeId.GetValueOrDefault(
+                        ScHearingType.LONG_CHAMBERS
+                    );
+
+                BookingSCCHHearingInfo scssChambersRequest =
+                    new()
+                    {
+                        BookingLocationID = bookingRequest.BookingLocationId,
+                        CEIS_Physical_File_ID = bookingRequest.CeisPhysicalFileId,
+                        CourtClass = bookingRequest.CourtClassCode,
+                        FormulaType = ScFormulaType.FairUseBooking,
+                        HearingLength = bookingRequest.HearingLength,
+                        HearingTypeId = hearingType,
+                        LocationID = bookingRequest.LocationId,
+                        RequestedBy =
+                            $"{bookingRequest.RequestedByName} {bookingRequest.Phone} {bookingRequest.Email}",
+                        HearingDate = dateSelection.StartDate
+                    };
+
+                _logger.Debug("scCHBookHearingAsync()");
+                _logger.Debug(JsonSerializer.Serialize(scssChambersRequest));
+
+                // try to book the selected date in SCSS
+                result = await _client.scCHBookHearingAsync(scssChambersRequest);
+
+                _logger.Debug(JsonSerializer.Serialize(result));
+            }
+            return result;
+        }
+
+        /// <summary>
+        ///     Generates a booking success email for a trial and adds it to the
+        ///     mail queue
+        /// </summary>
+        private async Task QueueTrialSuccessEmail(ScLotteryBookingRequest entry)
         {
             var model = new LotteryEmailViewModel(entry);
             string emailText = await RazorHelper.RenderTemplate(
@@ -359,9 +407,10 @@ namespace SCJ.Booking.TaskRunner.Services
         }
 
         /// <summary>
-        ///     Generates an unsuccessful booking email and adds it to the mail queue
+        ///     Generates an unsuccessful booking email for a trial and adds it
+        ///     to the mail queue
         /// </summary>
-        private async Task QueueFailureEmail(ScLotteryBookingRequest entry)
+        private async Task QueueTrialFailureEmail(ScLotteryBookingRequest entry)
         {
             var model = new LotteryEmailViewModel(entry);
             string emailText = await RazorHelper.RenderTemplate(
@@ -369,6 +418,51 @@ namespace SCJ.Booking.TaskRunner.Services
                 model
             );
             string subject = $"No trial booking for {model.FullCaseNumber}";
+
+            await _mailQueueService.QueueEmailAsync(
+                "SC",
+                model.EmailAddress,
+                subject,
+                emailText,
+                isLotteryResult: true
+            );
+        }
+
+        /// <summary>
+        ///     Generates a booking success email for a long chambers hearing and adds
+        ///     it to the mail queue
+        /// </summary>
+        private async Task QueueLongChambersSuccessEmail(ScLotteryBookingRequest entry)
+        {
+            var model = new LotteryEmailViewModel(entry);
+            string emailText = await RazorHelper.RenderTemplate(
+                "LongChambers-Lottery-Success.cshtml",
+                model
+            );
+            string subject =
+                $"Chambers hearing booking for {model.FullCaseNumber} starting on {model.FairUseDate}";
+
+            await _mailQueueService.QueueEmailAsync(
+                "SC",
+                model.EmailAddress,
+                subject,
+                emailText,
+                isLotteryResult: true
+            );
+        }
+
+        /// <summary>
+        ///     Generates an unsuccessful booking email for a long chambers hearing and adds
+        ///     it to the mail queue
+        /// </summary>
+        private async Task QueueLongChambersFailureEmail(ScLotteryBookingRequest entry)
+        {
+            var model = new LotteryEmailViewModel(entry);
+            string emailText = await RazorHelper.RenderTemplate(
+                "LongChambers-Lottery-Failure.cshtml",
+                model
+            );
+            string subject = $"No chambers hearing booking for {model.FullCaseNumber}";
 
             await _mailQueueService.QueueEmailAsync(
                 "SC",
