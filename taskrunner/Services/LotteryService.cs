@@ -30,6 +30,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
         // track the results of the first booking attempt
         private bool _isFirstAttempt;
+        private readonly bool _usingFakeApi;
 
         public LotteryService(IConfiguration configuration, ApplicationDbContext dbContext)
         {
@@ -38,6 +39,7 @@ namespace SCJ.Booking.TaskRunner.Services
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _mailQueueService = new MailQueueService(configuration, dbContext);
             _isFirstAttempt = true;
+            _usingFakeApi = configuration["USE_FAKE_API"] == "true";
         }
 
         /// <summary>
@@ -230,11 +232,17 @@ namespace SCJ.Booking.TaskRunner.Services
                 }
                 else
                 {
-                    // Handle failure of the first booking attempt: stop the lottery process
-                    if (_isFirstAttempt)
+                    // If the first booking attempt of the lottery process failed, and we're not
+                    // using the fake API, throw a fatal exception to terminate the lottery due to
+                    // a possible SCSS issue. We do this to prevent sending 5000 failing requests
+                    // to SCSS.
+                    if (_isFirstAttempt && !_usingFakeApi)
                     {
                         throw new FatalBookingFailureException(
-                            $"First booking attempt failed for request {entry.CeisPhysicalFileId}. \nBooking result: {result.bookingResult}"
+                            "The first booking attempt of the monthly lottery process failed.\n"
+                                + $"CEIS_Physical_File_ID: {entry.CeisPhysicalFileId}.\n"
+                                + $"Booking result: {result.bookingResult}\n"
+                                + "Terminating the lottery due to possible SCSS issue. The OpenShift pod should restart itself."
                         );
                     }
 

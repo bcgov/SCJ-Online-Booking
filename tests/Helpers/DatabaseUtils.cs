@@ -91,10 +91,12 @@ public class DatabaseUtils
                     Phone = record.Phone,
                     RequestedByName = record.RequestedByName,
                     StyleOfCause = record.StyleOfCause,
-                    LotteryEntryId = record.TrialBookingId,
-                    LocationId = record.TrialLocationId,
-                    LocationName = record.TrialLocationName,
-                    HearingTypeId = ScHearingType.TRIAL,
+                    LotteryEntryId = record.LotteryEntryId,
+                    LocationId = record.HearingLocationId,
+                    LocationName = record.HearingLocationName,
+                    HearingTypeId = record.HearingTypeId,
+                    LongChambersHearingSubTypeId = record.LongChambersHearingSubTypeId,
+                    LongChambersHearingSubTypeName = record.LongChambersHearingSubTypeName,
                     User = testUser
                 };
 
