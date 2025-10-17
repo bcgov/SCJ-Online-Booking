@@ -1,0 +1,45 @@
+@model ScConferenceEmailViewModel
+<html>
+<body>
+
+Thank you.<br/>
+<br/>
+A Judicial Management Conference (JMC) has been scheduled for the date and time noted
+below. The JMC will be heard by telephone.<br/>
+<br/>
+Please follow the directions set out in Part B of Section V of the Court’s COVID-19
+Notice No. 23 (linked below) for next steps:<br/>
+https://www.bccourts.ca/supreme_court/documents/COVID-19_Notice_No.23_Resumption_of_TMCs_and_Trials_May_21_2020.pdf<br/>
+<br/>
+Please note that you must file a requisition at least 7 days before the JMC. The filed
+requisition must be promptly served on all other parties.<br/>
+<br/>
+----<br/>
+TYPE OF CONFERENCE OR HEARING:<br/>
+Judicial Management Conference (JMC)<br/>
+<br/>
+REGISTRY NAME:<br/>
+@Model.CaseLocationName<br/>
+<br/>
+COURT FILE:<br/>
+@Model.FullCaseNumber<br/>
+@Model.StyleOfCause<br/>
+<br/>
+@if (Model.CaseLocationName != Model.BookingLocationName)
+{
+    @Html.Raw("CENTRALIZED HEARING LOCATION:<br/>\n")
+    @Model.BookingLocationName
+    @Html.Raw(" Law Courts<br/><br/> \n\n")
+}
+DATE AND TIME OF CONFERENCE OR HEARING:<br/>
+@Model.Date<br/>
+@Model.Time<br/>
+<br/>
+YOUR EMAIL ADDRESS:<br/>
+@Model.EmailAddress<br/>
+<br/>
+YOUR PHONE NUMBER:<br/>
+@Model.Phone<br/>
+
+</body>
+</html>

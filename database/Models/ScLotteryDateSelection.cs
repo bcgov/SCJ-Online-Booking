@@ -11,7 +11,7 @@ namespace SCJ.Booking.Data.Models
 
         public ScLotteryBookingRequest BookingRequest { get; set; } = null!;
 
-        public DateTime TrialStartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         public int Rank { get; set; }
 

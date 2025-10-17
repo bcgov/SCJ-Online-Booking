@@ -101,55 +101,35 @@ public class DatabaseUtils
                 if (record.Selection1.HasValue)
                 {
                     entity.DateSelections.Add(
-                        new ScLotteryDateSelection
-                        {
-                            Rank = 1,
-                            TrialStartDate = record.Selection1.Value
-                        }
+                        new ScLotteryDateSelection { Rank = 1, StartDate = record.Selection1.Value }
                     );
                 }
 
                 if (record.Selection2.HasValue)
                 {
                     entity.DateSelections.Add(
-                        new ScLotteryDateSelection
-                        {
-                            Rank = 2,
-                            TrialStartDate = record.Selection2.Value
-                        }
+                        new ScLotteryDateSelection { Rank = 2, StartDate = record.Selection2.Value }
                     );
                 }
 
                 if (record.Selection3.HasValue)
                 {
                     entity.DateSelections.Add(
-                        new ScLotteryDateSelection
-                        {
-                            Rank = 3,
-                            TrialStartDate = record.Selection3.Value
-                        }
+                        new ScLotteryDateSelection { Rank = 3, StartDate = record.Selection3.Value }
                     );
                 }
 
                 if (record.Selection4.HasValue)
                 {
                     entity.DateSelections.Add(
-                        new ScLotteryDateSelection
-                        {
-                            Rank = 4,
-                            TrialStartDate = record.Selection4.Value
-                        }
+                        new ScLotteryDateSelection { Rank = 4, StartDate = record.Selection4.Value }
                     );
                 }
 
                 if (record.Selection5.HasValue)
                 {
                     entity.DateSelections.Add(
-                        new ScLotteryDateSelection
-                        {
-                            Rank = 5,
-                            TrialStartDate = record.Selection5.Value
-                        }
+                        new ScLotteryDateSelection { Rank = 5, StartDate = record.Selection5.Value }
                     );
                 }
 

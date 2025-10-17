@@ -73,7 +73,7 @@ namespace SCJ.Booking.MVC.Services.SC
                         userId,
                         "SC",
                         bookingInfo.BookingLocationName,
-                        ScHearingType.LONG_CHAMBERS,
+                        bookingInfo.ChambersHearingSubTypeId,
                         ScFormulaType.FairUseBooking
                     );
 
@@ -158,7 +158,7 @@ namespace SCJ.Booking.MVC.Services.SC
                         userId,
                         "SC",
                         bookingInfo.BookingLocationName,
-                        bookingInfo.HearingTypeId,
+                        bookingInfo.ChambersHearingSubTypeId,
                         ScFormulaType.RegularBooking
                     );
 

@@ -150,7 +150,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 ?? "[N/A]";
 
             // set ViewModel for the email
-            var viewModel = new ScTrialEmailViewModel(booking)
+            var viewModel = new ScLotteryEnabledEmailViewModel(booking)
             {
                 EmailAddress = user.Email,
                 Phone = user.Phone,
@@ -160,7 +160,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 CourtClassName = booking.SelectedCourtClassName,
                 CaseLocationName = booking.CaseLocationName,
                 BookingLocationName = booking.BookingLocationName,
-                TrialLocationName = await _cache.GetLocationNameAsync(
+                HearingLocationName = await _cache.GetLocationNameAsync(
                     booking.AlternateLocationRegistryId
                 ),
                 ResultDate = resultDate,
@@ -173,16 +173,16 @@ namespace SCJ.Booking.MVC.Services.SC
             {
                 template =
                     booking.FormulaType == ScFormulaType.FairUseBooking
-                        ? "ScCore/Emails/Email-LongChambers-FairUse"
-                        : "ScCore/Emails/Email-LongChambers-Regular";
+                        ? "ScLongChambers/Emails/FairUse"
+                        : "ScLongChambers/Emails/Regular";
             }
 
             if (booking.HearingTypeId == ScHearingType.TRIAL)
             {
                 template =
                     booking.FormulaType == ScFormulaType.FairUseBooking
-                        ? "ScCore/Emails/Email-Trial-FairUse"
-                        : "ScCore/Emails/Email-Trial-Regular";
+                        ? "ScTrial/Emails/FairUse"
+                        : "ScTrial/Emails/Regular";
             }
 
             // @TODO: html email body?

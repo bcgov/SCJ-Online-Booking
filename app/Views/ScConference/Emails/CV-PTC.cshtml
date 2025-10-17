@@ -1,0 +1,55 @@
+@model ScConferenceEmailViewModel
+<html>
+<body>
+
+The CV-Pre-Trial Conference (CV-PTC) has been scheduled for @Model.Date and @Model.Time. Please file a
+Requisition confirming the date, time and location of the CV-PTC.<br/>
+<br/>
+Please provide a copy of this email to opposing counsel.<br/>
+<br/>
+<br/>
+If the accused person is represented by counsel, they need not attend the CV-PTC unless they wish to do so.<br/>
+<br/>
+If you are Crown counsel and the accused person is not represented by counsel:<br/>
+
+<ul>
+    <li>
+        If the self-represented accused person is out of custody, please provide a copy of this email to the
+        accused, if possible. If not, please ensure the accused is aware of the date and time of the CV-PTC,
+        and obtain a telephone number at which the accused may be reached.
+    </li>
+    <li>
+        If the self-represented accused person is in custody, please make arrangements for them to appear at
+        the CV-PTC by video.
+    </li>
+</ul>
+<br/>
+----<br/>
+TYPE OF CONFERENCE OR HEARING:<br/>
+CV-Telephone Conference Hearing (CV-TCH)<br/>
+<br/>
+REGISTRY NAME:<br/>
+@Model.CaseLocationName<br/>
+<br/>
+COURT FILE:<br/>
+@Model.FullCaseNumber<br/>
+@Model.StyleOfCause<br/>
+<br/>
+@if (Model.CaseLocationName != Model.BookingLocationName)
+{
+  @Html.Raw("CENTRALIZED HEARING LOCATION:<br/>\n")
+  @Model.BookingLocationName
+  @Html.Raw(" Law Courts<br/><br/> \n\n")
+}
+DATE AND TIME OF CONFERENCE OR HEARING:<br/>
+@Model.Date<br/>
+@Model.Time<br/>
+<br/>
+YOUR EMAIL ADDRESS:<br/>
+@Model.EmailAddress<br/>
+<br/>
+YOUR PHONE NUMBER:<br/>
+@Model.Phone<br/>
+
+</body>
+</html>

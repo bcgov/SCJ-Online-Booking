@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.EntityFrameworkCore;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Constants;
 using SCJ.Booking.Data.Models;
 using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
@@ -99,19 +98,6 @@ namespace SCJ.Booking.MVC.Services
 
             var lotteryStartDate = bookingPeriodEndDate.Date.AddDays(1);
 
-            var subTypes = _cacheService.GetChambersHearingSubTypeDictionary();
-
-            string chambersHearingSubTypeName = "";
-            if (
-                bookingInfo.ChambersHearingSubTypeId.HasValue
-                && bookingInfo.ChambersHearingSubTypeId > 0
-                && subTypes.ContainsKey(bookingInfo.ChambersHearingSubTypeId.Value)
-            )
-            {
-                chambersHearingSubTypeName =
-                    subTypes[bookingInfo.ChambersHearingSubTypeId.Value] as string;
-            }
-
             var bookingRequest = new ScLotteryBookingRequest
             {
                 User = oidcUser,
@@ -135,7 +121,10 @@ namespace SCJ.Booking.MVC.Services
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
                 HearingLength = bookingInfo.BookingLength.Value,
                 LongChambersHearingSubTypeId = bookingInfo.ChambersHearingSubTypeId,
-                LongChambersHearingSubTypeName = chambersHearingSubTypeName,
+                LongChambersHearingSubTypeName =
+                    bookingInfo.HearingTypeId == ScHearingType.LONG_CHAMBERS
+                        ? bookingInfo.ChambersHearingSubTypeName
+                        : "",
                 LotteryStartDate = lotteryStartDate,
                 LotteryEntryId = bookingInfo.LotteryEntryId
             };
@@ -144,7 +133,7 @@ namespace SCJ.Booking.MVC.Services
             foreach (var date in bookingInfo.SelectedFairUseDates)
             {
                 bookingRequest.DateSelections.Add(
-                    new ScLotteryDateSelection { Rank = selectionRank, TrialStartDate = date }
+                    new ScLotteryDateSelection { Rank = selectionRank, StartDate = date }
                 );
                 selectionRank++;
             }

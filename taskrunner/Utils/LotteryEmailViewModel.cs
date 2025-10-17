@@ -14,21 +14,21 @@ namespace SCJ.Booking.TaskRunner.Utils
             StyleOfCause = bookingRequest.StyleOfCause;
             CourtClassName = ScCourtClass.GetCourtClass(bookingRequest.CourtClassCode);
 
-            TrialLength =
+            HearingLength =
                 bookingRequest.HearingLength == 1
                     ? "1 day"
                     : $"{bookingRequest.HearingLength} days";
 
-            TrialLocationName = bookingRequest.LocationName ?? "";
+            HearingLocationName = bookingRequest.LocationName ?? "";
 
             FairUseDate =
                 bookingRequest
                     .DateSelections.FirstOrDefault(x =>
                         x.Rank == bookingRequest.AllocatedSelectionRank
                     )
-                    ?.TrialStartDate.ToString("dddd MMMM d, yyyy") ?? "";
+                    ?.StartDate.ToString("dddd MMMM d, yyyy") ?? "";
 
-            TrialBookingId = bookingRequest.LotteryEntryId;
+            LotteryEntryId = bookingRequest.LotteryEntryId;
 
             NextMonth = bookingRequest.FairUseBookingPeriodStartDate.AddMonths(1).ToString("MMMM");
         }
@@ -38,10 +38,10 @@ namespace SCJ.Booking.TaskRunner.Utils
         public string FullCaseNumber { get; set; }
         public string StyleOfCause { get; set; }
         public string CourtClassName { get; set; }
-        public string TrialLength { get; set; }
-        public string TrialLocationName { get; set; }
+        public string HearingLength { get; set; }
+        public string HearingLocationName { get; set; }
         public string FairUseDate { get; set; }
-        public string TrialBookingId { get; set; }
+        public string LotteryEntryId { get; set; }
         public string NextMonth { get; set; }
     }
 }

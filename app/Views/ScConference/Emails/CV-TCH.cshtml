@@ -1,0 +1,44 @@
+@model ScConferenceEmailViewModel
+<html>
+<body>
+
+Thank you.<br/>
+<br/>
+The CV-Telephone Conference Hearing (CV-TCH) has been scheduled for the date and time below.<br/>
+<br/>
+Please follow the directions set out in Part II of the Court's April 17, 2020 Notice entitled "Expansion
+of Civil and Family Matters - Telephone Conference Hearings" for next steps.<br/>
+<br/>
+Please note that you must submit a TCH Brief by email to Supreme Court Scheduling no later than 4 p.m.
+on the business day that is one full business day before the date set for the TCH. If you do not do so,
+the CV-TCH will be removed from the hearing list.<br/>
+<br/>
+----<br/>
+TYPE OF CONFERENCE OR HEARING:<br/>
+CV-Telephone Conference Hearing (CV-TCH)<br/>
+<br/>
+REGISTRY NAME:<br/>
+@Model.CaseLocationName<br/>
+<br/>
+COURT FILE:<br/>
+@Model.FullCaseNumber<br/>
+@Model.StyleOfCause<br/>
+<br/>
+@if (Model.CaseLocationName != Model.BookingLocationName)
+{
+  @Html.Raw("CENTRALIZED HEARING LOCATION:<br/>\n")
+  @Model.BookingLocationName
+  @Html.Raw(" Law Courts<br/><br/>\n\n")
+}
+DATE AND TIME OF CONFERENCE OR HEARING:<br/>
+@Model.Date<br/>
+@Model.Time<br/>
+<br/>
+YOUR EMAIL ADDRESS:<br/>
+@Model.EmailAddress<br/>
+<br/>
+YOUR PHONE NUMBER:<br/>
+@Model.Phone<br/>
+
+</body>
+</html>

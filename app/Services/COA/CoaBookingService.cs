@@ -419,8 +419,8 @@ namespace SCJ.Booking.MVC.Services.COA
             }
 
             var template = booking.IsAppealHearing is true
-                ? "CoaBooking/Emails/Email-Appeal"
-                : "CoaBooking/Emails/Email-Chambers";
+                ? "CoaBooking/Emails/Appeal"
+                : "CoaBooking/Emails/Chambers";
 
             //Render the email template
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

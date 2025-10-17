@@ -242,13 +242,13 @@ namespace SCJ.Booking.MVC.Services.SC
             //Render the email template
             string template = booking.HearingTypeId switch
             {
-                ScHearingType.AWS => "ScCore/Emails/Email-CV-AWS",
-                ScHearingType.JMC => "ScCore/Emails/Email-JMC",
-                ScHearingType.PTC => "ScCore/Emails/Email-CV-PTC",
-                ScHearingType.TCH => "ScCore/Emails/Email-CV-TCH",
-                ScHearingType.TMC => "ScCore/Emails/Email-TMC",
-                ScHearingType.CPC => "ScCore/Emails/Email-CPC",
-                ScHearingType.JCC => "ScCore/Emails/Email-JCC",
+                ScHearingType.AWS => "ScConference/Emails/CV-AWS",
+                ScHearingType.JMC => "ScConference/Emails/JMC",
+                ScHearingType.PTC => "ScConference/Emails/CV-PTC",
+                ScHearingType.TCH => "ScConference/Emails/CV-TCH",
+                ScHearingType.TMC => "ScConference/Emails/TMC",
+                ScHearingType.CPC => "ScConference/Emails/CPC",
+                ScHearingType.JCC => "ScConference/Emails/JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
             };
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

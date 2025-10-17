@@ -199,6 +199,9 @@ namespace SCJ.Booking.MVC.Services.SC
                 bookingInfo.IsLocationChangeFiled = model.IsLocationChangeFiled;
                 bookingInfo.BookingLength = model.EstimatedChambersLength;
                 bookingInfo.ChambersHearingSubTypeId = model.ChambersHearingSubType;
+                bookingInfo.ChambersHearingSubTypeName = GetChambersHearingSubTypeName(
+                    model.ChambersHearingSubType
+                );
 
                 if (model.IsHomeRegistry is true)
                 {
@@ -295,6 +298,20 @@ namespace SCJ.Booking.MVC.Services.SC
                 return null;
             }
             return searchResult[0];
+        }
+
+        /// <summary>
+        ///    Returns the ChambersHearingSubTypeName for the given subTypeId
+        /// </summary>
+        private string GetChambersHearingSubTypeName(int? subTypeId)
+        {
+            var subTypes = _cache.GetChambersHearingSubTypeDictionary();
+            string chambersHearingSubTypeName = "";
+            if (subTypeId.HasValue && subTypeId > 0 && subTypes.ContainsKey(subTypeId.Value))
+            {
+                chambersHearingSubTypeName = subTypes[subTypeId.Value] as string;
+            }
+            return chambersHearingSubTypeName;
         }
     }
 }

@@ -152,7 +152,7 @@ namespace SCJ.Booking.MVC.Controllers
                                 .Select(s => new
                                 {
                                     s.Rank,
-                                    s.TrialStartDate,
+                                    s.StartDate,
                                     s.BookingResult
                                 }),
                             AllocatedSelectionRank = (int?)(
@@ -207,7 +207,7 @@ namespace SCJ.Booking.MVC.Controllers
                             r.HearingLength,
                             DateSelections = r
                                 .DateSelections.OrderBy(s => s.Rank)
-                                .Select(s => new { s.Rank, s.TrialStartDate, }),
+                                .Select(s => new { s.Rank, s.StartDate, }),
                         })
                         .ToList()
                 })

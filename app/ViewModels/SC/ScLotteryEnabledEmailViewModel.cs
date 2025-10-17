@@ -4,9 +4,9 @@ using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.ViewModels.SC
 {
-    public class ScTrialEmailViewModel
+    public class ScLotteryEnabledEmailViewModel
     {
-        public ScTrialEmailViewModel(ScSessionBookingInfo bookingInfo)
+        public ScLotteryEnabledEmailViewModel(ScSessionBookingInfo bookingInfo)
         {
             // format fair use dates
             FairUseDates = bookingInfo
@@ -20,7 +20,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
                 RegularDate = bookingInfo.SelectedRegularDate.Value.ToString("dddd MMMM d, yyyy");
             }
 
-            TrialLength =
+            HearingLength =
                 bookingInfo.BookingLength == 1 ? "1 day" : $"{bookingInfo.BookingLength} days";
         }
 
@@ -30,10 +30,10 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public string FullCaseNumber { get; set; }
         public string StyleOfCause { get; internal set; }
         public string CourtClassName { get; internal set; }
-        public string TrialLength { get; set; }
+        public string HearingLength { get; set; }
         public string CaseLocationName { get; set; }
         public string BookingLocationName { get; set; }
-        public string TrialLocationName { get; set; }
+        public string HearingLocationName { get; set; }
         public string ResultDate { get; set; }
 
         // selected single date for regular trial bookings
@@ -43,5 +43,6 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public List<string> FairUseDates { get; set; }
         public string LotteryEntryId { get; set; }
         public string RegistryContactNumber { get; set; }
+        public string ChambersHearingSubTypeName { get; set; }
     }
 }

@@ -1,0 +1,51 @@
+@model ScConferenceEmailViewModel
+<html>
+<body>
+
+Thank you.<br/>
+<br/>
+The Application for Written Submissions (CV-AWS) has been booked for the Hearing Date noted below.<br/>
+<br/>
+The purpose of booking the Hearing Date is to identify the date that the parties’ materials will
+be sent to the judge or master and to set the timeframe for submitting materials to the Court.
+You will not attend at Court on the Hearing Date.<br/>
+<br/>
+Please follow the directions set in the document below for next steps:<br/>
+https://www.bccourts.ca/supreme_court/documents/sc/Notice_re_Written_Submissions_04.27.20(FINAL).pdf<br/>
+<br/>
+Please note that you must submit your Written Submissions Brief by email to Supreme Court Scheduling no
+later than 4 p.m. on the business day that is one full business day before the Hearing Date.<br/>
+<br/>
+If you do not do so, your CV-AWS will not be considered by a judge or master. The Hearing Date will be
+removed from the list, and the parties will need to start the process over if they wish to have a CV-AWS
+considered.<br/>
+<br/>
+----<br/>
+TYPE OF CONFERENCE OR HEARING:<br/>
+CV-Application Written Submissions (CV-AWS)<br/>
+<br/>
+REGISTRY NAME:<br/>
+@Model.CaseLocationName<br/>
+<br/>
+COURT FILE:<br/>
+@Model.FullCaseNumber<br/>
+@Model.StyleOfCause<br/>
+<br/>
+@if (Model.CaseLocationName != Model.BookingLocationName)
+{
+  @Html.Raw("CENTRALIZED HEARING LOCATION:<br/>\n")
+  @Model.BookingLocationName
+  @Html.Raw(" Law Courts<br/><br/>\n\n")
+}
+DATE AND TIME OF CONFERENCE OR HEARING:<br/>
+@Model.Date<br/>
+@Model.Time<br/>
+<br/>
+YOUR EMAIL ADDRESS:<br/>
+@Model.EmailAddress<br/>
+<br/>
+YOUR PHONE NUMBER:<br/>
+@Model.Phone<br/>
+
+</body>
+</html>
