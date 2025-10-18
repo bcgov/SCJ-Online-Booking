@@ -221,11 +221,11 @@ namespace SCJ.Booking.TaskRunner.Services
                     await _dbContext.SaveChangesAsync();
                     if (entry.HearingTypeId == ScHearingType.LONG_CHAMBERS)
                     {
-                        await QueueLongChambersSuccessEmail(entry);
+                        await _mailQueueService.QueueLongChambersSuccessEmail(entry);
                     }
                     else
                     {
-                        await QueueTrialSuccessEmail(entry);
+                        await _mailQueueService.QueueTrialSuccessEmail(entry);
                     }
                     _isFirstAttempt = false;
                     break;
@@ -259,11 +259,11 @@ namespace SCJ.Booking.TaskRunner.Services
                 await _dbContext.SaveChangesAsync();
                 if (entry.HearingTypeId == ScHearingType.LONG_CHAMBERS)
                 {
-                    await QueueLongChambersFailureEmail(entry);
+                    await _mailQueueService.QueueLongChambersFailureEmail(entry);
                 }
                 else
                 {
-                    await QueueTrialFailureEmail(entry);
+                    await _mailQueueService.QueueTrialFailureEmail(entry);
                 }
             }
         }
@@ -389,96 +389,6 @@ namespace SCJ.Booking.TaskRunner.Services
                 _logger.Debug(JsonSerializer.Serialize(result));
             }
             return result;
-        }
-
-        /// <summary>
-        ///     Generates a booking success email for a trial and adds it to the
-        ///     mail queue
-        /// </summary>
-        private async Task QueueTrialSuccessEmail(ScLotteryBookingRequest entry)
-        {
-            var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate(
-                "Trial-Lottery-Success.cshtml",
-                model
-            );
-            string subject =
-                $"Trial booking for {model.FullCaseNumber} starting on {model.FairUseDate}";
-
-            await _mailQueueService.QueueEmailAsync(
-                "SC",
-                model.EmailAddress,
-                subject,
-                emailText,
-                isLotteryResult: true
-            );
-        }
-
-        /// <summary>
-        ///     Generates an unsuccessful booking email for a trial and adds it
-        ///     to the mail queue
-        /// </summary>
-        private async Task QueueTrialFailureEmail(ScLotteryBookingRequest entry)
-        {
-            var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate(
-                "Trial-Lottery-Failure.cshtml",
-                model
-            );
-            string subject = $"No trial booking for {model.FullCaseNumber}";
-
-            await _mailQueueService.QueueEmailAsync(
-                "SC",
-                model.EmailAddress,
-                subject,
-                emailText,
-                isLotteryResult: true
-            );
-        }
-
-        /// <summary>
-        ///     Generates a booking success email for a long chambers hearing and adds
-        ///     it to the mail queue
-        /// </summary>
-        private async Task QueueLongChambersSuccessEmail(ScLotteryBookingRequest entry)
-        {
-            var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate(
-                "LongChambers-Lottery-Success.cshtml",
-                model
-            );
-            string subject =
-                $"Chambers hearing booking for {model.FullCaseNumber} starting on {model.FairUseDate}";
-
-            await _mailQueueService.QueueEmailAsync(
-                "SC",
-                model.EmailAddress,
-                subject,
-                emailText,
-                isLotteryResult: true
-            );
-        }
-
-        /// <summary>
-        ///     Generates an unsuccessful booking email for a long chambers hearing and adds
-        ///     it to the mail queue
-        /// </summary>
-        private async Task QueueLongChambersFailureEmail(ScLotteryBookingRequest entry)
-        {
-            var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate(
-                "LongChambers-Lottery-Failure.cshtml",
-                model
-            );
-            string subject = $"No chambers hearing booking for {model.FullCaseNumber}";
-
-            await _mailQueueService.QueueEmailAsync(
-                "SC",
-                model.EmailAddress,
-                subject,
-                emailText,
-                isLotteryResult: true
-            );
         }
     }
 }

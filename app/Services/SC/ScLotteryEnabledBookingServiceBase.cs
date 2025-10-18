@@ -164,7 +164,8 @@ namespace SCJ.Booking.MVC.Services.SC
                     booking.AlternateLocationRegistryId
                 ),
                 ResultDate = resultDate,
-                LotteryEntryId = booking.LotteryEntryId
+                LotteryEntryId = booking.LotteryEntryId,
+                ChambersHearingSubTypeName = booking.ChambersHearingSubTypeName
             };
 
             string template = "";

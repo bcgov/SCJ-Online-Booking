@@ -21,7 +21,7 @@ namespace SCJ.Booking.TaskRunner.Utils
 
             HearingLocationName = bookingRequest.LocationName ?? "";
 
-            FairUseDate =
+            AllocatedStartDate =
                 bookingRequest
                     .DateSelections.FirstOrDefault(x =>
                         x.Rank == bookingRequest.AllocatedSelectionRank
@@ -31,6 +31,8 @@ namespace SCJ.Booking.TaskRunner.Utils
             LotteryEntryId = bookingRequest.LotteryEntryId;
 
             NextMonth = bookingRequest.FairUseBookingPeriodStartDate.AddMonths(1).ToString("MMMM");
+
+            ChambersHearingSubTypeName = bookingRequest.LongChambersHearingSubTypeName;
         }
 
         public string EmailAddress { get; set; }
@@ -40,8 +42,9 @@ namespace SCJ.Booking.TaskRunner.Utils
         public string CourtClassName { get; set; }
         public string HearingLength { get; set; }
         public string HearingLocationName { get; set; }
-        public string FairUseDate { get; set; }
+        public string AllocatedStartDate { get; set; }
         public string LotteryEntryId { get; set; }
         public string NextMonth { get; set; }
+        public string ChambersHearingSubTypeName { get; set; }
     }
 }

@@ -4,8 +4,8 @@
 
     <p>
         We received your request for a chambers hearing booking through the Online Booking System.
-        A chambers hearing date was not reserved tentatively for your case as there were more
-        requests than available chambers hearing dates.
+        A chambers hearing date was not reserved tentatively due to a higher number of requests
+        than available chambers hearing dates.
     </p>
     <p>
         The next booking period commences in <strong>@Model.NextMonth</strong>.
@@ -16,6 +16,8 @@
     File number: @Model.FullCaseNumber<br />
     @Model.StyleOfCause<br />
     @Model.CourtClassName<br />
+    Type: @Model.ChambersHearingSubTypeName<br />
+    Requested days: @Model.HearingLength<br />
     Chambers location: @Model.HearingLocationName<br />
 
 </body>
