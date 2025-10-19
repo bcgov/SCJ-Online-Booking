@@ -14,7 +14,7 @@ namespace SCJ.Booking.MVC.Controllers
     public class ScConferenceController : Controller
     {
         //Services
-        private readonly ScCoreService _scCoreService;
+        private readonly ScCoreBookingService _coreService;
         private readonly ScConferenceBookingService _scConferenceBookingService;
 
         // Strongly typed session
@@ -23,12 +23,12 @@ namespace SCJ.Booking.MVC.Controllers
         //Constructor
         public ScConferenceController(
             SessionService sessionService,
-            ScCoreService scCoreService,
+            ScCoreBookingService scCoreBookingService,
             ScConferenceBookingService scConferenceBookingService
         )
         {
             _session = sessionService;
-            _scCoreService = scCoreService;
+            _coreService = scCoreBookingService;
             _scConferenceBookingService = scConferenceBookingService;
         }
 
@@ -38,7 +38,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             var model = _scConferenceBookingService.LoadAvailableSlotsFormAsync();
 
-            if (string.IsNullOrWhiteSpace(model.CaseNumber))
+            if (string.IsNullOrWhiteSpace(model.SessionInfo.CaseNumber))
             {
                 return RedirectToAction("Index");
             }
@@ -50,7 +50,9 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpPost]
         [Route("~/booking/sc-conference/available-times")]
-        public async Task<IActionResult> AvailableTimesAsync(ScAvailableSlotsViewModel model)
+        public async Task<IActionResult> AvailableTimesAsync(
+            ScConferenceAvailableSlotsViewModel model
+        )
         {
             var bookingInfo = _session.ScBookingInfo;
             model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
@@ -89,7 +91,7 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             var user = _session.GetUserInformation();
 
-            string locationName = await _scCoreService.GetLocationNameAsync(
+            string locationName = await _coreService.GetLocationNameAsync(
                 bookingInfo.BookingLocationRegistryId
             );
 

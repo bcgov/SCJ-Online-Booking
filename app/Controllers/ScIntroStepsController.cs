@@ -11,24 +11,24 @@ namespace SCJ.Booking.MVC.Controllers
 {
     [Route("booking/sc/[action]")]
     [Authorize]
-    public class ScCoreController : Controller
+    public class ScIntroStepsController : Controller
     {
         //Services
-        private readonly ScCoreService _scCoreService;
+        private readonly ScCoreBookingService _coreService;
         private readonly ScTrialBookingService _scTrialBookingService;
 
         // Strongly typed session
         private readonly SessionService _session;
 
         //Constructor
-        public ScCoreController(
+        public ScIntroStepsController(
             SessionService sessionService,
-            ScCoreService scCoreService,
+            ScCoreBookingService scCoreBookingService,
             ScTrialBookingService scTrialBookingService
         )
         {
             _session = sessionService;
-            _scCoreService = scCoreService;
+            _coreService = scCoreBookingService;
             _scTrialBookingService = scTrialBookingService;
         }
 
@@ -36,7 +36,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc")]
         public IActionResult Index()
         {
-            var model = _scCoreService.LoadSearchForm();
+            var model = _coreService.LoadSearchForm();
             return View(model);
         }
 
@@ -44,7 +44,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/select-case")]
         public IActionResult SelectCaseAsync()
         {
-            var model = _scCoreService.ReloadSearchForm();
+            var model = _coreService.ReloadSearchForm();
             return View("Index", model);
         }
 
@@ -69,16 +69,14 @@ namespace SCJ.Booking.MVC.Controllers
                 ModelState.AddModelError("CaseNumber", "Invalid number");
             }
 
-            model.CaseLocationName = await _scCoreService.GetLocationNameAsync(
-                model.CaseRegistryId
-            );
+            model.CaseLocationName = await _coreService.GetLocationNameAsync(model.CaseRegistryId);
 
             if (!ModelState.IsValid)
             {
                 return View("Index", model);
             }
 
-            model = await _scCoreService.GetSearchResults(model);
+            model = await _coreService.GetSearchResults(model);
 
             return View("Index", model);
         }
@@ -99,7 +97,7 @@ namespace SCJ.Booking.MVC.Controllers
                 return View("Index", model);
             }
 
-            await _scCoreService.SaveSearchForm(model);
+            await _coreService.SaveSearchForm(model);
 
             return RedirectToAction("BookingType");
         }
@@ -108,7 +106,7 @@ namespace SCJ.Booking.MVC.Controllers
         [Route("~/booking/sc/booking-type")]
         public async Task<IActionResult> BookingType()
         {
-            var model = _scCoreService.LoadBookingTypeForm();
+            var model = _coreService.LoadBookingTypeForm();
 
             if (model.SessionInfo.SelectedCourtFile is null)
             {
@@ -117,7 +115,7 @@ namespace SCJ.Booking.MVC.Controllers
 
             model.HasExistingTrialRequest =
                 await _scTrialBookingService.CheckIfTrialAlreadyRequestedAsync();
-            model.AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync();
+            model.AvailableBookingTypes = await _coreService.GetAvailableBookingTypesAsync();
 
             return View(model);
         }
@@ -151,7 +149,7 @@ namespace SCJ.Booking.MVC.Controllers
                 }
             }
 
-            // Extra fields for "Trial" booking type
+            // Extra fields for "Long Chambers" booking type
             if (model.HearingTypeId == ScHearingType.LONG_CHAMBERS)
             {
                 if (model.EstimatedChambersLength == null || model.EstimatedChambersLength == 0)
@@ -225,12 +223,12 @@ namespace SCJ.Booking.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync();
+                model.AvailableBookingTypes = await _coreService.GetAvailableBookingTypesAsync();
                 model.SessionInfo = _session.ScBookingInfo;
                 return View(model);
             }
 
-            await _scCoreService.SaveBookingTypeFormAsync(model);
+            await _coreService.SaveBookingTypeFormAsync(model);
 
             if (model.HearingTypeId == ScHearingType.TRIAL)
             {
@@ -246,10 +244,23 @@ namespace SCJ.Booking.MVC.Controllers
             }
         }
 
+        /// <summary>
+        /// This is just for debugging purposes to see headers added by reverse proxies
+        /// </summary>
         [HttpGet]
         public IActionResult Headers()
         {
             return View();
+        }
+
+        /// <summary>
+        /// This is just for debugging purposes to see the supreme court session object
+        /// </summary>
+        [HttpGet]
+        public IActionResult Session()
+        {
+            var bookingInfo = _session.ScBookingInfo;
+            return View(bookingInfo);
         }
     }
 }

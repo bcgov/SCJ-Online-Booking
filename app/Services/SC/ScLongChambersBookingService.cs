@@ -133,7 +133,7 @@ namespace SCJ.Booking.MVC.Services.SC
                         LocationID = bookingInfo.AlternateLocationRegistryId,
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                         HearingDate = bookingInfo.SelectedRegularDate.Value,
-                        HearingTypeId = bookingInfo.ChambersHearingSubTypeId.Value,
+                        HearingTypeId = bookingInfo.ChambersHearingSubTypeId,
                         // @TODO: Contact Lorne about this
                         //SCJOB_Trial_Booking_ID = lotteryEntryId,
                         //SCJOB_Trial_Booking_Date = DateTime.Now

@@ -11,12 +11,12 @@ namespace SCJ.Booking.MVC.Controllers
     public class HomeController : Controller
     {
         //Services
-        private readonly ScCoreService _scCoreService;
+        private readonly ScCoreBookingService _coreService;
 
         //Constructor
-        public HomeController(ScCoreService scCoreService)
+        public HomeController(ScCoreBookingService scCoreBookingService)
         {
-            _scCoreService = scCoreService;
+            _coreService = scCoreBookingService;
         }
 
         public async Task<IActionResult> Index()
@@ -24,7 +24,7 @@ namespace SCJ.Booking.MVC.Controllers
             return View(
                 new IndexViewModel
                 {
-                    AvailableBookingTypes = await _scCoreService.GetAvailableBookingTypesAsync()
+                    AvailableBookingTypes = await _coreService.GetAvailableBookingTypesAsync()
                 }
             );
         }

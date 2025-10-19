@@ -56,10 +56,10 @@ function showTrialFields() {
   if (trialSelected && checkExistingTrialBookings()) {
     $("#existing-trial-error").show();
     $("#btnNext").hide();
-    $("#fair-additional-fields").hide();
+    $("#lotteryenabled-additional-fields").hide();
   } else {
     $("#trial-additional-fields").toggle(trialSelected);
-    $("#fair-additional-fields").toggle(trialSelected || chambersSelected);
+    $("#lotteryenabled-additional-fields").toggle(trialSelected || chambersSelected);
   }
 
   $(".txtChambers").toggle(chambersSelected);

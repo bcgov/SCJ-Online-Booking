@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using SCJ.Booking.Data.Constants;
 using SCJ.Booking.RemoteAPIs.Fixtures;
 
@@ -262,7 +261,7 @@ namespace SCJ.OnlineBooking
                 Random r = new Random();
                 int n = r.Next(0, 100);
 
-                if (bookingInfo.HearingType != ScHearingType.UNMET_DEMAND)
+                if (bookingInfo.HearingType == ScHearingType.TRIAL)
                 {
                     // fair use trial bookings fail 85% of the time for test purposes
                     return n > 85
@@ -298,7 +297,7 @@ namespace SCJ.OnlineBooking
                 Random r = new Random();
                 int n = r.Next(0, 100);
 
-                if (bookingInfo.HearingTypeId != ScHearingType.UNMET_DEMAND)
+                if (bookingInfo.HearingTypeId != ScHearingType.LONG_CHAMBERS)
                 {
                     // fair use trial bookings fail 85% of the time for test purposes
                     return n > 85

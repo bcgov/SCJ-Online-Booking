@@ -1,12 +1,8 @@
-using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SCJ.Booking.Data.Constants;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Services.SC;
-using SCJ.Booking.MVC.Utils;
 using SCJ.Booking.MVC.ViewModels.SC;
 
 namespace SCJ.Booking.MVC.Controllers
@@ -17,10 +13,10 @@ namespace SCJ.Booking.MVC.Controllers
     {
         public ScTrialController(
             SessionService sessionService,
-            ScCoreService scCoreService,
+            ScCoreBookingService scCoreBookingService,
             ScTrialBookingService scTrialBookingService
         )
-            : base(sessionService, scCoreService, scTrialBookingService) { }
+            : base(sessionService, scCoreBookingService, scTrialBookingService) { }
 
         [HttpGet]
         [Route("~/booking/sc-trial/available-dates")]
@@ -31,7 +27,9 @@ namespace SCJ.Booking.MVC.Controllers
 
         [HttpPost]
         [Route("~/booking/sc-trial/available-dates")]
-        public new async Task<IActionResult> AvailableDatesAsync(ScAvailableSlotsViewModel model)
+        public new async Task<IActionResult> AvailableDatesAsync(
+            ScLotteryEnabledAvailableSlotsViewModel model
+        )
         {
             return await base.AvailableDatesAsync(model);
         }

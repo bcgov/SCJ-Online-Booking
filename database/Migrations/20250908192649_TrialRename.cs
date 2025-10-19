@@ -130,7 +130,7 @@ namespace SCJ.Booking.Data.Migrations
         {
             // Drop foreign key from ScTrialDateSelections to ScTrialBookingRequests
             migrationBuilder.DropForeignKey(
-                name: "FK_ScLotteryDateSelections_ScLotteryBookingRequests_BookingRequest~",
+                name: "FK_ScLotteryDateSelections_ScLotteryBookingRequests_BookingRequestId",
                 table: "ScLotteryDateSelections"
             );
 

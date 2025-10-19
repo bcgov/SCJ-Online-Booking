@@ -144,20 +144,14 @@ module.exports = (env) => {
               to: "lib/bootstrap-datepicker.js",
             },
             {
-              from: "node_modules/jquery-validation/dist/",
-              to: "lib/jquery-validate",
+              from: "node_modules/jquery-validation/dist/jquery.validate+(.min|).js",
+              to: "lib/jquery-validate/[name][ext]",
               noErrorOnMissing: true,
-              globOptions: {
-                ignore: ["**/localization/**"],
-              },
             },
             {
-              from: "node_modules/jquery-validation-unobtrusive/dist/",
+              from: "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive+(.min|).js",
               to: "lib/jquery-validation-unobtrusive",
               noErrorOnMissing: true,
-              globOptions: {
-                ignore: ["**/localization/**"],
-              },
             },
           ],
         }),

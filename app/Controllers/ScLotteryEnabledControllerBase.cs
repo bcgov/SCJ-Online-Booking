@@ -10,9 +10,15 @@ using SCJ.Booking.MVC.ViewModels.SC;
 
 namespace SCJ.Booking.MVC.Controllers
 {
+    /// <summary>
+    /// Shared controller for lottery‑eligible bookings (Trial / Long Chambers).
+    /// Does the common flow: load data, validate, save booking or lottery request to session/db.
+    /// ScTrialController and ScLongChambersController are thin wrappers for distinct routes,
+    /// view folders (including Vue components), and injecting the right booking service.
+    /// </summary>
     public abstract class ScLotteryEnabledControllerBase : Controller
     {
-        protected readonly ScCoreService _scCoreService;
+        protected readonly ScCoreBookingService _coreService;
 
         protected readonly SessionService _session;
 
@@ -21,12 +27,12 @@ namespace SCJ.Booking.MVC.Controllers
         //Constructor
         public ScLotteryEnabledControllerBase(
             SessionService sessionService,
-            ScCoreService scCoreService,
+            ScCoreBookingService coreService,
             IScLotteryEnabledBookingService bookingService
         )
         {
             _session = sessionService;
-            _scCoreService = scCoreService;
+            _coreService = coreService;
             _bookingService = bookingService;
         }
 
@@ -34,7 +40,7 @@ namespace SCJ.Booking.MVC.Controllers
         {
             var model = await _bookingService.LoadAvailableDatesFormAsync();
 
-            if (string.IsNullOrWhiteSpace(model.CaseNumber))
+            if (string.IsNullOrWhiteSpace(model.SessionInfo.CaseNumber))
             {
                 return RedirectToAction("Index");
             }
@@ -74,10 +80,11 @@ namespace SCJ.Booking.MVC.Controllers
             return View(model);
         }
 
-        protected async Task<IActionResult> AvailableDatesAsync(ScAvailableSlotsViewModel model)
+        protected async Task<IActionResult> AvailableDatesAsync(
+            ScLotteryEnabledAvailableSlotsViewModel model
+        )
         {
             var bookingInfo = _session.ScBookingInfo;
-            model.AvailableConferenceDates = bookingInfo.AvailableConferenceDates;
 
             if (
                 model.FormulaType == ScFormulaType.RegularBooking
@@ -147,7 +154,7 @@ namespace SCJ.Booking.MVC.Controllers
             //user information
             var user = _session.GetUserInformation();
 
-            string locationName = await _scCoreService.GetLocationNameAsync(
+            string locationName = await _coreService.GetLocationNameAsync(
                 bookingInfo.AlternateLocationRegistryId
             );
 

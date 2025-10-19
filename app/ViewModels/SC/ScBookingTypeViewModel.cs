@@ -23,7 +23,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
 
         [Display(Name = "Estimated Length of Trial")]
         public int? EstimatedTrialLength { get; set; }
-        public int? ChambersHearingSubType { get; set; }
+        public int ChambersHearingSubType { get; set; }
         public int? EstimatedChambersLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }

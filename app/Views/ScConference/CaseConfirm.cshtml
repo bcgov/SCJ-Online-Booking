@@ -2,7 +2,7 @@
 @model ScCaseConfirmViewModel
 
 @{
-    Layout = "~/Views/ScCore/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ScLayout.cshtml";
     ViewData["Title"] = "Complete your booking";
     ScSessionBookingInfo bookingInfo = Model.SessionInfo;
 }
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <partial name="~/Views/ScCore/Partial/CaseConfirm/_ContactForm.cshtml" model="Model" />
+                <partial name="~/Views/Shared/_ScContactForm.cshtml" model="Model" />
             </form>
         </div>
     </div>

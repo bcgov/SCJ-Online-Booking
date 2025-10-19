@@ -12,7 +12,7 @@ using SCJ.OnlineBooking;
 
 namespace SCJ.Booking.MVC.Services.SC
 {
-    public class ScCoreService
+    public class ScCoreBookingService
     {
         public readonly bool IsLocalDevEnvironment;
 
@@ -21,7 +21,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private readonly ScCacheService _cache;
 
         //Constructor
-        public ScCoreService(
+        public ScCoreBookingService(
             IConfiguration configuration,
             SessionService sessionService,
             ScCacheService scCacheService

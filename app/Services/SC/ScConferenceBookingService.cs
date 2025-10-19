@@ -55,14 +55,13 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///     Loads the available times form with session info
         /// </summary>
-        public ScAvailableSlotsViewModel LoadAvailableSlotsFormAsync()
+        public ScConferenceAvailableSlotsViewModel LoadAvailableSlotsFormAsync()
         {
             var bookingInfo = _session.ScBookingInfo;
 
             //Model instance
-            var model = new ScAvailableSlotsViewModel
+            var model = new ScConferenceAvailableSlotsViewModel
             {
-                CaseNumber = bookingInfo.CaseNumber,
                 HearingTypeId = bookingInfo.HearingTypeId,
                 AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
                 ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
@@ -75,7 +74,7 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///    Saves the available times form to session
         /// </summary>
-        public async Task SaveAvailableSlotsFormAsync(ScAvailableSlotsViewModel model)
+        public async Task SaveAvailableSlotsFormAsync(ScConferenceAvailableSlotsViewModel model)
         {
             var bookingInfo = _session.ScBookingInfo;
 
@@ -215,7 +214,7 @@ namespace SCJ.Booking.MVC.Services.SC
         }
 
         /// <summary>
-        ///     Renders the template for the email body to a string (~/Views/ScCore/Email.cshtml)
+        ///     Renders the template for the email body to a string
         /// </summary>
         private async Task<string> GetConferenceEmailBodyAsync()
         {
