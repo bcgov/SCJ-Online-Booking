@@ -60,8 +60,8 @@ objects:
         type: Source
         sourceStrategy:
           from:
-            kind: DockerImage
-            name: ${DOTNET_BUILD_DOCKER_IMAGE}
+            kind: ImageStreamTag
+            name: ${DOTNET_BUILD_IMAGE_STREAM_TAG}
           env:
             - name: DOTNET_STARTUP_PROJECT
               value: ${DOTNET_STARTUP_PROJECT}
