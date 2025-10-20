@@ -3,6 +3,7 @@
     :initial-tab="initialTab"
     :fair-use-unavailable="fairUseUnavailable"
     :fair-use-disabled="fairUseDisabled || hasExistingChambersRequest"
+    :has-existing-chambers-request="hasExistingChambersRequest"
     hearing-type-name="chambers hearing"
   >
     >
@@ -138,8 +139,7 @@
     </template>
 
     <template v-slot:fairUseDisabledAlert v-if="!hasExistingChambersRequest">
-      The {{ currentMonth }} booking period ended on {{ fairUseEndDate }}. The next booking period
-      will open in {{ nextMonth }}.
+      Only one request can be submitted for each fair-use period.
     </template>
 
     <template v-slot:regularTabDescription>

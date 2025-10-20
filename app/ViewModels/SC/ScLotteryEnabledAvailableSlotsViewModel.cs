@@ -12,7 +12,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public List<DateTime> AvailableRegularDates { get; set; } = new();
         public List<DateTime> AvailableFairUseDates { get; set; } = new();
         public DateTime? SelectedRegularDate { get; set; }
-        public List<DateTime> SelectedFairUseDates { get; set; }
+        public List<DateTime> SelectedFairUseDates { get; set; } = new();
         public DateTime? FairUseStartDate { get; set; }
         public DateTime? FairUseEndDate { get; set; }
         public DateTime? FairUseResultDate { get; set; }

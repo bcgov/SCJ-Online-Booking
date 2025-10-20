@@ -6,7 +6,12 @@
           <div>
             <input type="radio" value="Fair-Use" v-model="tab" />
             <strong class="d-md-none">Provide availability</strong>
-            <strong class="d-none d-md-block">Provide your availability for upcoming dates</strong>
+            <strong class="d-none d-md-block" v-if="!hasExistingChambersRequest"
+              >Provide your availability for upcoming dates</strong
+            >
+            <strong class="d-none d-md-block" v-if="hasExistingChambersRequest"
+              >Your request for upcoming dates has been submitted</strong
+            >
           </div>
           <div v-if="!fairUseDisabled" class="d-none d-md-block">
             <slot name="fairUseTabDescription" />
@@ -80,6 +85,11 @@ export default {
     hearingTypeName: {
       type: String,
       default: "trial",
+    },
+
+    hasExistingChambersRequest: {
+      type: Boolean,
+      default: false,
     },
   },
 
