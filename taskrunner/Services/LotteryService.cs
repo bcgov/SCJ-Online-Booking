@@ -377,7 +377,9 @@ namespace SCJ.Booking.TaskRunner.Services
                         LocationID = bookingRequest.LocationId,
                         RequestedBy =
                             $"{bookingRequest.RequestedByName} {bookingRequest.Phone} {bookingRequest.Email}",
-                        HearingDate = dateSelection.StartDate
+                        HearingDate = dateSelection.StartDate,
+                        SCJOB_CH_Booking_ID = bookingRequest.LotteryEntryId,
+                        SCJOB_CH_Booking_Date = DateTime.Now
                     };
 
                 _logger.Debug("scCHBookHearingAsync()");

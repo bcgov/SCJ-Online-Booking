@@ -1772,6 +1772,10 @@ namespace SCJ.OnlineBooking
 
         private string RequestedByField;
 
+        private System.DateTime SCJOB_CH_Booking_DateField;
+
+        private string SCJOB_CH_Booking_IDField;
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int BookingLocationID
         {
@@ -1886,6 +1890,32 @@ namespace SCJ.OnlineBooking
             set
             {
                 this.RequestedByField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime SCJOB_CH_Booking_Date
+        {
+            get
+            {
+                return this.SCJOB_CH_Booking_DateField;
+            }
+            set
+            {
+                this.SCJOB_CH_Booking_DateField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SCJOB_CH_Booking_ID
+        {
+            get
+            {
+                return this.SCJOB_CH_Booking_IDField;
+            }
+            set
+            {
+                this.SCJOB_CH_Booking_IDField = value;
             }
         }
     }
