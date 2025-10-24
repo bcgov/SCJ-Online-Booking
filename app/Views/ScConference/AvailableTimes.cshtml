@@ -18,9 +18,7 @@
     <h2>Book your hearing</h2>
 
     <div style="margin-bottom: 30px">
-        <div class="uppercase-sm">File Number: @bookingInfo.FullCaseNumber</div>
-        <h5>@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
-        <p>@bookingInfo.SelectedCourtClassName</p>
+        <partial name="~/Views/Shared/_ScCaseLabel.cshtml" />
     </div>
 
     @if (Model.AvailableDates == null || !Model.AvailableDates.Any())

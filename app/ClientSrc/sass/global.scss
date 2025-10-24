@@ -287,9 +287,6 @@ div.invalid-field-message {
       background-color: rgba($green-dark, 0.03);
       border-color: $green-dark;
     }
-    h5 {
-      margin-bottom: 4px;
-    }
   }
   input:checked + label {
     background-color: $green-light;
