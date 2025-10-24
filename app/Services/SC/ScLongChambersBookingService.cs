@@ -134,9 +134,8 @@ namespace SCJ.Booking.MVC.Services.SC
                         RequestedBy = $"{userDisplayName} {model.Phone} {model.EmailAddress}",
                         HearingDate = bookingInfo.SelectedRegularDate.Value,
                         HearingTypeId = bookingInfo.ChambersHearingSubTypeId,
-                        // @TODO: Contact Lorne about this
-                        //SCJOB_Trial_Booking_ID = lotteryEntryId,
-                        //SCJOB_Trial_Booking_Date = DateTime.Now
+                        SCJOB_CH_Booking_ID = lotteryEntryId,
+                        SCJOB_CH_Booking_Date = DateTime.Now
                     };
 
                 _logger.Information("BOOKING SUPREME COURT => scCHBookHearingAsync()");

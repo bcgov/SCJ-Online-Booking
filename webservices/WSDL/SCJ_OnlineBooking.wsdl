@@ -584,6 +584,8 @@
           <xs:element minOccurs="0" name="HearingTypeId" type="xs:int"/>
           <xs:element minOccurs="0" name="LocationID" type="xs:int"/>
           <xs:element minOccurs="0" name="RequestedBy" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="SCJOB_CH_Booking_Date" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="SCJOB_CH_Booking_ID" nillable="true" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:element name="BookingSCCHHearingInfo" nillable="true" type="tns:BookingSCCHHearingInfo"/>
