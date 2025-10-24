@@ -51,7 +51,7 @@
                     var chambersLength = bookingInfo.BookingLength;
                     var startDate = bookingInfo.SelectedRegularDate?.ToString("dddd MMMM d, yyyy") ?? "";
                 }
-                <p>Type: @bookingInfo.ChambersHearingSubTypeName</p>
+                <p>Chambers type: @bookingInfo.ChambersHearingSubTypeName</p>
                 <p>Requested days: @chambersLength</p>
                 <p>Starting: @startDate</p>
                 <p class="mb-3">Location: @bookingInfo.BookingLocationName</p>

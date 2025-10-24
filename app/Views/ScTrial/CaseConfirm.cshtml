@@ -2,9 +2,12 @@
 @model ScCaseConfirmViewModel
 
 @{
-    Layout = "~/Views/Shared/_ScLayout.cshtml";
-    ViewData["Title"] = "Review your request";
     ScSessionBookingInfo bookingInfo = Model.SessionInfo;
+    string formulaType = bookingInfo.FormulaType;
+    Layout = "~/Views/Shared/_ScLayout.cshtml";
+    ViewData["Title"] = formulaType == ScFormulaType.RegularBooking
+    ? "Complete your booking"
+    : "Review your request";
 }
 
 <div class="body-content--inner">
@@ -19,17 +22,15 @@
     <div class="row no-gutters booking-confirmation">
         <div class="col">
 
-            @if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+            @if (formulaType == ScFormulaType.FairUseBooking)
             {
-                <p class="mb-4">Please review the following information to ensure that it is accurate. Dates are not
-                    guaranteed at this
-                    stage, you
-                    are submitting a request.</p>
+                <p class="mb-4">Please review the following information to ensure that it is accurate.
+                    Dates are not guaranteed at this stage, you are submitting a request.</p>
             }
             else
             {
-                <p class="mb-4">Review the following information to ensure that it is accurate before completing your
-                    booking.</p>
+                <p class="mb-4">Review the following information to ensure that it is accurate before
+                    completing your booking.</p>
             }
 
             <div class="row no-gutters justify-content-between booking-confirmation--details">
@@ -38,7 +39,7 @@
                 </div>
             </div>
 
-            @if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+            @if (formulaType == ScFormulaType.FairUseBooking)
             {
                 <partial name="Partial/CaseConfirm/_FairUseBooking" model="Model" />
             }
@@ -51,7 +52,5 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
