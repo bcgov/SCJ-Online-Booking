@@ -1,18 +1,35 @@
 @model ScCaseConfirmViewModel
 
 @{
-    int hearingTypeId = Model.SessionInfo.HearingTypeId;
+    ScSessionBookingInfo bookingInfo = Model.SessionInfo;
+    int hearingTypeId = bookingInfo.HearingTypeId;
     string goBackAction = (hearingTypeId == ScHearingType.TRIAL || hearingTypeId == ScHearingType.LONG_CHAMBERS)
     ? "AvailableDates"
     : "AvailableTimes";
+
+    string GetBackLinkText()
+    {
+        if (hearingTypeId != ScHearingType.LONG_CHAMBERS && hearingTypeId != ScHearingType.TRIAL)
+        {
+            return "Book your hearing";
+        }
+
+        string hearingWord = hearingTypeId == ScHearingType.LONG_CHAMBERS ? "chambers" : "trial";
+        return bookingInfo.FormulaType == ScFormulaType.FairUseBooking
+        ? $"Request {hearingWord} date(s)"
+        : $"Choose your {hearingWord} date";
+    }
+
+    string HearingWords() => hearingTypeId == ScHearingType.LONG_CHAMBERS ? "chambers hearing" : "trial";
 }
 
 <h4>Provide your contact information</h4>
 
-@if (@Model.SessionInfo.FormulaType == ScFormulaType.FairUseBooking)
+@if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
 {
-    <p>Please provide the following contact information. Your email address will be used to let you know whether a trial
-        date is set for your case, and your phone number may be used later for booking and coordination purposes.</p>
+    <p>Please provide the following contact information. Your email address will be used to let you know whether
+        @HearingWords() date(s) are set for your case, and your phone number may be used later for booking and coordination
+        purposes.</p>
 }
 else
 {
@@ -46,28 +63,14 @@ else
     <div class="col-6 col-md-8 d-flex align-items-center text-link">
         <span>
             <i class="fas fa-arrow-left"></i>
-            <a asp-action="@goBackAction">Step 3:
-
-                @if (hearingTypeId == ScHearingType.TRIAL)
-                {
-                    <text>Request trial </text>
-                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "date" : "date(s)")
-                }
-                else if (hearingTypeId == ScHearingType.LONG_CHAMBERS)
-                {
-                    <text>Request chambers </text>
-                    @(Model.SessionInfo.FormulaType == ScFormulaType.RegularBooking ? "date" : "date(s)")
-                }
-                else
-                {
-                    <text>Book your hearing</text>
-                }
+            <a asp-action="@goBackAction">
+                <text>Step 3: @GetBackLinkText()</text>
             </a>
         </span>
     </div>
     <div class="col-6 col-md-4">
         <button type="submit" class="btn btn-secondary btn-block progress-spinner" id="btnSearch">
-            @if (@Model.SessionInfo.FormulaType == ScFormulaType.FairUseBooking)
+            @if (@bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
                 <text>Confirm request</text>
             }
