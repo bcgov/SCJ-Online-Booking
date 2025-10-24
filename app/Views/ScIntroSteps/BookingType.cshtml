@@ -27,9 +27,7 @@
 
     <form method="post">
         <div>
-            <div class="uppercase-sm">File Number:@bookingInfo.FullCaseNumber</div>
-            <h5 style="margin-bottom: 4px">@bookingInfo.SelectedCourtFile?.styleOfCause</h5>
-            <p>@bookingInfo.SelectedCourtClassName</p>
+            <partial name="~/Views/Shared/_ScCaseLabel.cshtml" />
         </div>
 
         <div class="row no-gutters">

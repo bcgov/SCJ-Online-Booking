@@ -24,6 +24,9 @@ namespace SCJ.Booking.MVC.Controllers
 
         protected readonly IScLotteryEnabledBookingService _bookingService;
 
+        private static string HearingWords(int hearingTypeId) =>
+            hearingTypeId == ScHearingType.LONG_CHAMBERS ? "chambers hearing" : "trial";
+
         //Constructor
         public ScLotteryEnabledControllerBase(
             SessionService sessionService,
@@ -85,6 +88,7 @@ namespace SCJ.Booking.MVC.Controllers
         )
         {
             var bookingInfo = _session.ScBookingInfo;
+            int hearingTypeId = bookingInfo.HearingTypeId;
 
             if (
                 model.FormulaType == ScFormulaType.RegularBooking
@@ -93,7 +97,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 ModelState.AddModelError(
                     "SelectedRegularDate",
-                    "Please choose from one of the available dates."
+                    $"Please choose a date for your {HearingWords(hearingTypeId)}."
                 );
             }
             else if (
@@ -103,7 +107,7 @@ namespace SCJ.Booking.MVC.Controllers
             {
                 ModelState.AddModelError(
                     "SelectedFairUseDates",
-                    "Please choose from the available dates."
+                    $"Please choose at least one date for your {HearingWords(hearingTypeId)}."
                 );
             }
             else if (model.FormulaType == "")

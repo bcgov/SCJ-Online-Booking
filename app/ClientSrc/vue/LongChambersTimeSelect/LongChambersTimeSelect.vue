@@ -70,7 +70,7 @@
                 <span class="d-sm-inline-block">{{ fairUseEndDate }} {{ fairUseEndTime }}</span>
               </h4>
               <p>
-                Period to provide chambers date availability for
+                Period to provide chambers hearing date availability for
                 <b>{{ bookingPeriodName }}</b> dates.
               </p>
             </div>
@@ -119,7 +119,7 @@
         </template>
 
         <template v-slot:dateSelectionHeader="{ maxSelectionSize }">
-          <h6>Chambers dates for {{ bookingPeriodName }}</h6>
+          <h6>Chambers hearing dates for {{ bookingPeriodName }}</h6>
           <p class="mb-3">
             Request <b>up to {{ maxSelectionSize }} starting dates</b>. Some dates are not available
             due to statutory holidays or court closures.
