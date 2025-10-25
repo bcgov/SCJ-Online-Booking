@@ -99,29 +99,42 @@ export default {
   }),
 
   // set initial value, if provided
-  created() {
-    if (this.fairUseDisabled) {
-      this.tab = "Regular";
-    } else if (this.initialTab) {
-      this.tab = this.initialTab;
-    }
+  beforeCreate() {
+    // Initialize tab before reactive data is set up
+    this.$options.data = () => ({
+      tab: this.fairUseDisabled ? "Regular" : this.initialTab || "Fair-Use",
+      showFairUseDisabledAlert: false,
+    });
   },
 
   watch: {
     // change the next button label based on the tab selected
-    tab: function (value) {
-      const nextButton = document.getElementById("btnNext");
-      if (nextButton) {
-        if (value == "Fair-Use" && !this.fairUseUnavailable && !this.fairUseDisabled) {
-          nextButton.innerText = "Review your request";
-        } else {
-          if (this.hearingTypeName === "chambers") {
-            nextButton.innerText = "Book chambers date";
+    tab: {
+      handler: function (value) {
+        const nextButton = document.getElementById("btnNext");
+        if (nextButton) {
+          if (value == "Fair-Use" && !this.fairUseUnavailable && !this.fairUseDisabled) {
+            nextButton.innerText = "Review your request";
           } else {
-            nextButton.innerText = "Book trial date";
+            if (this.hearingTypeName === "chambers") {
+              nextButton.innerText = "Book chambers date";
+            } else {
+              nextButton.innerText = "Book trial date";
+            }
           }
         }
-      }
+      },
+      immediate: true,
+    },
+
+    // hide validation messages when switching tabs (delayed)
+    tab: {
+      handler: function () {
+        $('span[data-valmsg-for="SelectedRegularDate"]').hide();
+        $('span[data-valmsg-for="SelectedFairUseDates"]').hide();
+        $('span[data-valmsg-for="FormulaType"]').hide();
+      },
+      immediate: false,
     },
   },
 
