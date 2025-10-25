@@ -62,7 +62,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
-                if (await CheckIfTrialAlreadyRequestedAsync())
+                if (await CheckIfLongChambersAlreadyRequestedAsync())
                 {
                     bookingInfo.ApiBookingResultMessage =
                         "A chambers hearing has already been requested for this case.";
