@@ -191,9 +191,9 @@ export default {
     },
 
     visibleDates() {
-      return this.formattedDates.slice(0, 8).filter((date) => {
+      return this.formattedDates.filter((date) => {
         return !this.selected.includes(date.isoDate);
-      }); // temporary
+      });
     },
   },
 
