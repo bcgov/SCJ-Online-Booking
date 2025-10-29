@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_ScLayout.cshtml";
-    ViewData["Title"] = "Your Request is Submitted";
+    ViewData["Title"] = "Your request is submitted";
 
     var bookingInfo = SessionService.ScBookingInfo;
     var fairUseFormula = bookingInfo.FairUseFormula;
@@ -24,7 +24,7 @@
 
                 <p class="mb-3">The current booking period closes @endTime @endDate. Once the booking period has closed,
                     the Online Booking System will confirm whether a trial date has been set for the case. You will receive
-                    an update via email by @resultDate.</p>
+                    an update via email by <strong>@resultDate</strong>.</p>
             }
             else
             {

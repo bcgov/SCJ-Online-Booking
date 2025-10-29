@@ -7,12 +7,12 @@
     <p>
         Once the booking period closes, the Online Booking system will notify you whether
         a chambers hearing date has been reserved tentatively for this case. You will receive an
-        update via email by @Model.ResultDate.
+        update via email by <strong>@Model.ResultDate</strong>.
     </p>
 
-    <h2 style="margin-bottom: 0.1em">Court File</h2>
+    <h2 style="margin-bottom: 0.1em">Court file</h2>
     File number: @Model.FullCaseNumber<br />
-    @Model.StyleOfCause<br />
+    <strong>@Model.StyleOfCause</strong><br />
     @Model.CourtClassName<br />
     Chambers type: @Model.ChambersHearingSubTypeName<br />
     Requested days: @Model.HearingLength<br />
@@ -20,8 +20,10 @@
 
     <h2 style="margin-bottom: 0.1em">Requested chambers hearing starting dates</h2>
     <p>
-        You are submitting a request for one of the following chambers hearing dates (listed in order
-        of priority):
+        <strong>
+            You are submitting a request for one of the following chambers hearing dates (listed in order
+            of priority):
+        </strong>
     </p>
     <ol>
         @{
