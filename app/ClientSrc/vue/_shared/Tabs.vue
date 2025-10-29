@@ -114,7 +114,7 @@ export default {
         const nextButton = document.getElementById("btnNext");
         if (nextButton) {
           if (value == "Fair-Use" && !this.fairUseUnavailable && !this.fairUseDisabled) {
-            nextButton.innerText = "Review your request";
+            nextButton.innerText = "Request booking";
           } else {
             if (this.hearingTypeName === "chambers") {
               nextButton.innerText = "Book chambers date";
