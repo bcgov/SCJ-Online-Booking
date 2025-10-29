@@ -10,7 +10,7 @@
         @click="showInfo = !showInfo"
         class="d-flex justify-content-between align-items-center mb-5 expand-header"
       >
-        <h3 class="m-0">How This Process Works</h3>
+        <h3 class="m-0">How this process works</h3>
         <i
           class="fas expand-chevron-icon"
           :class="showInfo ? 'fa-chevron-up' : 'fa-chevron-down'"
@@ -84,7 +84,7 @@
       </div>
 
       <div class="dates-intro content-pad selected-dates-intro">
-        <h6>Your Availability</h6>
+        <h6>Your availability</h6>
         <p class="mb-3">Reorder dates using drag and drop to indicate your preference.</p>
         <div
           ref="selectedDates"
