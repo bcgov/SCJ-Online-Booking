@@ -44,9 +44,9 @@
           ref="availableDates"
           class="list-info-header d-flex justify-content-between align-items-center mb-4 d-md-none"
         >
-          <h6 v-show="dates.length >= maxSelectionSize" class="text-secondary">
+          <em v-show="dates.length >= maxSelectionSize" class="text-secondary d-block">
             {{ selected.length }}/{{ maxSelectionSize }} selected
-          </h6>
+          </em>
 
           <a class="scroll-link" @click.prevent="scrollTo('selectedDates')" href="#"
             >See my choices <i class="fas fa-long-arrow-alt-down"
@@ -90,9 +90,9 @@
           ref="selectedDates"
           class="list-info-header d-flex justify-content-between align-items-center mb-4"
         >
-          <h6 v-show="dates.length > 0" class="text-secondary">
+          <em v-show="dates.length > 0" class="text-secondary d-block">
             {{ selected.length }}/{{ maxSelectionSize }} selected
-          </h6>
+          </em>
 
           <a class="scroll-link d-md-none" @click.prevent="scrollTo('availableDates')" href="#"
             >Select more dates <i class="fas fa-long-arrow-alt-up"
