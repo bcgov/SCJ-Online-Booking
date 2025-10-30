@@ -53,7 +53,16 @@ namespace SCJ.Booking.TaskRunner
 
                 if (lotteryEnabled)
                 {
-                    await lotteryService.RunNextLotteryStep();
+                    try
+                    {
+                        await lotteryService.RunNextLotteryStep();
+                    }
+                    catch (FatalBookingFailureException)
+                    {
+                        // return from the task runner - this will cause the pod to crash and restart
+                        logger.Fatal($"Process terminating!");
+                        Environment.Exit(1);
+                    }
                 }
 
                 if (cleanupEnabled)
@@ -64,7 +73,7 @@ namespace SCJ.Booking.TaskRunner
                     await lotteryCleanupService.RemovePersonalInfo();
                 }
 
-                // pause for 3 seconds
+                // pause for 5 seconds
                 Thread.Sleep(pollingFrequencySeconds * 1000);
             }
         }
