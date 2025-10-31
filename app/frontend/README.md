@@ -56,7 +56,7 @@ wwwroot/dist/
 - **@fortawesome/fontawesome-free** → `css/fontawesome.css` + webfonts
 - **@bcgov/bc-sans** → `css/BCSans.css` + fonts
 - **bootstrap-datepicker** → `css/bootstrap-datepicker3.standalone.css`, `lib/bootstrap-datepicker.js`
-- **spin** → `lib/spin.min.js`
+- **spin.js** → `lib/spin.min.js`, `lib/jquery.spin.js`
 - **jquery-validation** → `lib/jquery-validate/`
 - **jquery-validation-unobtrusive** → `lib/jquery-validation-unobtrusive/`
 - **vue** → bundled into `vendor.js`
@@ -77,11 +77,10 @@ Custom Node.js scripts that supplement webpack functionality, replacing outdated
 
 Files outside `wwwroot/dist/` are managed independently of the frontend build process:
 
-- **wwwroot/js/** - Legacy jQuery utilities and global scripts:
+- **wwwroot/js/** - Legacy jQuery scripts:
   - `site.js` - Application-wide JavaScript
   - `coa.js` - Court of Appeal specific scripts
   - `sc.js` - Supreme Court specific scripts
-  - `jquery.spin.js` - jQuery spinner plugin
 - **wwwroot/images/** - Static images and graphics
 - **wwwroot/favicon.ico** - Site favicon
 

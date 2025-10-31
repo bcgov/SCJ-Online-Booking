@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { minify } = require("terser");
 
 // Delete all files from the root of wwwroot/dist after a build to get rid of unused files
 const distDir = path.join(__dirname, "..", "..", "..", "app", "wwwroot", "dist");
@@ -20,3 +21,15 @@ if (fs.existsSync(cssDir)) {
     }
   });
 }
+
+// Minify jquery.spin.js from wwwroot/dist/lib
+(async () => {
+  const inputPath = path.join(distDir, "lib", "jquery.spin.js");
+  const outputPath = path.join(distDir, "lib", "jquery.spin.min.js");
+
+  if (fs.existsSync(inputPath)) {
+    const code = fs.readFileSync(inputPath, "utf8");
+    const result = await minify(code);
+    fs.writeFileSync(outputPath, result.code);
+  }
+})();
