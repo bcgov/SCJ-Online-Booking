@@ -108,8 +108,8 @@ module.exports = (env) => {
             },
             {
               //Used for tooltips with bootstrap
-              from: "node_modules/popper.js/dist/umd/popper.js",
-              to: "lib/popper.js",
+              from: "node_modules/popper.js/dist/umd/popper+(.min|).js",
+              to: "lib/[name].js",
             },
             {
               // the min version is packaged above (vendor.min.css)
@@ -136,8 +136,12 @@ module.exports = (env) => {
               to: "css/bootstrap-datepicker3.standalone.css",
             },
             {
-              from: "node_modules/spin/dist/spin.min.js",
+              from: "node_modules/spin.js/spin.min.js",
               to: "lib/spin.min.js",
+            },
+            {
+              from: "node_modules/spin.js/jquery.spin.js",
+              to: "lib/jquery.spin.js",
             },
             {
               from: "node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js",
