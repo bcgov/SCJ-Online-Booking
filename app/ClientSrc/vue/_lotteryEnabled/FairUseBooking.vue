@@ -141,7 +141,7 @@
 <script>
 import draggable from "vuedraggable";
 
-import { formatDate } from "./helpers.js";
+import { formatDate } from "../_shared/helpers.js";
 
 export default {
   name: "FairUseBooking",

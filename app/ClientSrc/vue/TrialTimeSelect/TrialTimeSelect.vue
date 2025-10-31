@@ -124,9 +124,9 @@
 </template>
 
 <script>
-import TrialTimeSelectTabs from "../_shared/Tabs";
-import RegularBooking from "../_shared/RegularBooking";
-import FairUseBooking from "../_shared/FairUseBooking";
+import TrialTimeSelectTabs from "../_lotteryEnabled/Tabs";
+import RegularBooking from "../_lotteryEnabled/RegularBooking";
+import FairUseBooking from "../_lotteryEnabled/FairUseBooking";
 
 export default {
   name: "TrialTimeSelect",

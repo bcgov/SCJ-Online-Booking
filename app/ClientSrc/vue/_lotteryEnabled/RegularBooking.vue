@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { formatDate } from "./helpers.js";
+import { formatDate } from "../_shared/helpers.js";
 
 export default {
   name: "RegularBooking",
