@@ -30,6 +30,7 @@ if (fs.existsSync(cssDir)) {
   if (fs.existsSync(inputPath)) {
     const code = fs.readFileSync(inputPath, "utf8");
     const result = await minify(code);
+    if (result.error) throw result.error;
     fs.writeFileSync(outputPath, result.code);
   }
 })();
