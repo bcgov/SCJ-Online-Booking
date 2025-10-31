@@ -134,12 +134,12 @@
     </template>
 
     <template v-slot:fairUseDisabledAlert v-if="hasExistingChambersRequest">
-      A request for upcoming chambers hearing dates has already been submitted for this fair-use
-      period.
+      Only one request can be submitted for each fair-use period.
     </template>
 
     <template v-slot:fairUseDisabledAlert v-if="!hasExistingChambersRequest">
-      Only one request can be submitted for each fair-use period.
+      The {{ currentMonth }} booking period ended on {{ fairUseEndDate }}. The next booking period
+      will open in {{ nextMonth }}.
     </template>
 
     <template v-slot:regularTabDescription>
