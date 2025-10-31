@@ -5,7 +5,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const bundleOutputDir = "./wwwroot/dist";
 const { VueLoaderPlugin } = require("vue-loader");
 
-var appBasePath = "./ClientSrc/";
+var appBasePath = "./frontend/";
 
 var entries = {};
 // We search for index.js files inside basePath folder and make those as entries
@@ -58,7 +58,7 @@ module.exports = (env) => {
         rules: [
           {
             test: /\.vue$/,
-            include: /ClientSrc/,
+            include: /frontend/,
             loader: "vue-loader",
           },
           {

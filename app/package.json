@@ -16,7 +16,7 @@
     "install": "webpack --mode development --config webpack.config.vendor.js && npm run post-build",
     "build": "webpack --mode development --config webpack.config.js && npm run post-build",
     "watch": "webpack --watch --mode development --config webpack.config.js",
-    "post-build": "node ClientSrc/build-tasks/post-build.js"
+    "post-build": "node frontend/build-tasks/post-build.js"
   },
   "dependencies": {
     "@bcgov/bc-sans": "^1.0.1",

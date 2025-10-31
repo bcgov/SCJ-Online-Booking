@@ -4,6 +4,18 @@ Superior Courts Judiciary Online Booking
 
 ![img](https://img.shields.io/badge/Lifecycle-Stable-97ca00)
 
+## What the App Does
+
+This application allows legal professionals and self-represented litigants to schedule court proceedings online without waiting in phone queues.
+
+For the **BC Supreme Court**, users can book trials, chambers hearings, and various conference types through immediate bookings (available time slots) or lottery-based requests (high-demand proceedings).
+
+For the **BC Court of Appeal**, users can book appeal hearings and chambers hearings for both civil and criminal cases.
+
+## Architecture
+
+The application uses ASP.NET Core MVC with server-rendered Razor views enhanced with jQuery, plus Vue.js components for interactive elements. The system integrates with BC's court systems through a unified SOAP web service gateway: CEIS for case validation, SCSS for Supreme Court scheduling, and WebCATS for Court of Appeal scheduling. A separate console application (taskrunner) processes lottery requests via this same web service API. The system uses Keycloak for authentication, PostgreSQL for data storage, Office 365 for email notifications, and deploys on OpenShift.
+
 ## Dev environment setup
 
 ### Visual Studio Code setup

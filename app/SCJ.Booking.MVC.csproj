@@ -36,7 +36,7 @@
   <ItemGroup>
     <!-- Files not to publish -->
     <Compile Remove="wwwroot\templates\**" />
-    <Content Remove="ClientSrc\**" />
+    <Content Remove="frontend\**" />
     <Content Remove="wwwroot\templates\**" />
     <EmbeddedResource Remove="wwwroot\templates\**" />
     <None Remove="wwwroot\templates\**" />
