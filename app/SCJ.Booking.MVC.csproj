@@ -46,7 +46,7 @@
     <ProjectReference Include="..\taskrunner\SCJ.Booking.TaskRunner.csproj" />
     <ProjectReference Include="..\webservices\SCJ.Booking.RemoteAPIs.csproj" />
   </ItemGroup>
-  <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
+  <Target Name="RunWebpack" BeforeTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec Command="npm install" />
     <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --mode production --env prod" />
