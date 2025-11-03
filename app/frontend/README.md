@@ -72,6 +72,7 @@ Custom Node.js scripts that supplement webpack functionality, replacing outdated
 - Removes unused files from `wwwroot/dist/` root directory.
 - Cleans up non-CSS/map files from `wwwroot/dist/css/`.
 - Ensures only the necessary compiled assets remain after each build.
+- Minifies JavaScript assets.
 
 ## Static Assets
 

@@ -136,8 +136,8 @@ module.exports = (env) => {
               to: "css/bootstrap-datepicker3.standalone.css",
             },
             {
-              from: "node_modules/spin.js/spin.min.js",
-              to: "lib/spin.min.js",
+              from: "node_modules/spin.js/spin+(.min|).js",
+              to: "lib/[name].js",
             },
             {
               from: "node_modules/spin.js/jquery.spin.js",

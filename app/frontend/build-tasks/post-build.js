@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { minify } = require("terser");
+const { minifyJs } = require("./minify");
 
 // Delete all files from the root of wwwroot/dist after a build to get rid of unused files
 const distDir = path.join(__dirname, "..", "..", "..", "app", "wwwroot", "dist");
@@ -22,15 +22,14 @@ if (fs.existsSync(cssDir)) {
   });
 }
 
-// Minify jquery.spin.js from wwwroot/dist/lib
 (async () => {
-  const inputPath = path.join(distDir, "lib", "jquery.spin.js");
-  const outputPath = path.join(distDir, "lib", "jquery.spin.min.js");
+  // Minify custom application scripts to /dist/minified.
+  // Generate source maps for easier debugging.
+  await minifyJs("js/coa", null, true);
+  await minifyJs("js/sc", null, true);
+  await minifyJs("js/site", null, true);
 
-  if (fs.existsSync(inputPath)) {
-    const code = fs.readFileSync(inputPath, "utf8");
-    const result = await minify(code);
-    if (result.error) throw result.error;
-    fs.writeFileSync(outputPath, result.code);
-  }
+  // Minify unminified vendor libraries.
+  // These don't need source maps because they are 3rd party libraries.
+  await minifyJs("dist/lib/jquery.spin", "dist/lib");
 })();
