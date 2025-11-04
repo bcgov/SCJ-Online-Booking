@@ -24,12 +24,11 @@ if (fs.existsSync(cssDir)) {
 
 (async () => {
   // Minify custom application scripts to /dist/minified.
-  // Generate source maps for easier debugging.
-  await minifyJs("js/coa", null, true);
-  await minifyJs("js/sc", null, true);
-  await minifyJs("js/site", null, true);
+  await minifyJs("js/coa");
+  await minifyJs("js/sc");
+  await minifyJs("js/site");
 
   // Minify unminified vendor libraries.
   // These don't need source maps because they are 3rd party libraries.
-  await minifyJs("dist/lib/jquery.spin", "dist/lib");
+  await minifyJs("dist/lib/jquery.spin", "dist/lib", false);
 })();
