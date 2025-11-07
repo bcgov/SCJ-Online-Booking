@@ -81,6 +81,8 @@
                 </button>
             </div>
         </div>
+        @* Cache buster *@
+        <input type="hidden" name="_cb" value="@DateTime.Now.Ticks" />
         </form>
         <form method="POST">
         @Html.HiddenFor(m => m.LocationPrefix)

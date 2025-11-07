@@ -113,7 +113,10 @@ namespace SCJ.Booking.MVC.Services
                 Phone = userInfo.Phone,
                 RequestedByName = userInfo.ContactName,
                 LocationName = bookingInfo.BookingLocationName,
-                FairUseSort = courtFile.fairUseSort,
+                FairUseSort =
+                    bookingInfo.HearingTypeId == ScHearingType.TRIAL
+                        ? courtFile.fairUseSortTrial
+                        : courtFile.fairUseSortCHB,
                 CaseNumber = bookingInfo.CaseNumber,
                 StyleOfCause = courtFile.styleOfCause ?? string.Empty,
                 LocationId = bookingInfo.AlternateLocationRegistryId,

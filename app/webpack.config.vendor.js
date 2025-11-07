@@ -150,12 +150,10 @@ module.exports = (env) => {
             {
               from: "node_modules/jquery-validation/dist/jquery.validate+(.min|).js",
               to: "lib/jquery-validate/[name][ext]",
-              noErrorOnMissing: true,
             },
             {
               from: "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive+(.min|).js",
-              to: "lib/jquery-validation-unobtrusive",
-              noErrorOnMissing: true,
+              to: "lib/jquery-validation-unobtrusive/[name][ext]",
             },
           ],
         }),

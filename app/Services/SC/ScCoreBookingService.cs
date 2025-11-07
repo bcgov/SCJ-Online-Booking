@@ -110,8 +110,8 @@ namespace SCJ.Booking.MVC.Services.SC
 
             // we need to do a second API call to get the selectedCourtFile because
             // if we passed it with hidden fields then there would be a security
-            // vulnerability where an attacker could modify fairUseSort to get into
-            // an earlier lottery round
+            // vulnerability where an attacker could modify fairUseSortTrial or fairUseSortCHB
+            // to get into an earlier lottery round
             CourtFile selectedCourtFile = await GetCourtFile(model.SearchableCaseNumber);
 
             bookingInfo.PhysicalFileId = model.SelectedCaseId;

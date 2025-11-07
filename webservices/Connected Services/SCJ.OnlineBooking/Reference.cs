@@ -26,7 +26,9 @@ namespace SCJ.OnlineBooking
 
         private string courtLevelCodeField;
 
-        private int fairUseSortField;
+        private int fairUseSortTrialField;
+
+        private int fairUseSortCHBField;
 
         private bool futureTrialHearingField;
 
@@ -87,15 +89,28 @@ namespace SCJ.OnlineBooking
         }
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int fairUseSort
+        public int fairUseSortTrial
         {
             get
             {
-                return this.fairUseSortField;
+                return this.fairUseSortTrialField;
             }
             set
             {
-                this.fairUseSortField = value;
+                this.fairUseSortTrialField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int fairUseSortCHB
+        {
+            get
+            {
+                return this.fairUseSortCHBField;
+            }
+            set
+            {
+                this.fairUseSortCHBField = value;
             }
         }
 

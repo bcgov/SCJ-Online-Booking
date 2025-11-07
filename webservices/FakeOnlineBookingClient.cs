@@ -31,7 +31,8 @@ namespace SCJ.OnlineBooking
                         CEISLocationId = 9067.0001m,
                         physicalFileId = 3879m,
                         styleOfCause = "DOE, Jane v TESTING, John",
-                        fairUseSort = 1,
+                        fairUseSortTrial = 1,
+                        fairUseSortCHB = 1,
                         futureTrialHearing = false
                     }
                 };
@@ -50,7 +51,8 @@ namespace SCJ.OnlineBooking
                         CEISLocationId = 83.0001m,
                         physicalFileId = 2109m,
                         styleOfCause = null,
-                        fairUseSort = 0,
+                        fairUseSortTrial = 0,
+                        fairUseSortCHB = 0,
                         futureTrialHearing = true
                     },
                     new CourtFile
@@ -61,7 +63,8 @@ namespace SCJ.OnlineBooking
                         CEISLocationId = 83.0001m,
                         physicalFileId = 1063m,
                         styleOfCause = "SIMPSON, Marge v SIMPSON, Homer",
-                        fairUseSort = 3,
+                        fairUseSortTrial = 3,
+                        fairUseSortCHB = 3,
                         futureTrialHearing = false
                     }
                 };
