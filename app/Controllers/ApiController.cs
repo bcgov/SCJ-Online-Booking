@@ -18,7 +18,7 @@ using SCJ.OnlineBooking;
 namespace SCJ.Booking.MVC.Controllers
 {
     /// <summary>
-    ///     REST API's for the Superior Courts Booking app
+    ///     REST APIs for the Superior Courts Booking app
     /// </summary>
     [ApiController]
     public class ApiController : Controller
@@ -139,14 +139,15 @@ namespace SCJ.Booking.MVC.Controllers
                     l.FairUseBookingPeriodEndDate,
                     l.InitiationTime,
                     l.CompletionTime,
-                    TrialRequests = l
-                        .TrialBookingRequests.OrderBy(x => x.ProcessingTimestamp)
+                    BookingRequests = l
+                        .BookingRequests.OrderBy(x => x.ProcessingTimestamp)
                         .Select(r => new
                         {
                             r.LotteryEntryId,
                             r.FairUseSort,
                             r.LotteryPosition,
                             r.HearingLength,
+                            SubType = r.LongChambersHearingSubTypeId,
                             DateSelections = r
                                 .DateSelections.OrderBy(s => s.Rank)
                                 .Select(s => new
@@ -190,6 +191,7 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     r.BookingLocationId,
                     r.BookHearingCode,
+                    r.HearingTypeId,
                     r.FairUseBookingPeriodStartDate,
                     r.FairUseBookingPeriodEndDate
                 })
@@ -197,14 +199,16 @@ namespace SCJ.Booking.MVC.Controllers
                 {
                     g.Key.BookingLocationId,
                     g.Key.BookHearingCode,
+                    g.Key.HearingTypeId,
                     g.Key.FairUseBookingPeriodStartDate,
                     g.Key.FairUseBookingPeriodEndDate,
-                    TrialRequests = g.Select(r => new
+                    BookingRequests = g.Select(r => new
                         {
                             r.CreationTimestamp,
                             r.LotteryEntryId,
                             r.FairUseSort,
                             r.HearingLength,
+                            SubType = r.LongChambersHearingSubTypeId,
                             DateSelections = r
                                 .DateSelections.OrderBy(s => s.Rank)
                                 .Select(s => new { s.Rank, s.StartDate, }),

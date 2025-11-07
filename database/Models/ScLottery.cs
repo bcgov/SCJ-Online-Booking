@@ -24,7 +24,7 @@ namespace SCJ.Booking.Data.Models
         public DateTime InitiationTime { get; set; }
         public DateTime? CompletionTime { get; set; }
 
-        public ICollection<ScLotteryBookingRequest> TrialBookingRequests { get; } =
+        public ICollection<ScLotteryBookingRequest> BookingRequests { get; } =
             new List<ScLotteryBookingRequest>();
     }
 }
