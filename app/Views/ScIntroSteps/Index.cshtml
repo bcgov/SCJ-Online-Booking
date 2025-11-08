@@ -10,7 +10,7 @@
     var results = caseCount > 1 ? "results" : "result";
     if (!Model.IsConfirmingCase && caseCount == 1)
     {
-        Model.SelectedCaseId = (int)courtCases.First().physicalFileId;
+        Model.SelectedPhysicalFileId = (int)courtCases.First().physicalFileId;
     }
 
     var caseNumTooltip = "Your Court File Number should not include any special characters and is just a number. If using a CSO file number (ex. VLC-S-M-12345), the class number matches the letter just before your number (M in example). The file number matches the last number (12345 in example).";
@@ -103,7 +103,7 @@
                         @foreach (var courtCase in courtCases)
                         {
                             var caseId = (int)courtCase.physicalFileId;
-                            var isChecked = courtCase.physicalFileId == Model.SelectedCaseId;
+                            var isChecked = courtCase.physicalFileId == Model.SelectedPhysicalFileId;
                             var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
                                 <div class="search-results-case">
                                     <input type="radio" name="SelectedCaseId"
@@ -119,9 +119,9 @@
                                 </div>
                         }
 
-                    @if (Model.IsConfirmingCase && Model.SelectedCaseId == 0)
+                    @if (Model.IsConfirmingCase && Model.SelectedPhysicalFileId == 0)
                     {
-                        <span asp-validation-for="SelectedCaseId" id="ChooseACase"
+                        <span asp-validation-for="SelectedPhysicalFileId" id="ChooseACase"
                             class="text-danger"></span>
                     }
                 </div>

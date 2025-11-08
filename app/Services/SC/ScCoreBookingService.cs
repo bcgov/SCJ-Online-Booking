@@ -60,7 +60,7 @@ namespace SCJ.Booking.MVC.Services.SC
             {
                 CaseRegistryId = bookingInfo.CaseRegistryId,
                 CaseLocationName = bookingInfo.CaseLocationName,
-                SelectedCaseId = bookingInfo.PhysicalFileId,
+                SelectedPhysicalFileId = bookingInfo.PhysicalFileId,
                 CaseNumber = bookingInfo.CaseNumber,
                 CaseSearchResults = bookingInfo.CaseSearchResults,
                 SelectedCourtClass = bookingInfo.SelectedCourtClass,
@@ -114,7 +114,7 @@ namespace SCJ.Booking.MVC.Services.SC
             // to get into an earlier lottery round
             CourtFile selectedCourtFile = await GetCourtFile(model.SearchableCaseNumber);
 
-            bookingInfo.PhysicalFileId = model.SelectedCaseId;
+            bookingInfo.PhysicalFileId = model.SelectedPhysicalFileId;
             bookingInfo.SelectedCourtClass = model.SelectedCourtClass;
             bookingInfo.FullCaseNumber = model.FullCaseNumber;
             bookingInfo.SelectedCourtClassName = model.SelectedCourtClassName;

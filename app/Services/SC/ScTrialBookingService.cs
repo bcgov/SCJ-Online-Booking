@@ -126,7 +126,6 @@ namespace SCJ.Booking.MVC.Services.SC
                     {
                         BookingLocationID = bookingInfo.RegularFormula.BookingLocationID,
                         CEIS_Physical_File_ID = bookingInfo.PhysicalFileId,
-                        CourtClass = bookingInfo.SelectedCourtFile.courtClassCode,
                         FormulaType = ScFormulaType.RegularBooking,
                         HearingLength = bookingInfo.BookingLength.GetValueOrDefault(1),
                         HearingType = bookingInfo.HearingTypeId,

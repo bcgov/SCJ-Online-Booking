@@ -21,7 +21,7 @@ namespace SCJ.Booking.MVC.Utils
         public string CaseNumber { get; set; }
 
         /// <summary>CEIS physical file ID for the selected case.</summary>
-        public int PhysicalFileId { get; set; }
+        public decimal PhysicalFileId { get; set; }
 
         /// <summary>Full formatted case number (location prefix + class prefix + numeric part).</summary>
         public string FullCaseNumber { get; set; }
