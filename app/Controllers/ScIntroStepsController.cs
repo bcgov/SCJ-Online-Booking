@@ -87,9 +87,9 @@ namespace SCJ.Booking.MVC.Controllers
         {
             model.IsConfirmingCase = true;
 
-            if (model.SelectedPhysicalFileId == 0)
+            if (model.SelectedPhysicalFileId == 0m)
             {
-                ModelState.AddModelError("SelectedCaseId", "Please choose a case.");
+                ModelState.AddModelError("SelectedPhysicalFileId", "Please choose a case.");
             }
 
             if (!ModelState.IsValid)

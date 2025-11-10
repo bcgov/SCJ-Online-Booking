@@ -106,10 +106,10 @@
                             var isChecked = courtCase.physicalFileId == Model.SelectedPhysicalFileId;
                             var fileNumber = courtCase.courtClassCode + courtCase.courtFileNumber;
                                 <div class="search-results-case">
-                                    <input type="radio" name="SelectedCaseId"
+                                    <input type="radio" name="SelectedPhysicalFileId"
                                         @(isChecked ? "checked" : "")
-                                        id="SelectedCaseId-@caseId" value="@caseId" />
-                                    <label for="SelectedCaseId-@caseId">
+                                        id="SelectedPhysicalFileId-@caseId" value="@caseId" />
+                                    <label for="SelectedPhysicalFileId-@caseId">
                                         <div class="uppercase-sm">
                                             File Number: @Html.DisplayFor(m => m.LocationPrefix) @fileNumber
                                         </div>
@@ -119,7 +119,7 @@
                                 </div>
                         }
 
-                    @if (Model.IsConfirmingCase && Model.SelectedPhysicalFileId == 0)
+                    @if (Model.IsConfirmingCase && Model.SelectedPhysicalFileId == 0m)
                     {
                         <span asp-validation-for="SelectedPhysicalFileId" id="ChooseACase"
                             class="text-danger"></span>
