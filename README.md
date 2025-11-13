@@ -1,6 +1,6 @@
 # SCJ-Online-Booking
 
-Superior Courts Judiciary Online Booking
+BC Courts Online Booking System (COBS)
 
 ![img](https://img.shields.io/badge/Lifecycle-Stable-97ca00)
 
@@ -38,7 +38,7 @@ check out the `develop` branch
 
 `cp .env.example .env`
 
-Get the `KEYCLOAK_CLIENT_SECRET` from someone else on the team or from `scjob-app-secrets/KEYCLOAK_CLIENT_SECRET` on the OpenShift `dev` environment.
+Get the `KEYCLOAK_CLIENT_SECRET` from someone else on the team or from the Keycloak client/realm.
 
 For `SENDGRID_FROM_EMAIL` and `SENDGRID_API_KEY`, you can either create your own Sendgrid account or get someone else's credentials.
 
@@ -68,9 +68,9 @@ Make sure you are using Node 20 by running `node -v`
 
 ### Debugging
 
-Find "Solution Explorer" in the VS Code explorer panel. Right click on SCJ.Booking.MVC and select "Debug => Start New Instance"
+Choose "Start Debugging" from the Run menu in VS Code.
 
-you should be able to connect on https://localhost:5002/
+You should be able to connect on https://localhost:5002/
 
 ### Running the app
 
