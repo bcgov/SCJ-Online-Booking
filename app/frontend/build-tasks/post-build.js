@@ -7,6 +7,10 @@ const distDir = path.join(__dirname, "..", "..", "..", "app", "wwwroot", "dist")
 fs.readdirSync(distDir).forEach((item) => {
   const itemPath = path.join(distDir, item);
   if (fs.statSync(itemPath).isFile()) {
+    // leave vendor.js and vendor-manifest.json alone
+    if (item === "vendor.js" || item === "vendor-manifest.json") {
+      return;
+    }
     fs.unlinkSync(itemPath);
   }
 });

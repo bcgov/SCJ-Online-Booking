@@ -119,7 +119,7 @@
         </template>
 
         <template v-slot:dateSelectionHeader="{ maxSelectionSize }">
-          <h6>Chambers hearing dates for {{ bookingPeriodName }}</h6>
+          <h6>Chambers dates for {{ bookingPeriodName }}</h6>
           <p class="mb-3">
             Request <b>up to {{ maxSelectionSize }} starting dates</b>. Some dates are not available
             due to statutory holidays or court closures.
