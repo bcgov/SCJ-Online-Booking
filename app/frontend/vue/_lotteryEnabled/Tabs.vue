@@ -115,7 +115,7 @@ export default {
         if (value == "Fair-Use" && !this.fairUseUnavailable && !this.fairUseDisabled) {
           nextButton.innerText = "Review your request";
         } else {
-          if (this.hearingTypeName === "chambers") {
+          if (this.hearingTypeName === "chambers hearing") {
             nextButton.innerText = "Book chambers date";
           } else {
             nextButton.innerText = "Book trial date";

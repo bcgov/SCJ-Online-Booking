@@ -5,7 +5,7 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
 {
     public class ScFormulaLocationsFixture
     {
-        private static readonly int BookingDays = 14;
+        private static int FakeApiBookingDays => GetBookingDaysFromEnvironment();
 
         private static DateTime StartDate
         {
@@ -21,6 +21,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
             get { return new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1); }
         }
 
+        private static int GetBookingDaysFromEnvironment()
+        {
+            var envValue = Environment.GetEnvironmentVariable("FAKE_API_BOOKING_DAYS");
+            return int.TryParse(envValue, out var days) ? days : 14;
+        }
+
         internal static FormulaLocation[] Locations(int hearingTypeId)
         {
             return
@@ -31,10 +37,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     BookingLocationID = 1,
                     EndDate = StartDate.AddMonths(-4),
                     FairUseBookingPeriodEndDate = BookingStartDate
-                        .AddDays(BookingDays)
+                        .AddDays(FakeApiBookingDays)
                         .AddSeconds(-1),
                     FairUseBookingPeriodStartDate = BookingStartDate,
-                    FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
+                    FairUseContactDate = BookingStartDate
+                        .AddDays(FakeApiBookingDays + 1)
+                        .AddSeconds(-1),
                     FormulaType = "Fair-Use",
                     LocationCode = "VA",
                     LocationID = 1,
@@ -63,10 +71,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     BookingLocationID = 41,
                     EndDate = StartDate.AddMonths(1).AddSeconds(-1),
                     FairUseBookingPeriodEndDate = BookingStartDate
-                        .AddDays(BookingDays)
+                        .AddDays(FakeApiBookingDays)
                         .AddSeconds(-1),
                     FairUseBookingPeriodStartDate = BookingStartDate,
-                    FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
+                    FairUseContactDate = BookingStartDate
+                        .AddDays(FakeApiBookingDays + 1)
+                        .AddSeconds(-1),
                     FormulaType = "Fair-Use",
                     LocationCode = "VA",
                     LocationID = 1,
@@ -80,10 +90,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     BookingLocationID = 41,
                     EndDate = StartDate.AddMonths(1).AddSeconds(-1),
                     FairUseBookingPeriodEndDate = BookingStartDate
-                        .AddDays(BookingDays)
+                        .AddDays(FakeApiBookingDays)
                         .AddSeconds(-1),
                     FairUseBookingPeriodStartDate = BookingStartDate,
-                    FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
+                    FairUseContactDate = BookingStartDate
+                        .AddDays(FakeApiBookingDays + 1)
+                        .AddSeconds(-1),
                     FormulaType = "Fair-Use",
                     LocationCode = "VA",
                     LocationID = 1,
@@ -157,10 +169,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     BookingLocationID = 18,
                     EndDate = StartDate.AddMonths(1).AddSeconds(-1),
                     FairUseBookingPeriodEndDate = BookingStartDate
-                        .AddDays(BookingDays)
+                        .AddDays(FakeApiBookingDays)
                         .AddSeconds(-1),
                     FairUseBookingPeriodStartDate = BookingStartDate,
-                    FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
+                    FairUseContactDate = BookingStartDate
+                        .AddDays(FakeApiBookingDays + 1)
+                        .AddSeconds(-1),
                     FormulaType = "Fair-Use",
                     LocationCode = "KE",
                     LocationID = 18,
@@ -189,10 +203,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     BookingLocationID = 13,
                     EndDate = StartDate.AddMonths(1).AddSeconds(-1),
                     FairUseBookingPeriodEndDate = BookingStartDate
-                        .AddDays(BookingDays)
+                        .AddDays(FakeApiBookingDays)
                         .AddSeconds(-1),
                     FairUseBookingPeriodStartDate = BookingStartDate,
-                    FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
+                    FairUseContactDate = BookingStartDate
+                        .AddDays(FakeApiBookingDays + 1)
+                        .AddSeconds(-1),
                     FormulaType = "Fair-Use",
                     LocationCode = "FJ",
                     LocationID = 13,
@@ -206,10 +222,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     BookingLocationID = 13,
                     EndDate = StartDate.AddMonths(1).AddSeconds(-1),
                     FairUseBookingPeriodEndDate = BookingStartDate
-                        .AddDays(BookingDays)
+                        .AddDays(FakeApiBookingDays)
                         .AddSeconds(-1),
                     FairUseBookingPeriodStartDate = BookingStartDate,
-                    FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
+                    FairUseContactDate = BookingStartDate
+                        .AddDays(FakeApiBookingDays + 1)
+                        .AddSeconds(-1),
                     FormulaType = "Fair-Use",
                     LocationCode = "FJ",
                     LocationID = 13,
@@ -223,10 +241,12 @@ namespace SCJ.Booking.RemoteAPIs.Fixtures
                     BookingLocationID = 13,
                     EndDate = StartDate.AddMonths(1).AddSeconds(-1),
                     FairUseBookingPeriodEndDate = BookingStartDate
-                        .AddDays(BookingDays)
+                        .AddDays(FakeApiBookingDays)
                         .AddSeconds(-1),
                     FairUseBookingPeriodStartDate = BookingStartDate,
-                    FairUseContactDate = BookingStartDate.AddDays(BookingDays + 1).AddSeconds(-1),
+                    FairUseContactDate = BookingStartDate
+                        .AddDays(FakeApiBookingDays + 1)
+                        .AddSeconds(-1),
                     FormulaType = "Fair-Use",
                     LocationCode = "FJ",
                     LocationID = 13,
