@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -248,6 +249,11 @@ namespace SCJ.Booking.MVC.Services.SC
                         bookingInfo.HearingTypeId
                     );
             }
+
+            // Clear step 3 to prevent invalid selections from users with multiple tabs open
+            bookingInfo.SelectedFairUseDates = new();
+            bookingInfo.SelectedRegularDate = null;
+            bookingInfo.SelectedConferenceDate = DateTime.MinValue;
 
             _session.ScBookingInfo = bookingInfo;
         }
