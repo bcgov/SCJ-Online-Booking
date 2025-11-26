@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Constants;
 using SCJ.Booking.Data.Models;
@@ -328,6 +329,16 @@ namespace SCJ.Booking.TaskRunner.Services
         )
         {
             BookingHearingResult result;
+
+            string requestedBy =
+                $"{bookingRequest.RequestedByName} {bookingRequest.Phone} {bookingRequest.Email}";
+
+            // Remove the timezone added by PostgreSQL
+            DateTime hearingDate = DateTime.SpecifyKind(
+                dateSelection.StartDate.Date,
+                DateTimeKind.Unspecified
+            );
+
             if (bookingRequest.HearingTypeId == ScHearingType.TRIAL)
             {
                 int hearingType = isUnmetDemand ? ScHearingType.UNMET_DEMAND : ScHearingType.TRIAL;
@@ -342,9 +353,8 @@ namespace SCJ.Booking.TaskRunner.Services
                         HearingLength = bookingRequest.HearingLength,
                         HearingType = hearingType,
                         LocationID = bookingRequest.LocationId,
-                        RequestedBy =
-                            $"{bookingRequest.RequestedByName} {bookingRequest.Phone} {bookingRequest.Email}",
-                        HearingDate = dateSelection.StartDate,
+                        RequestedBy = requestedBy,
+                        HearingDate = hearingDate,
                         SCJOB_Trial_Booking_ID = bookingRequest.LotteryEntryId,
                         SCJOB_Trial_Booking_Date = DateTime.Now
                     };
@@ -375,9 +385,8 @@ namespace SCJ.Booking.TaskRunner.Services
                         HearingLength = bookingRequest.HearingLength,
                         HearingTypeId = hearingType,
                         LocationID = bookingRequest.LocationId,
-                        RequestedBy =
-                            $"{bookingRequest.RequestedByName} {bookingRequest.Phone} {bookingRequest.Email}",
-                        HearingDate = dateSelection.StartDate,
+                        RequestedBy = requestedBy,
+                        HearingDate = hearingDate,
                         SCJOB_CH_Booking_ID = bookingRequest.LotteryEntryId,
                         SCJOB_CH_Booking_Date = DateTime.Now
                     };
