@@ -259,13 +259,15 @@ namespace SCJ.OnlineBooking
             BookTrialHearingInfo bookingInfo
         )
         {
+            await Task.Delay(100);
+
             if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
-                Random r = new Random();
-                int n = r.Next(0, 100);
-
                 if (bookingInfo.HearingType == ScHearingType.TRIAL)
                 {
+                    Random r = new Random();
+                    int n = r.Next(0, 100);
+
                     // fair use trial bookings fail 85% of the time for test purposes
                     return n > 85
                         ? ScBookingHearingResultFixture.Success
@@ -274,14 +276,11 @@ namespace SCJ.OnlineBooking
 
                 if (bookingInfo.HearingType == ScHearingType.UNMET_DEMAND)
                 {
-                    // unmet demand bookings fail 10% of the time for test purposes
-                    return n > 10
-                        ? ScBookingHearingResultFixture.Success
-                        : ScBookingHearingResultFixture.SupremeCourtFailure;
+                    // unmet demand bookings succeed 100% of the time
+                    return ScBookingHearingResultFixture.Success;
                 }
             }
 
-            await Task.Delay(100);
             return ScBookingHearingResultFixture.Success;
         }
 
@@ -297,11 +296,13 @@ namespace SCJ.OnlineBooking
         {
             if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
-                Random r = new Random();
-                int n = r.Next(0, 100);
+                await Task.Delay(100);
 
                 if (bookingInfo.HearingTypeId != ScHearingType.LONG_CHAMBERS)
                 {
+                    Random r = new Random();
+                    int n = r.Next(0, 100);
+
                     // fair use trial bookings fail 85% of the time for test purposes
                     return n > 85
                         ? ScBookingHearingResultFixture.Success
@@ -310,14 +311,11 @@ namespace SCJ.OnlineBooking
 
                 if (bookingInfo.HearingTypeId == ScHearingType.UNMET_DEMAND)
                 {
-                    // unmet demand bookings fail 10% of the time for test purposes
-                    return n > 10
-                        ? ScBookingHearingResultFixture.Success
-                        : ScBookingHearingResultFixture.SupremeCourtFailure;
+                    // unmet demand bookings succeed 100% of the time
+                    return ScBookingHearingResultFixture.Success;
                 }
             }
 
-            await Task.Delay(100);
             return ScBookingHearingResultFixture.Success;
         }
 

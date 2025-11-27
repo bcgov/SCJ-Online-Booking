@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
 using SCJ.Booking.Data;
 using SCJ.Booking.Data.Constants;
 using SCJ.Booking.Data.Models;
@@ -24,13 +23,15 @@ namespace SCJ.Booking.TaskRunner.Services
 
     public class LotteryService
     {
+        const int MAX_STARTUP_FAILURES = 20;
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger _logger;
         private readonly IOnlineBooking _client;
         private readonly MailQueueService _mailQueueService;
 
-        // track the results of the first booking attempt
-        private bool _isFirstAttempt;
+        // track the success/failure of booking attempts
+        private int _failedAttempts;
+        private int _succcessfulAttempts;
         private readonly bool _usingFakeApi;
 
         public LotteryService(IConfiguration configuration, ApplicationDbContext dbContext)
@@ -39,7 +40,8 @@ namespace SCJ.Booking.TaskRunner.Services
             _logger = LogHelper.GetLogger(configuration);
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _mailQueueService = new MailQueueService(configuration, dbContext);
-            _isFirstAttempt = true;
+            _failedAttempts = 0;
+            _succcessfulAttempts = 0;
             _usingFakeApi = configuration["USE_FAKE_API"] == "true";
         }
 
@@ -220,6 +222,7 @@ namespace SCJ.Booking.TaskRunner.Services
                     entry.ProcessingTimestamp = DateTime.Now;
                     entry.IsProcessed = true;
                     await _dbContext.SaveChangesAsync();
+                    _succcessfulAttempts++;
                     if (entry.HearingTypeId == ScHearingType.LONG_CHAMBERS)
                     {
                         await _mailQueueService.QueueLongChambersSuccessEmail(entry);
@@ -228,21 +231,24 @@ namespace SCJ.Booking.TaskRunner.Services
                     {
                         await _mailQueueService.QueueTrialSuccessEmail(entry);
                     }
-                    _isFirstAttempt = false;
                     break;
                 }
                 else
                 {
-                    // If the first booking attempt of the lottery process failed, and we're not
-                    // using the fake API, throw a fatal exception to terminate the lottery due to
-                    // a possible SCSS issue. We do this to prevent sending 5000 failing requests
+                    _failedAttempts++;
+
+                    // If the first X consecutive booking attempts of the lottery process failed, and
+                    // we're not using the fake API, throw a fatal exception to terminate the lottery
+                    // due to a possible SCSS issue. We do this to prevent sending 5000 failing requests
                     // to SCSS.
-                    if (_isFirstAttempt && !_usingFakeApi)
+                    if (
+                        _succcessfulAttempts == 0
+                        && _failedAttempts > MAX_STARTUP_FAILURES
+                        && !_usingFakeApi
+                    )
                     {
                         throw new FatalBookingFailureException(
-                            "The first booking attempt of the monthly lottery process failed.\n"
-                                + $"CEIS_Physical_File_ID: {entry.CeisPhysicalFileId}.\n"
-                                + $"Booking result: {result.bookingResult}\n"
+                            $"The first {MAX_STARTUP_FAILURES} booking attempts of the monthly lottery process failed.\n"
                                 + "Terminating the lottery due to possible SCSS issue. The OpenShift pod should restart itself."
                         );
                     }
