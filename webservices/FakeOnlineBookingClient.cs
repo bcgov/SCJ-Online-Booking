@@ -32,7 +32,7 @@ namespace SCJ.OnlineBooking
                         physicalFileId = 3879m,
                         styleOfCause = "DOE, Jane v TESTING, John",
                         fairUseSortTrial = 1,
-                        fairUseSortCHB = 1,
+                        fairUseSortCH = 1,
                         futureTrialHearing = false
                     }
                 };
@@ -52,7 +52,7 @@ namespace SCJ.OnlineBooking
                         physicalFileId = 2109m,
                         styleOfCause = null,
                         fairUseSortTrial = 0,
-                        fairUseSortCHB = 0,
+                        fairUseSortCH = 0,
                         futureTrialHearing = true
                     },
                     new CourtFile
@@ -64,7 +64,7 @@ namespace SCJ.OnlineBooking
                         physicalFileId = 1063m,
                         styleOfCause = "SIMPSON, Marge v SIMPSON, Homer",
                         fairUseSortTrial = 3,
-                        fairUseSortCHB = 3,
+                        fairUseSortCH = 3,
                         futureTrialHearing = false
                     }
                 };
@@ -263,7 +263,7 @@ namespace SCJ.OnlineBooking
 
             if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
-                if (bookingInfo.HearingType == ScHearingType.TRIAL)
+                if (bookingInfo.HearingType != ScHearingType.UNMET_DEMAND)
                 {
                     Random r = new Random();
                     int n = r.Next(0, 100);
@@ -273,8 +273,7 @@ namespace SCJ.OnlineBooking
                         ? ScBookingHearingResultFixture.Success
                         : ScBookingHearingResultFixture.SupremeCourtFailure;
                 }
-
-                if (bookingInfo.HearingType == ScHearingType.UNMET_DEMAND)
+                else
                 {
                     // unmet demand bookings succeed 100% of the time
                     return ScBookingHearingResultFixture.Success;
@@ -298,7 +297,7 @@ namespace SCJ.OnlineBooking
             {
                 await Task.Delay(100);
 
-                if (bookingInfo.HearingTypeId != ScHearingType.LONG_CHAMBERS)
+                if (bookingInfo.HearingTypeId != ScHearingType.UNMET_DEMAND)
                 {
                     Random r = new Random();
                     int n = r.Next(0, 100);
@@ -308,8 +307,7 @@ namespace SCJ.OnlineBooking
                         ? ScBookingHearingResultFixture.Success
                         : ScBookingHearingResultFixture.SupremeCourtFailure;
                 }
-
-                if (bookingInfo.HearingTypeId == ScHearingType.UNMET_DEMAND)
+                else
                 {
                     // unmet demand bookings succeed 100% of the time
                     return ScBookingHearingResultFixture.Success;

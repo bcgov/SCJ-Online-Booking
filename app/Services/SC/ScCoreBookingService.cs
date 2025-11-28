@@ -88,6 +88,10 @@ namespace SCJ.Booking.MVC.Services.SC
                 ? $"{prefix}{model.CaseNumber}"
                 : $"{prefix}{model.SelectedCourtClass}{model.CaseNumber}";
 
+            // NOTE: if a SelectedCourtClass wasn't specified then the FairUseSort values will be
+            // zero at this point, but we do the search again after the user selects a matching
+            // case, and the court class is alwayts provided in that step. If you notice differences
+            // between CaseSearchResults and SelectedCourtFile in the session, that's why.
             newModel.CaseSearchResults = await _client.scCaseNumberValidAsync(searchableCaseNumber);
 
             if ((newModel.CaseSearchResults?.Length ?? 0) > 0)
@@ -111,7 +115,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             // we need to do a second API call to get the selectedCourtFile because
             // if we passed it with hidden fields then there would be a security
-            // vulnerability where an attacker could modify fairUseSortTrial or fairUseSortCHB
+            // vulnerability where an attacker could modify fairUseSortTrial or fairUseSortCH
             // to get into an earlier lottery round
             CourtFile selectedCourtFile = await GetCourtFile(model.SearchableCaseNumber);
 

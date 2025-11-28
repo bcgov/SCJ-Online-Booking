@@ -116,7 +116,7 @@ namespace SCJ.Booking.MVC.Services
                 FairUseSort =
                     bookingInfo.HearingTypeId == ScHearingType.TRIAL
                         ? courtFile.fairUseSortTrial
-                        : courtFile.fairUseSortCHB,
+                        : courtFile.fairUseSortCH,
                 CaseNumber = bookingInfo.CaseNumber,
                 StyleOfCause = courtFile.styleOfCause ?? string.Empty,
                 LocationId = bookingInfo.AlternateLocationRegistryId,

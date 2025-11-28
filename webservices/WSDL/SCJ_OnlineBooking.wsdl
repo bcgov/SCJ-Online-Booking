@@ -302,8 +302,8 @@
           <xs:element minOccurs="0" name="courtClassCode" nillable="true" type="xs:string"/>
           <xs:element minOccurs="0" name="courtFileNumber" nillable="true" type="xs:string"/>
           <xs:element minOccurs="0" name="courtLevelCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="fairUseSortCH" type="xs:int"/>
           <xs:element minOccurs="0" name="fairUseSortTrial" type="xs:int"/>
-          <xs:element minOccurs="0" name="fairUseSortCHB" type="xs:int"/>
           <xs:element minOccurs="0" name="futureTrialHearing" type="xs:boolean"/>
           <xs:element minOccurs="0" name="physicalFileId" nillable="true" type="xs:decimal"/>
           <xs:element minOccurs="0" name="styleOfCause" nillable="true" type="xs:string"/>
