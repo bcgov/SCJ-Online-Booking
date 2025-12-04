@@ -90,7 +90,14 @@ namespace SCJ.Booking.MVC.Utils
                 {
                     var json = user.FindFirst("vc_presented_attributes")?.Value ?? "{}";
                     dynamic attributes = JsonConvert.DeserializeObject<ExpandoObject>(json);
-                    return $"{attributes.given_names} {attributes.family_name}";
+                    try
+                    {
+                        return $"{attributes.given_names} {attributes.family_name}";
+                    }
+                    catch
+                    {
+                        return "BC_WALLET_CLAIMS_ERROR";
+                    }
                 }
                 default:
                     return "Unknown User";
