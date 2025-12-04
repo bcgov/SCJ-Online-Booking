@@ -1,0 +1,20 @@
+@model ScCaseConfirmViewModel
+
+<h2>Trial details</h2>
+
+<div class="mb-4">
+    <p>
+        Trial length: @Model.SessionInfo.BookingLength
+        @(Model.SessionInfo.BookingLength == 1 ? "day" : "days")
+    </p>
+
+    <p>Starting: @Model.SelectedRegularDate?.ToString("dddd MMMM d, yyyy")</p>
+
+    <p>Trial location: @Model.TrialLocationName</p>
+</div>
+
+<form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+
+    <partial name="~/Views/Shared/_ScContactForm.cshtml" model="Model" />
+
+</form>

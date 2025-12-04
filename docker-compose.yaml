@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:12
+    container_name: scj-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: scjuser
+      POSTGRES_PASSWORD: scjpassword
+      POSTGRES_DB: scjdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

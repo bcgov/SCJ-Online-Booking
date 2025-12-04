@@ -40,8 +40,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public bool IsConfirmingCase = false;
         public string LocationPrefix { get; set; }
 
-        //[Required(ErrorMessage = "Please choose a case")]
-        public int SelectedCaseId { get; set; }
+        public decimal SelectedPhysicalFileId { get; set; }
         public CourtFile[] CaseSearchResults { get; set; }
         public List<CourtFile> Cases
         {
@@ -60,7 +59,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             get
             {
                 return CaseSearchResults
-                    ?.Where(x => x.physicalFileId == SelectedCaseId)
+                    ?.Where(x => x.physicalFileId == SelectedPhysicalFileId)
                     .FirstOrDefault();
             }
         }

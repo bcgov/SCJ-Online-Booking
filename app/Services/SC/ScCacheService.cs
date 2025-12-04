@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
@@ -18,6 +20,7 @@ namespace SCJ.Booking.MVC.Services.SC
         private const string ScRegistryDropdownKey = "SC_REGISTRY_DROPDOWN";
         private const string ScAvailableBookingTypes = "SC_AVAILABLE_BOOKING_TYPES";
         private const string ScAvailableBookingFormulas = "SC_AVAILABLE_BOOKING_FORMULAS";
+        private const string ScChambersHearingSubTypes = "SC_LONG_CHAMBERS_SUBTYPES";
 
         // services
         private readonly IConfiguration _configuration;
@@ -79,20 +82,23 @@ namespace SCJ.Booking.MVC.Services.SC
         /// <summary>
         ///     Gets the list of Supreme Court locations as a dictionary
         /// </summary>
-        public async Task<Dictionary<int, string>> GetLocationDictionaryAsync()
+        public Dictionary<int, string> GetLocationDictionary()
         {
-            if (await ExistsAsync(ScRegistryDropdownKey))
+            if (Exists(ScRegistryDropdownKey))
             {
-                return await GetObjectAsync<Dictionary<int, string>>(ScRegistryDropdownKey);
+                return GetObject<Dictionary<int, string>>(ScRegistryDropdownKey);
             }
 
-            Dictionary<int, string> locationList = (await GetLocationsAsync())
+            Dictionary<int, string> locationList = GetLocationsAsync()
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult()
                 .Select(x => new { x.locationID, x.locationName })
                 .Distinct()
                 .OrderBy(x => x.locationName)
                 .ToDictionary(x => x.locationID, x => x.locationName);
 
-            await SaveObjectAsync(ScRegistryDropdownKey, locationList);
+            SaveObject(ScRegistryDropdownKey, locationList);
 
             return locationList;
         }
@@ -109,7 +115,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
 
-            Location[] locations = await client.getLocationsAsync();
+            Location[] locations = await client.scGetLocationsAsync();
 
             await SaveObjectAsync(ScLocationInfoKey, locations);
 
@@ -128,7 +134,7 @@ namespace SCJ.Booking.MVC.Services.SC
 
             IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
 
-            string[] bookingTypes = await client.GetAvailableBookingTypesAsync();
+            string[] bookingTypes = await client.scGetAvailableBookingTypesAsync();
 
             await SaveObjectAsync(ScAvailableBookingTypes, bookingTypes);
 
@@ -147,7 +153,11 @@ namespace SCJ.Booking.MVC.Services.SC
 
             var client = OnlineBookingClientFactory.GetClient(_configuration);
 
-            var formulas = await client.AvailableTrialBookingFormulasByLocationAsync("", "");
+            var formulas = await client.scAvailableFormulasByHearingTypeAndLocationAsync(
+                "",
+                "",
+                ""
+            );
 
             await SaveObjectAsync(ScAvailableBookingFormulas, formulas);
 
@@ -160,7 +170,8 @@ namespace SCJ.Booking.MVC.Services.SC
         public async Task<FormulaLocation> GetFormulaLocationAsync(
             string formulaType,
             int locationId,
-            string courtClass
+            string courtClass,
+            int hearingTypeId
         )
         {
             var formulas = await AvailableTrialBookingFormulasByLocationAsync();
@@ -170,6 +181,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 f.FormulaType == formulaType
                 && f.LocationID == locationId
                 && f.BookingHearingCode == courtClass
+                && f.HearingTypeId == hearingTypeId
             );
 
             if (result != null)
@@ -184,8 +196,63 @@ namespace SCJ.Booking.MVC.Services.SC
             return formulas.FirstOrDefault(f =>
                 f.FormulaType == formulaType
                 && f.LocationID == locationId
+                && f.HearingTypeId == hearingTypeId
                 && all.Contains(f.BookingHearingCode)
             );
+        }
+
+        /// <summary>
+        ///     Gets the list of chambers hearing sub types
+        /// </summary>
+        public OrderedDictionary GetChambersHearingSubTypes()
+        {
+            if (Exists(ScChambersHearingSubTypes))
+            {
+                return GetObject<OrderedDictionary>(ScChambersHearingSubTypes);
+            }
+
+            IOnlineBooking client = OnlineBookingClientFactory.GetClient(_configuration);
+            var subtypes = client
+                .scCHHearingSubTypeAsync()
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+            var result = new OrderedDictionary();
+
+            // 9012 first
+            var first = subtypes.FirstOrDefault(s => s.HearingSubTypeId == 9012);
+            if (first != null)
+            {
+                result.Add(first.HearingSubTypeId, first.ChambersDescription);
+            }
+
+            // middle sorted alphabetically, excluding 9012 and 9010
+            var middle = subtypes
+                .Where(s => s.HearingSubTypeId != 9012 && s.HearingSubTypeId != 9010)
+                .OrderBy(s => s.ChambersDescription);
+
+            foreach (var subtype in middle)
+            {
+                result.Add(subtype.HearingSubTypeId, subtype.ChambersDescription);
+            }
+
+            // 9010 last
+            var last = subtypes.FirstOrDefault(s => s.HearingSubTypeId == 9010);
+            if (last != null)
+            {
+                result.Add(last.HearingSubTypeId, last.ChambersDescription);
+            }
+
+            SaveObject(ScChambersHearingSubTypes, result);
+
+            return result;
+        }
+
+        public Dictionary<int, string> GetChambersHearingSubTypeDictionary()
+        {
+            return GetChambersHearingSubTypes()
+                .Cast<System.Collections.DictionaryEntry>()
+                .ToDictionary(x => Convert.ToInt32(x.Key), x => x.Value as string);
         }
     }
 }

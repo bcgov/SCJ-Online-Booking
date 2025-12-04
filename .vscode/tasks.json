@@ -1,0 +1,68 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Backend Hot Reload",
+      "type": "shell",
+      "command": "dotnet",
+      "args": ["watch", "run", "--project", "SCJ.Booking.MVC.csproj"],
+      "options": {
+        "cwd": "app"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Run Web Application",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "SCJ.Booking.MVC.csproj"
+      ],
+      "options": {
+        "cwd": "app"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Build Frontend Assets",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "build"
+      ],
+      "options": {
+        "cwd": "app"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Watch Frontend Assets",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "watch"
+      ],
+      "options": {
+        "cwd": "app"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Install Vendor Assets",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "install"
+      ],
+      "options": {
+        "cwd": "app"
+      },
+      "group": "build"
+    }
+  ]
+}

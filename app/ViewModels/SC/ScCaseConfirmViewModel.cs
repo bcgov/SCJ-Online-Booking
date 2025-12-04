@@ -37,7 +37,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public string Phone { get; set; }
 
         public string TrialLocationName { get; set; }
-        public DateTime? SelectedRegularTrialDate { get; set; }
+        public DateTime? SelectedRegularDate { get; set; }
 
         // Session object
         public ScSessionBookingInfo SessionInfo { get; set; }

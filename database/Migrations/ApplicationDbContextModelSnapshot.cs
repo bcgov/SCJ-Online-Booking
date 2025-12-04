@@ -17,7 +17,7 @@ namespace SCJ.Booking.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.29")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,7 +38,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DataProtectionKeys", (string)null);
+                    b.ToTable("DataProtectionKeys");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.BookingHistory", b =>
@@ -84,7 +84,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BookingHistory", (string)null);
+                    b.ToTable("BookingHistory");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.OidcUser", b =>
@@ -110,7 +110,7 @@ namespace SCJ.Booking.Data.Migrations
                     b.HasIndex("UniqueIdentifier", "CredentialType")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.QueuedEmail", b =>
@@ -145,7 +145,7 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailQueue", (string)null);
+                    b.ToTable("EmailQueue");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.ScLottery", b =>
@@ -173,15 +173,18 @@ namespace SCJ.Booking.Data.Migrations
                     b.Property<DateTime>("FairUseBookingPeriodStartDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("HearingTypeId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("InitiationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScLotteries", (string)null);
+                    b.ToTable("ScLotteries");
                 });
 
-            modelBuilder.Entity("SCJ.Booking.Data.Models.ScTrialBookingRequest", b =>
+            modelBuilder.Entity("SCJ.Booking.Data.Models.ScLotteryBookingRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,8 +243,28 @@ namespace SCJ.Booking.Data.Migrations
                     b.Property<int>("HearingLength")
                         .HasColumnType("integer");
 
+                    b.Property<int>("HearingTypeId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("IsProcessed")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LocationName")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("LongChambersHearingSubTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LongChambersHearingSubTypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LotteryEntryId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int?>("LotteryId")
                         .HasColumnType("integer");
@@ -270,16 +293,6 @@ namespace SCJ.Booking.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<string>("TrialBookingId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TrialLocationId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TrialLocationName")
-                        .HasColumnType("text");
-
                     b.Property<string>("UnmetDemandBookingResult")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
@@ -301,12 +314,12 @@ namespace SCJ.Booking.Data.Migrations
 
                     b.HasIndex(new[] { "ProcessingTimestamp", "Email", "RequestedByName" }, "IX_ProcessingTimestamp_Email_RequestedByName_Ascending");
 
-                    b.HasIndex(new[] { "LotteryStartDate", "BookingLocationId", "BookHearingCode" }, "IX_TaskRunner_Lottery");
+                    b.HasIndex(new[] { "LotteryStartDate", "BookingLocationId", "HearingTypeId", "BookHearingCode" }, "IX_TaskRunner_Lottery");
 
-                    b.ToTable("ScTrialBookingRequests", (string)null);
+                    b.ToTable("ScLotteryBookingRequests");
                 });
 
-            modelBuilder.Entity("SCJ.Booking.Data.Models.ScTrialDateSelection", b =>
+            modelBuilder.Entity("SCJ.Booking.Data.Models.ScLotteryDateSelection", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -324,14 +337,14 @@ namespace SCJ.Booking.Data.Migrations
                     b.Property<int>("Rank")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("TrialStartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookingRequestId");
 
-                    b.ToTable("ScTrialDateSelections", (string)null);
+                    b.ToTable("ScLotteryDateSelections");
                 });
 
             modelBuilder.Entity("SCJ.Booking.Data.Models.BookingHistory", b =>
@@ -345,7 +358,7 @@ namespace SCJ.Booking.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SCJ.Booking.Data.Models.ScTrialBookingRequest", b =>
+            modelBuilder.Entity("SCJ.Booking.Data.Models.ScLotteryBookingRequest", b =>
                 {
                     b.HasOne("SCJ.Booking.Data.Models.ScLottery", "Lottery")
                         .WithMany("TrialBookingRequests")
@@ -360,10 +373,10 @@ namespace SCJ.Booking.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SCJ.Booking.Data.Models.ScTrialDateSelection", b =>
+            modelBuilder.Entity("SCJ.Booking.Data.Models.ScLotteryDateSelection", b =>
                 {
-                    b.HasOne("SCJ.Booking.Data.Models.ScTrialBookingRequest", "BookingRequest")
-                        .WithMany("TrialDateSelections")
+                    b.HasOne("SCJ.Booking.Data.Models.ScLotteryBookingRequest", "BookingRequest")
+                        .WithMany("DateSelections")
                         .HasForeignKey("BookingRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -381,9 +394,9 @@ namespace SCJ.Booking.Data.Migrations
                     b.Navigation("TrialBookingRequests");
                 });
 
-            modelBuilder.Entity("SCJ.Booking.Data.Models.ScTrialBookingRequest", b =>
+            modelBuilder.Entity("SCJ.Booking.Data.Models.ScLotteryBookingRequest", b =>
                 {
-                    b.Navigation("TrialDateSelections");
+                    b.Navigation("DateSelections");
                 });
 #pragma warning restore 612, 618
         }

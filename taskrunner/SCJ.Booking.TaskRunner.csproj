@@ -2,20 +2,33 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <Version>3.1.$([System.DateTime]::Now.ToString("yyMM")).$([System.DateTime]::Now.ToString("ddHH"))</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="EmailTemplates\Lottery-Failure.cshtml" />
-    <None Remove="EmailTemplates\Lottery-Success.cshtml" />
+    <None Remove="EmailTemplates\Trial-Lottery-Failure.cshtml" />
+    <None Remove="EmailTemplates\Trial-Lottery-Success.cshtml" />
+    <None Remove="EmailTemplates\LongChambers-Lottery-Failure.cshtml" />
+    <None Remove="EmailTemplates\LongChambers-Lottery-Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EmailTemplates\Lottery-Failure.cshtml">
+    <Content Include="EmailTemplates\Trial-Lottery-Failure.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="EmailTemplates\Lottery-Success.cshtml">
+    <Content Include="EmailTemplates\Trial-Lottery-Success.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\LongChambers-Lottery-Failure.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\LongChambers-Lottery-Success.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

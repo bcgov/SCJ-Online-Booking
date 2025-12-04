@@ -26,7 +26,7 @@
         );
       });
     },
-    false
+    false,
   );
 })();
 
@@ -65,7 +65,7 @@ $(document).ready(function () {
     function () {
       $("div#progress-overlay").show();
       $("div#progress-overlay-spinner").spin();
-    }
+    },
   );
 
   // kills the spinner when the back button is pressed
@@ -74,6 +74,6 @@ $(document).ready(function () {
 
 // logout
 function submitLogoutForm(e) {
-    e.preventDefault();
-    document.getElementById('logout_form').submit();
+  e.preventDefault();
+  document.getElementById("logout_form").submit();
 }

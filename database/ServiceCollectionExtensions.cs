@@ -18,14 +18,24 @@ namespace SCJ.Booking.Data
             if (configuration["ConnectionString"] != null)
             {
                 provider = ServiceConfig.DataProviderNpgsql;
-                connectionString = configuration["ConnectionString"];
+                connectionString =
+                    configuration["ConnectionString"]
+                    ?? throw new InvalidOperationException(
+                        "ConnectionString configuration value is missing."
+                    );
             }
             else
             {
-                provider = configuration[ServiceConfig.DataProviderKey.Replace("__", ":")];
-                connectionString = configuration[
-                    ServiceConfig.ConnectionStringKey.Replace("__", ":")
-                ];
+                provider =
+                    configuration[ServiceConfig.DataProviderKey.Replace("__", ":")]
+                    ?? throw new InvalidOperationException(
+                        "DataProvider configuration value is missing."
+                    );
+                connectionString =
+                    configuration[ServiceConfig.ConnectionStringKey.Replace("__", ":")]
+                    ?? throw new InvalidOperationException(
+                        "ConnectionString configuration value is missing."
+                    );
             }
 
             Console.WriteLine($"Using data provider: {provider}");

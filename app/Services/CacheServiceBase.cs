@@ -23,9 +23,33 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Checks if a key exists in the cache
         /// </summary>
+        protected bool Exists(string cacheKey)
+        {
+            return Cache.Get(cacheKey) != null;
+        }
+
+        /// <summary>
+        ///     Checks if a key exists in the cache
+        /// </summary>
         protected async Task<bool> ExistsAsync(string cacheKey)
         {
             return await Cache.GetAsync(cacheKey) != null;
+        }
+
+        /// <summary>
+        ///     Gets an object from the cache
+        /// </summary>
+        protected T GetObject<T>(string cacheKey)
+        {
+            byte[] b = Cache.Get(cacheKey);
+
+            if (b == null)
+            {
+                // ReSharper disable once RedundantTypeSpecificationInDefaultExpression
+                return default;
+            }
+
+            return JsonConvert.DeserializeObject<T>(Encoding.Unicode.GetString(b));
         }
 
         /// <summary>
@@ -42,6 +66,28 @@ namespace SCJ.Booking.MVC.Services
             }
 
             return JsonConvert.DeserializeObject<T>(Encoding.Unicode.GetString(b));
+        }
+
+        protected void SaveString(
+            string cacheKey,
+            string value,
+            int slidingExpirySeconds = CacheSlidingExpirySeconds,
+            int absoluteExpirySeconds = CacheAbsoluteExpirySeconds
+        )
+        {
+            Remove(cacheKey);
+
+            byte[] b = Encoding.Unicode.GetBytes(value);
+
+            Cache.Set(
+                cacheKey,
+                b,
+                new DistributedCacheEntryOptions
+                {
+                    SlidingExpiration = TimeSpan.FromSeconds(slidingExpirySeconds),
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(absoluteExpirySeconds)
+                }
+            );
         }
 
         /// <summary>
@@ -72,6 +118,14 @@ namespace SCJ.Booking.MVC.Services
         /// <summary>
         ///     Saves an object to the cache
         /// </summary>
+        protected void SaveObject(string cacheKey, object value, int slidingExpirySeconds = 600)
+        {
+            SaveString(cacheKey, JsonConvert.SerializeObject(value), slidingExpirySeconds);
+        }
+
+        /// <summary>
+        ///     Saves an object to the cache
+        /// </summary>
         protected async Task SaveObjectAsync(
             string cacheKey,
             object value,
@@ -83,6 +137,17 @@ namespace SCJ.Booking.MVC.Services
                 JsonConvert.SerializeObject(value),
                 slidingExpirySeconds
             );
+        }
+
+        /// <summary>
+        ///     Removes an item from the cache
+        /// </summary>
+        protected void Remove(string cacheKey)
+        {
+            if (Cache.Get(cacheKey) != null)
+            {
+                Cache.Remove(cacheKey);
+            }
         }
 
         /// <summary>

@@ -1,0 +1,33 @@
+@model ScLotteryEnabledAvailableSlotsViewModel
+@{
+    Layout = "~/Views/Shared/_ScLayout.cshtml";
+    ViewData["Title"] = "Request chambers hearing date(s)";
+
+    var bookingInfo = Model.SessionInfo;
+}
+
+<div class="body-content--inner">
+    <div class="d-flex justify-content-between steps-link">
+        <h5>4 steps to complete your booking</h5>
+        <h6><a href="/scjob/booking/sc">Cancel</a></h6>
+    </div>
+    <hr />
+    <h6>Step 3</h6>
+
+    <h2>Request chambers hearing date(s)</h2>
+
+    <div style="margin-bottom: 30px">
+        <partial name="~/Views/Shared/_ScCaseLabel.cshtml" />
+    </div>
+
+    <partial name="Partial/AvailableDates/_VueWrapper" model="Model" />
+
+    @section Styles {
+        <link rel="stylesheet" href="~/dist/vue/LongChambersTimeSelect.js.css" asp-append-version="true" />
+    }
+
+    @section Scripts {
+        <script src="~/dist/vendor.js" asp-append-version="true"></script>
+        <script src="~/dist/vue/LongChambersTimeSelect.js" asp-append-version="true"></script>
+    }
+</div>

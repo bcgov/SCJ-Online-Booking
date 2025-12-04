@@ -1,0 +1,83 @@
+@model ScCaseConfirmViewModel
+
+@{
+    ScSessionBookingInfo bookingInfo = Model.SessionInfo;
+    int hearingTypeId = bookingInfo.HearingTypeId;
+    string goBackAction = (hearingTypeId == ScHearingType.TRIAL || hearingTypeId == ScHearingType.LONG_CHAMBERS)
+    ? "AvailableDates"
+    : "AvailableTimes";
+
+    string GetBackLinkText()
+    {
+        if (hearingTypeId != ScHearingType.LONG_CHAMBERS && hearingTypeId != ScHearingType.TRIAL)
+        {
+            return "Book your hearing";
+        }
+
+        string hearingWord = hearingTypeId == ScHearingType.LONG_CHAMBERS ? "chambers" : "trial";
+        return bookingInfo.FormulaType == ScFormulaType.FairUseBooking
+        ? $"Request {hearingWord} date(s)"
+        : $"Choose your {hearingWord} date";
+    }
+
+    string HearingWords() => hearingTypeId == ScHearingType.LONG_CHAMBERS ? "chambers hearing" : "trial";
+}
+
+<h4>Provide your contact information</h4>
+
+@if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+{
+    <p>Please provide the following contact information. Your email address will be used to let you know whether
+        @HearingWords() date(s) are set for your case, and your phone number may be used later for booking and coordination
+        purposes.</p>
+}
+else
+{
+    <p>We will contact you regarding this booking. Please provide the following
+        contact information.</p>
+}
+
+<div class="row no-gutters justify-content-between form-group" style="margin-top: 16px;">
+    <div class="col-12 col-md-6 pr-0 pr-md-2">
+        <label asp-for="EmailAddress" class="small-label">
+            <small>Email address:</small>
+        </label>
+        <input type="email" asp-for="EmailAddress" required class="form-control" />
+        <div class="invalid-field-message text-danger">
+            @Html.ValidationMessageFor(model => model.EmailAddress)
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 pl-0 pl-md-2">
+        <label asp-for="Phone" class="small-label">
+            <small>Phone number (format: xxx-xxx-xxxx):</small>
+        </label>
+        <input type="tel" asp-for="Phone" required class="form-control phone-input" pattern="\d{3}[\-]\d{3}[\-]\d{4}" />
+        <div class="invalid-field-message text-danger">
+            @Html.ValidationMessageFor(model => model.Phone)
+        </div>
+    </div>
+</div>
+
+<div class="row no-gutters">
+    <div class="col-6 col-md-8 d-flex align-items-center text-link">
+        <span>
+            <i class="fas fa-arrow-left"></i>
+            <a asp-action="@goBackAction">
+                <text>Step 3: @GetBackLinkText()</text>
+            </a>
+        </span>
+    </div>
+    <div class="col-6 col-md-4">
+        <button type="submit" class="btn btn-secondary btn-block progress-spinner" id="btnSearch">
+            @if (@bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+            {
+                <text>Confirm request</text>
+            }
+            else
+            {
+                <text>Confirm booking</text>
+            }
+        </button>
+    </div>
+</div>

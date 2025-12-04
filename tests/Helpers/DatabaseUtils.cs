@@ -5,6 +5,7 @@ using CsvHelper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Constants;
 using SCJ.Booking.Data.Models;
 
 namespace SCJ.Booking.UnitTest.Helpers;
@@ -33,10 +34,10 @@ public class DatabaseUtils
 
         // clear the db
         applicationDbContext.Database.ExecuteSqlRaw(
-            "DROP TABLE IF EXISTS \"ScTrialDateSelections\""
+            "DROP TABLE IF EXISTS \"ScLotteryDateSelections\""
         );
         applicationDbContext.Database.ExecuteSqlRaw(
-            "DROP TABLE IF EXISTS \"ScTrialBookingRequests\""
+            "DROP TABLE IF EXISTS \"ScLotteryBookingRequests\""
         );
         applicationDbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS \"ScLotteries\"");
         applicationDbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS \"BookingHistory\"");
@@ -71,7 +72,7 @@ public class DatabaseUtils
 
             foreach (var record in records)
             {
-                var entity = new ScTrialBookingRequest
+                var entity = new ScLotteryBookingRequest
                 {
                     FairUseBookingPeriodEndDate = record.FairUseBookingPeriodEndDate,
                     LotteryStartDate = record.LotteryStartDate,
@@ -90,68 +91,51 @@ public class DatabaseUtils
                     Phone = record.Phone,
                     RequestedByName = record.RequestedByName,
                     StyleOfCause = record.StyleOfCause,
-                    TrialBookingId = record.TrialBookingId,
-                    TrialLocationId = record.TrialLocationId,
-                    TrialLocationName = record.TrialLocationName,
+                    LotteryEntryId = record.LotteryEntryId,
+                    LocationId = record.HearingLocationId,
+                    LocationName = record.HearingLocationName,
+                    HearingTypeId = record.HearingTypeId,
+                    LongChambersHearingSubTypeId = record.LongChambersHearingSubTypeId,
+                    LongChambersHearingSubTypeName = record.LongChambersHearingSubTypeName,
                     User = testUser
                 };
 
                 if (record.Selection1.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
-                        new ScTrialDateSelection
-                        {
-                            Rank = 1,
-                            TrialStartDate = record.Selection1.Value
-                        }
+                    entity.DateSelections.Add(
+                        new ScLotteryDateSelection { Rank = 1, StartDate = record.Selection1.Value }
                     );
                 }
 
                 if (record.Selection2.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
-                        new ScTrialDateSelection
-                        {
-                            Rank = 2,
-                            TrialStartDate = record.Selection2.Value
-                        }
+                    entity.DateSelections.Add(
+                        new ScLotteryDateSelection { Rank = 2, StartDate = record.Selection2.Value }
                     );
                 }
 
                 if (record.Selection3.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
-                        new ScTrialDateSelection
-                        {
-                            Rank = 3,
-                            TrialStartDate = record.Selection3.Value
-                        }
+                    entity.DateSelections.Add(
+                        new ScLotteryDateSelection { Rank = 3, StartDate = record.Selection3.Value }
                     );
                 }
 
                 if (record.Selection4.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
-                        new ScTrialDateSelection
-                        {
-                            Rank = 4,
-                            TrialStartDate = record.Selection4.Value
-                        }
+                    entity.DateSelections.Add(
+                        new ScLotteryDateSelection { Rank = 4, StartDate = record.Selection4.Value }
                     );
                 }
 
                 if (record.Selection5.HasValue)
                 {
-                    entity.TrialDateSelections.Add(
-                        new ScTrialDateSelection
-                        {
-                            Rank = 5,
-                            TrialStartDate = record.Selection5.Value
-                        }
+                    entity.DateSelections.Add(
+                        new ScLotteryDateSelection { Rank = 5, StartDate = record.Selection5.Value }
                     );
                 }
 
-                dbContext.ScTrialBookingRequests.Add(entity);
+                dbContext.ScLotteryBookingRequests.Add(entity);
                 dbContext.SaveChanges();
             }
         }

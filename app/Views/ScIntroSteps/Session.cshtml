@@ -1,0 +1,55 @@
+@model SCJ.Booking.MVC.Utils.ScSessionBookingInfo
+@using System.Reflection
+@using System.Text.Json
+@using Newtonsoft.Json
+@using System.Collections
+
+@{
+    PropertyInfo[] props = Model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+    string Render(object v)
+    {
+        if (v is IEnumerable e && v.GetType() != typeof(string))
+        {
+            return JsonConvert.SerializeObject(v, Formatting.Indented);
+        }
+        if (v != null && v.GetType().IsClass && v.GetType() != typeof(string))
+        {
+            return JsonConvert.SerializeObject(v, Formatting.Indented);
+        }
+        return v?.ToString();
+    }
+
+    bool IsEmptyEnumerable(object v)
+    {
+        if (v is IEnumerable e and not string)
+        {
+            return !e.Cast<object>().Any();
+        }
+        return false;
+    }
+}
+
+<h2>Session Booking Info</h2>
+<ul>
+    @foreach (PropertyInfo p in props)
+    {
+        object val = p.GetValue(Model);
+
+        // Skip null/empty/default values
+        if (val == null) continue;
+        if (val is string s && string.IsNullOrWhiteSpace(s)) continue;
+        if (val is int i && i == 0) continue;
+        if (val is int? && !((int?)val).HasValue) continue;
+        if (val is int? && ((int?)val).Value == 0) continue;
+        if (val is DateTime dt && dt == default) continue;
+        if (val is DateTime? && !(val as DateTime?).HasValue) continue;
+        if (val is DateTime? && (val as DateTime?).Value == default) continue;
+        if (IsEmptyEnumerable(val)) continue;
+
+        string rendered = Render(val);
+        if (string.IsNullOrWhiteSpace(rendered)) continue;
+
+        <li><strong>@p.Name</strong>: @rendered</li>
+    }
+</ul>

@@ -55,7 +55,7 @@ namespace SCJ.Booking.MVC.Services.COA
             _coaCacheService = coaCacheService;
             _viewRenderService = viewRenderService;
             _mailService = new MailQueueService(configuration, dbContext);
-            _dbWriterService = new DataWriterService(dbContext);
+            _dbWriterService = new DataWriterService(dbContext, null);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace SCJ.Booking.MVC.Services.COA
             //search the current case number
             try
             {
-                caseNumberResult = await _client.CoACaseNumberValidAsync(model.CaseNumber);
+                caseNumberResult = await _client.coaCaseNumberValidAsync(model.CaseNumber);
             }
             catch (FaultException ex)
             {
@@ -165,12 +165,12 @@ namespace SCJ.Booking.MVC.Services.COA
             ShedulesInfo[] dates;
             if (isAppealHearing)
             {
-                var availableAppealDates = await _client.COAAvailableDatesAsync();
+                var availableAppealDates = await _client.coaAvailableAppealDatesAsync();
                 dates = availableAppealDates.AvailableDates;
             }
             else
             {
-                var availableChambersDates = await _client.CoAAvailableDatesChambersAsync();
+                var availableChambersDates = await _client.coaAvailableCHDatesAsync();
                 // convert chambers dates to appeal dates (these could have been the same type in the first place)
                 dates = availableChambersDates
                     .AvailableDates.Select(date => new ShedulesInfo
@@ -227,13 +227,13 @@ namespace SCJ.Booking.MVC.Services.COA
             List<DateTime> schedule;
             if (bookingInfo.IsAppealHearing is true)
             {
-                schedule = (await _client.COAAvailableDatesAsync())
+                schedule = (await _client.coaAvailableAppealDatesAsync())
                     .AvailableDates.Select(x => x.scheduleDate)
                     .ToList();
             }
             else
             {
-                schedule = (await _client.CoAAvailableDatesChambersAsync())
+                schedule = (await _client.coaAvailableCHDatesAsync())
                     .AvailableDates.Select(x => x.scheduleDate)
                     .ToList();
             }
@@ -284,7 +284,7 @@ namespace SCJ.Booking.MVC.Services.COA
                     _logger.Information(JsonSerializer.Serialize(requestPayload));
 
                     //submit booking
-                    result = await _client.CoAQueueHearingAsync(requestPayload);
+                    result = await _client.coaQueueAppealHearingAsync(requestPayload);
                 }
                 else
                 {
@@ -305,7 +305,7 @@ namespace SCJ.Booking.MVC.Services.COA
                     _logger.Information(JsonSerializer.Serialize(bookInfo));
 
                     //submit booking
-                    result = await _client.CoAChambersQueueHearingAsync(bookInfo);
+                    result = await _client.coaQueueCHHearingAsync(bookInfo);
                 }
 
                 //get the raw result
@@ -419,8 +419,8 @@ namespace SCJ.Booking.MVC.Services.COA
             }
 
             var template = booking.IsAppealHearing is true
-                ? "CoaBooking/Emails/Email-Appeal"
-                : "CoaBooking/Emails/Email-Chambers";
+                ? "CoaBooking/Emails/Appeal"
+                : "CoaBooking/Emails/Chambers";
 
             //Render the email template
             return await _viewRenderService.RenderToStringAsync(template, viewModel);
