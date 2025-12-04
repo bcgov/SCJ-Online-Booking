@@ -90,7 +90,14 @@ namespace SCJ.Booking.MVC.Utils
                 {
                     var json = user.FindFirst("vc_presented_attributes")?.Value ?? "{}";
                     dynamic attributes = JsonConvert.DeserializeObject<ExpandoObject>(json);
-                    return $"{attributes.given_names} {attributes.family_name}";
+                    try
+                    {
+                        return $"{attributes.given_names} {attributes.family_name}";
+                    }
+                    catch
+                    {
+                        return "BC_WALLET_CLAIMS_ERROR";
+                    }
                 }
                 default:
                     return "Unknown User";
@@ -110,8 +117,8 @@ namespace SCJ.Booking.MVC.Utils
             var dbCtx =
                 tokenCtx.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
 
-            var user = await dbCtx.Users.FirstOrDefaultAsync(
-                u => u.CredentialType == idpType && u.UniqueIdentifier == identifier
+            var user = await dbCtx.Users.FirstOrDefaultAsync(u =>
+                u.CredentialType == idpType && u.UniqueIdentifier == identifier
             );
 
             long userId;
