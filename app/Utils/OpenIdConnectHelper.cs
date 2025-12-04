@@ -96,7 +96,7 @@ namespace SCJ.Booking.MVC.Utils
                     }
                     catch
                     {
-                        return "BC_WALLET_CLAIMS_ERROR";
+                        return "BC Wallet Unknown";
                     }
                 }
                 default:
