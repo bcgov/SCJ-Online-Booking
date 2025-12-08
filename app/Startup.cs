@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SCJ.Booking.Data;
+using SCJ.Booking.MVC.Middleware;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Services.COA;
 using SCJ.Booking.MVC.Services.SC;
@@ -248,6 +249,9 @@ namespace SCJ.Booking.MVC
             app.UsePathBase("/scjob");
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+            // Add maintenance mode check early in the pipeline
+            app.UseMiddleware<MaintenanceModeMiddleware>();
 
             // run migrations
             UpdateDatabase(app);

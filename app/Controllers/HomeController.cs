@@ -59,6 +59,13 @@ namespace SCJ.Booking.MVC.Controllers
             return View();
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Route("~/Maintenance")]
+        public IActionResult Maintenance()
+        {
+            return View();
+        }
+
         [HttpPost]
         [Route("~/Logout")]
         public IActionResult Logout()
