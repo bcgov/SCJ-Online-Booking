@@ -1,0 +1,9 @@
+# Exclude generated migrations
+**/Migrations/**
+database/Migrations/**
+
+# Other generated/build files you might want to exclude
+**/bin/**
+**/obj/**
+**/wwwroot/dist/**
+**/node_modules/**

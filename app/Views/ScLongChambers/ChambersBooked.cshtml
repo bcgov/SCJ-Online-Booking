@@ -1,0 +1,91 @@
+@inject SessionService SessionService
+@{
+    Layout = "~/Views/Shared/_ScLayout.cshtml";
+    ViewData["Title"] = "Your booking is reserved tentatively";
+
+    var bookingInfo = SessionService.ScBookingInfo;
+    var userInfo = SessionService.UserInfo;
+}
+<div class="body-content--inner">
+    <div class="row no-gutters">
+        <div class="col">
+            @if (bookingInfo.IsBooked)
+            {
+                <h2>@ViewData["Title"]</h2>
+
+                <p class="mb-3">You must file your court documents according to the <em>Supreme Court Rules</em> for your
+                    particular application or petition. Please visit
+                    <a target="_blank" rel="noopener"
+                        href="https://www.bccourts.ca/supreme_court/practice_and_procedure/acts_rules_and_forms/">
+                        Supreme Court Act, Rules and Forms</a>
+                    for more information.
+                </p>
+
+                <p class="mb-0 mt-2">The following information will be sent to you by email.</p>
+            }
+            else
+            {
+                <h2>Booking Could Not Be Completed</h2>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    @bookingInfo.FriendlyError
+                </div>
+                <p>For your reference, here is the information for the booking that was not completed.</p>
+            }
+        </div>
+    </div>
+
+    <div class="row no-gutters booking-confirmation">
+        <div class="col-12">
+
+            <div class="row no-gutters justify-content-between booking-confirmation--details">
+                <div class="col-12">
+                    <partial name="~/Views/Shared/_ScCaseLabel.cshtml" />
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h2>Chambers hearing details</h2>
+
+                @{
+                    var chambersLength = bookingInfo.BookingLength;
+                    var startDate = bookingInfo.SelectedRegularDate?.ToString("dddd MMMM d, yyyy") ?? "";
+                }
+                <p>Chambers type: @bookingInfo.ChambersHearingSubTypeName</p>
+                <p>Requested days: @chambersLength</p>
+                <p>Starting: @startDate</p>
+                <p class="mb-3">Location: @bookingInfo.BookingLocationName</p>
+            </div>
+
+            <div class="mb-4">
+                <h2>Contact information</h2>
+                <p>Email: @userInfo.Email</p>
+                <p>Phone number: @userInfo.Phone</p>
+            </div>
+
+            <div class="mb-4 mt-4">
+                <a class="btn btn-primary d-inline-block mt-0" href="/scjob/booking/sc" role="button">
+                    Make another booking
+                </a>
+            </div>
+
+            <div class="mb-4 mt-2">
+                <p>Finished booking?</p>
+
+                <p>
+                    <a href="#" onclick="submitLogoutForm(event)">
+                        <p>Log out of the BC Courts Online Booking System</p>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    // this needs to be done in the view (not the controller) because the view uses the session
+    if (SessionService != null)
+    {
+        SessionService.ScBookingInfo = null;
+    }
+}

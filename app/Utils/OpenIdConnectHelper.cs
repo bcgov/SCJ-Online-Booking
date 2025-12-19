@@ -89,6 +89,7 @@ namespace SCJ.Booking.MVC.Utils
                 case DigitalCredentialIdp:
                 {
                     var json = user.FindFirst("vc_presented_attributes")?.Value ?? "{}";
+                    Console.WriteLine($"vc_presented_attributes: {json}");
                     dynamic attributes = JsonConvert.DeserializeObject<ExpandoObject>(json);
                     try
                     {

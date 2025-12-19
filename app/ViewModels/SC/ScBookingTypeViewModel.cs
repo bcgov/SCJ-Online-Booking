@@ -14,7 +14,7 @@ namespace SCJ.Booking.MVC.ViewModels.SC
             EstimatedTrialLength = null;
             IsHomeRegistry = null;
             IsLocationChangeFiled = null;
-            TrialLocationRegistryId = -1;
+            AlternateLocationRegistryId = -1;
         }
 
         //Booking type fields
@@ -23,9 +23,11 @@ namespace SCJ.Booking.MVC.ViewModels.SC
 
         [Display(Name = "Estimated Length of Trial")]
         public int? EstimatedTrialLength { get; set; }
+        public int ChambersHearingSubType { get; set; }
+        public int? EstimatedChambersLength { get; set; }
         public bool? IsHomeRegistry { get; set; }
         public bool? IsLocationChangeFiled { get; set; }
-        public int TrialLocationRegistryId { get; set; }
+        public int AlternateLocationRegistryId { get; set; }
         public List<string> AvailableBookingTypes { get; set; }
         public bool FutureTrialBooked { get; set; } = false;
         public bool HasExistingTrialRequest { get; set; } = false;

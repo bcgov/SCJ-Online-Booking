@@ -2,11 +2,10 @@ const path = require("path");
 const fs = require("fs");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const RemovePlugin = require("remove-files-webpack-plugin");
 const bundleOutputDir = "./wwwroot/dist";
 const { VueLoaderPlugin } = require("vue-loader");
 
-var appBasePath = "./ClientSrc/";
+var appBasePath = "./frontend/";
 
 var entries = {};
 // We search for index.js files inside basePath folder and make those as entries
@@ -44,9 +43,9 @@ module.exports = (env) => {
         minimizer: [new CssMinimizerPlugin()],
       },
       resolve: {
-        extensions: [".js", ".vue", ",scss"],
+        extensions: [".js", ".vue", ".scss"],
         alias: {
-          vue$: "vue/dist/vue",
+          vue$: "vue/dist/vue.esm-bundler.js",
         },
       },
       entry: entries,
@@ -59,13 +58,9 @@ module.exports = (env) => {
         rules: [
           {
             test: /\.vue$/,
-            include: /ClientSrc/,
+            include: /frontend/,
             loader: "vue-loader",
-            options: {
-              loaders: { js: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } } },
-            },
           },
-          { test: /\.js$/, include: /ClientSrc/, use: { loader: "babel-loader", options: { presets: ["@babel/preset-env"] } } },
           {
             test: /\.(scss|css)/,
             use: [
@@ -81,19 +76,10 @@ module.exports = (env) => {
       plugins: [
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin(),
-        new RemovePlugin({
-          after: {
-            root: "./wwwroot/dist/css",
-            include: [],
-            test: [
-              {
-                folder: "./",
-                method: (absoluteItemPath) => {
-                  return !new RegExp(/\.css$/, "m").test(absoluteItemPath);
-                },
-              },
-            ],
-          },
+        new (require("webpack").DefinePlugin)({
+          __VUE_OPTIONS_API__: true,
+          __VUE_PROD_DEVTOOLS__: false,
+          __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
         }),
       ],
     },

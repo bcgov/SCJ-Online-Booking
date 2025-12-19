@@ -1,11 +1,11 @@
-$(document).ready(function () {
+$(function () {
   // show additional questions for "Trial" booking type
   if ($("input[name=HearingTypeId]:checked").length) {
     showTrialFields();
   }
 
   //Pre-filling input field based on selection of court class on the Supreme Court side
-  $("#courtClassDropdown").change(function () {
+  $("#courtClassDropdown").on("change", function () {
     var $caseNum = $("#caseNumberInput");
     // don't clear the case number if it already starts with the selected class prefix
     if ($caseNum.val().length === 0 || $caseNum.val().charAt(0) !== $(this).val()) {
@@ -14,7 +14,7 @@ $(document).ready(function () {
   });
 
   // show/hide extra fields for specific booking types
-  $("input[name=HearingTypeId]").change(function () {
+  $("input[name=HearingTypeId]").on("change", function () {
     var $courtClassDropdown = $("#courtClassDropdown");
 
     if ($(this).val() === "9543") {
@@ -35,17 +35,20 @@ $(document).ready(function () {
     showTrialFields();
   });
 
-  $("input[name=IsHomeRegistry]").change(showTrialFields);
-  $("input[name=IsLocationChangeFiled]").change(showTrialFields);
+  $("input[name=IsHomeRegistry]").on("change", showTrialFields);
+  $("input[name=IsLocationChangeFiled]").on("change", showTrialFields);
 
-  $("#dateBtn").click(function () {
+  $("#dateBtn").on("click", function () {
     $("#datepicker").datepicker().focus();
   });
 });
 
 // Shows or hides the additional form fields for Trials
 function showTrialFields() {
-  const trialSelected = $("input[name=HearingTypeId]:checked").val() === "9001";
+  const hearingTypeId = $("input[name=HearingTypeId]:checked").val();
+
+  const trialSelected = hearingTypeId === "9001";
+  const chambersSelected = hearingTypeId === "9012";
 
   $("#existing-trial-error").hide();
   $("#btnNext").show();
@@ -53,9 +56,16 @@ function showTrialFields() {
   if (trialSelected && checkExistingTrialBookings()) {
     $("#existing-trial-error").show();
     $("#btnNext").hide();
+    $("#lotteryenabled-additional-fields").hide();
   } else {
     $("#trial-additional-fields").toggle(trialSelected);
+    $("#lotteryenabled-additional-fields").toggle(trialSelected || chambersSelected);
   }
+
+  $(".txtChambers").toggle(chambersSelected);
+  $(".txtTrial").toggle(!chambersSelected);
+
+  $("#chambers-additional-fields").toggle(chambersSelected);
 
   const notHomeRegistry = $("input[name=IsHomeRegistry]:checked").val() === "false";
   $("#different-place-of-trial").toggle(notHomeRegistry);

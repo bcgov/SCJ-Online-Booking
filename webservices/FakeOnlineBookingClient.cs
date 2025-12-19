@@ -12,7 +12,7 @@ namespace SCJ.OnlineBooking
     /// </summary>
     public class FakeOnlineBookingClient : IOnlineBooking
     {
-        public async Task<CourtFile[]> caseNumberValidAsync(string caseNum)
+        public async Task<CourtFile[]> scCaseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
 
@@ -31,7 +31,8 @@ namespace SCJ.OnlineBooking
                         CEISLocationId = 9067.0001m,
                         physicalFileId = 3879m,
                         styleOfCause = "DOE, Jane v TESTING, John",
-                        fairUseSort = 1,
+                        fairUseSortTrial = 1,
+                        fairUseSortCH = 1,
                         futureTrialHearing = false
                     }
                 };
@@ -50,7 +51,8 @@ namespace SCJ.OnlineBooking
                         CEISLocationId = 83.0001m,
                         physicalFileId = 2109m,
                         styleOfCause = null,
-                        fairUseSort = 0,
+                        fairUseSortTrial = 0,
+                        fairUseSortCH = 0,
                         futureTrialHearing = true
                     },
                     new CourtFile
@@ -61,7 +63,8 @@ namespace SCJ.OnlineBooking
                         CEISLocationId = 83.0001m,
                         physicalFileId = 1063m,
                         styleOfCause = "SIMPSON, Marge v SIMPSON, Homer",
-                        fairUseSort = 3,
+                        fairUseSortTrial = 3,
+                        fairUseSortCH = 3,
                         futureTrialHearing = false
                     }
                 };
@@ -70,14 +73,14 @@ namespace SCJ.OnlineBooking
             return result.ToList().OrderBy(x => x.styleOfCause).ToArray();
         }
 
-        public async Task<Location[]> getLocationsAsync()
+        public async Task<Location[]> scGetLocationsAsync()
         {
             await Task.Delay(100);
 
             return ScLocationFixture.All;
         }
 
-        public async Task<AvailableDatesByLocation> AvailableDatesByLocationAsync(
+        public async Task<AvailableDatesByLocation> scConfAvailableDatesByLocationAsync(
             int locationID,
             int hearingTypeID
         )
@@ -90,13 +93,13 @@ namespace SCJ.OnlineBooking
             return result;
         }
 
-        public async Task<BookingHearingResult> BookingHearingAsync(BookHearingInfo bookInfo)
+        public async Task<BookingHearingResult> scConfBookHearingAsync(BookHearingInfo bookInfo)
         {
             await Task.Delay(100);
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<COACaseList> CoACaseNumberValidAsync(string caseNum)
+        public async Task<COACaseList> coaCaseNumberValidAsync(string caseNum)
         {
             await Task.Delay(100);
 
@@ -131,7 +134,7 @@ namespace SCJ.OnlineBooking
             return CoAClassInfoFixture.NotFound;
         }
 
-        public async Task<CoAAvailableDates> COAAvailableDatesAsync()
+        public async Task<CoAAvailableDates> coaAvailableAppealDatesAsync()
         {
             await Task.Delay(100);
 
@@ -142,7 +145,7 @@ namespace SCJ.OnlineBooking
             return result;
         }
 
-        public async Task<BookingHearingResult> CoAQueueHearingAsync(
+        public async Task<BookingHearingResult> coaQueueAppealHearingAsync(
             CoABookingHearingInfo bookingInfo
         )
         {
@@ -151,7 +154,7 @@ namespace SCJ.OnlineBooking
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<CoAChambersAvailableDates> CoAAvailableDatesChambersAsync()
+        public async Task<CoAChambersAvailableDates> coaAvailableCHDatesAsync()
         {
             await Task.Delay(100);
 
@@ -162,7 +165,7 @@ namespace SCJ.OnlineBooking
             return result;
         }
 
-        public async Task<BookingHearingResult> CoAChambersQueueHearingAsync(
+        public async Task<BookingHearingResult> coaQueueCHHearingAsync(
             CoAChambersBookingHearingInfo bookingInfo
         )
         {
@@ -171,7 +174,7 @@ namespace SCJ.OnlineBooking
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<CoAChambersApplications[]> CoAChambersApplicationsListAsync(string type)
+        public async Task<CoAChambersApplications[]> coaCHApplicationListAsync(string type)
         {
             await Task.Delay(100);
 
@@ -188,39 +191,62 @@ namespace SCJ.OnlineBooking
             return null;
         }
 
-        public async Task<FormulaLocation[]> AvailableTrialBookingFormulasByLocationAsync(
+        public async Task<FormulaLocation[]> scAvailableFormulasByHearingTypeAndLocationAsync(
             string locationID,
-            string formula
+            string formula,
+            string hearingTypeId
         )
         {
             await Task.Delay(100);
+
+            if (string.IsNullOrEmpty(hearingTypeId))
+            {
+                var results = ScFormulaLocationsFixture
+                    .Locations(9001)
+                    .Concat(ScFormulaLocationsFixture.Locations(9012));
+
+                // filter the results to exclude anything that doesn't match the other filters
+                if (!string.IsNullOrEmpty(locationID))
+                {
+                    results = results.Where(x => x.BookingLocationID == int.Parse(locationID));
+                }
+
+                if (!string.IsNullOrEmpty(formula))
+                {
+                    results = results.Where(x => x.FormulaType == formula);
+                }
+
+                return results.ToArray();
+            }
+
             if (string.IsNullOrEmpty(locationID) && string.IsNullOrEmpty(formula))
             {
-                return ScFormulaLocationsFixture.Locations;
+                return ScFormulaLocationsFixture.Locations(int.Parse(hearingTypeId));
             }
 
             if (string.IsNullOrEmpty(locationID))
             {
                 return ScFormulaLocationsFixture
-                    .Locations.Where(l => l.FormulaType == formula)
+                    .Locations(int.Parse(hearingTypeId))
+                    .Where(l => l.FormulaType == formula)
                     .ToArray();
             }
 
             if (string.IsNullOrEmpty(formula))
             {
                 return ScFormulaLocationsFixture
-                    .Locations.Where(l => l.LocationID == int.Parse(locationID))
+                    .Locations(int.Parse(hearingTypeId))
+                    .Where(l => l.LocationID == int.Parse(locationID))
                     .ToArray();
             }
 
             return ScFormulaLocationsFixture
-                .Locations.Where(l =>
-                    l.FormulaType == formula && l.LocationID == int.Parse(locationID)
-                )
+                .Locations(int.Parse(hearingTypeId))
+                .Where(l => l.FormulaType == formula && l.LocationID == int.Parse(locationID))
                 .ToArray();
         }
 
-        public async Task<AvailableTrialDatesResult> AvailableTrialDatesByLocationAsync(
+        public async Task<AvailableTrialDatesResult> scAvailableDatesByHearingTypeAndLocationAsync(
             AvailableTrialDatesRequestInfo requestInfo
         )
         {
@@ -229,40 +255,73 @@ namespace SCJ.OnlineBooking
             return ScAvailableTrialDatesFixture.Dates;
         }
 
-        public async Task<BookingHearingResult> BookTrialHearingAsync(
+        public async Task<BookingHearingResult> scTrialBookHearingAsync(
             BookTrialHearingInfo bookingInfo
         )
         {
+            await Task.Delay(100);
+
             if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
             {
-                Random r = new Random();
-                int n = r.Next(0, 100);
-
-                if (bookingInfo.HearingType == ScHearingType.TRIAL)
+                if (bookingInfo.HearingType != ScHearingType.UNMET_DEMAND)
                 {
+                    Random r = new Random();
+                    int n = r.Next(0, 100);
+
                     // fair use trial bookings fail 85% of the time for test purposes
                     return n > 85
                         ? ScBookingHearingResultFixture.Success
                         : ScBookingHearingResultFixture.SupremeCourtFailure;
                 }
-
-                if (bookingInfo.HearingType == ScHearingType.UNMET_DEMAND)
+                else
                 {
-                    // unmet demand bookings fail 10% of the time for test purposes
-                    return n > 10
-                        ? ScBookingHearingResultFixture.Success
-                        : ScBookingHearingResultFixture.SupremeCourtFailure;
+                    // unmet demand bookings succeed 100% of the time
+                    return ScBookingHearingResultFixture.Success;
                 }
             }
 
-            await Task.Delay(100);
             return ScBookingHearingResultFixture.Success;
         }
 
-        public async Task<string[]> GetAvailableBookingTypesAsync()
+        public async Task<string[]> scGetAvailableBookingTypesAsync()
         {
             await Task.Delay(100);
             return ScAvailableBookingTypesFixture.BookingTypes;
+        }
+
+        public async Task<BookingHearingResult> scCHBookHearingAsync(
+            BookingSCCHHearingInfo bookingInfo
+        )
+        {
+            if (bookingInfo.FormulaType == ScFormulaType.FairUseBooking)
+            {
+                await Task.Delay(100);
+
+                if (bookingInfo.HearingTypeId != ScHearingType.UNMET_DEMAND)
+                {
+                    Random r = new Random();
+                    int n = r.Next(0, 100);
+
+                    // fair use trial bookings fail 85% of the time for test purposes
+                    return n > 85
+                        ? ScBookingHearingResultFixture.Success
+                        : ScBookingHearingResultFixture.SupremeCourtFailure;
+                }
+                else
+                {
+                    // unmet demand bookings succeed 100% of the time
+                    return ScBookingHearingResultFixture.Success;
+                }
+            }
+
+            return ScBookingHearingResultFixture.Success;
+        }
+
+        public async Task<SCCHHearingSubTypeDetails[]> scCHHearingSubTypeAsync()
+        {
+            await Task.Delay(100);
+
+            return ScLongChambersHearingSubTypes.All;
         }
     }
 }

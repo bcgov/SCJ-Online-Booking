@@ -1,0 +1,134 @@
+@model ScConferenceAvailableSlotsViewModel
+@{
+    Layout = "~/Views/Shared/_ScLayout.cshtml";
+    ViewData["Title"] = "Book your hearing";
+
+    ScSessionBookingInfo bookingInfo = Model.SessionInfo;
+    Model.SelectedDate = Model.FirstAvailableDate;
+}
+
+<div class="body-content--inner">
+    <div class="d-flex justify-content-between steps-link">
+        <h5>4 steps to complete your booking</h5>
+        <h6><a href="/scjob/booking/sc">Cancel</a></h6>
+    </div>
+    <hr />
+    <h6>Step 3</h6>
+
+    <h2>Book your hearing</h2>
+
+    <div style="margin-bottom: 30px">
+        <partial name="~/Views/Shared/_ScCaseLabel.cshtml" />
+    </div>
+
+    @if (Model.AvailableDates == null || !Model.AvailableDates.Any())
+    {
+        string location = Model.SessionInfo.BookingLocationName;
+
+        <div class="alert alert-danger" role="alert">
+            <i class="fa fa-ban"></i>
+            <p>
+                <b>There are currently no available times for this hearing in @location.</b><br />
+                Please contact the registry in @location for assistance and available options.
+            </p>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col-6 col-md-8 d-flex align-items-center text-link">
+                <span>
+                    <i class="fas fa-long-arrow-alt-left"></i>
+                    <a asp-action="BookingType" asp-action="BookingType">Step 2: Choose booking type</a>
+                </span>
+            </div>
+            <div class="col-6 col-md-4">
+                @* No next step in this error state *@
+            </div>
+        </div>
+    }
+    else
+    {
+        IHtmlContent availableDates = Json.Serialize(Model.AvailableDates);
+        Model.SelectedDate = Model.FirstAvailableDate;
+
+        @section Styles {
+            <link rel="stylesheet" href="~/dist/vue/HearingTimeSelect.js.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/dist/css/bootstrap-datepicker3.standalone.css" asp-append-version="true" />
+        }
+
+        @section Scripts {
+            <script src="~/dist/vendor.js" asp-append-version="true"></script>
+            <script src="~/dist/vue/HearingTimeSelect.js" asp-append-version="true"></script>
+            <script src="~/dist/lib/bootstrap-datepicker.js" asp-append-version="true"></script>
+            <script type="text/javascript">
+                $('#datepicker').datepicker({
+                    format: 'yyyy-mm-dd',
+                    weekStart: 0,
+                    autoclose: true,
+                    todayHighlight: true,
+                    startDate: @Json.Serialize(Model.FirstAvailableDate),
+                    defaultViewDate: @Json.Serialize(Model.FirstAvailableDate),
+                    clearBtn: true,
+                    endDate: @Json.Serialize(Model.LastAvailableDate),
+                    datesDisabled: @Json.Serialize(Model.DisabledDates)
+                  }).on('changeDate', function (event) {
+                        var selectedDate = event.format();
+                        var dates = @availableDates;
+                        if (dates) {
+                            var i = dates.toString().split(',').indexOf(selectedDate);
+                            $('#selectedDate').val(i);
+                            $("#slideBtn").click();
+                        }
+                        $("#datepicker").html(selectedDate);
+                    });
+            </script>
+        }
+
+        <h6>Available times in @Model.SessionInfo.BookingLocationName</h6>
+        <p>
+            Please choose a time below for your <b>@Model.SessionInfo.HearingTypeName</b>.
+            <br />
+            @ScHearingType.GetHearingType(Model.HearingTypeId)s are booked for
+            @Model.HearingLengthMinutes minutes only.
+        </p>
+
+        <form method="post" id="availableTimesForm">
+            <div class="row no-gutters">
+                <div class="col-8 col-md-4 mx-auto">
+                    <div class="datepicker-input-wrapper position-relative">
+                        <input type="text" id="datepicker" class="btn btn-quaternary btn-block pr-5"
+                            placeholder="Choose a date" readonly aria-hidden="true" tabindex="-1" />
+                        <span class="datepicker-calendar-icon"><i class="fas fa-calendar-alt"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="VueHearingTimeSelect" class="availableTimesContainer">
+                <hearing-time-select :location-id="@Model.ConferenceLocationRegistryId"
+                    :available-dates="@availableDates.ToString()"
+                    :hearing-type="@Model.HearingTypeId"></hearing-time-select>
+            </div>
+
+            @Html.HiddenFor(m => m.ConferenceLocationRegistryId)
+            @Html.HiddenFor(m => m.HearingTypeId)
+            <input type="hidden" asp-for="SelectedConferenceDate" id="hidDate" />
+            <input type="hidden" asp-for="ContainerId" id="hidContainerId" />
+            <div class="text-danger">
+                <span asp-validation-for="ContainerId"></span>
+            </div>
+
+            <div class="row no-gutters">
+                <div class="col-6 col-md-8 d-flex align-items-center text-link">
+                    <span>
+                        <i class="fas fa-long-arrow-alt-left"></i>
+                        <a asp-controller="ScIntroSteps" asp-action="BookingType">Step 2: Choose booking type</a>
+                    </span>
+                </div>
+                <div class="col-6 col-md-4">
+                    <button type="submit" class="btn btn-secondary btn-block">
+                        Confirm time
+                    </button>
+                </div>
+            </div>
+        </form>
+    }
+</div>

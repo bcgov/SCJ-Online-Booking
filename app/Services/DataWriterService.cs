@@ -2,7 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Constants;
 using SCJ.Booking.Data.Models;
+using SCJ.Booking.MVC.Services.SC;
 using SCJ.Booking.MVC.Utils;
 
 namespace SCJ.Booking.MVC.Services
@@ -10,11 +12,13 @@ namespace SCJ.Booking.MVC.Services
     public class DataWriterService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ScCacheService _cacheService;
 
         //Constructor
-        public DataWriterService(ApplicationDbContext dbContext)
+        public DataWriterService(ApplicationDbContext dbContext, ScCacheService cacheService)
         {
             _dbContext = dbContext;
+            _cacheService = cacheService;
         }
 
         public async Task SaveBookingHistory(
@@ -49,7 +53,7 @@ namespace SCJ.Booking.MVC.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task SaveFairUseRequest(
+        public async Task SaveLotteryEntry(
             long userId,
             ScSessionBookingInfo bookingInfo,
             SessionUserInfo userInfo
@@ -73,9 +77,9 @@ namespace SCJ.Booking.MVC.Services
             }
 
             if (
-                !bookingInfo.EstimatedTrialLength.HasValue
-                || bookingInfo.EstimatedTrialLength.Value < 1
-                || bookingInfo.EstimatedTrialLength.Value > 40
+                !bookingInfo.BookingLength.HasValue
+                || bookingInfo.BookingLength.Value < 1
+                || bookingInfo.BookingLength.Value > 40
             )
             {
                 throw new InvalidOperationException(
@@ -83,8 +87,8 @@ namespace SCJ.Booking.MVC.Services
                 );
             }
 
-            DbSet<ScTrialBookingRequest> trialBookingRequests =
-                _dbContext.Set<ScTrialBookingRequest>();
+            DbSet<ScLotteryBookingRequest> trialBookingRequests =
+                _dbContext.Set<ScLotteryBookingRequest>();
 
             var oidcUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var courtFile = bookingInfo.SelectedCourtFile;
@@ -94,10 +98,11 @@ namespace SCJ.Booking.MVC.Services
 
             var lotteryStartDate = bookingPeriodEndDate.Date.AddDays(1);
 
-            var bookingRequest = new ScTrialBookingRequest
+            var bookingRequest = new ScLotteryBookingRequest
             {
                 User = oidcUser,
                 BookHearingCode = formula.BookingHearingCode,
+                HearingTypeId = bookingInfo.HearingTypeId,
                 BookingLocationId = formula.BookingLocationID,
                 CeisPhysicalFileId = courtFile.physicalFileId.GetValueOrDefault(0),
                 CourtClassCode = courtFile.courtClassCode,
@@ -107,23 +112,31 @@ namespace SCJ.Booking.MVC.Services
                 Email = userInfo.Email,
                 Phone = userInfo.Phone,
                 RequestedByName = userInfo.ContactName,
-                TrialLocationName = bookingInfo.BookingLocationName,
-                FairUseSort = courtFile.fairUseSort,
+                LocationName = bookingInfo.BookingLocationName,
+                FairUseSort =
+                    bookingInfo.HearingTypeId == ScHearingType.TRIAL
+                        ? courtFile.fairUseSortTrial
+                        : courtFile.fairUseSortCH,
                 CaseNumber = bookingInfo.CaseNumber,
                 StyleOfCause = courtFile.styleOfCause ?? string.Empty,
-                TrialLocationId = bookingInfo.TrialLocationRegistryId,
+                LocationId = bookingInfo.AlternateLocationRegistryId,
                 FairUseBookingPeriodStartDate = formula.FairUseBookingPeriodStartDate.Value,
                 FairUseBookingPeriodEndDate = formula.FairUseBookingPeriodEndDate.Value,
-                HearingLength = bookingInfo.EstimatedTrialLength.Value,
+                HearingLength = bookingInfo.BookingLength.Value,
+                LongChambersHearingSubTypeId = bookingInfo.ChambersHearingSubTypeId,
+                LongChambersHearingSubTypeName =
+                    bookingInfo.HearingTypeId == ScHearingType.LONG_CHAMBERS
+                        ? bookingInfo.ChambersHearingSubTypeName
+                        : "",
                 LotteryStartDate = lotteryStartDate,
-                TrialBookingId = bookingInfo.TrialBookingId
+                LotteryEntryId = bookingInfo.LotteryEntryId
             };
 
             int selectionRank = 1;
-            foreach (var date in bookingInfo.SelectedFairUseTrialDates)
+            foreach (var date in bookingInfo.SelectedFairUseDates)
             {
-                bookingRequest.TrialDateSelections.Add(
-                    new ScTrialDateSelection { Rank = selectionRank, TrialStartDate = date }
+                bookingRequest.DateSelections.Add(
+                    new ScLotteryDateSelection { Rank = selectionRank, StartDate = date }
                 );
                 selectionRank++;
             }

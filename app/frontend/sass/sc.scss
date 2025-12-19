@@ -1,0 +1,80 @@
+/*
+* Supreme Court styles
+*/
+
+@use "variables" as *;
+
+// Step 2: "Choose booking type" fields
+input.EstimatedTrialLength,
+select.EstimatedChambersLength {
+  width: 4em;
+}
+
+@media (min-width: $breakpoint-md) {
+  // limit width of select element blocks
+  .form-group {
+    select {
+      max-width: 350px;
+
+      &.ChambersHearingSubType {
+        max-width: 425px;
+      }
+    }
+  }
+}
+
+/* Styles added during Vue3 upgrade to make the datepicker use an input
+(for compatibility with the datepicker library) but look like a button so
+it matches the Vue2 design. */
+
+.datepicker-input-wrapper {
+  position: relative;
+  width: 100%;
+
+  .datepicker-calendar-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $blue-light;
+    font-size: 1.2em;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &:hover .datepicker-calendar-icon,
+  &:focus-within .datepicker-calendar-icon {
+    color: $white;
+  }
+
+  &:hover input#datepicker.btn.btn-quaternary.btn-block::placeholder,
+  &:focus-within input#datepicker.btn.btn-quaternary.btn-block::placeholder {
+    color: $white !important;
+    opacity: 1;
+  }
+
+  input#datepicker.btn.btn-quaternary.btn-block {
+    @extend .btn;
+    @extend .btn-quaternary;
+    @extend .btn-block;
+    text-align: left;
+    position: relative;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $blue-medium !important;
+      color: $white !important;
+      border-color: $blue-medium !important;
+    }
+
+    &[readonly] {
+      cursor: pointer;
+    }
+
+    &::placeholder {
+      color: $blue-light;
+      opacity: 1;
+    }
+  }
+}

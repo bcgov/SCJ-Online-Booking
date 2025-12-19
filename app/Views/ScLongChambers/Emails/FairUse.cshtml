@@ -1,0 +1,49 @@
+@model ScLotteryEnabledEmailViewModel
+<html>
+
+<body>
+
+    <p>The request for chambers hearing dates has been submitted to the Online Booking System.</p>
+    <p>
+        Once the booking period closes, the Online Booking system will notify you whether
+        a chambers hearing date has been reserved tentatively for this case. You will receive an
+        update via email by <strong>@Model.ResultDate</strong>.
+    </p>
+
+    <h2 style="margin-bottom: 0.1em">Court file</h2>
+    File number: @Model.FullCaseNumber<br />
+    <strong>@Model.StyleOfCause</strong><br />
+    @Model.CourtClassName<br />
+    Chambers type: @Model.ChambersHearingSubTypeName<br />
+    Requested days: @Model.HearingLength<br />
+    Chambers location: @Model.HearingLocationName<br />
+
+    <h2 style="margin-bottom: 0.1em">Requested chambers hearing starting dates</h2>
+    <p>
+        <strong>
+            You are submitting a request for one of the following chambers hearing dates (listed in order
+            of priority):
+        </strong>
+    </p>
+    <ol>
+        @{
+            foreach (var formattedDate in @Model.FairUseDates)
+            {
+                <li>@formattedDate</li>
+            }
+        }
+    </ol>
+
+    <h2 style="margin-bottom: 0.1em">Contact information</h2>
+    Email: @Model.EmailAddress<br />
+    Phone number: @Model.Phone<br />
+    <br />
+    <p>
+        To learn more about this process, please visit <a
+            href="https://www.bccourts.ca/supreme_court/scheduling/">bccourts.ca</a>
+        or call Supreme Court Scheduling at 604-660-2853.
+    </p>
+
+</body>
+
+</html>

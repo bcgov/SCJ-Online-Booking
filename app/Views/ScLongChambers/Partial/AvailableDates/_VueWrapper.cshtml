@@ -1,0 +1,80 @@
+@model ScLotteryEnabledAvailableSlotsViewModel
+@using SCJ.Booking.Data.Constants
+
+@{
+    List<string> regularDatesList = Model.AvailableRegularDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+    string availableRegularDates = Json.Serialize(regularDatesList).ToString();
+
+    List<string> fairUseDatesList = Model.AvailableFairUseDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+    string availableFairUseDates = Json.Serialize(fairUseDatesList).ToString();
+
+    List<string> selectedFairUseList = Model.SelectedFairUseDates.Select(date => date.ToString("yyyy-MM-dd")).ToList();
+    string selectedFairUseDateStrings = Json.Serialize(selectedFairUseList).ToString();
+
+    string selectedRegularDate = Model.SelectedRegularDate?.ToString("yyyy-MM-dd") ?? "";
+
+    string fairUseStartDate = Model.FairUseStartDate?.ToString("dddd MMMM d, yyyy");
+    string fairUseStartTime = Model.FairUseStartDate?.ToString("h:mm tt").ToLower();
+    string fairUseEndDate = Model.FairUseEndDate?.ToString("dddd MMMM d, yyyy");
+    string fairUseEndTime = Model.FairUseEndDate?.ToString("h:mm tt").ToLower();
+    string currentMonth = Model.FairUseEndDate?.ToString("MMMM");
+    string nextMonth = Model.FairUseEndDate?.AddMonths(1).ToString("MMMM");
+    string bookingPeriodName = Model.FairUseSelectionDate?.ToString("MMMM yyyy");
+
+    string resultContactDate = Model.FairUseResultDate?.ToString("dddd MMMM d, yyyy");
+
+    bool fairUseUnavailable = Model.FairUseStartDate is null || Model.FairUseEndDate is null;
+    bool fairUseDisabled = !fairUseUnavailable && (Model.FairUseStartDate.Value > DateTime.Now || Model.FairUseEndDate.Value
+    < DateTime.Now);
+
+    int chambersLength = Model.SessionInfo.BookingLength ?? 0;
+    int maxChambersDateSelections = ScGeneral.ScMaxChambersDateSelections;
+    string scMaxChambersDateSelectionsString = ScGeneral.ScMaxChambersDateSelectionsString;
+    bool hasExistingChambersRequest = Model.HasExistingLongChambersRequest;
+}
+
+<form method="post" id="availableTimesForm">
+
+    @Html.HiddenFor(m => m.HearingTypeId)
+    @Html.HiddenFor(m => m.HasExistingLongChambersRequest)
+
+    <div id="VueLongChambersTimeSelect" v-cloak>
+        <long-chambers-time-select :available-fair-use-dates='@Html.Raw(availableFairUseDates)'
+            :available-regular-dates='@Html.Raw(availableRegularDates)' booking-period-name="@bookingPeriodName"
+            current-month="@currentMonth" :fair-use-disabled='@Html.Raw(Json.Serialize(fairUseDisabled))'
+            fair-use-end-date="@fairUseEndDate" fair-use-end-time="@fairUseEndTime"
+            fair-use-start-date="@fairUseStartDate" fair-use-start-time="@fairUseStartTime"
+            :fair-use-unavailable='@Html.Raw(Json.Serialize(fairUseUnavailable))' initial-tab="@Model.FormulaType"
+            next-month="@nextMonth" result-contact-date="@resultContactDate"
+            :sc-max-chambers-date-selections="@maxChambersDateSelections"
+            sc-max-chambers-date-selections-string="@scMaxChambersDateSelectionsString"
+            :selected-fair-use-date-strings='@Html.Raw(selectedFairUseDateStrings)'
+            selected-regular-date="@selectedRegularDate"
+            session-info-booking-location-name="@Model.SessionInfo.BookingLocationName"
+            :chambers-length="@chambersLength"
+            :has-existing-chambers-request='@Html.Raw(Json.Serialize(hasExistingChambersRequest))' />
+    </div>
+
+    <div class="content-pad bg-white">
+        <span asp-validation-for="SelectedRegularDate" class="text-danger"></span>
+        <span asp-validation-for="SelectedFairUseDates" class="text-danger"></span>
+        <span asp-validation-for="FormulaType" class="text-danger"></span>
+    </div>
+
+    <div class="row no-gutters">
+        <div class="col-6 col-md-8 d-flex align-items-center text-link">
+            <span>
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <a asp-controller="ScIntroSteps" asp-action="BookingType">Step 2: Choose booking type</a>
+            </span>
+        </div>
+        <div class="col-6 col-md-4">
+            @if (Model.AvailableFairUseDates.Any() || Model.AvailableRegularDates.Any())
+            {
+                <button type="submit" class="btn btn-secondary btn-block progress-spinner" id="btnNext">
+                    @((!fairUseDisabled && !fairUseUnavailable) ? "Review your request" : "Book chambers date")
+                </button>
+            }
+        </div>
+    </div>
+</form>

@@ -1,0 +1,751 @@
+/*
+* Global styles
+*/
+
+// Import partial stylesheets
+@use "variables" as *;
+@use "bootstrapOverrides";
+@use "accessibility";
+
+html,
+body {
+  height: 100%;
+}
+
+// Set base size to 10px so 1 rem == 10px
+// Using rem's helps with accessibility
+// Having the base size equal 10 makes it easier to figure out
+html {
+  font-size: 62.5%;
+  -webkit-font-smoothing: antialiased;
+
+  // add scroll padding for views with a sticky nav header
+  @media (max-width: $breakpoint-lg) {
+    scroll-padding-top: 68px;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: $font-stack;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: $black;
+  background-color: $grey-medium;
+}
+
+// hide vue components until they mount
+[v-cloak] {
+  display: none;
+}
+
+.main {
+  flex: 1 0 auto;
+
+  @media (min-width: $breakpoint-md) {
+    min-height: calc(100% - 120px);
+  }
+
+  @media (max-width: $breakpoint-md) {
+    min-height: calc(100% - 80px);
+  }
+}
+
+.footer {
+  flex-shrink: 0;
+}
+
+.body-content {
+  padding-top: 24px;
+  padding-bottom: 48px;
+  background-color: $grey-light;
+  min-height: calc(100vh - 200px);
+
+  &--inner {
+    max-width: 732px;
+    margin: 0 auto;
+
+    .steps-link {
+      h6 {
+        margin-top: 2px;
+      }
+      a {
+        color: $black;
+      }
+    }
+
+    &.coa {
+      max-width: 850px;
+    }
+  }
+}
+
+/*FontAwesome Icon*/
+.fas,
+.far {
+  margin-right: 8px;
+}
+
+/*Header*/
+.header-nav,
+.footer-nav {
+  a {
+    color: $white;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}
+
+.form-control.input-validation-error {
+  border-color: #c62f3d;
+}
+
+div.invalid-field-message {
+  width: 100%;
+  font-size: 1.2rem;
+  color: #c62f3d;
+}
+
+.header-logo-div {
+  .container {
+    @include breakpoint(sm) {
+      background: url(https://www.courts.gov.bc.ca/images/flag-banners/banner-1.jpg) right top
+        no-repeat;
+      background-color: $black;
+    }
+    & {
+      background-color: $black;
+      border-top: 10px solid #000;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .header-logo {
+    display: block;
+    img {
+      width: 275px;
+      height: 100%;
+    }
+  }
+}
+
+.header-nav {
+  padding: 0;
+
+  .container {
+    display: flex;
+    color: $white;
+    background-color: #1f1f1f;
+    padding: 10px 15px;
+    gap: 1rem;
+
+    a {
+      color: $white;
+    }
+
+    .app-name {
+      font-weight: 700;
+      margin-right: auto;
+      max-width: 300px;
+      @include breakpoint(sm) {
+        max-width: unset;
+      }
+    }
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+
+  .navbar-collapse {
+    justify-content: flex-end;
+
+    .navbar-nav {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid rgba(255, 255, 255, 0.6);
+
+      @include breakpoint(md) {
+        // horizontal on larger screens; hide the top border
+        border-top: none;
+      }
+    }
+  }
+}
+
+/*Footer*/
+.footer-nav {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px 15px;
+    color: $white;
+    background-color: $black;
+
+    @include breakpoint(lg) {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .footer-nav-items {
+      list-style-type: none;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      gap: 2px;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 5px 0 0 0;
+
+      @include breakpoint(lg) {
+        flex-direction: row;
+        margin-top: 0;
+      }
+
+      li {
+        float: left;
+        a {
+          display: block;
+          text-align: center;
+          font-size: 1.4rem;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+          @include breakpoint(lg) {
+            padding: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  .copyright {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+
+    @include breakpoint(lg) {
+      margin-left: auto;
+      margin-bottom: 0;
+      padding: 14px;
+    }
+  }
+}
+
+/*Homepage*/
+.home-court-options {
+  margin: 32px 0;
+
+  .court-option-box {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: center;
+    padding: 32px;
+  }
+}
+
+/*Search results*/
+.search-results-case {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 0.6rem;
+  input,
+  label {
+    cursor: pointer;
+  }
+  input {
+    position: absolute;
+    top: calc(50% - 6px);
+    left: 16px;
+  }
+  label {
+    white-space: normal;
+    width: 100%;
+    font-weight: 400;
+    border: solid 1px $grey-border;
+    border-radius: 0.6rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 16px;
+    padding-left: 44px;
+    &:hover {
+      background-color: rgba($green-dark, 0.03);
+      border-color: $green-dark;
+    }
+  }
+  input:checked + label {
+    background-color: $green-light;
+    border-color: $green-dark;
+  }
+
+  & + .search-results-case {
+    margin-top: 16px;
+  }
+}
+
+/*Book Your Hearing*/
+.search-info {
+  background-color: #eff2f5;
+  padding: 20px 10px;
+  margin-right: 0;
+  margin-left: 0;
+  margin-bottom: 20px;
+  margin-top: 40px;
+  border-radius: 0.3rem;
+
+  &.coa {
+    background-color: #fff;
+  }
+
+  .search-info-row {
+    margin-left: 0;
+    margin-right: 0;
+
+    & + .search-info-row {
+      margin-top: 20px;
+
+      ul {
+        list-style: none;
+        padding-left: 0;
+
+        label {
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  .preliminary_questions {
+    .search-info-row {
+      @media (min-width: $breakpoint-md) {
+        margin-top: 15px;
+      }
+    }
+  }
+}
+
+#btnSearch {
+  margin-bottom: 1rem;
+  margin-right: 0;
+  @include breakpoint(sm) {
+    margin-bottom: 0;
+    margin-right: 1rem;
+  }
+}
+
+.results-linebreak {
+  margin-bottom: 2rem;
+}
+
+#ddlLocation {
+  width: 100%;
+
+  @media (min-width: $breakpoint-sm) {
+    width: auto;
+    min-width: 50%;
+  }
+}
+
+.availableTimesContainer {
+  height: 400px;
+  margin-top: 30px;
+
+  @include breakpoint(lg) {
+    margin-left: -30px;
+    margin-right: -30px;
+  }
+}
+
+.no-search-results {
+  h3 {
+    margin-bottom: 0;
+  }
+  .options-nextStep {
+    margin-top: 24px;
+    &:first-of-type {
+      margin-top: 18px;
+    }
+  }
+}
+
+.information-tooltip {
+  .fa-question-circle {
+    margin-right: 0;
+    color: $blue;
+  }
+}
+
+/*Booking Confirmation*/
+.booking-confirmation {
+  margin-top: 12px;
+  & > .content {
+    margin-top: 30px;
+  }
+  &--details {
+    border: 1px solid $grey-border;
+    border-radius: 0.4rem;
+    margin-bottom: 24px;
+    padding: 16px;
+
+    small {
+      color: $black;
+      & + small {
+        margin-top: 4px;
+      }
+    }
+  }
+  .invalid-feedback {
+    margin-top: 0;
+  }
+}
+
+.booking-submit {
+  padding-top: 20px;
+}
+
+.booking-new > .content {
+  margin-top: 30px;
+}
+
+.booking-logout > .content {
+  margin-top: 10px;
+}
+
+.booking-same-height-item {
+  width: calc(100% / 2 - 5px);
+  float: left;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+
+  .card {
+    height: 100%;
+  }
+}
+
+.align-tooltip {
+  display: flex;
+  align-items: baseline;
+
+  div.invalid-feedback {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow-x: visible;
+  }
+}
+
+.tooltip .arrow::before {
+  border-top-color: $blue;
+}
+
+.card-header-center {
+  align-items: center;
+  display: flex;
+  height: 65px;
+  @media (min-width: $breakpoint-md) {
+    height: 95px;
+  }
+  @media (min-width: $breakpoint-lg) {
+    height: 75px;
+  }
+}
+
+@include breakpoint(mobile) {
+  .affixed {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    z-index: 9999;
+    -webkit-box-shadow: 0px 4px 40px 0px rgba(34, 34, 34, 0.3);
+    box-shadow: 0px 4px 40px 0px rgba(34, 34, 34, 0.3);
+  }
+}
+
+div#progress-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.35);
+
+  &-spinner {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
+  }
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+}
+
+.paragraph p:not(:last-of-type) {
+  margin-bottom: 0;
+}
+
+.contact-information {
+  margin-top: 50px;
+}
+
+.btn-radio {
+  color: $blue-dark;
+  background-color: $white;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  padding: 20px 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  border: 1px solid $blue-dark;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+
+  &--day,
+  &--time_required {
+    padding: 12px 0;
+  }
+
+  &:hover,
+  &:active,
+  &:focus,
+  &.active {
+    color: $white;
+    background-color: $blue-medium;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+
+  &:active,
+  &.active {
+    border: 1px solid $blue-medium;
+  }
+
+  &.disabled {
+    cursor: default;
+
+    &:hover,
+    &:focus {
+      color: $blue !important;
+      background-color: $white;
+    }
+  }
+
+  & + .btn-radio {
+    margin-left: 20px;
+  }
+
+  input {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+  }
+
+  &--secondary {
+    width: auto;
+    height: auto;
+    padding: 10px 15px;
+  }
+
+  &.input-validation-error:not(.active, :hover) {
+    border-color: $danger;
+  }
+}
+
+// clickable label "button"
+.label-button {
+  user-select: none;
+  display: block;
+  border: 2px solid $blue-dark;
+  border-radius: 5px;
+  padding: 0.75em 1em;
+  transition:
+    background-color ease 0.2s,
+    color ease 0.2s;
+
+  &:hover {
+    background-color: $blue-medium;
+    color: $white;
+  }
+
+  &.selected {
+    background-color: $blue-dark;
+    color: $white;
+  }
+}
+
+// square icon button
+.btn-icon {
+  border: none;
+  background: none;
+  text-align: center;
+
+  // no margins on icon content
+  & > i {
+    margin: 0;
+  }
+}
+
+label {
+  font-weight: 700;
+}
+
+span.nowrap {
+  white-space: nowrap;
+}
+
+.alert--preliminary_question,
+.alert--related-cases {
+  display: none;
+}
+
+select {
+  background: url("data:image/svg+xml,<svg height='10px' width='10px' viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>")
+    no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+select,
+input {
+  &.disabled {
+    background-color: $grey-disabled;
+  }
+}
+
+.notice--preliminary_question {
+  margin-bottom: 20px;
+  display: none;
+}
+
+#ChambersAdditionalQs > div {
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.btn-hearing-confirmation.btn-primary {
+  background-color: $green-dark;
+  width: auto;
+
+  &:after {
+    margin-left: 10px;
+  }
+}
+
+.col-centered {
+  margin: 0 auto;
+}
+
+.content-pad {
+  padding: 1em;
+}
+
+.form-section-label {
+  margin: 0 0 1em !important;
+}
+
+// non-Bootstrap styles for a vertical list of radio buttons or checkboxes nested in labels
+.check-group {
+  label {
+    font-weight: 400;
+    display: block;
+    margin: 0 0 0.5em;
+  }
+
+  input {
+    margin: 0 0.2em 0 0;
+  }
+}
+
+/* Supreme Court side */
+.booking-type-selection {
+  margin-top: 16px;
+
+  label {
+    @media (min-width: $breakpoint-md) {
+      white-space: nowrap;
+    }
+  }
+}
+
+// SSO Login page
+.login-options {
+  display: grid;
+  grid-auto-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2.25em 0;
+  max-width: 45.75em;
+
+  .login-option {
+    padding: 1.5em;
+    display: flex;
+    gap: 2em;
+    flex-direction: column;
+    justify-content: space-between;
+
+    section.description {
+      .icon {
+        height: 3.25em;
+      }
+    }
+
+    section.actions {
+      font-size: 0.875em;
+
+      p {
+        font-size: 1em;
+      }
+
+      .btn {
+        margin: 0 0 0.85em;
+        padding: 0.5em 0.85em;
+      }
+    }
+  }
+
+  // display 2-column grid on larger screens
+  @media (min-width: $breakpoint-md) {
+    grid-auto-flow: column;
+
+    section.actions {
+      min-height: 7em;
+    }
+  }
+}
+
+// external link icons
+.fa-external-link-alt:before {
+  color: #1a5a96;
+  font-size: 0.85em;
+  margin-right: 0.18em;
+  position: relative;
+  bottom: 1px;
+}

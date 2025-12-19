@@ -42,8 +42,9 @@ namespace SCJ.Booking.MVC.Services.COA
 
             _logger.Information($"Calling CoAChambersApplicationsListAsync(\"{caseType}\")");
 
-            CoAChambersApplications[] applicationTypes =
-                await client.CoAChambersApplicationsListAsync(caseType);
+            CoAChambersApplications[] applicationTypes = await client.coaCHApplicationListAsync(
+                caseType
+            );
 
             if (applicationTypes.Length > 0)
             {

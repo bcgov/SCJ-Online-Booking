@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -33,8 +34,7 @@ namespace SCJ.Booking.MVC.Services.SC
             IConfiguration configuration,
             SessionService sessionService,
             IViewRenderService viewRenderService,
-            ScCacheService scCacheService,
-            ScCoreService coreService
+            ScCacheService cacheService
         )
         {
             //check if this is running on a developer workstation (outside OpenShift)
@@ -49,7 +49,59 @@ namespace SCJ.Booking.MVC.Services.SC
             _session = sessionService;
             _viewRenderService = viewRenderService;
             _mailService = new MailQueueService(configuration, dbContext);
-            _dbWriterService = new DataWriterService(dbContext);
+            _dbWriterService = new DataWriterService(dbContext, cacheService);
+        }
+
+        /// <summary>
+        ///     Loads the available times form with session info
+        /// </summary>
+        public ScConferenceAvailableSlotsViewModel LoadAvailableSlotsFormAsync()
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            //Model instance
+            var model = new ScConferenceAvailableSlotsViewModel
+            {
+                HearingTypeId = bookingInfo.HearingTypeId,
+                AvailableConferenceDates = bookingInfo.AvailableConferenceDates,
+                ConferenceLocationRegistryId = bookingInfo.BookingLocationRegistryId,
+                SessionInfo = bookingInfo
+            };
+
+            return model;
+        }
+
+        /// <summary>
+        ///    Saves the available times form to session
+        /// </summary>
+        public async Task SaveAvailableSlotsFormAsync(ScConferenceAvailableSlotsViewModel model)
+        {
+            var bookingInfo = _session.ScBookingInfo;
+
+            // check the schedule again to make sure the time slot wasn't taken by someone else
+            AvailableDatesByLocation schedule = await _client.scConfAvailableDatesByLocationAsync(
+                bookingInfo.BookingLocationRegistryId,
+                bookingInfo.HearingTypeId
+            );
+
+            if (model.ContainerId > 0)
+            {
+                model.TimeSlotExpired = !IsTimeStillAvailable(schedule, model.ContainerId);
+                bookingInfo.ContainerId = model.ContainerId;
+            }
+
+            bookingInfo.SelectedConferenceDate = model.ParsedConferenceDate;
+
+            _session.ScBookingInfo = bookingInfo;
+        }
+
+        /// <summary>
+        ///     Check if a time slot is still available for a court booking
+        /// </summary>
+        public static bool IsTimeStillAvailable(AvailableDatesByLocation schedule, int containerId)
+        {
+            //check if the container ID is still available
+            return schedule.AvailableDates.Any(x => x.ContainerID == containerId);
         }
 
         /// <summary>
@@ -69,13 +121,13 @@ namespace SCJ.Booking.MVC.Services.SC
             ScSessionBookingInfo bookingInfo = _session.ScBookingInfo;
 
             // check the schedule again to make sure the time slot wasn't taken by someone else
-            AvailableDatesByLocation schedule = await _client.AvailableDatesByLocationAsync(
+            AvailableDatesByLocation schedule = await _client.scConfAvailableDatesByLocationAsync(
                 bookingInfo.BookingLocationRegistryId,
                 bookingInfo.HearingTypeId
             );
 
             //ensure time slot is still available
-            if (ScCoreService.IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
+            if (IsTimeStillAvailable(schedule, bookingInfo.ContainerId))
             {
                 string userDisplayName = OpenIdConnectHelper.GetUserFullName(user);
                 long userId = long.Parse(user.FindFirst(ClaimTypes.Sid)?.Value ?? "0");
@@ -96,7 +148,7 @@ namespace SCJ.Booking.MVC.Services.SC
                 _logger.Information(JsonSerializer.Serialize(requestPayload));
 
                 //submit booking
-                BookingHearingResult result = await _client.BookingHearingAsync(requestPayload);
+                BookingHearingResult result = await _client.scConfBookHearingAsync(requestPayload);
 
                 //get the raw result
                 bookingInfo.ApiBookingResultMessage = result.bookingResult;
@@ -162,7 +214,7 @@ namespace SCJ.Booking.MVC.Services.SC
         }
 
         /// <summary>
-        ///     Renders the template for the email body to a string (~/Views/ScBooking/Email.cshtml)
+        ///     Renders the template for the email body to a string
         /// </summary>
         private async Task<string> GetConferenceEmailBodyAsync()
         {
@@ -189,13 +241,13 @@ namespace SCJ.Booking.MVC.Services.SC
             //Render the email template
             string template = booking.HearingTypeId switch
             {
-                ScHearingType.AWS => "ScBooking/Emails/Email-CV-AWS",
-                ScHearingType.JMC => "ScBooking/Emails/Email-JMC",
-                ScHearingType.PTC => "ScBooking/Emails/Email-CV-PTC",
-                ScHearingType.TCH => "ScBooking/Emails/Email-CV-TCH",
-                ScHearingType.TMC => "ScBooking/Emails/Email-TMC",
-                ScHearingType.CPC => "ScBooking/Emails/Email-CPC",
-                ScHearingType.JCC => "ScBooking/Emails/Email-JCC",
+                ScHearingType.AWS => "ScConference/Emails/CV-AWS",
+                ScHearingType.JMC => "ScConference/Emails/JMC",
+                ScHearingType.PTC => "ScConference/Emails/CV-PTC",
+                ScHearingType.TCH => "ScConference/Emails/CV-TCH",
+                ScHearingType.TMC => "ScConference/Emails/TMC",
+                ScHearingType.CPC => "ScConference/Emails/CPC",
+                ScHearingType.JCC => "ScConference/Emails/JCC",
                 _ => throw new ArgumentException("Invalid HearingTypeId"),
             };
             return await _viewRenderService.RenderToStringAsync(template, viewModel);

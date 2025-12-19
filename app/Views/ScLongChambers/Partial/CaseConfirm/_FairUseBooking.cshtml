@@ -1,0 +1,36 @@
+@model ScCaseConfirmViewModel
+
+@{
+    // convert DateTimes to formatted strings
+    List<string> formattedDates = Model.SessionInfo.SelectedFairUseDates
+    .Select(date => date.ToString("dddd MMMM d, yyyy"))
+    .ToList();
+
+    string hearingTypeName = Model.SessionInfo.ChambersHearingSubTypeName
+    .Replace("(", string.Empty)
+    .Replace(")", string.Empty)
+    .Trim();
+}
+
+<div class="content-pad bg-white mb-4">
+    <p class="mb-4">
+        <b>
+            Your availability for when to start your @Model.SessionInfo.BookingLength-day
+            chambers hearing (@hearingTypeName) in @Model.SessionInfo.BookingLocationName,
+            listed in order of preference:
+        </b>
+    </p>
+
+    <ol>
+        @foreach (var dateString in formattedDates)
+        {
+            <li>@dateString</li>
+        }
+    </ol>
+</div>
+
+<form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+
+    <partial name="~/Views/Shared/_ScContactForm.cshtml" model="Model" />
+
+</form>

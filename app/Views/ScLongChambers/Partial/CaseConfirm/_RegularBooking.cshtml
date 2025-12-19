@@ -1,0 +1,16 @@
+@model ScCaseConfirmViewModel
+
+<h2>Chambers hearing details</h2>
+
+<div class="mb-4">
+    <p>Chambers type: @Model.SessionInfo.ChambersHearingSubTypeName</p>
+    <p>Requested days: @Model.SessionInfo.BookingLength</p>
+    <p>Starting: @Model.SelectedRegularDate?.ToString("dddd MMMM d, yyyy")</p>
+    <p>Chambers location: @Model.TrialLocationName</p>
+</div>
+
+<form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+
+    <partial name="~/Views/Shared/_ScContactForm.cshtml" model="Model" />
+
+</form>

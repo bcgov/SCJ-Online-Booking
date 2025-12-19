@@ -1,3 +1,10 @@
+@using System.Reflection
+@{
+    string infoVersion = Assembly.GetExecutingAssembly()
+    .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+    .InformationalVersion ?? "unknown";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,12 +13,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="BC Courts Online Booking System" />
     <title>@ViewData["Title"] - BC Courts Online Booking System</title>
-    <link rel="stylesheet" href="/scjob/dist/css/bootstrap.css" asp-append-version="true" />
-    <link rel="stylesheet" href="/scjob/dist/css/fontawesome.css" asp-append-version="true" />
-    <link rel="stylesheet" href="/scjob/dist/css/BCSans.css" asp-append-version="true" />
-    <link rel="stylesheet" href="/scjob/dist/css/swiper.css" asp-append-version="true" />
-    <link rel="stylesheet" href="/scjob/dist/css/bootstrap-datepicker3.standalone.css" asp-append-version="true" />
-    <link rel="stylesheet" href="/scjob/dist/css/global.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/dist/css/bootstrap.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/dist/css/fontawesome.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/dist/css/BCSans.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/dist/css/global.css" asp-append-version="true" />
     <link rel="icon" href="/scjob/favicon.ico" type="image/x-icon" />
     @RenderSection("Styles", false)
 </head>
@@ -83,26 +88,31 @@
         </nav>
     </footer>
 
-	<form asp-controller="Home" asp-action="Logout" method="post" id="logout_form"></form>
+    <form asp-controller="Home" asp-action="Logout" method="post" id="logout_form"></form>
     <div id="progress-overlay" style="display: none">
         <div id="progress-overlay-spinner"></div>
     </div>
 
     <environment include="Development">
-        <script src="/scjob/dist/lib/jquery.js" asp-append-version="true"></script>
-        <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
-        <script src="/scjob/dist/lib/bootstrap.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/jquery.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/popper.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/bootstrap.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/spin.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/jquery.spin.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="/scjob/dist/lib/jquery.min.js" asp-append-version="true"></script>
-        <script src="/scjob/dist/lib/popper.js" asp-append-version="true"></script>
-        <script src="/scjob/dist/lib/bootstrap.min.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/popper.min.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/bootstrap.min.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/spin.min.js" asp-append-version="true"></script>
+        <script src="~/dist/lib/jquery.spin.min.js" asp-append-version="true"></script>
+        <script src="~/dist/minified/site.min.js" asp-append-version="true"></script>
     </environment>
-    <script src="/scjob/dist/lib/spin.min.js" asp-append-version="true"></script>
-    <script src="/scjob/js/jquery.spin.js" asp-append-version="true"></script>
-    <script src="/scjob/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", false)
 </body>
+
+<!-- InformationalVersion: @Html.Raw(infoVersion) -->
 
 </html>

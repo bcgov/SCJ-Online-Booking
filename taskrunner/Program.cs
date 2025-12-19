@@ -27,7 +27,9 @@ namespace SCJ.Booking.TaskRunner
             var emailEnabled = configuration.GetValue<bool>("AppSettings:EmailEnabled");
             var lotteryEnabled = configuration.GetValue<bool>("AppSettings:LotteryEnabled");
             var cleanupEnabled = configuration.GetValue<bool>("AppSettings:PurgeEnabled");
-            var pollingFrequencySeconds = configuration.GetValue<int>("AppSettings:PollingFrequencySeconds");
+            var pollingFrequencySeconds = configuration.GetValue<int>(
+                "AppSettings:PollingFrequencySeconds"
+            );
 
             logger.Information("SCJ.Booking.TaskRunner started");
             logger.Information(
@@ -51,7 +53,16 @@ namespace SCJ.Booking.TaskRunner
 
                 if (lotteryEnabled)
                 {
-                    await lotteryService.RunNextLotteryStep();
+                    try
+                    {
+                        await lotteryService.RunNextLotteryStep();
+                    }
+                    catch (FatalBookingFailureException)
+                    {
+                        // return from the task runner - this will cause the pod to crash and restart
+                        logger.Fatal($"Process terminating!");
+                        Environment.Exit(1);
+                    }
                 }
 
                 if (cleanupEnabled)
@@ -62,7 +73,7 @@ namespace SCJ.Booking.TaskRunner
                     await lotteryCleanupService.RemovePersonalInfo();
                 }
 
-                // pause for 3 seconds
+                // pause for 5 seconds
                 Thread.Sleep(pollingFrequencySeconds * 1000);
             }
         }
@@ -74,15 +85,14 @@ namespace SCJ.Booking.TaskRunner
 
             if (configuration["ConnectionString"] != null)
             {
-                connectionString = configuration["ConnectionString"];
+                connectionString = configuration["ConnectionString"] ?? "";
                 provider = ServiceConfig.DataProviderNpgsql;
             }
             else
             {
-                provider = configuration[ServiceConfig.DataProviderKey.Replace("__", ":")];
-                connectionString = configuration[
-                    ServiceConfig.ConnectionStringKey.Replace("__", ":")
-                ];
+                provider = configuration[ServiceConfig.DataProviderKey.Replace("__", ":")] ?? "";
+                connectionString =
+                    configuration[ServiceConfig.ConnectionStringKey.Replace("__", ":")] ?? "";
             }
 
             var applicationDbContext = new ApplicationDbContext(connectionString, provider);

@@ -1,0 +1,49 @@
+@inject SessionService SessionService
+@model ScCaseConfirmViewModel
+
+@{
+    Layout = "~/Views/Shared/_ScLayout.cshtml";
+    ViewData["Title"] = "Complete your booking";
+    ScSessionBookingInfo bookingInfo = Model.SessionInfo;
+}
+
+<div class="body-content--inner">
+    <div class="d-flex justify-content-between steps-link">
+        <h5>4 steps to complete your booking</h5>
+        <h6><a href="/scjob/booking/sc">Cancel</a></h6>
+    </div>
+    <hr />
+    <h6>Step 4</h6>
+    <h2>@ViewData["Title"]</h2>
+
+    <div class="row no-gutters booking-confirmation">
+        <div class="col">
+            <p>
+                Please review that the following information is accurate before confirming your booking.
+                Once you confirm your booking, the time will be reserved for your conference hearing.
+            </p>
+
+            <h4 class="mt-4">Review booking details</h4>
+
+            <form method="post" class="form-horizontal needs-validation" role="form" novalidate autocomplete="off">
+                <div class="row no-gutters justify-content-between booking-confirmation--details">
+                    <div class="col-12 col-md-6">
+                        <partial name="~/Views/Shared/_ScCaseLabel.cshtml" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <small><i class="fas fa-gavel"></i>@bookingInfo.HearingTypeName
+                        </small>
+                        <small><i class="fas fa-calendar-alt"></i>@Model.Date</small>
+                        <small><i class="far fa-clock"></i>@Model.Time</small>
+                    </div>
+                </div>
+
+                <partial name="~/Views/Shared/_ScContactForm.cshtml" model="Model" />
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

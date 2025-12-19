@@ -23,13 +23,16 @@ namespace SCJ.Booking.TaskRunner.Services
 
     public class LotteryService
     {
+        const int MAX_STARTUP_FAILURES = 20;
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger _logger;
         private readonly IOnlineBooking _client;
         private readonly MailQueueService _mailQueueService;
 
-        // track the results of the first booking attempt
-        private bool _isFirstAttempt;
+        // track the success/failure of booking attempts
+        private int _failedAttempts;
+        private int _succcessfulAttempts;
+        private readonly bool _usingFakeApi;
 
         public LotteryService(IConfiguration configuration, ApplicationDbContext dbContext)
         {
@@ -37,7 +40,9 @@ namespace SCJ.Booking.TaskRunner.Services
             _logger = LogHelper.GetLogger(configuration);
             _client = OnlineBookingClientFactory.GetClient(configuration);
             _mailQueueService = new MailQueueService(configuration, dbContext);
-            _isFirstAttempt = true;
+            _failedAttempts = 0;
+            _succcessfulAttempts = 0;
+            _usingFakeApi = configuration["USE_FAKE_API"] == "true";
         }
 
         /// <summary>
@@ -80,8 +85,8 @@ namespace SCJ.Booking.TaskRunner.Services
             }
             catch (FatalBookingFailureException ex)
             {
-                _logger.Error($"Fatal error: {ex.Message}");
-                return false;
+                _logger.Fatal($"Fatal error: {ex.Message}");
+                throw; // Let Main() handle the exit
             }
         }
 
@@ -98,15 +103,17 @@ namespace SCJ.Booking.TaskRunner.Services
             {
                 BookHearingCode = toProcess.BookHearingCode,
                 BookingLocationId = toProcess.BookingLocationId,
+                HearingTypeId = toProcess.HearingTypeId,
                 FairUseBookingPeriodStartDate = toProcess.FairUseBookingPeriodStartDate,
                 FairUseBookingPeriodEndDate = toProcess.FairUseBookingPeriodEndDate,
                 InitiationTime = DateTime.Now,
             };
 
-            // group the lottery entries into batches (mini lotteries) by trial booking location and
+            // group the lottery entries into batches (mini lotteries) by booking location and
             // court class groupings
             var lotteryBatch = await GetLotteryBatch(
                 toProcess.BookingLocationId,
+                toProcess.HearingTypeId,
                 toProcess.BookHearingCode
             );
 
@@ -124,6 +131,7 @@ namespace SCJ.Booking.TaskRunner.Services
 
             _logger.Information("Lottery started!");
             _logger.Information($"BookingLocationId={newLottery.BookingLocationId}");
+            _logger.Information($"HearingTypeId={newLottery.HearingTypeId}");
             _logger.Information($"BookHearingCode={newLottery.BookHearingCode}");
             _logger.Information(
                 $"FairUseBookingPeriodEndDate={newLottery.FairUseBookingPeriodEndDate}"
@@ -136,10 +144,12 @@ namespace SCJ.Booking.TaskRunner.Services
         /// <summary>
         ///     Gets the next entry to process in the current running lottery
         /// </summary>
-        private async Task<ScTrialBookingRequest?> GetNextLotteryEntry(ScLottery lotteryInProgress)
+        private async Task<ScLotteryBookingRequest?> GetNextLotteryEntry(
+            ScLottery lotteryInProgress
+        )
         {
             return await _dbContext
-                .ScTrialBookingRequests.Include(x => x.TrialDateSelections)
+                .ScLotteryBookingRequests.Include(x => x.DateSelections)
                 .Where(x => x.Lottery == lotteryInProgress && x.IsProcessed == false)
                 .OrderByDescending(x => x.FairUseSort)
                 .ThenBy(x => x.LotteryPosition)
@@ -148,33 +158,36 @@ namespace SCJ.Booking.TaskRunner.Services
 
         /// <summary>
         ///     Gets the first booking request that is ready to process, ordered
-        ///     by trial booking location and then by court class formula grouping.
+        ///     by booking location and then by court class formula grouping.
         ///     This is just used to trigger the start of a lottery, prior to the
         ///     ranking of entries.
         /// </summary>
-        private async Task<ScTrialBookingRequest?> CheckRequestsReadyToProcess()
+        private async Task<ScLotteryBookingRequest?> CheckRequestsReadyToProcess()
         {
             return await _dbContext
-                .ScTrialBookingRequests.Where(x =>
+                .ScLotteryBookingRequests.Where(x =>
                     x.Lottery == null && x.LotteryStartDate < DateTime.Now && x.IsProcessed == false
                 )
                 .OrderBy(x => x.BookingLocationId)
+                .ThenBy(x => x.HearingTypeId)
                 .ThenBy(x => x.BookHearingCode)
                 .FirstOrDefaultAsync();
         }
 
         /// <summary>
-        ///    Gets a batch of lottery entries based on trial booking location
+        ///    Gets a batch of lottery entries based on booking location
         ///    and court class formula grouping
         /// </summary>
-        private async Task<List<ScTrialBookingRequest>> GetLotteryBatch(
+        private async Task<List<ScLotteryBookingRequest>> GetLotteryBatch(
             int bookingLocationId,
+            int hearingTypeId,
             string bookHearingCode
         )
         {
             return await _dbContext
-                .ScTrialBookingRequests.Where(x =>
+                .ScLotteryBookingRequests.Where(x =>
                     x.Lottery == null
+                    && x.HearingTypeId == hearingTypeId
                     && x.BookHearingCode == bookHearingCode
                     && x.BookingLocationId == bookingLocationId
                     && x.LotteryStartDate < DateTime.Now
@@ -188,36 +201,14 @@ namespace SCJ.Booking.TaskRunner.Services
         ///     then records an unmet demand for the first selection if booking is
         ///     unsuccessful
         /// </summary>
-        private async Task ProcessSingleEntry(ScTrialBookingRequest entry)
+        private async Task ProcessSingleEntry(ScLotteryBookingRequest entry)
         {
             bool trialBooked = false;
-            var orderedSelections = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray();
+            var orderedSelections = entry.DateSelections.OrderBy(d => d.Rank).ToArray();
 
             foreach (var selection in orderedSelections)
             {
-                BookTrialHearingInfo scssTrialRequest =
-                    new()
-                    {
-                        BookingLocationID = entry.BookingLocationId,
-                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                        CourtClass = entry.CourtClassCode,
-                        FormulaType = ScFormulaType.FairUseBooking,
-                        HearingLength = entry.HearingLength,
-                        HearingType = ScHearingType.TRIAL,
-                        LocationID = entry.TrialLocationId,
-                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                        HearingDate = selection.TrialStartDate,
-                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
-                        SCJOB_Trial_Booking_Date = DateTime.Now
-                    };
-
-                _logger.Debug("BookTrialHearingAsync()");
-                _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
-
-                // try to book the selected date in SCSS
-                BookingHearingResult result = await _client.BookTrialHearingAsync(scssTrialRequest);
-
-                _logger.Debug(JsonSerializer.Serialize(result));
+                BookingHearingResult result = await TryBookingHearing(entry, selection);
 
                 if (result.bookingResult.ToLower().StartsWith("success"))
                 {
@@ -231,17 +222,34 @@ namespace SCJ.Booking.TaskRunner.Services
                     entry.ProcessingTimestamp = DateTime.Now;
                     entry.IsProcessed = true;
                     await _dbContext.SaveChangesAsync();
-                    await QueueSuccessEmail(entry);
-                    _isFirstAttempt = false;
+                    _succcessfulAttempts++;
+                    if (entry.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+                    {
+                        await _mailQueueService.QueueLongChambersSuccessEmail(entry);
+                    }
+                    else
+                    {
+                        await _mailQueueService.QueueTrialSuccessEmail(entry);
+                    }
                     break;
                 }
                 else
                 {
-                    // Handle failure of the first booking attempt: stop the lottery process
-                    if (_isFirstAttempt)
+                    _failedAttempts++;
+
+                    // If the first X consecutive booking attempts of the lottery process failed, and
+                    // we're not using the fake API, throw a fatal exception to terminate the lottery
+                    // due to a possible SCSS issue. We do this to prevent sending 5000 failing requests
+                    // to SCSS.
+                    if (
+                        _succcessfulAttempts == 0
+                        && _failedAttempts > MAX_STARTUP_FAILURES
+                        && !_usingFakeApi
+                    )
                     {
                         throw new FatalBookingFailureException(
-                            $"First booking attempt failed for request {entry.CeisPhysicalFileId}. \nBooking result: {result.bookingResult}"
+                            $"The first {MAX_STARTUP_FAILURES} booking attempts of the monthly lottery process failed.\n"
+                                + "Terminating the lottery due to possible SCSS issue. The OpenShift pod should restart itself."
                         );
                     }
 
@@ -256,40 +264,31 @@ namespace SCJ.Booking.TaskRunner.Services
                 entry.ProcessingTimestamp = DateTime.Now;
                 entry.IsProcessed = true;
                 await _dbContext.SaveChangesAsync();
-                await QueueFailureEmail(entry);
+                if (entry.HearingTypeId == ScHearingType.LONG_CHAMBERS)
+                {
+                    await _mailQueueService.QueueLongChambersFailureEmail(entry);
+                }
+                else
+                {
+                    await _mailQueueService.QueueTrialFailureEmail(entry);
+                }
             }
         }
 
         /// <summary>
         ///   Records an unmet demand (hearing type 20538) for the user's first lottery selection
         /// </summary>
-        private async Task RecordUnmetDemand(ScTrialBookingRequest entry)
+        private async Task RecordUnmetDemand(ScLotteryBookingRequest entry)
         {
-            if (entry.TrialDateSelections.Any())
+            _logger.Debug("Record unmet demand");
+            if (entry.DateSelections.Any())
             {
-                var firstSelection = entry.TrialDateSelections.OrderBy(d => d.Rank).ToArray()[0];
+                var firstSelection = entry.DateSelections.OrderBy(d => d.Rank).ToArray()[0];
 
-                BookTrialHearingInfo unmetDemandRequest =
-                    new()
-                    {
-                        BookingLocationID = entry.BookingLocationId,
-                        CEIS_Physical_File_ID = entry.CeisPhysicalFileId,
-                        CourtClass = entry.CourtClassCode,
-                        FormulaType = ScFormulaType.FairUseBooking,
-                        HearingLength = entry.HearingLength,
-                        HearingType = ScHearingType.UNMET_DEMAND,
-                        LocationID = entry.TrialLocationId,
-                        RequestedBy = $"{entry.RequestedByName} {entry.Phone} {entry.Email}",
-                        HearingDate = firstSelection.TrialStartDate,
-                        SCJOB_Trial_Booking_ID = entry.TrialBookingId,
-                        SCJOB_Trial_Booking_Date = DateTime.Now
-                    };
-
-                _logger.Debug("Record unmet demand");
-                _logger.Debug(JsonSerializer.Serialize(unmetDemandRequest));
-
-                BookingHearingResult result = await _client.BookTrialHearingAsync(
-                    unmetDemandRequest
+                BookingHearingResult result = await TryBookingHearing(
+                    entry,
+                    firstSelection,
+                    isUnmetDemand: true
                 );
 
                 if (result.bookingResult.ToLower().StartsWith("success"))
@@ -322,44 +321,91 @@ namespace SCJ.Booking.TaskRunner.Services
             await _dbContext.SaveChangesAsync();
             _logger.Information("Lottery finished!");
             _logger.Information($"BookingLocationId={lotteryInProgress.BookingLocationId}");
+            _logger.Information($"HearingTypeId={lotteryInProgress.HearingTypeId}");
             _logger.Information($"BookHearingCode={lotteryInProgress.BookHearingCode}");
         }
 
         /// <summary>
-        ///     Generates a booking success email and adds it to the mail queue
+        ///    Tries to book a hearing for a lottery date selection
         /// </summary>
-        private async Task QueueSuccessEmail(ScTrialBookingRequest entry)
+        private async Task<BookingHearingResult> TryBookingHearing(
+            ScLotteryBookingRequest bookingRequest,
+            ScLotteryDateSelection dateSelection,
+            bool isUnmetDemand = false
+        )
         {
-            var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate("Lottery-Success.cshtml", model);
-            string subject =
-                $"Trial booking for {model.FullCaseNumber} starting on {model.FairUseDate}";
+            BookingHearingResult result;
 
-            await _mailQueueService.QueueEmailAsync(
-                "SC",
-                model.EmailAddress,
-                subject,
-                emailText,
-                isLotteryResult: true
+            string requestedBy =
+                $"{bookingRequest.RequestedByName} {bookingRequest.Phone} {bookingRequest.Email}";
+
+            // Remove the timezone added by PostgreSQL
+            DateTime hearingDate = DateTime.SpecifyKind(
+                dateSelection.StartDate.Date,
+                DateTimeKind.Unspecified
             );
-        }
 
-        /// <summary>
-        ///     Generates an unsuccessful booking email and adds it to the mail queue
-        /// </summary>
-        private async Task QueueFailureEmail(ScTrialBookingRequest entry)
-        {
-            var model = new LotteryEmailViewModel(entry);
-            string emailText = await RazorHelper.RenderTemplate("Lottery-Failure.cshtml", model);
-            string subject = $"No trial booking for {model.FullCaseNumber}";
+            if (bookingRequest.HearingTypeId == ScHearingType.TRIAL)
+            {
+                int hearingType = isUnmetDemand ? ScHearingType.UNMET_DEMAND : ScHearingType.TRIAL;
 
-            await _mailQueueService.QueueEmailAsync(
-                "SC",
-                model.EmailAddress,
-                subject,
-                emailText,
-                isLotteryResult: true
-            );
+                BookTrialHearingInfo scssTrialRequest =
+                    new()
+                    {
+                        BookingLocationID = bookingRequest.BookingLocationId,
+                        CEIS_Physical_File_ID = bookingRequest.CeisPhysicalFileId,
+                        CourtClass = bookingRequest.CourtClassCode,
+                        FormulaType = ScFormulaType.FairUseBooking,
+                        HearingLength = bookingRequest.HearingLength,
+                        HearingType = hearingType,
+                        LocationID = bookingRequest.LocationId,
+                        RequestedBy = requestedBy,
+                        HearingDate = hearingDate,
+                        SCJOB_Trial_Booking_ID = bookingRequest.LotteryEntryId,
+                        SCJOB_Trial_Booking_Date = DateTime.Now
+                    };
+
+                _logger.Debug("scTrialBookHearingAsync()");
+                _logger.Debug(JsonSerializer.Serialize(scssTrialRequest));
+
+                // try to book the selected date in SCSS
+                result = await _client.scTrialBookHearingAsync(scssTrialRequest);
+
+                _logger.Debug(JsonSerializer.Serialize(result));
+            }
+            else
+            {
+                int hearingType = isUnmetDemand
+                    ? ScHearingType.UNMET_DEMAND
+                    : bookingRequest.LongChambersHearingSubTypeId.GetValueOrDefault(
+                        ScHearingType.LONG_CHAMBERS
+                    );
+
+                BookingSCCHHearingInfo scssChambersRequest =
+                    new()
+                    {
+                        BookingLocationID = bookingRequest.BookingLocationId,
+                        CEIS_Physical_File_ID = bookingRequest.CeisPhysicalFileId,
+                        CourtClass = bookingRequest.CourtClassCode,
+                        FormulaType = ScFormulaType.FairUseBooking,
+                        HearingLength = bookingRequest.HearingLength,
+                        HearingTypeId = hearingType,
+                        LocationID = bookingRequest.LocationId,
+                        RequestedBy = requestedBy,
+                        HearingDate = hearingDate,
+                        SCJOB_CH_Booking_ID = bookingRequest.LotteryEntryId,
+                        SCJOB_CH_Booking_Date = DateTime.Now
+                    };
+
+                _logger.Debug("scCHBookHearingAsync()");
+                _logger.Debug(JsonSerializer.Serialize(scssChambersRequest));
+
+                // try to book the selected date in SCSS
+                result = await _client.scCHBookHearingAsync(scssChambersRequest);
+
+                _logger.Debug(JsonSerializer.Serialize(result));
+            }
+            return result;
         }
     }
 }

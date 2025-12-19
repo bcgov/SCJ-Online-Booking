@@ -5,7 +5,7 @@ namespace SCJ.Booking.TaskRunner.Utils
 {
     public class LotteryEmailViewModel
     {
-        public LotteryEmailViewModel(ScTrialBookingRequest bookingRequest)
+        public LotteryEmailViewModel(ScLotteryBookingRequest bookingRequest)
         {
             EmailAddress = bookingRequest.Email;
             Phone = bookingRequest.Phone;
@@ -14,23 +14,25 @@ namespace SCJ.Booking.TaskRunner.Utils
             StyleOfCause = bookingRequest.StyleOfCause;
             CourtClassName = ScCourtClass.GetCourtClass(bookingRequest.CourtClassCode);
 
-            TrialLength =
+            HearingLength =
                 bookingRequest.HearingLength == 1
                     ? "1 day"
                     : $"{bookingRequest.HearingLength} days";
 
-            TrialLocationName = bookingRequest.TrialLocationName ?? "";
+            HearingLocationName = bookingRequest.LocationName ?? "";
 
-            FairUseDate =
+            AllocatedStartDate =
                 bookingRequest
-                    .TrialDateSelections.FirstOrDefault(x =>
+                    .DateSelections.FirstOrDefault(x =>
                         x.Rank == bookingRequest.AllocatedSelectionRank
                     )
-                    ?.TrialStartDate.ToString("dddd MMMM d, yyyy") ?? "";
+                    ?.StartDate.ToString("dddd MMMM d, yyyy") ?? "";
 
-            TrialBookingId = bookingRequest.TrialBookingId;
+            LotteryEntryId = bookingRequest.LotteryEntryId;
 
             NextMonth = bookingRequest.FairUseBookingPeriodStartDate.AddMonths(1).ToString("MMMM");
+
+            ChambersHearingSubTypeName = bookingRequest.LongChambersHearingSubTypeName;
         }
 
         public string EmailAddress { get; set; }
@@ -38,10 +40,11 @@ namespace SCJ.Booking.TaskRunner.Utils
         public string FullCaseNumber { get; set; }
         public string StyleOfCause { get; set; }
         public string CourtClassName { get; set; }
-        public string TrialLength { get; set; }
-        public string TrialLocationName { get; set; }
-        public string FairUseDate { get; set; }
-        public string TrialBookingId { get; set; }
+        public string HearingLength { get; set; }
+        public string HearingLocationName { get; set; }
+        public string AllocatedStartDate { get; set; }
+        public string LotteryEntryId { get; set; }
         public string NextMonth { get; set; }
+        public string ChambersHearingSubTypeName { get; set; }
     }
 }
