@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SCJ.Booking.Data;
+using SCJ.Booking.MVC;
 using SCJ.Booking.MVC.Middleware;
 using SCJ.Booking.MVC.Services;
 using SCJ.Booking.MVC.Services.COA;
@@ -116,7 +117,7 @@ builder
         options.TokenValidationParameters = new TokenValidationParameters
         {
             NameClaimType = "name",
-            ValidateIssuer = true
+            ValidateIssuer = true,
         };
         options.Events = new OpenIdConnectEvents
         {
@@ -128,8 +129,8 @@ builder
                         new AuthenticationToken
                         {
                             Name = OidcConstants.TokenTypes.IdentityToken,
-                            Value = c.TokenEndpointResponse.IdToken
-                        }
+                            Value = c.TokenEndpointResponse.IdToken,
+                        },
                     }
                 );
                 c.Properties.IsPersistent = true;
@@ -202,7 +203,7 @@ builder
                 ctx.Response.Redirect("/scjob");
                 ctx.HandleResponse();
                 return Task.FromResult(0);
-            }
+            },
         };
     });
 
@@ -224,7 +225,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 app.UseMiddleware<MaintenanceModeMiddleware>();
 
 // Run migrations
-var platform = new SCJ.Booking.MVC.Platform();
+var platform = new Platform();
 using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
 {
     using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
