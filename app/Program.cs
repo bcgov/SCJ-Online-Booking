@@ -197,7 +197,9 @@ builder
             },
             OnRemoteFailure = ctx =>
             {
-                var logger = new SerilogLoggerFactory().CreateLogger<Program>();
+                var logger = ctx
+                    .HttpContext.RequestServices.GetRequiredService<ILoggerFactory>()
+                    .CreateLogger<Program>();
                 logger.LogWarning("SCJOB KC OnRemoteFailure redirect to '/scjob'");
                 logger.LogWarning(ctx.Failure?.ToString() ?? "ctx.Failure is null");
                 ctx.Response.Redirect("/scjob");
