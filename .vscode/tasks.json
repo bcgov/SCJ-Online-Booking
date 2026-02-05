@@ -12,20 +12,6 @@
       "group": "build"
     },
     {
-      "label": "Run Web Application",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "run",
-        "--project",
-        "SCJ.Booking.MVC.csproj"
-      ],
-      "options": {
-        "cwd": "app"
-      },
-      "group": "build"
-    },
-    {
       "label": "Build Frontend Assets",
       "type": "shell",
       "command": "npm",
@@ -63,6 +49,16 @@
         "cwd": "app"
       },
       "group": "build"
+    },
+    {
+      "label": "Open Browser",
+      "type": "shell",
+      "command": "open",
+      "args": ["https://localhost:5002/scjob"],
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared"
+      }
     }
   ]
 }

@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Launch (web)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/app/bin/Debug/net8.0/SCJ.Booking.MVC.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/app",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:5002;http://localhost:5001"
+      },
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\s*Now listening on:\\s+https?://",
+        "uriFormat": "https://localhost:5002/scjob"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ]
+}
