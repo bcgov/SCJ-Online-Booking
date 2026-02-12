@@ -70,6 +70,11 @@ $(document).ready(function () {
 
   // kills the spinner when the back button is pressed
   window.onunload = function () {};
+
+  // hides spinner on HTML5 validation errors
+  $("input").on("invalid", function () {
+    $("div#progress-overlay").hide();
+  });
 });
 
 // logout
