@@ -221,6 +221,13 @@ namespace SCJ.Booking.MVC.Controllers
                 }
             }
 
+            if (model.IsHomeRegistry == false && model.IsLocationChangeFiled == false)
+            {
+                // Fallback for js validation. Triggers page error state w/o field message
+                char space = (char)32;
+                ModelState.AddModelError("IsLocationChangeFiled", space.ToString());
+            }
+
             if (!ModelState.IsValid)
             {
                 model.AvailableBookingTypes = await _coreService.GetAvailableBookingTypesAsync();
