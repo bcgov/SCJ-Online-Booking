@@ -512,6 +512,16 @@ div#progress-overlay {
   margin-top: 50px;
 }
 
+.btn.disabled {
+  &:hover,
+  &:focus,
+  &:active {
+    &:not(.active) {
+      color: inherit !important;
+    }
+  }
+}
+
 .btn-radio {
   color: $blue-dark;
   background-color: $white;
@@ -531,9 +541,9 @@ div#progress-overlay {
     padding: 12px 0;
   }
 
-  &:hover,
-  &:active,
-  &:focus,
+  &:hover:not(.disabled),
+  &:active:not(.disabled),
+  &:focus:not(.disabled),
   &.active {
     color: $white;
     background-color: $blue-medium;
@@ -548,12 +558,6 @@ div#progress-overlay {
 
   &.disabled {
     cursor: default;
-
-    &:hover,
-    &:focus {
-      color: $blue !important;
-      background-color: $white;
-    }
   }
 
   & + .btn-radio {
