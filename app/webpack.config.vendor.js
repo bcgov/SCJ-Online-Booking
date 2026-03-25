@@ -99,16 +99,28 @@ module.exports = (env) => {
         new CopyWebpackPlugin({
           patterns: [
             {
-              from: "node_modules/jquery/dist/jquery+(.min|).js",
+              from: "node_modules/jquery/dist/jquery.js",
               to: "lib/[name].js",
             },
             {
-              from: "node_modules/bootstrap/dist/js/bootstrap+(.min|).js",
+              from: "node_modules/jquery/dist/jquery.min.js",
+              to: "lib/[name].js",
+            },
+            {
+              from: "node_modules/bootstrap/dist/js/bootstrap.js",
+              to: "lib/[name].js",
+            },
+            {
+              from: "node_modules/bootstrap/dist/js/bootstrap.min.js",
               to: "lib/[name].js",
             },
             {
               //Used for tooltips with bootstrap
-              from: "node_modules/popper.js/dist/umd/popper+(.min|).js",
+              from: "node_modules/popper.js/dist/umd/popper.js",
+              to: "lib/[name].js",
+            },
+            {
+              from: "node_modules/popper.js/dist/umd/popper.min.js",
               to: "lib/[name].js",
             },
             {
@@ -136,7 +148,11 @@ module.exports = (env) => {
               to: "css/bootstrap-datepicker3.standalone.css",
             },
             {
-              from: "node_modules/spin.js/spin+(.min|).js",
+              from: "node_modules/spin.js/spin.js",
+              to: "lib/[name].js",
+            },
+            {
+              from: "node_modules/spin.js/spin.min.js",
               to: "lib/[name].js",
             },
             {
@@ -148,12 +164,20 @@ module.exports = (env) => {
               to: "lib/bootstrap-datepicker.js",
             },
             {
-              from: "node_modules/jquery-validation/dist/jquery.validate+(.min|).js",
-              to: "lib/jquery-validate/[name][ext]",
+              from: "node_modules/jquery-validation/dist/jquery.validate.js",
+              to: "lib/jquery-validate/jquery.validate.js",
             },
             {
-              from: "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive+(.min|).js",
-              to: "lib/jquery-validation-unobtrusive/[name][ext]",
+              from: "node_modules/jquery-validation/dist/jquery.validate.min.js",
+              to: "lib/jquery-validate/jquery.validate.min.js",
+            },
+            {
+              from: "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js",
+              to: "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+            },
+            {
+              from: "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
+              to: "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
             },
           ],
         }),
