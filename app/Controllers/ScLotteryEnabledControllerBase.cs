@@ -105,10 +105,20 @@ namespace SCJ.Booking.MVC.Controllers
                 && model.SelectedFairUseDates.Count == 0
             )
             {
-                ModelState.AddModelError(
-                    "SelectedFairUseDates",
-                    $"Please choose at least one date for your {HearingWords(hearingTypeId)}."
-                );
+                if (model.HasExistingLongChambersRequest)
+                {
+                    ModelState.AddModelError(
+                        "SelectedFairUseDates",
+                        "You’ve already submitted a request for this period."
+                    );
+                }
+                else
+                {
+                    ModelState.AddModelError(
+                        "SelectedFairUseDates",
+                        $"Please choose at least one date for your {HearingWords(hearingTypeId)}."
+                    );
+                }
             }
             else if (model.FormulaType == "")
             {
