@@ -1,8 +1,9 @@
 <template>
   <chambers-time-select-tabs
+    ref="tabs"
     :initial-tab="initialTab"
     :fair-use-unavailable="fairUseUnavailable"
-    :fair-use-disabled="fairUseDisabled || hasExistingChambersRequest"
+    :fair-use-disabled="fairUseDisabled"
     :has-existing-chambers-request="hasExistingChambersRequest"
     hearing-type-name="chambers hearing"
   >
@@ -31,6 +32,8 @@
         :initial-value="selectedFairUseDateStrings"
         :max-selection-size="scMaxChambersDateSelections"
         hearing-type-name="chambers hearing"
+        :has-existing-chambers-request="hasExistingChambersRequest"
+        @switchTabs="$refs.tabs.tab = 'Regular'"
       >
         <template v-slot:mobileTabDescription>
           Request up to {{ scMaxChambersDateSelectionsString }} dates for a chambers hearing
