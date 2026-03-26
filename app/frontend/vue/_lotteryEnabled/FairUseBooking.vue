@@ -36,7 +36,7 @@
       <slot v-if="dates.length === 0" name="noDatesError" />
     </div>
 
-    <div class="column-container" v-if="dates.length > 0">
+    <div class="column-container" v-if="dates.length > 0 && !hasExistingChambersRequest">
       <div class="dates-intro content-pad select-dates-intro">
         <slot name="dateSelectionHeader" :max-selection-size="maxSelectionSize" />
 
@@ -135,6 +135,30 @@
         </div>
       </div>
     </div>
+
+    <div
+      style="display: grid"
+      v-if="hasExistingChambersRequest && showExistingChambersRequestAlert"
+    >
+      <div class="alert sm-banner alert-warning m-4 mb-0">
+        <i class="fa fa-exclamation-triangle" />
+        <div>
+          You can only submit one request for each fair-use period. Your request for the upcoming
+          dates has already been submitted. Or,
+          <a @click.prevent="switchTabs()" href="#"
+            >book a chambers hearing date that is currently available</a
+          >.
+        </div>
+        <button
+          type="button"
+          class="close d-md-none"
+          aria-label="Close"
+          @click="showExistingChambersRequestAlert = false"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -157,6 +181,7 @@ export default {
     selected: [],
     // show or hide "selection full" alert
     showSelectionSizeAlert: false,
+    showExistingChambersRequestAlert: true,
   }),
 
   props: {
@@ -178,6 +203,12 @@ export default {
     hearingTypeName: {
       type: String,
       default: "trial",
+    },
+
+    hasExistingChambersRequest: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 
@@ -272,6 +303,13 @@ export default {
      */
     scrollTo(refName) {
       this.$refs[refName].scrollIntoView({ behavior: "smooth" });
+    },
+
+    /**
+     * Emits a "switchTabs" event to the parent component to switch to the regular booking tab.
+     */
+    switchTabs() {
+      this.$emit("switchTabs");
     },
   },
 };
