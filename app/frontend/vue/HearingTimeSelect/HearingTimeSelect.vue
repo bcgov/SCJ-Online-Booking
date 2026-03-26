@@ -169,7 +169,7 @@ export default {
 @use "sass:color";
 
 .swiper-container {
-  width: calc(100% - 60px);
+  width: calc(100% - 72px);
 
   .swiper-slide-active {
     .custom-slide-header {
@@ -180,8 +180,8 @@ export default {
 
 .swiper {
   overflow: hidden;
-  width: calc(100% - 60px);
-  margin-left: 30px;
+  width: calc(100% - 72px);
+  margin-left: 36px;
 
   .swiper-slide-active {
     .custom-slide-header {
