@@ -45,7 +45,7 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Azure.Identity" Version="1.19.0" />
+        <PackageReference Include="Azure.Identity" Version="1.20.0" />
         <PackageReference Include="Microsoft.Graph" Version="4.54.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
