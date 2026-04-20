@@ -21,7 +21,7 @@
   "dependencies": {
     "@bcgov/bc-sans": "^1.0.1",
     "@fortawesome/fontawesome-free": "^5.15.4",
-    "axios": "^1.15.0",
+    "axios": "^1.15.1",
     "bootstrap": "^4.6.2",
     "bootstrap-datepicker": "^1.10.0",
     "date-fns": "^3.6.0",
