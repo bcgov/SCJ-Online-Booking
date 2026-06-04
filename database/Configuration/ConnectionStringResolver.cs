@@ -10,7 +10,7 @@ public static class ConnectionStringResolver
         ("Host", "DATABASE_HOST"),
         ("Port", "DATABASE_PORT"),
         ("Database", "DATABASE_NAME"),
-        ("Username", "DATABASE_USER"),
+        ("Username", "DATABASE_USERNAME"),
         ("Password", "DATABASE_PASSWORD"),
     ];
 
