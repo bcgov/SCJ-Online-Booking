@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Configuration;
 using SCJ.Booking.MVC;
 using SCJ.Booking.MVC.Middleware;
 using SCJ.Booking.MVC.Services;
@@ -32,6 +33,7 @@ var builder = WebApplication.CreateBuilder(args);
 const int AuthExpiryMinutes = 120;
 
 var configuration = builder.Configuration;
+var resolvedConnectionString = ConnectionStringResolver.Resolve(configuration);
 
 var oidcRealmUri =
     $"{configuration["Keycloak:Domain"]}/auth/realms/{configuration["Keycloak:Realm"]}";
@@ -69,7 +71,7 @@ else
 {
     builder.Services.AddDistributedPostgreSqlCache(options =>
     {
-        options.ConnectionString = configuration["ConnectionString"];
+        options.ConnectionString = resolvedConnectionString;
         options.SchemaName = "public";
         options.TableName = "aspnet_cache";
         options.CreateInfrastructure = true;
@@ -232,9 +234,7 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>(
 {
     using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
     {
-        string cs =
-            configuration["ConnectionString"]
-            ?? configuration["Data:DefaultConnection:ConnectionString"];
+        string cs = resolvedConnectionString;
         if (cs != string.Empty || !platform.UseInMemoryStore)
         {
             context.Database.Migrate();

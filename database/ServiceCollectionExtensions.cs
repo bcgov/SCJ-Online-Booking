@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SCJ.Booking.Data.Configuration;
 
 namespace SCJ.Booking.Data
 {
@@ -11,46 +12,31 @@ namespace SCJ.Booking.Data
             IConfiguration configuration
         )
         {
-            string provider;
-            string connectionString;
+            var connectionString = ConnectionStringResolver.Resolve(configuration);
 
-            // For a nicer example, setting ConnectionString will use PostgreSQL
-            if (configuration["ConnectionString"] != null)
-            {
-                provider = ServiceConfig.DataProviderNpgsql;
-                connectionString =
-                    configuration["ConnectionString"]
-                    ?? throw new InvalidOperationException(
-                        "ConnectionString configuration value is missing."
-                    );
-            }
-            else
-            {
-                provider =
-                    configuration[ServiceConfig.DataProviderKey.Replace("__", ":")]
+            var provider = ConnectionStringResolver.HasEnvironmentConnectionOverride()
+                ? ServiceConfig.DataProviderNpgsql
+                : configuration["Data:DefaultConnection:Provider"]
                     ?? throw new InvalidOperationException(
                         "DataProvider configuration value is missing."
                     );
-                connectionString =
-                    configuration[ServiceConfig.ConnectionStringKey.Replace("__", ":")]
-                    ?? throw new InvalidOperationException(
-                        "ConnectionString configuration value is missing."
-                    );
-            }
 
             Console.WriteLine($"Using data provider: {provider}");
-            switch (provider)
+
+            switch (provider.ToLowerInvariant())
             {
                 case ServiceConfig.DataProviderNpgsql:
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseNpgsql(connectionString)
                     );
                     break;
+
                 case ServiceConfig.DataProviderSqlite:
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseSqlite(connectionString)
                     );
                     break;
+
                 default:
                     throw new ArgumentException(
                         "Unknown data provider",
