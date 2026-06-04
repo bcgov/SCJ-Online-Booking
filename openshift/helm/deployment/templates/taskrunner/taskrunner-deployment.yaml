@@ -51,22 +51,22 @@ spec:
             - name: DATABASE_HOST
               valueFrom:
                 secretKeyRef:
-                  name: scjob-crunchy-pguser-scjob-crunchy
+                  name: {{ .Values.cluster.databaseSecretName }}
                   key: pgbouncer-host
             - name: DATABASE_PORT
               valueFrom:
                 secretKeyRef:
-                  name: scjob-crunchy-pguser-scjob-crunchy
+                  name: {{ .Values.cluster.databaseSecretName }}
                   key: pgbouncer-port
             - name: DATABASE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: scjob-crunchy-pguser-scjob-crunchy
+                  name: {{ .Values.cluster.databaseSecretName }}
                   key: user
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: scjob-crunchy-pguser-scjob-crunchy
+                  name: {{ .Values.cluster.databaseSecretName }}
                   key: password
             - name: DATABASE_NAME
               value: scj_booking
