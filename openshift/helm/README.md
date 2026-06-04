@@ -6,22 +6,13 @@ This is a quick overview on how to create deployments using the `scjob` Helm cha
 
 Install `helm` CLI from https://helm.sh/docs/intro/install/
 
-Log into OpenShift on your coonsole **with an admin account** (an admin account is needed to manage roles and role binding)
-
-Grant the patroni service accounts permission to pull images from the tools project
-```
-oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-dev:scjob-patroni -n bc7c5c-tools
-oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-test:scjob-patroni -n bc7c5c-tools
-oc policy add-role-to-user system:image-puller system:serviceaccount:bc7c5c-prod:scjob-patroni -n bc7c5c-tools
-```
-
-You will get a warning that the service accounts don't exist, but that's okay.  They will be created in the next step. 
+Log into OpenShift on your coonsole **with an admin account**
 
 ## Deploying
 
 The `install` command can be used when deploying to a namespace for the very first time.
 
-Run the following commands from the `helm/scjob` directory.
+Run the following commands from the `helm/deployment` directory.
 
 ### Dev
 
@@ -43,7 +34,7 @@ You will need to edit the secrets and the routes on OpenShift. The route whiteli
 
 The `upgrade` command can be used when updating existing deployments in a namespace.
 
-Run the following commands from the `helm/scjob` directory.
+Run the following commands from the `helm/deployment` directory.
 
 ### Dev
 
@@ -57,12 +48,11 @@ Run the following commands from the `helm/scjob` directory.
 
 `helm -n bc7c5c-prod upgrade scjob . -f values-prod.yaml`
 
-
 ## Teardown
 
 The `uninstall` command ca be used to remove all resources defined by the Helm chart. Please note that secrets and PVCs created by the Helm chart are not automatically removed.
 
-Run the following commands from the `helm/scjob` directory.
+Run the following commands from the `helm/deployment` directory.
 
 ### Dev
 

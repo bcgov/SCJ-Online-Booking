@@ -9,18 +9,7 @@ app:
 
   # use the test.justice.gov.bc.ca reverse proxy IP list, but do not commit to source control
   allowedIPs: 1.2.3.4
-  
+
 taskrunner:
   env:
     environment: test
-
-patroni:
-  replicas: 1
-
-backup:
-  enabled: true
-
-  enironment:
-    friendlyName: "SCJOB Postgres Backup [test]"
-    name: "bc7c5c-test"
-

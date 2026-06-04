@@ -31,18 +31,6 @@ objects:
       name: ${NAME}-build
       annotations:
         description: Keeps track of changes in the application builder image
-  - kind: ImageStream
-    apiVersion: v1
-    metadata:
-      name: patroni-postgres
-  - kind: ImageStream
-    apiVersion: v1
-    metadata:
-      name: pgbouncer
-  - kind: ImageStream
-    apiVersion: v1
-    metadata:
-      name: backup-container
   - kind: BuildConfig
     apiVersion: v1
     metadata:
@@ -131,10 +119,10 @@ objects:
               name: ${NAME}-build:latest
       resources:
         limits:
-          cpu: '2'
+          cpu: "2"
           memory: 4Gi
         requests:
-          cpu: '1'
+          cpu: "1"
           memory: 2Gi
       output:
         to:
@@ -173,10 +161,10 @@ objects:
               name: ${NAME}-build:latest
       resources:
         limits:
-          cpu: '2'
+          cpu: "2"
           memory: 4Gi
         requests:
-          cpu: '1'
+          cpu: "1"
           memory: 2Gi
       output:
         to:
@@ -250,4 +238,4 @@ parameters:
     displayName: GitHub Webhook Secret
     description: A secret string used to configure the GitHub webhook.
     generate: expression
-    from: '[a-zA-Z0-9]{40}'
+    from: "[a-zA-Z0-9]{40}"
