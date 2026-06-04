@@ -7,6 +7,3 @@ app:
 taskrunner:
   env:
     environment: dev
-
-patroni:
-  replicas: 1

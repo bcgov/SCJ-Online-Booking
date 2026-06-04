@@ -66,11 +66,28 @@ spec:
               value: {{ .Values.app.env.aspNetCoreEnvironment }}
             - name: TAG_NAME
               value: {{ .Values.app.env.tagName }}
-            - name: ConnectionString
+            - name: DATABASE_HOST
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "scjob_patroni_secrets" . }}
-                  key: connect-string
+                  name: scjob-crunchy-pguser-scjob-crunchy
+                  key: pgbouncer-host
+            - name: DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: scjob-crunchy-pguser-scjob-crunchy
+                  key: pgbouncer-port
+            - name: DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: scjob-crunchy-pguser-scjob-crunchy
+                  key: user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scjob-crunchy-pguser-scjob-crunchy
+                  key: password
+            - name: DATABASE_NAME
+              value: scj_booking
             - name: TZ
               value: America/Vancouver
           envFrom:
