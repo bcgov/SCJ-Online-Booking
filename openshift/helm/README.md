@@ -6,7 +6,7 @@ This is a quick overview on how to create deployments using the `scjob` Helm cha
 
 Install `helm` CLI from https://helm.sh/docs/intro/install/
 
-Log into OpenShift on your coonsole **with an admin account** (an admin account is needed to manage roles and role binding)
+Log into OpenShift on your console **with an admin account** (an admin account is needed to manage roles and role binding)
 
 Grant the patroni service accounts permission to pull images from the tools project
 
