@@ -22,7 +22,6 @@ public class DatabaseUtils
         var provider = ConnectionStringResolver.HasEnvironmentConnectionOverride()
             ? ServiceConfig.DataProviderNpgsql
             : configuration["Data:DefaultConnection:Provider"]
-                ?? configuration[ServiceConfig.DataProviderKey.Replace("__", ":")]
                 ?? throw new InvalidOperationException("Data provider is not configured.");
 
         var applicationDbContext = new ApplicationDbContext(connectionString, provider);
