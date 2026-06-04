@@ -3,6 +3,7 @@ using DotEnv.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SCJ.Booking.Data;
+using SCJ.Booking.Data.Configuration;
 using SCJ.Booking.TaskRunner.Services;
 using SCJ.Booking.TaskRunner.Utils;
 using Serilog;
@@ -80,20 +81,12 @@ namespace SCJ.Booking.TaskRunner
 
         private static ApplicationDbContext GetDbContext(IConfiguration configuration)
         {
-            string connectionString;
-            string provider;
+            var connectionString = ConnectionStringResolver.Resolve(configuration);
 
-            if (configuration["ConnectionString"] != null)
-            {
-                connectionString = configuration["ConnectionString"] ?? "";
-                provider = ServiceConfig.DataProviderNpgsql;
-            }
-            else
-            {
-                provider = configuration[ServiceConfig.DataProviderKey.Replace("__", ":")] ?? "";
-                connectionString =
-                    configuration[ServiceConfig.ConnectionStringKey.Replace("__", ":")] ?? "";
-            }
+            var provider = ConnectionStringResolver.HasEnvironmentConnectionOverride()
+                ? ServiceConfig.DataProviderNpgsql
+                : configuration["Data:DefaultConnection:Provider"]
+                    ?? throw new InvalidOperationException("Data provider is not configured.");
 
             var applicationDbContext = new ApplicationDbContext(connectionString, provider);
 
