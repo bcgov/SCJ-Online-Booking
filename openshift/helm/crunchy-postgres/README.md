@@ -9,14 +9,12 @@
 ### Dev
 
 ```sh
-# dev:
 helm -n bc7c5c-dev install crunchy . -f values-dev.yaml
 ```
 
 ### Test
 
 ```sh
-# test
 helm -n bc7c5c-test install crunchy . -f values-test.yaml
 ```
 
@@ -49,14 +47,12 @@ spec:
 ### Dev
 
 ```sh
-# dev:
 helm -n bc7c5c-dev upgrade crunchy . -f values-dev.yaml
 ```
 
 ### Test
 
 ```sh
-# test:
 helm -n bc7c5c-test upgrade crunchy . -f values-test.yaml
 ```
 
@@ -217,6 +213,6 @@ A [Prometheus](https://prometheus.io/) exporter for PostgreSQL
 | `pgmonitor.exporter.requests.cpu`    | CPU requests              | `1m`    |
 | `pgmonitor.exporter.requests.memory` | Memory requests           | `64Mi`  |
 | `pgmonitor.exporter.limits.cpu`      | CPU limits                | `50m`   |
-| `pgmonitor.exporter.limits.memory`   | Memory limits           | `128Mi` |
+| `pgmonitor.exporter.limits.memory`   | Memory limits             | `128Mi` |
 
 ---

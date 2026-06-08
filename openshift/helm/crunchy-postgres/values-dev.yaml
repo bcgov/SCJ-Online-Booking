@@ -11,6 +11,7 @@ instances:
     cpu: 100m
 
 pgBackRest:
+  retention: "30"
   repos:
     volume:
       storage: 1Gi
