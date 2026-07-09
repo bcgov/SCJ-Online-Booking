@@ -22,7 +22,7 @@
 
 1. Create the `scj_booking` database on the new crunchy leader
 
-   We must explicitly set the database timezone because the database is created before the restore is performed. The restore process does not automatically recreate database-level settings such as the timezone.
+   **Important:** The original `scj_booking` database included a database-level timezone setting (`America/Vancouver`). Because the database is created manually during the Crunchy migration, this setting must be recreated before restoring the backup.
 
    ```
    psql -U postgres
