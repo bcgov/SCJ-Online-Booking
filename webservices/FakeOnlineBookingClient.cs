@@ -41,42 +41,54 @@ namespace SCJ.OnlineBooking
                 };
             }
 
-            //KE111 -- Kelowna (KE) / Any Court (empty string) / #111
-            if (caseNum == "KE111" || caseNum == "KEM111" || caseNum == "KES111")
+            //KEM111 -- Kelowna (KE) / Motor Vehicles (M) / #111
+            var kelownaMotorVehiclesFile = new CourtFile
             {
-                result = new[]
-                {
-                    new CourtFile
-                    {
-                        courtClassCode = "M",
-                        courtFileNumber = "111",
-                        courtLevelCode = "S",
-                        CEISLocationId = 83.0001m,
-                        physicalFileId = 2109m,
-                        styleOfCause = null,
-                        fairUseSortTrial = 0,
-                        fairUseSortCH = 0,
-                        futureTrialHearing = true,
-                        futureCPCHearing = true,
-                        futureJCCHearing = true,
-                        futureTMCHearing = true,
-                    },
-                    new CourtFile
-                    {
-                        courtClassCode = "S",
-                        courtFileNumber = "111",
-                        courtLevelCode = "S",
-                        CEISLocationId = 83.0001m,
-                        physicalFileId = 1063m,
-                        styleOfCause = "SIMPSON, Marge v SIMPSON, Homer",
-                        fairUseSortTrial = 3,
-                        fairUseSortCH = 3,
-                        futureTrialHearing = false,
-                        futureCPCHearing = false,
-                        futureJCCHearing = false,
-                        futureTMCHearing = false,
-                    },
-                };
+                courtClassCode = "M",
+                courtFileNumber = "111",
+                courtLevelCode = "S",
+                CEISLocationId = 83.0001m,
+                physicalFileId = 2109m,
+                styleOfCause = null,
+                fairUseSortTrial = 0,
+                fairUseSortCH = 0,
+                futureTrialHearing = true,
+                futureCPCHearing = true,
+                futureJCCHearing = true,
+                futureTMCHearing = true,
+            };
+
+            if (caseNum == "KEM111")
+            {
+                result = new[] { kelownaMotorVehiclesFile };
+            }
+
+            var kelownaGeneralFile = new CourtFile
+            {
+                courtClassCode = "S",
+                courtFileNumber = "111",
+                courtLevelCode = "S",
+                CEISLocationId = 83.0001m,
+                physicalFileId = 1063m,
+                styleOfCause = "SIMPSON, Marge v SIMPSON, Homer",
+                fairUseSortTrial = 3,
+                fairUseSortCH = 3,
+                futureTrialHearing = false,
+                futureCPCHearing = false,
+                futureJCCHearing = false,
+                futureTMCHearing = false,
+            };
+
+            //KES111 -- Kelowna (KE) / General (S) / #111
+            if (caseNum == "KES111")
+            {
+                result = new[] { kelownaGeneralFile };
+            }
+
+            //KE111 -- Kelowna (KE) / Any Court Class (empty string) / #111
+            if (caseNum == "KE111")
+            {
+                result = new[] { kelownaMotorVehiclesFile, kelownaGeneralFile };
             }
 
             return result.ToList().OrderBy(x => x.styleOfCause).ToArray();
