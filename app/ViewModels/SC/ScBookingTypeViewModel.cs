@@ -31,6 +31,9 @@ namespace SCJ.Booking.MVC.ViewModels.SC
         public List<string> AvailableBookingTypes { get; set; }
         public bool FutureTrialBooked { get; set; } = false;
         public bool HasExistingTrialRequest { get; set; } = false;
+        public bool FutureCPCBooked { get; set; } = false;
+        public bool FutureJCCBooked { get; set; } = false;
+        public bool FutureTMCBooked { get; set; } = false;
 
         // Session object
         public ScSessionBookingInfo SessionInfo { get; set; }

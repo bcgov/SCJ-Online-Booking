@@ -33,8 +33,11 @@ namespace SCJ.OnlineBooking
                         styleOfCause = "DOE, Jane v TESTING, John",
                         fairUseSortTrial = 1,
                         fairUseSortCH = 1,
-                        futureTrialHearing = false
-                    }
+                        futureTrialHearing = false,
+                        futureCPCHearing = false,
+                        futureJCCHearing = false,
+                        futureTMCHearing = false,
+                    },
                 };
             }
 
@@ -53,7 +56,10 @@ namespace SCJ.OnlineBooking
                         styleOfCause = null,
                         fairUseSortTrial = 0,
                         fairUseSortCH = 0,
-                        futureTrialHearing = true
+                        futureTrialHearing = true,
+                        futureCPCHearing = true,
+                        futureJCCHearing = true,
+                        futureTMCHearing = true,
                     },
                     new CourtFile
                     {
@@ -65,8 +71,11 @@ namespace SCJ.OnlineBooking
                         styleOfCause = "SIMPSON, Marge v SIMPSON, Homer",
                         fairUseSortTrial = 3,
                         fairUseSortCH = 3,
-                        futureTrialHearing = false
-                    }
+                        futureTrialHearing = false,
+                        futureCPCHearing = false,
+                        futureJCCHearing = false,
+                        futureTMCHearing = false,
+                    },
                 };
             }
 

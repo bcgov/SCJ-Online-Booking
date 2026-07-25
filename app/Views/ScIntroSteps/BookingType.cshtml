@@ -75,6 +75,21 @@
                     </div>
                 </div>
 
+                @foreach (var bookingType in Model.AvailableBookingTypes)
+                {
+                    <div id="existing-@bookingType-error" class="alert alert-danger mt-4" role="alert"
+                            style="display: none">
+                        <i class="fas fa-ban"></i>
+                        <div>
+                            <p>
+                                You cannot book a @bookingType for this case because a @bookingType date
+                                has already been set.
+                            </p>
+                            <p class="mt-3">Please confirm the details with the opposing counsel/party.</p>
+                        </div>
+                    </div>
+                }
+
                 <div id="lotteryenabled-additional-fields" style="display: none;">
                     <div id="chambers-additional-fields" class="form-group mb-4">
 
@@ -248,5 +263,8 @@
 
         <input type="hidden" asp-for="HasExistingTrialRequest" />
         <input type="hidden" asp-for="FutureTrialBooked" />
+        <input type="hidden" asp-for="FutureCPCBooked" />
+        <input type="hidden" asp-for="FutureJCCBooked" />
+        <input type="hidden" asp-for="FutureTMCBooked" />
     </form>
 </div>
