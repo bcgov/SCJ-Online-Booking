@@ -153,6 +153,9 @@ namespace SCJ.Booking.MVC.Services.SC
                 IsLocationChangeFiled = bookingInfo.IsLocationChangeFiled,
                 AlternateLocationRegistryId = bookingInfo.AlternateLocationRegistryId,
                 FutureTrialBooked = bookingInfo.SelectedCourtFile?.futureTrialHearing ?? false,
+                FutureCPCBooked = bookingInfo.SelectedCourtFile?.futureCPCHearing ?? false,
+                FutureJCCBooked = bookingInfo.SelectedCourtFile?.futureJCCHearing ?? false,
+                FutureTMCBooked = bookingInfo.SelectedCourtFile?.futureTMCHearing ?? false,
                 SessionInfo = bookingInfo
             };
         }
