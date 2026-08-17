@@ -26,9 +26,15 @@ namespace SCJ.OnlineBooking
 
         private string courtLevelCodeField;
 
+        private int fairUseSortCHField;
+
         private int fairUseSortTrialField;
 
-        private int fairUseSortCHField;
+        private bool futureCPCHearingField;
+
+        private bool futureJCCHearingField;
+
+        private bool futureTMCHearingField;
 
         private bool futureTrialHearingField;
 
@@ -89,6 +95,19 @@ namespace SCJ.OnlineBooking
         }
 
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int fairUseSortCH
+        {
+            get
+            {
+                return this.fairUseSortCHField;
+            }
+            set
+            {
+                this.fairUseSortCHField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int fairUseSortTrial
         {
             get
@@ -102,15 +121,41 @@ namespace SCJ.OnlineBooking
         }
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int fairUseSortCH
+        public bool futureCPCHearing
         {
             get
             {
-                return this.fairUseSortCHField;
+                return this.futureCPCHearingField;
             }
             set
             {
-                this.fairUseSortCHField = value;
+                this.futureCPCHearingField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool futureJCCHearing
+        {
+            get
+            {
+                return this.futureJCCHearingField;
+            }
+            set
+            {
+                this.futureJCCHearingField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool futureTMCHearing
+        {
+            get
+            {
+                return this.futureTMCHearingField;
+            }
+            set
+            {
+                this.futureTMCHearingField = value;
             }
         }
 

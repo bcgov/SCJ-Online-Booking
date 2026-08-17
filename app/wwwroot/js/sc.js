@@ -1,7 +1,7 @@
 $(function () {
-  // show additional questions for "Trial" booking type
+  // initialize additional fields for the selected booking type
   if ($("input[name=HearingTypeId]:checked").length) {
-    showTrialFields();
+    updateBookingTypeFields();
   }
 
   //Pre-filling input field based on selection of court class on the Supreme Court side
@@ -31,26 +31,32 @@ $(function () {
       $courtClassDropdown.prop("required", true);
     }
 
-    // show additional questions for "Trial" booking type
-    showTrialFields();
+    // update additional fields for the selected booking type
+    updateBookingTypeFields();
   });
 
-  $("input[name=IsHomeRegistry]").on("change", showTrialFields);
-  $("input[name=IsLocationChangeFiled]").on("change", showTrialFields);
+  $("input[name=IsHomeRegistry]").on("change", updateBookingTypeFields);
+  $("input[name=IsLocationChangeFiled]").on("change", updateBookingTypeFields);
 
   $("#dateBtn").on("click", function () {
     $("#datepicker").datepicker().focus();
   });
 });
 
-// Shows or hides the additional form fields for Trials
-function showTrialFields() {
+// Updates additional fields for the selected booking type and trial location answers
+function updateBookingTypeFields() {
   const hearingTypeId = $("input[name=HearingTypeId]:checked").val();
 
   const trialSelected = hearingTypeId === "9001";
   const chambersSelected = hearingTypeId === "9012";
+  const cpcSelected = hearingTypeId === "9089";
+  const jccSelected = hearingTypeId === "9005";
+  const tmcSelected = hearingTypeId === "9090";
 
   $("#existing-trial-error").hide();
+  $("#existing-CPC-error").hide();
+  $("#existing-JCC-error").hide();
+  $("#existing-TMC-error").hide();
   $("#btnNext").show();
 
   if (trialSelected && checkExistingTrialBookings()) {
@@ -60,6 +66,20 @@ function showTrialFields() {
   } else {
     $("#trial-additional-fields").toggle(trialSelected);
     $("#lotteryenabled-additional-fields").toggle(trialSelected || chambersSelected);
+  }
+
+  if (cpcSelected && $("#FutureCPCBooked").val() === "True") {
+    $("#existing-CPC-error").show();
+    $("#btnNext").hide();
+  }
+
+  if (jccSelected && $("#FutureJCCBooked").val() === "True") {
+    $("#existing-JCC-error").show();
+    $("#btnNext").hide();
+  }
+  if (tmcSelected && $("#FutureTMCBooked").val() === "True") {
+    $("#existing-TMC-error").show();
+    $("#btnNext").hide();
   }
 
   $(".txtChambers").toggle(chambersSelected);
