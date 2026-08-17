@@ -16,7 +16,7 @@ pgBackRest:
     volume:
       storage: 1Gi
   s3:
-    enabled: true
+    enabled: false
     bucket: "ag-pssg-bccourts-scjob-dev-bkt"
     endpoint: "ag-pssg-sharedservices.objectstore.gov.bc.ca"
 
