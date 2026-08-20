@@ -15,10 +15,15 @@ pgBackRest:
   repos:
     volume:
       storage: 2Gi
+    schedules:
+      full: 17 8 * * *
+      incremental: 17 0,4,12,16,20 * * *
   s3:
     enabled: true
     bucket: "ag-pssg-bccourts-scjob-prod-bkt"
     endpoint: "ag-pssg-sharedservices.objectstore.gov.bc.ca"
+    fullSchedule: "17 9 * * *"
+    incrementalSchedule: "17 1,5,13,17,21 * * *"
 
 proxy:
   pgBouncer:
