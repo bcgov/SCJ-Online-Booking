@@ -82,6 +82,78 @@ helm -n bc7c5c-test uninstall crunchy
 
 intentionally omitted
 
+## S3 backup secret
+
+Test and prod also back up to S3 object storage (`pgBackRest.s3.enabled`). Dev has a bucket too, but its S3 backups are currently disabled. The S3 credentials are in the `s3-pgbackrest` secret, which the Crunchy operator reads. `createS3Secret` is `false` in the values files, so Helm never creates, overwrites or deletes this secret.
+
+The bucket and endpoint are in the values files. The keys are **only** in the `s3-pgbackrest` secret in each namespace, so keep a safe copy outside OpenShift: if the namespace is lost, the secret goes with it, and you need the keys to [rebuild from S3](../../../docs/crunchy-postgres-backup-and-restore/rebuild-from-s3.md).
+
+To see the current keys:
+
+```sh
+oc -n bc7c5c-test get secret s3-pgbackrest -o jsonpath='{.data.s3\.conf}' | base64 -d
+```
+
+To create or update the secret, edit the two key lines in the block for your environment, then run it.
+
+### Dev
+
+```sh
+(
+  KEY_ID='<access key id>'
+  KEY_SECRET='<secret access key>'
+  if [ -z "$KEY_ID" ] || [ -z "$KEY_SECRET" ] || [ "$KEY_ID" = '<access key id>' ]; then
+    echo "Set KEY_ID and KEY_SECRET first; s3-pgbackrest not changed" >&2
+    exit 1
+  fi
+
+  oc -n bc7c5c-dev create secret generic s3-pgbackrest \
+    --from-file=s3.conf=<(printf '[global]\nrepo2-s3-key=%s\nrepo2-s3-key-secret=%s\n' \
+      "$KEY_ID" "$KEY_SECRET") \
+    --dry-run=client -o yaml | oc apply --server-side --force-conflicts -f -
+)
+```
+
+### Test
+
+```sh
+(
+  KEY_ID='<access key id>'
+  KEY_SECRET='<secret access key>'
+  if [ -z "$KEY_ID" ] || [ -z "$KEY_SECRET" ] || [ "$KEY_ID" = '<access key id>' ]; then
+    echo "Set KEY_ID and KEY_SECRET first; s3-pgbackrest not changed" >&2
+    exit 1
+  fi
+
+  oc -n bc7c5c-test create secret generic s3-pgbackrest \
+    --from-file=s3.conf=<(printf '[global]\nrepo2-s3-key=%s\nrepo2-s3-key-secret=%s\n' \
+      "$KEY_ID" "$KEY_SECRET") \
+    --dry-run=client -o yaml | oc apply --server-side --force-conflicts -f -
+)
+```
+
+### Prod
+
+```sh
+(
+  KEY_ID='<access key id>'
+  KEY_SECRET='<secret access key>'
+  if [ -z "$KEY_ID" ] || [ -z "$KEY_SECRET" ] || [ "$KEY_ID" = '<access key id>' ]; then
+    echo "Set KEY_ID and KEY_SECRET first; s3-pgbackrest not changed" >&2
+    exit 1
+  fi
+
+  oc -n bc7c5c-prod create secret generic s3-pgbackrest \
+    --from-file=s3.conf=<(printf '[global]\nrepo2-s3-key=%s\nrepo2-s3-key-secret=%s\n' \
+      "$KEY_ID" "$KEY_SECRET") \
+    --dry-run=client -o yaml | oc apply --server-side --force-conflicts -f -
+)
+```
+
+## Backup and restore
+
+Runbooks for checking backups, manual backups, point-in-time restore and rebuilding from S3 are in [docs/crunchy-postgres-backup-and-restore](../../../docs/crunchy-postgres-backup-and-restore/README.md).
+
 ---
 
 # Crunchy Postgres chart
@@ -142,7 +214,7 @@ A chart to provision a [Crunchy Postgres](https://www.crunchydata.com/) cluster.
 | `pgBackRest.sidecars.limits.cpu`                     | sidecars CPU limits                                                                                                                          | `50m`                  |
 | `pgBackRest.sidecars.limits.memory`                  | sidecars Memory limits                                                                                                                       | `128Mi`                |
 | `pgBackRest.s3.enabled`                              | Enables the s3 repo backups                                                                                                                  | `false`                |
-| `pgBackRest.s3.createS3Secret`                       | Creates the s3 secret based on key and keySecret                                                                                             | `true`                 |
+| `pgBackRest.s3.createS3Secret`                       | Creates the s3 secret based on key and keySecret (`false` in dev, test and prod; see [S3 backup secret](#s3-backup-secret))                  | `true`                 |
 | `pgBackRest.s3.s3Secret`                             | The secret name to be created or read from                                                                                                   | `s3-pgbackrest`        |
 | `pgBackRest.s3.s3Path`                               | The path inside the bucket where the backups will be saved to, set it to `/` to use the root of the bucket.                                  | `/dbbackup`            |
 | `pgBackRest.s3.s3UriStyle`                           | Style of URL to use for S3 communication. [More Info](https://pgbackrest.org/configuration.html#section-repository/option-repo-s3-uri-style) | `path`                 |
