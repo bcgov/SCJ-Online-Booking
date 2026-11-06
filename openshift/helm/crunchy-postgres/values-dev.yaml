@@ -20,6 +20,8 @@ pgBackRest:
       incremental: 17 0,4,12,16,20 * * *
   s3:
     enabled: false
+    # s3-pgbackrest is created with CLI commands, not by Helm. See "S3 backup secret" in README.md.
+    createS3Secret: false
     bucket: "ag-pssg-bccourts-scjob-dev-bkt"
     endpoint: "ag-pssg-sharedservices.objectstore.gov.bc.ca"
     fullSchedule: "17 9 * * *"
@@ -28,6 +30,3 @@ pgBackRest:
 proxy:
   pgBouncer:
     replicas: 1
-
-pgmonitor:
-  namespace: bc7c5c #The high level namespace of your project without the -tools -dev, etc part.
